@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MSSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Campus">
+    <Key>
+      <PropertyRef Name="Campus_Name" />
+    </Key>
+    <Property Name="Campus_Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Class">
+    <Key>
+      <PropertyRef Name="Class_ID" />
+    </Key>
+    <Property Name="Class_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="University" Type="varchar" MaxLength="50" />
+    <Property Name="Class_Start_Time" Type="datetime" />
+    <Property Name="Enrollment_Source" Type="nchar" MaxLength="10" />
+    <Property Name="Mentor_ID" Type="int" />
+    <Property Name="External_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Semester_ID" Type="int" />
+    <Property Name="Campus_Name" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Class_Detail">
+    <Key>
+      <PropertyRef Name="External_ID" />
+      <PropertyRef Name="Class_ID" />
+    </Key>
+    <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Class_ID" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="Course_ID" />
+    </Key>
+    <Property Name="Course_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Course_Name" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Course_Slug" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Mentor">
+    <Key>
+      <PropertyRef Name="Mentor_ID" />
+    </Key>
+    <Property Name="Mentor_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Semester">
+    <Key>
+      <PropertyRef Name="Semester_ID" />
+    </Key>
+    <Property Name="Semester_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Specification">
+    <Key>
+      <PropertyRef Name="Specification_ID" />
+    </Key>
+    <Property Name="Specification_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="External_ID" />
+    </Key>
+    <Property Name="Student_Name" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Sum_Enrolled_Courses" Type="int" />
+    <Property Name="Sum_Completed_Courses" Type="int" />
+    <Property Name="Member_State" Type="varchar" MaxLength="50" />
+    <Property Name="Join_Date" Type="datetime" />
+    <Property Name="Invitation_Date" Type="datetime" />
+    <Property Name="Last_Activity_Time" Type="datetime" />
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Class_ID" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Student_Course_Log">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="External_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Course_Enrollment_Time" Type="datetime" />
+    <Property Name="Course_Start_Time" Type="datetime" />
+    <Property Name="Last_Course_Activity_Time" Type="datetime" />
+    <Property Name="Overall_Progress" Type="int" />
+    <Property Name="Estimated" Type="int" />
+    <Property Name="Completed" Type="bit" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
+    <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
+    <Property Name="Completion_Time" Type="datetime" />
+    <Property Name="Course_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Course_Grade" Type="int" />
+  </EntityType>
+  <EntityType Name="Student_Specification_Log">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="External_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Subject_Name" Type="varchar" MaxLength="50" />
+    <Property Name="Campus" Type="varchar" MaxLength="50" />
+    <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
+    <Property Name="Specialization_Slug" Type="nvarchar" MaxLength="50" />
+    <Property Name="University" Type="nvarchar" MaxLength="250" />
+    <Property Name="Specialization_Enrollment_Time" Type="datetime" />
+    <Property Name="Last_Specialization_Activity_Time" Type="datetime" />
+    <Property Name="Completed" Type="bit" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
+    <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
+    <Property Name="Specialization_Completion_Time" Type="datetime" />
+    <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Course_ID" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Subject_ID" />
+    </Key>
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="External_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Subject_Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Subject_detail">
+    <Key>
+      <PropertyRef Name="Subject_ID" />
+      <PropertyRef Name="External_ID" />
+    </Key>
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Class_Campus">
+    <End Role="Campus" Type="Self.Campus" Multiplicity="0..1" />
+    <End Role="Class" Type="Self.Class" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Campus">
+        <PropertyRef Name="Campus_Name" />
+      </Principal>
+      <Dependent Role="Class">
+        <PropertyRef Name="Campus_Name" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Class_Detail_Class">
+    <End Role="Class" Type="Self.Class" Multiplicity="1" />
+    <End Role="Class_Detail" Type="Self.Class_Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Class">
+        <PropertyRef Name="Class_ID" />
+      </Principal>
+      <Dependent Role="Class_Detail">
+        <PropertyRef Name="Class_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Class_Detail_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Class_Detail" Type="Self.Class_Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="External_ID" />
+      </Principal>
+      <Dependent Role="Class_Detail">
+        <PropertyRef Name="External_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Class_Mentor">
+    <End Role="Mentor" Type="Self.Mentor" Multiplicity="0..1" />
+    <End Role="Class" Type="Self.Class" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Mentor">
+        <PropertyRef Name="Mentor_ID" />
+      </Principal>
+      <Dependent Role="Class">
+        <PropertyRef Name="Mentor_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Class_Semester">
+    <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+    <End Role="Class" Type="Self.Class" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Semester">
+        <PropertyRef Name="Semester_ID" />
+      </Principal>
+      <Dependent Role="Class">
+        <PropertyRef Name="Semester_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Course_Specification1">
+    <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
+    <End Role="Course" Type="Self.Course" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specification">
+        <PropertyRef Name="Specification_ID" />
+      </Principal>
+      <Dependent Role="Course">
+        <PropertyRef Name="Specification_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Course_Subject1">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+    <End Role="Course" Type="Self.Course" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Course">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Specification_Subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+    <End Role="Specification" Type="Self.Specification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Specification">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Course_Log_Course">
+    <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+    <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Course_ID" />
+      </Principal>
+      <Dependent Role="Student_Course_Log">
+        <PropertyRef Name="Course_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Course_Log_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+    <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="External_ID" />
+      </Principal>
+      <Dependent Role="Student_Course_Log">
+        <PropertyRef Name="External_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Specification_Log_Specification">
+    <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
+    <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specification">
+        <PropertyRef Name="Specification_ID" />
+      </Principal>
+      <Dependent Role="Student_Specification_Log">
+        <PropertyRef Name="Specification_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Specification_Log_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+    <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="External_ID" />
+      </Principal>
+      <Dependent Role="Student_Specification_Log">
+        <PropertyRef Name="External_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subject_detail_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Subject_detail" Type="Self.Subject_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="External_ID" />
+      </Principal>
+      <Dependent Role="Subject_detail">
+        <PropertyRef Name="External_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subject_detail_Subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+    <End Role="Subject_detail" Type="Self.Subject_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Subject_detail">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MSSModelStoreContainer">
+    <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Class_Detail" EntityType="Self.Class_Detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Mentor" EntityType="Self.Mentor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Semester" EntityType="Self.Semester" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Specification" EntityType="Self.Specification" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student_Course_Log" EntityType="Self.Student_Course_Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Subject_detail" EntityType="Self.Subject_detail" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
+      <End Role="Campus" EntitySet="Campus" />
+      <End Role="Class" EntitySet="Class" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Detail_Class" Association="Self.FK_Class_Detail_Class">
+      <End Role="Class" EntitySet="Class" />
+      <End Role="Class_Detail" EntitySet="Class_Detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Detail_Student" Association="Self.FK_Class_Detail_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Class_Detail" EntitySet="Class_Detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Mentor" Association="Self.FK_Class_Mentor">
+      <End Role="Mentor" EntitySet="Mentor" />
+      <End Role="Class" EntitySet="Class" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Semester" Association="Self.FK_Class_Semester">
+      <End Role="Semester" EntitySet="Semester" />
+      <End Role="Class" EntitySet="Class" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Course_Specification1" Association="Self.FK_Course_Specification1">
+      <End Role="Specification" EntitySet="Specification" />
+      <End Role="Course" EntitySet="Course" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Course_Subject1" Association="Self.FK_Course_Subject1">
+      <End Role="Subject" EntitySet="Subject" />
+      <End Role="Course" EntitySet="Course" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Specification_Subject" Association="Self.FK_Specification_Subject">
+      <End Role="Subject" EntitySet="Subject" />
+      <End Role="Specification" EntitySet="Specification" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Course_Log_Course" Association="Self.FK_Student_Course_Log_Course">
+      <End Role="Course" EntitySet="Course" />
+      <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Course_Log_Student" Association="Self.FK_Student_Course_Log_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Specification_Log_Specification" Association="Self.FK_Student_Specification_Log_Specification">
+      <End Role="Specification" EntitySet="Specification" />
+      <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Specification_Log_Student" Association="Self.FK_Student_Specification_Log_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subject_detail_Student" Association="Self.FK_Subject_detail_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Subject_detail" EntitySet="Subject_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subject_detail_Subject" Association="Self.FK_Subject_detail_Subject">
+      <End Role="Subject" EntitySet="Subject" />
+      <End Role="Subject_detail" EntitySet="Subject_detail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

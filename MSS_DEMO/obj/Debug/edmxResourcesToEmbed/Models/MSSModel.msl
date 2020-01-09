@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MSSModelStoreContainer" CdmEntityContainer="MSSEntities">
+    <EntitySetMapping Name="Campus">
+      <EntityTypeMapping TypeName="MSSModel.Campu">
+        <MappingFragment StoreEntitySet="Campus">
+          <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Classes">
+      <EntityTypeMapping TypeName="MSSModel.Class">
+        <MappingFragment StoreEntitySet="Class">
+          <ScalarProperty Name="Class_ID" ColumnName="Class_ID" />
+          <ScalarProperty Name="University" ColumnName="University" />
+          <ScalarProperty Name="Class_Start_Time" ColumnName="Class_Start_Time" />
+          <ScalarProperty Name="Enrollment_Source" ColumnName="Enrollment_Source" />
+          <ScalarProperty Name="Mentor_ID" ColumnName="Mentor_ID" />
+          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+          <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
+          <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Courses">
+      <EntityTypeMapping TypeName="MSSModel.Course">
+        <MappingFragment StoreEntitySet="Course">
+          <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
+          <ScalarProperty Name="Course_Name" ColumnName="Course_Name" />
+          <ScalarProperty Name="Course_Slug" ColumnName="Course_Slug" />
+          <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Mentors">
+      <EntityTypeMapping TypeName="MSSModel.Mentor">
+        <MappingFragment StoreEntitySet="Mentor">
+          <ScalarProperty Name="Mentor_ID" ColumnName="Mentor_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Semesters">
+      <EntityTypeMapping TypeName="MSSModel.Semester">
+        <MappingFragment StoreEntitySet="Semester">
+          <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Specifications">
+      <EntityTypeMapping TypeName="MSSModel.Specification">
+        <MappingFragment StoreEntitySet="Specification">
+          <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Students">
+      <EntityTypeMapping TypeName="MSSModel.Student">
+        <MappingFragment StoreEntitySet="Student">
+          <ScalarProperty Name="Student_Name" ColumnName="Student_Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+          <ScalarProperty Name="Sum_Enrolled_Courses" ColumnName="Sum_Enrolled_Courses" />
+          <ScalarProperty Name="Sum_Completed_Courses" ColumnName="Sum_Completed_Courses" />
+          <ScalarProperty Name="Member_State" ColumnName="Member_State" />
+          <ScalarProperty Name="Join_Date" ColumnName="Join_Date" />
+          <ScalarProperty Name="Invitation_Date" ColumnName="Invitation_Date" />
+          <ScalarProperty Name="Last_Activity_Time" ColumnName="Last_Activity_Time" />
+          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+          <ScalarProperty Name="Class_ID" ColumnName="Class_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Student_Course_Log">
+      <EntityTypeMapping TypeName="MSSModel.Student_Course_Log">
+        <MappingFragment StoreEntitySet="Student_Course_Log">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+          <ScalarProperty Name="Course_Enrollment_Time" ColumnName="Course_Enrollment_Time" />
+          <ScalarProperty Name="Course_Start_Time" ColumnName="Course_Start_Time" />
+          <ScalarProperty Name="Last_Course_Activity_Time" ColumnName="Last_Course_Activity_Time" />
+          <ScalarProperty Name="Overall_Progress" ColumnName="Overall_Progress" />
+          <ScalarProperty Name="Estimated" ColumnName="Estimated" />
+          <ScalarProperty Name="Completed" ColumnName="Completed" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Program_Slug" ColumnName="Program_Slug" />
+          <ScalarProperty Name="Program_Name" ColumnName="Program_Name" />
+          <ScalarProperty Name="Completion_Time" ColumnName="Completion_Time" />
+          <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
+          <ScalarProperty Name="Course_Grade" ColumnName="Course_Grade" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Student_Specification_Log">
+      <EntityTypeMapping TypeName="MSSModel.Student_Specification_Log">
+        <MappingFragment StoreEntitySet="Student_Specification_Log">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+          <ScalarProperty Name="Subject_Name" ColumnName="Subject_Name" />
+          <ScalarProperty Name="Campus" ColumnName="Campus" />
+          <ScalarProperty Name="Specialization" ColumnName="Specialization" />
+          <ScalarProperty Name="Specialization_Slug" ColumnName="Specialization_Slug" />
+          <ScalarProperty Name="University" ColumnName="University" />
+          <ScalarProperty Name="Specialization_Enrollment_Time" ColumnName="Specialization_Enrollment_Time" />
+          <ScalarProperty Name="Last_Specialization_Activity_Time" ColumnName="Last_Specialization_Activity_Time" />
+          <ScalarProperty Name="Completed" ColumnName="Completed" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Program_Slug" ColumnName="Program_Slug" />
+          <ScalarProperty Name="Program_Name" ColumnName="Program_Name" />
+          <ScalarProperty Name="Specialization_Completion_Time" ColumnName="Specialization_Completion_Time" />
+          <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+          <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Subjects">
+      <EntityTypeMapping TypeName="MSSModel.Subject">
+        <MappingFragment StoreEntitySet="Subject">
+          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+          <ScalarProperty Name="Subject_Name" ColumnName="Subject_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Class_Detail" TypeName="MSSModel.Class_Detail" StoreEntitySet="Class_Detail">
+      <EndProperty Name="Class">
+        <ScalarProperty Name="Class_ID" ColumnName="Class_ID" />
+      </EndProperty>
+      <EndProperty Name="Student">
+        <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Subject_detail" TypeName="MSSModel.Subject_detail" StoreEntitySet="Subject_detail">
+      <EndProperty Name="Student">
+        <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+      </EndProperty>
+      <EndProperty Name="Subject">
+        <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

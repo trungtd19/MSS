@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="47a125f68ff44b7dbdec598cf29e58e0" Name="Diagram1">
+        <EntityTypeShape EntityType="MSSModel.Campu" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Class" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Course" Width="1.5" PointX="12" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Mentor" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Semester" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Specification" Width="1.5" PointX="9.75" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Student" Width="1.5" PointX="5.25" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Student_Course_Log" Width="1.5" PointX="7.5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Student_Specification_Log" Width="1.5" PointX="12" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Subject" Width="1.5" PointX="7.5" PointY="18.25" IsExpanded="true" />
+        <AssociationConnector Association="MSSModel.FK_Class_Campus" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Class_Mentor" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Class_Semester" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Course_Specification1" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Course_Subject1" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Student_Course_Log_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Specification_Subject" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Student_Specification_Log_Specification" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Student_Course_Log_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Student_Specification_Log_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.Class_Detail" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.Subject_detail" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
