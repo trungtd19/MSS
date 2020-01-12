@@ -192,7 +192,7 @@ namespace MSS_DEMO.Controllers
             return new Student_Specification_Log
             {               
                 External_ID = row[1].ToString(),
-                Subject_Name = row[1].ToString(),
+                //Subject_Name = row[1].ToString(),
                 Campus = row[1].ToString(),
                 Specialization = row[1].ToString(),
                 Specialization_Slug = row[1].ToString(),
@@ -210,7 +210,7 @@ namespace MSS_DEMO.Controllers
         {
             return new Student_Course_Log
             {
-                External_ID = row[1].ToString(),            
+                //External_ID = row[1].ToString(),            
                 Course_Enrollment_Time = DateTime.Parse(row[9].ToString()),
                 Course_Start_Time = DateTime.Parse(row[9].ToString()),
                 Last_Course_Activity_Time = DateTime.Parse(row[9].ToString()),

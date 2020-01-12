@@ -2,9 +2,12 @@
 <Schema Namespace="MSSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Campus">
     <Key>
-      <PropertyRef Name="Campus_Name" />
+      <PropertyRef Name="Campus_ID" />
     </Key>
-    <Property Name="Campus_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Campus_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Campus_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Contact_Point" Type="nvarchar" MaxLength="200" Nullable="false" />
   </EntityType>
   <EntityType Name="Class">
     <Key>
@@ -14,12 +17,11 @@
     <Property Name="University" Type="varchar" MaxLength="50" />
     <Property Name="Class_Start_Time" Type="datetime" />
     <Property Name="Enrollment_Source" Type="nchar" MaxLength="10" />
-    <Property Name="Mentor_ID" Type="int" />
-    <Property Name="External_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Semester_ID" Type="int" />
+    <Property Name="Mentor_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
     <Property Name="Campus_Name" Type="varchar" MaxLength="50" />
   </EntityType>
-  <EntityType Name="Class_Detail">
+  <EntityType Name="Class_Student">
     <Key>
       <PropertyRef Name="External_ID" />
       <PropertyRef Name="Class_ID" />
@@ -41,13 +43,27 @@
     <Key>
       <PropertyRef Name="Mentor_ID" />
     </Key>
-    <Property Name="Mentor_ID" Type="int" Nullable="false" />
+    <Property Name="Mentor_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="100" />
+    <Property Name="Email" Type="varchar" MaxLength="100" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Role_ID" />
+    </Key>
+    <Property Name="Role_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Role_Name" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Semester">
     <Key>
       <PropertyRef Name="Semester_ID" />
     </Key>
-    <Property Name="Semester_ID" Type="int" Nullable="false" />
+    <Property Name="Semester_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Semester_Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="Start_Date" Type="datetime" />
+    <Property Name="End_Date" Type="datetime" />
   </EntityType>
   <EntityType Name="Specification">
     <Key>
@@ -69,15 +85,13 @@
     <Property Name="Join_Date" Type="datetime" />
     <Property Name="Invitation_Date" Type="datetime" />
     <Property Name="Last_Activity_Time" Type="datetime" />
-    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Class_ID" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Student_Course_Log">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="External_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
     <Property Name="Course_Enrollment_Time" Type="datetime" />
     <Property Name="Course_Start_Time" Type="datetime" />
     <Property Name="Last_Course_Activity_Time" Type="datetime" />
@@ -97,7 +111,7 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="External_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Subject_Name" Type="varchar" MaxLength="50" />
+    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
     <Property Name="Campus" Type="varchar" MaxLength="50" />
     <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
     <Property Name="Specialization_Slug" Type="nvarchar" MaxLength="50" />
@@ -117,10 +131,9 @@
       <PropertyRef Name="Subject_ID" />
     </Key>
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="External_ID" Type="varchar" MaxLength="50" />
     <Property Name="Subject_Name" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
-  <EntityType Name="Subject_detail">
+  <EntityType Name="Subject_Student">
     <Key>
       <PropertyRef Name="Subject_ID" />
       <PropertyRef Name="External_ID" />
@@ -128,12 +141,40 @@
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="User_ID" />
+    </Key>
+    <Property Name="User_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="User_Role">
+    <Key>
+      <PropertyRef Name="User_ID" />
+    </Key>
+    <Property Name="User_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Role_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="isActive" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
   <Association Name="FK_Class_Campus">
     <End Role="Campus" Type="Self.Campus" Multiplicity="0..1" />
     <End Role="Class" Type="Self.Class" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Campus">
-        <PropertyRef Name="Campus_Name" />
+        <PropertyRef Name="Campus_ID" />
       </Principal>
       <Dependent Role="Class">
         <PropertyRef Name="Campus_Name" />
@@ -142,25 +183,13 @@
   </Association>
   <Association Name="FK_Class_Detail_Class">
     <End Role="Class" Type="Self.Class" Multiplicity="1" />
-    <End Role="Class_Detail" Type="Self.Class_Detail" Multiplicity="*" />
+    <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Class">
         <PropertyRef Name="Class_ID" />
       </Principal>
-      <Dependent Role="Class_Detail">
+      <Dependent Role="Class_Student">
         <PropertyRef Name="Class_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Class_Detail_Student">
-    <End Role="Student" Type="Self.Student" Multiplicity="1" />
-    <End Role="Class_Detail" Type="Self.Class_Detail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
-      </Principal>
-      <Dependent Role="Class_Detail">
-        <PropertyRef Name="External_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -188,6 +217,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Class_Student_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="External_ID" />
+      </Principal>
+      <Dependent Role="Class_Student">
+        <PropertyRef Name="External_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Course_Specification1">
     <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
     <End Role="Course" Type="Self.Course" Multiplicity="*" />
@@ -197,18 +238,6 @@
       </Principal>
       <Dependent Role="Course">
         <PropertyRef Name="Specification_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Course_Subject1">
-    <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
-    <End Role="Course" Type="Self.Course" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Subject">
-        <PropertyRef Name="Subject_ID" />
-      </Principal>
-      <Dependent Role="Course">
-        <PropertyRef Name="Subject_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -244,7 +273,7 @@
         <PropertyRef Name="External_ID" />
       </Principal>
       <Dependent Role="Student_Course_Log">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Subject_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -272,54 +301,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Subject_detail_Student">
+  <Association Name="FK_Subject_Student_Student">
     <End Role="Student" Type="Self.Student" Multiplicity="1" />
-    <End Role="Subject_detail" Type="Self.Subject_detail" Multiplicity="*" />
+    <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
         <PropertyRef Name="External_ID" />
       </Principal>
-      <Dependent Role="Subject_detail">
+      <Dependent Role="Subject_Student">
         <PropertyRef Name="External_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Subject_detail_Subject">
+  <Association Name="FK_Subject_Student_Subject">
     <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
-    <End Role="Subject_detail" Type="Self.Subject_detail" Multiplicity="*" />
+    <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Subject">
         <PropertyRef Name="Subject_ID" />
       </Principal>
-      <Dependent Role="Subject_detail">
+      <Dependent Role="Subject_Student">
         <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Role_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="User_Role" Type="Self.User_Role" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Role_ID" />
+      </Principal>
+      <Dependent Role="User_Role">
+        <PropertyRef Name="Role_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Role_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="User_ID" />
+      </Principal>
+      <Dependent Role="User_Role">
+        <PropertyRef Name="User_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="MSSModelStoreContainer">
     <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Class_Detail" EntityType="Self.Class_Detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Class_Student" EntityType="Self.Class_Student" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mentor" EntityType="Self.Mentor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Semester" EntityType="Self.Semester" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Specification" EntityType="Self.Specification" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Student_Course_Log" EntityType="Self.Student_Course_Log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Subject_detail" EntityType="Self.Subject_detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Role" EntityType="Self.User_Role" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
       <End Role="Campus" EntitySet="Campus" />
       <End Role="Class" EntitySet="Class" />
     </AssociationSet>
     <AssociationSet Name="FK_Class_Detail_Class" Association="Self.FK_Class_Detail_Class">
       <End Role="Class" EntitySet="Class" />
-      <End Role="Class_Detail" EntitySet="Class_Detail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Class_Detail_Student" Association="Self.FK_Class_Detail_Student">
-      <End Role="Student" EntitySet="Student" />
-      <End Role="Class_Detail" EntitySet="Class_Detail" />
+      <End Role="Class_Student" EntitySet="Class_Student" />
     </AssociationSet>
     <AssociationSet Name="FK_Class_Mentor" Association="Self.FK_Class_Mentor">
       <End Role="Mentor" EntitySet="Mentor" />
@@ -329,12 +382,12 @@
       <End Role="Semester" EntitySet="Semester" />
       <End Role="Class" EntitySet="Class" />
     </AssociationSet>
+    <AssociationSet Name="FK_Class_Student_Student" Association="Self.FK_Class_Student_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Class_Student" EntitySet="Class_Student" />
+    </AssociationSet>
     <AssociationSet Name="FK_Course_Specification1" Association="Self.FK_Course_Specification1">
       <End Role="Specification" EntitySet="Specification" />
-      <End Role="Course" EntitySet="Course" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Course_Subject1" Association="Self.FK_Course_Subject1">
-      <End Role="Subject" EntitySet="Subject" />
       <End Role="Course" EntitySet="Course" />
     </AssociationSet>
     <AssociationSet Name="FK_Specification_Subject" Association="Self.FK_Specification_Subject">
@@ -357,13 +410,21 @@
       <End Role="Student" EntitySet="Student" />
       <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
     </AssociationSet>
-    <AssociationSet Name="FK_Subject_detail_Student" Association="Self.FK_Subject_detail_Student">
+    <AssociationSet Name="FK_Subject_Student_Student" Association="Self.FK_Subject_Student_Student">
       <End Role="Student" EntitySet="Student" />
-      <End Role="Subject_detail" EntitySet="Subject_detail" />
+      <End Role="Subject_Student" EntitySet="Subject_Student" />
     </AssociationSet>
-    <AssociationSet Name="FK_Subject_detail_Subject" Association="Self.FK_Subject_detail_Subject">
+    <AssociationSet Name="FK_Subject_Student_Subject" Association="Self.FK_Subject_Student_Subject">
       <End Role="Subject" EntitySet="Subject" />
-      <End Role="Subject_detail" EntitySet="Subject_detail" />
+      <End Role="Subject_Student" EntitySet="Subject_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Role_Role" Association="Self.FK_User_Role_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User_Role" EntitySet="User_Role" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Role_User" Association="Self.FK_User_Role_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="User_Role" EntitySet="User_Role" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

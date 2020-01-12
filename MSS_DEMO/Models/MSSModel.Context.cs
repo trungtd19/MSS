@@ -29,11 +29,15 @@ namespace MSS_DEMO.Models
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Mentor> Mentors { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Semester> Semesters { get; set; }
         public virtual DbSet<Specification> Specifications { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Student_Course_Log> Student_Course_Log { get; set; }
         public virtual DbSet<Student_Specification_Log> Student_Specification_Log { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<User_Role> User_Role { get; set; }
     }
 }

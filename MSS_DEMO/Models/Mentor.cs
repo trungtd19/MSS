@@ -20,7 +20,11 @@ namespace MSS_DEMO.Models
             this.Classes = new HashSet<Class>();
         }
     
-        public int Mentor_ID { get; set; }
+        public string Mentor_ID { get; set; }
+        public string Login { get; set; }
+        public string Email { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Class> Classes { get; set; }

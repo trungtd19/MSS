@@ -12,7 +12,7 @@ using System.IO;
 
 namespace MSS_DEMO.Controllers
 {
-    public class ImportCSVController : Controller
+    public class ImportStudentController : Controller
     {
         private MSSEntities db = new MSSEntities();
 
@@ -49,7 +49,6 @@ namespace MSS_DEMO.Controllers
                             while (!sreader.EndOfStream)
                             {
                                 string[] rows = sreader.ReadLine().Split(',');
-
                                 context.Students.Add(GetStudentFromExcelRow(rows));
                             }
                         }

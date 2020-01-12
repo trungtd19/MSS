@@ -20,7 +20,10 @@ namespace MSS_DEMO.Models
             this.Classes = new HashSet<Class>();
         }
     
-        public int Semester_ID { get; set; }
+        public string Semester_ID { get; set; }
+        public string Semester_Name { get; set; }
+        public Nullable<System.DateTime> Start_Date { get; set; }
+        public Nullable<System.DateTime> End_Date { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Class> Classes { get; set; }

@@ -15,7 +15,7 @@ namespace MSS_DEMO.Models
     public partial class Student_Course_Log
     {
         public int ID { get; set; }
-        public string External_ID { get; set; }
+        public string Subject_ID { get; set; }
         public Nullable<System.DateTime> Course_Enrollment_Time { get; set; }
         public Nullable<System.DateTime> Course_Start_Time { get; set; }
         public Nullable<System.DateTime> Last_Course_Activity_Time { get; set; }
