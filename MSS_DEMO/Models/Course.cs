@@ -24,7 +24,6 @@ namespace MSS_DEMO.Models
         public string Course_Name { get; set; }
         public string Course_Slug { get; set; }
         public string Specification_ID { get; set; }
-        public string Subject_ID { get; set; }
     
         public virtual Specification Specification { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -15,7 +15,7 @@ namespace MSS_DEMO.Models
     public partial class Student_Specification_Log
     {
         public int ID { get; set; }
-        public string External_ID { get; set; }
+        public string Roll { get; set; }
         public string Subject_ID { get; set; }
         public string Campus { get; set; }
         public string Specialization { get; set; }

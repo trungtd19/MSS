@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MSS_DEMO.Models.Campu>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Campus_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact_Point)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Campus_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contact_Point)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Campus_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Campus_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Campus_ID })
+        </td>
+    </tr>
+}
+
+</table>

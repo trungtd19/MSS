@@ -173,14 +173,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CoursesController.cs" />
-    <Compile Include="Controllers\ExportDataController.cs" />
+    <Compile Include="Controllers\SetUp\CampusController.cs" />
+    <Compile Include="Controllers\SetUp\CoursesController.cs" />
+    <Compile Include="Controllers\Import\ImportDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ImportStudentController.cs" />
-    <Compile Include="Controllers\SemestersController.cs" />
-    <Compile Include="Controllers\SetupBeginSemesterController.cs" />
-    <Compile Include="Controllers\SpecificationsController.cs" />
-    <Compile Include="Controllers\SubjectsController.cs" />
+    <Compile Include="Controllers\Import\ImportStudentController.cs" />
+    <Compile Include="Controllers\SetUp\SemestersController.cs" />
+    <Compile Include="Controllers\SetUp\SetupBeginSemesterController.cs" />
+    <Compile Include="Controllers\SetUp\SpecificationsController.cs" />
+    <Compile Include="Controllers\SetUp\SubjectsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -190,7 +191,9 @@
     <Compile Include="Models\Class.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Class_Detail.cs" />
+    <Compile Include="Models\Class_Student.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Course.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -233,7 +236,9 @@
     <Compile Include="Models\Subject.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Subject_detail.cs" />
+    <Compile Include="Models\Subject_Student.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -319,6 +324,11 @@
     <Content Include="Views\Semesters\Details.cshtml" />
     <Content Include="Views\Semesters\Edit.cshtml" />
     <Content Include="Views\Semesters\Index.cshtml" />
+    <Content Include="Views\Campus\Create.cshtml" />
+    <Content Include="Views\Campus\Delete.cshtml" />
+    <Content Include="Views\Campus\Details.cshtml" />
+    <Content Include="Views\Campus\Edit.cshtml" />
+    <Content Include="Views\Campus\Index.cshtml" />
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Delete.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
@@ -327,6 +337,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\Mentor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

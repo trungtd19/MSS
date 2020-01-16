@@ -18,7 +18,7 @@ namespace MSS_DEMO.Models
         public Subject()
         {
             this.Specifications = new HashSet<Specification>();
-            this.Students = new HashSet<Student>();
+            this.Subject_Student = new HashSet<Subject_Student>();
         }
     
         public string Subject_ID { get; set; }
@@ -27,6 +27,6 @@ namespace MSS_DEMO.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Specification> Specifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Subject_Student> Subject_Student { get; set; }
     }
 }

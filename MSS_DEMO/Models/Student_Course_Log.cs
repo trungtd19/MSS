@@ -15,19 +15,19 @@ namespace MSS_DEMO.Models
     public partial class Student_Course_Log
     {
         public int ID { get; set; }
-        public string Subject_ID { get; set; }
         public Nullable<System.DateTime> Course_Enrollment_Time { get; set; }
         public Nullable<System.DateTime> Course_Start_Time { get; set; }
         public Nullable<System.DateTime> Last_Course_Activity_Time { get; set; }
-        public Nullable<int> Overall_Progress { get; set; }
-        public Nullable<int> Estimated { get; set; }
+        public Nullable<double> Overall_Progress { get; set; }
+        public Nullable<double> Estimated { get; set; }
         public Nullable<bool> Completed { get; set; }
         public Nullable<bool> Status { get; set; }
         public string Program_Slug { get; set; }
         public string Program_Name { get; set; }
         public Nullable<System.DateTime> Completion_Time { get; set; }
         public string Course_ID { get; set; }
-        public Nullable<int> Course_Grade { get; set; }
+        public Nullable<double> Course_Grade { get; set; }
+        public string Roll { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }

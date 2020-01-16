@@ -24,6 +24,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Class_Student">
+      <EntityTypeMapping TypeName="MSSModel.Class_Student">
+        <MappingFragment StoreEntitySet="Class_Student">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Roll" ColumnName="Roll" />
+          <ScalarProperty Name="Class_ID" ColumnName="Class_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Courses">
       <EntityTypeMapping TypeName="MSSModel.Course">
         <MappingFragment StoreEntitySet="Course">
@@ -31,7 +40,6 @@
           <ScalarProperty Name="Course_Name" ColumnName="Course_Name" />
           <ScalarProperty Name="Course_Slug" ColumnName="Course_Slug" />
           <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
-          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -75,15 +83,8 @@
     <EntitySetMapping Name="Students">
       <EntityTypeMapping TypeName="MSSModel.Student">
         <MappingFragment StoreEntitySet="Student">
-          <ScalarProperty Name="Student_Name" ColumnName="Student_Name" />
           <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
-          <ScalarProperty Name="Sum_Enrolled_Courses" ColumnName="Sum_Enrolled_Courses" />
-          <ScalarProperty Name="Sum_Completed_Courses" ColumnName="Sum_Completed_Courses" />
-          <ScalarProperty Name="Member_State" ColumnName="Member_State" />
-          <ScalarProperty Name="Join_Date" ColumnName="Join_Date" />
-          <ScalarProperty Name="Invitation_Date" ColumnName="Invitation_Date" />
-          <ScalarProperty Name="Last_Activity_Time" ColumnName="Last_Activity_Time" />
+          <ScalarProperty Name="Roll" ColumnName="Roll" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -91,7 +92,6 @@
       <EntityTypeMapping TypeName="MSSModel.Student_Course_Log">
         <MappingFragment StoreEntitySet="Student_Course_Log">
           <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
           <ScalarProperty Name="Course_Enrollment_Time" ColumnName="Course_Enrollment_Time" />
           <ScalarProperty Name="Course_Start_Time" ColumnName="Course_Start_Time" />
           <ScalarProperty Name="Last_Course_Activity_Time" ColumnName="Last_Course_Activity_Time" />
@@ -104,6 +104,7 @@
           <ScalarProperty Name="Completion_Time" ColumnName="Completion_Time" />
           <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
           <ScalarProperty Name="Course_Grade" ColumnName="Course_Grade" />
+          <ScalarProperty Name="Roll" ColumnName="Roll" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -111,7 +112,7 @@
       <EntityTypeMapping TypeName="MSSModel.Student_Specification_Log">
         <MappingFragment StoreEntitySet="Student_Specification_Log">
           <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="External_ID" ColumnName="External_ID" />
+          <ScalarProperty Name="Roll" ColumnName="Roll" />
           <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
           <ScalarProperty Name="Campus" ColumnName="Campus" />
           <ScalarProperty Name="Specialization" ColumnName="Specialization" />
@@ -134,6 +135,15 @@
         <MappingFragment StoreEntitySet="Subject">
           <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
           <ScalarProperty Name="Subject_Name" ColumnName="Subject_Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Subject_Student">
+      <EntityTypeMapping TypeName="MSSModel.Subject_Student">
+        <MappingFragment StoreEntitySet="Subject_Student">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+          <ScalarProperty Name="Roll" ColumnName="Roll" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -168,21 +178,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="Class_Student" TypeName="MSSModel.Class_Student" StoreEntitySet="Class_Student">
-      <EndProperty Name="Class">
-        <ScalarProperty Name="Class_ID" ColumnName="Class_ID" />
-      </EndProperty>
-      <EndProperty Name="Student">
-        <ScalarProperty Name="External_ID" ColumnName="External_ID" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="Subject_Student" TypeName="MSSModel.Subject_Student" StoreEntitySet="Subject_Student">
-      <EndProperty Name="Student">
-        <ScalarProperty Name="External_ID" ColumnName="External_ID" />
-      </EndProperty>
-      <EndProperty Name="Subject">
-        <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -10,112 +10,112 @@ using MSS_DEMO.Models;
 
 namespace MSS_DEMO.Controllers
 {
-    public class SpecificationsController : Controller
+    public class CoursesController : Controller
     {
         private MSSEntities db = new MSSEntities();
 
-        // GET: Specifications
+        // GET: Courses
         public ActionResult Index()
         {
-            var specifications = db.Specifications.Include(s => s.Subject);
-            return View(specifications.ToList());
+            var courses = db.Courses.Include(c => c.Specification);
+            return View(courses.ToList());
         }
 
-        // GET: Specifications/Details/5
+        // GET: Courses/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Specification specification = db.Specifications.Find(id);
-            if (specification == null)
+            Course course = db.Courses.Find(id);
+            if (course == null)
             {
                 return HttpNotFound();
             }
-            return View(specification);
+            return View(course);
         }
 
-        // GET: Specifications/Create
+        // GET: Courses/Create
         public ActionResult Create()
         {
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name");
+            ViewBag.Specification_ID = new SelectList(db.Specifications, "Specification_ID", "Subject_ID");
             return View();
         }
 
-        // POST: Specifications/Create
+        // POST: Courses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Specification_ID,Subject_ID")] Specification specification)
+        public ActionResult Create([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
         {
             if (ModelState.IsValid)
             {
-                db.Specifications.Add(specification);
+                db.Courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name", specification.Subject_ID);
-            return View(specification);
+            ViewBag.Specification_ID = new SelectList(db.Specifications, "Specification_ID", "Subject_ID", course.Specification_ID);
+            return View(course);
         }
 
-        // GET: Specifications/Edit/5
+        // GET: Courses/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Specification specification = db.Specifications.Find(id);
-            if (specification == null)
+            Course course = db.Courses.Find(id);
+            if (course == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name", specification.Subject_ID);
-            return View(specification);
+            ViewBag.Specification_ID = new SelectList(db.Specifications, "Specification_ID", "Subject_ID", course.Specification_ID);
+            return View(course);
         }
 
-        // POST: Specifications/Edit/5
+        // POST: Courses/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Specification_ID,Subject_ID")] Specification specification)
+        public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(specification).State = EntityState.Modified;
+                db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name", specification.Subject_ID);
-            return View(specification);
+            ViewBag.Specification_ID = new SelectList(db.Specifications, "Specification_ID", "Subject_ID", course.Specification_ID);
+            return View(course);
         }
 
-        // GET: Specifications/Delete/5
+        // GET: Courses/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Specification specification = db.Specifications.Find(id);
-            if (specification == null)
+            Course course = db.Courses.Find(id);
+            if (course == null)
             {
                 return HttpNotFound();
             }
-            return View(specification);
+            return View(course);
         }
 
-        // POST: Specifications/Delete/5
+        // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Specification specification = db.Specifications.Find(id);
-            db.Specifications.Remove(specification);
+            Course course = db.Courses.Find(id);
+            db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

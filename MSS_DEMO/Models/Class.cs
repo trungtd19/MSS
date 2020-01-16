@@ -17,7 +17,7 @@ namespace MSS_DEMO.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Class()
         {
-            this.Students = new HashSet<Student>();
+            this.Class_Student = new HashSet<Class_Student>();
         }
     
         public string Class_ID { get; set; }
@@ -32,6 +32,6 @@ namespace MSS_DEMO.Models
         public virtual Mentor Mentor { get; set; }
         public virtual Semester Semester { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Class_Student> Class_Student { get; set; }
     }
 }

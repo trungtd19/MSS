@@ -1,4 +1,4 @@
-﻿@model MSS_DEMO.Models.Course
+﻿@model MSS_DEMO.Models.Campu
 
 @{
     ViewBag.Title = "Delete";
@@ -8,31 +8,31 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Course</h4>
+    <h4>Campu</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Course_Name)
+            @Html.DisplayNameFor(model => model.Campus_Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Course_Name)
+            @Html.DisplayFor(model => model.Campus_Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Course_Slug)
+            @Html.DisplayNameFor(model => model.Address)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Course_Slug)
+            @Html.DisplayFor(model => model.Address)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Specification.Subject_ID)
+            @Html.DisplayNameFor(model => model.Contact_Point)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Specification.Subject_ID)
+            @Html.DisplayFor(model => model.Contact_Point)
         </dd>
 
     </dl>

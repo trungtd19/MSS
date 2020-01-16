@@ -127,4 +127,6 @@ C:\Users\asus\Desktop\MSS\MSS_DEMO\bin\Microsoft.AspNet.Identity.Owin.xml
 C:\Users\asus\Desktop\MSS\MSS_DEMO\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.dll
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.pdb
-C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csprojResolveAssemblyReference.cache
+C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csprojAssemblyReference.cache
+C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csproj.CoreCompileInputs.cache
+C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csproj.CopyComplete

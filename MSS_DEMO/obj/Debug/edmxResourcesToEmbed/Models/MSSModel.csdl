@@ -24,7 +24,17 @@
     <NavigationProperty Name="Campu" Relationship="Self.FK_Class_Campus" FromRole="Class" ToRole="Campus" />
     <NavigationProperty Name="Mentor" Relationship="Self.FK_Class_Mentor" FromRole="Class" ToRole="Mentor" />
     <NavigationProperty Name="Semester" Relationship="Self.FK_Class_Semester" FromRole="Class" ToRole="Semester" />
-    <NavigationProperty Name="Students" Relationship="Self.Class_Student" FromRole="Class" ToRole="Student" />
+    <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Class" FromRole="Class" ToRole="Class_Student" />
+  </EntityType>
+  <EntityType Name="Class_Student">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Class_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Class" Relationship="Self.FK_Class_Student_Class" FromRole="Class_Student" ToRole="Class" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Class_Student_Student" FromRole="Class_Student" ToRole="Student" />
   </EntityType>
   <EntityType Name="Course">
     <Key>
@@ -34,7 +44,6 @@
     <Property Name="Course_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Course_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Specification" Relationship="Self.FK_Course_Specification1" FromRole="Course" ToRole="Specification" />
     <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Course" ToRole="Student_Course_Log" />
   </EntityType>
@@ -79,40 +88,33 @@
   </EntityType>
   <EntityType Name="Student">
     <Key>
-      <PropertyRef Name="External_ID" />
+      <PropertyRef Name="Roll" />
     </Key>
-    <Property Name="Student_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="External_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Sum_Enrolled_Courses" Type="Int32" />
-    <Property Name="Sum_Completed_Courses" Type="Int32" />
-    <Property Name="Member_State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Join_Date" Type="DateTime" Precision="3" />
-    <Property Name="Invitation_Date" Type="DateTime" Precision="3" />
-    <Property Name="Last_Activity_Time" Type="DateTime" Precision="3" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Student" FromRole="Student" ToRole="Class_Student" />
     <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student" ToRole="Student_Course_Log" />
     <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student" ToRole="Student_Specification_Log" />
-    <NavigationProperty Name="Classes" Relationship="Self.Class_Student" FromRole="Student" ToRole="Class" />
-    <NavigationProperty Name="Subjects" Relationship="Self.Subject_Student" FromRole="Student" ToRole="Subject" />
+    <NavigationProperty Name="Subject_Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Student" ToRole="Subject_Student" />
   </EntityType>
   <EntityType Name="Student_Course_Log">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Course_Enrollment_Time" Type="DateTime" Precision="3" />
     <Property Name="Course_Start_Time" Type="DateTime" Precision="3" />
     <Property Name="Last_Course_Activity_Time" Type="DateTime" Precision="3" />
-    <Property Name="Overall_Progress" Type="Int32" />
-    <Property Name="Estimated" Type="Int32" />
+    <Property Name="Overall_Progress" Type="Double" />
+    <Property Name="Estimated" Type="Double" />
     <Property Name="Completed" Type="Boolean" />
     <Property Name="Status" Type="Boolean" />
     <Property Name="Program_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="Completion_Time" Type="DateTime" Precision="3" />
     <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Course_Grade" Type="Int32" />
+    <Property Name="Course_Grade" Type="Double" />
+    <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Student_Course_Log" ToRole="Course" />
     <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student_Course_Log" ToRole="Student" />
   </EntityType>
@@ -121,7 +123,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="External_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Campus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Specialization" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -144,9 +146,19 @@
       <PropertyRef Name="Subject_ID" />
     </Key>
     <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Subject_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Subject_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Specifications" Relationship="Self.FK_Specification_Subject" FromRole="Subject" ToRole="Specification" />
-    <NavigationProperty Name="Students" Relationship="Self.Subject_Student" FromRole="Subject" ToRole="Student" />
+    <NavigationProperty Name="Subject_Student" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject" ToRole="Subject_Student" />
+  </EntityType>
+  <EntityType Name="Subject_Student">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Subject_Student" ToRole="Student" />
+    <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject_Student" ToRole="Subject" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
@@ -215,6 +227,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Class_Student_Class">
+    <End Role="Class" Type="Self.Class" Multiplicity="1" />
+    <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Class">
+        <PropertyRef Name="Class_ID" />
+      </Principal>
+      <Dependent Role="Class_Student">
+        <PropertyRef Name="Class_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Class_Student_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Roll" />
+      </Principal>
+      <Dependent Role="Class_Student">
+        <PropertyRef Name="Roll" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Course_Specification1">
     <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
     <End Role="Course" Type="Self.Course" Multiplicity="*" />
@@ -280,10 +316,10 @@
     <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Principal>
       <Dependent Role="Student_Course_Log">
-        <PropertyRef Name="Subject_ID" />
+        <PropertyRef Name="Roll" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -292,10 +328,34 @@
     <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Principal>
       <Dependent Role="Student_Specification_Log">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subject_Student_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Roll" />
+      </Principal>
+      <Dependent Role="Subject_Student">
+        <PropertyRef Name="Roll" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subject_Student_Subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+    <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Subject_Student">
+        <PropertyRef Name="Subject_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -311,17 +371,10 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="Class_Student">
-    <End Role="Class" Type="Self.Class" Multiplicity="*" />
-    <End Role="Student" Type="Self.Student" Multiplicity="*" />
-  </Association>
-  <Association Name="Subject_Student">
-    <End Role="Student" Type="Self.Student" Multiplicity="*" />
-    <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
-  </Association>
   <EntityContainer Name="MSSEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Campus" EntityType="Self.Campu" />
     <EntitySet Name="Classes" EntityType="Self.Class" />
+    <EntitySet Name="Class_Student" EntityType="Self.Class_Student" />
     <EntitySet Name="Courses" EntityType="Self.Course" />
     <EntitySet Name="Mentors" EntityType="Self.Mentor" />
     <EntitySet Name="Roles" EntityType="Self.Role" />
@@ -331,6 +384,7 @@
     <EntitySet Name="Student_Course_Log" EntityType="Self.Student_Course_Log" />
     <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" />
     <EntitySet Name="Subjects" EntityType="Self.Subject" />
+    <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="User_Role" EntityType="Self.User_Role" />
@@ -345,6 +399,14 @@
     <AssociationSet Name="FK_Class_Semester" Association="Self.FK_Class_Semester">
       <End Role="Semester" EntitySet="Semesters" />
       <End Role="Class" EntitySet="Classes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Student_Class" Association="Self.FK_Class_Student_Class">
+      <End Role="Class" EntitySet="Classes" />
+      <End Role="Class_Student" EntitySet="Class_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Student_Student" Association="Self.FK_Class_Student_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Class_Student" EntitySet="Class_Student" />
     </AssociationSet>
     <AssociationSet Name="FK_Course_Specification1" Association="Self.FK_Course_Specification1">
       <End Role="Specification" EntitySet="Specifications" />
@@ -374,17 +436,17 @@
       <End Role="Student" EntitySet="Students" />
       <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
     </AssociationSet>
+    <AssociationSet Name="FK_Subject_Student_Student" Association="Self.FK_Subject_Student_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Subject_Student" EntitySet="Subject_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subject_Student_Subject" Association="Self.FK_Subject_Student_Subject">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="Subject_Student" EntitySet="Subject_Student" />
+    </AssociationSet>
     <AssociationSet Name="FK_User_Role_User" Association="Self.FK_User_Role_User">
       <End Role="User" EntitySet="Users" />
       <End Role="User_Role" EntitySet="User_Role" />
-    </AssociationSet>
-    <AssociationSet Name="Class_Student" Association="Self.Class_Student">
-      <End Role="Class" EntitySet="Classes" />
-      <End Role="Student" EntitySet="Students" />
-    </AssociationSet>
-    <AssociationSet Name="Subject_Student" Association="Self.Subject_Student">
-      <End Role="Student" EntitySet="Students" />
-      <End Role="Subject" EntitySet="Subjects" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

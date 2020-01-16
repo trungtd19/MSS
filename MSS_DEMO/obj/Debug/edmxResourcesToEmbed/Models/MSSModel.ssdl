@@ -23,10 +23,10 @@
   </EntityType>
   <EntityType Name="Class_Student">
     <Key>
-      <PropertyRef Name="External_ID" />
-      <PropertyRef Name="Class_ID" />
+      <PropertyRef Name="ID" />
     </Key>
-    <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Class_ID" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="Course">
@@ -37,7 +37,6 @@
     <Property Name="Course_Name" Type="varchar" MaxLength="150" Nullable="false" />
     <Property Name="Course_Slug" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Mentor">
     <Key>
@@ -74,43 +73,36 @@
   </EntityType>
   <EntityType Name="Student">
     <Key>
-      <PropertyRef Name="External_ID" />
+      <PropertyRef Name="Roll" />
     </Key>
-    <Property Name="Student_Name" Type="varchar" MaxLength="50" />
-    <Property Name="Email" Type="varchar" MaxLength="50" />
-    <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Sum_Enrolled_Courses" Type="int" />
-    <Property Name="Sum_Completed_Courses" Type="int" />
-    <Property Name="Member_State" Type="varchar" MaxLength="50" />
-    <Property Name="Join_Date" Type="datetime" />
-    <Property Name="Invitation_Date" Type="datetime" />
-    <Property Name="Last_Activity_Time" Type="datetime" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="Student_Course_Log">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
     <Property Name="Course_Enrollment_Time" Type="datetime" />
     <Property Name="Course_Start_Time" Type="datetime" />
     <Property Name="Last_Course_Activity_Time" Type="datetime" />
-    <Property Name="Overall_Progress" Type="int" />
-    <Property Name="Estimated" Type="int" />
+    <Property Name="Overall_Progress" Type="float" />
+    <Property Name="Estimated" Type="float" />
     <Property Name="Completed" Type="bit" />
     <Property Name="Status" Type="bit" />
     <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
     <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
     <Property Name="Completion_Time" Type="datetime" />
     <Property Name="Course_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Course_Grade" Type="int" />
+    <Property Name="Course_Grade" Type="float" />
+    <Property Name="Roll" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Student_Specification_Log">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="External_ID" Type="varchar" MaxLength="50" />
+    <Property Name="Roll" Type="varchar" MaxLength="50" />
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
     <Property Name="Campus" Type="varchar" MaxLength="50" />
     <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
@@ -131,15 +123,15 @@
       <PropertyRef Name="Subject_ID" />
     </Key>
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Subject_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Subject_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
   </EntityType>
   <EntityType Name="Subject_Student">
     <Key>
-      <PropertyRef Name="Subject_ID" />
-      <PropertyRef Name="External_ID" />
+      <PropertyRef Name="ID" />
     </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="External_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
@@ -181,18 +173,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Class_Detail_Class">
-    <End Role="Class" Type="Self.Class" Multiplicity="1" />
-    <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Class">
-        <PropertyRef Name="Class_ID" />
-      </Principal>
-      <Dependent Role="Class_Student">
-        <PropertyRef Name="Class_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Class_Mentor">
     <End Role="Mentor" Type="Self.Mentor" Multiplicity="0..1" />
     <End Role="Class" Type="Self.Class" Multiplicity="*" />
@@ -217,15 +197,27 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Class_Student_Class">
+    <End Role="Class" Type="Self.Class" Multiplicity="1" />
+    <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Class">
+        <PropertyRef Name="Class_ID" />
+      </Principal>
+      <Dependent Role="Class_Student">
+        <PropertyRef Name="Class_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Class_Student_Student">
     <End Role="Student" Type="Self.Student" Multiplicity="1" />
     <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Principal>
       <Dependent Role="Class_Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -270,10 +262,10 @@
     <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Principal>
       <Dependent Role="Student_Course_Log">
-        <PropertyRef Name="Subject_ID" />
+        <PropertyRef Name="Roll" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -294,10 +286,10 @@
     <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Principal>
       <Dependent Role="Student_Specification_Log">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -306,10 +298,10 @@
     <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Principal>
       <Dependent Role="Subject_Student">
-        <PropertyRef Name="External_ID" />
+        <PropertyRef Name="Roll" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -370,10 +362,6 @@
       <End Role="Campus" EntitySet="Campus" />
       <End Role="Class" EntitySet="Class" />
     </AssociationSet>
-    <AssociationSet Name="FK_Class_Detail_Class" Association="Self.FK_Class_Detail_Class">
-      <End Role="Class" EntitySet="Class" />
-      <End Role="Class_Student" EntitySet="Class_Student" />
-    </AssociationSet>
     <AssociationSet Name="FK_Class_Mentor" Association="Self.FK_Class_Mentor">
       <End Role="Mentor" EntitySet="Mentor" />
       <End Role="Class" EntitySet="Class" />
@@ -381,6 +369,10 @@
     <AssociationSet Name="FK_Class_Semester" Association="Self.FK_Class_Semester">
       <End Role="Semester" EntitySet="Semester" />
       <End Role="Class" EntitySet="Class" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class_Student_Class" Association="Self.FK_Class_Student_Class">
+      <End Role="Class" EntitySet="Class" />
+      <End Role="Class_Student" EntitySet="Class_Student" />
     </AssociationSet>
     <AssociationSet Name="FK_Class_Student_Student" Association="Self.FK_Class_Student_Student">
       <End Role="Student" EntitySet="Student" />
