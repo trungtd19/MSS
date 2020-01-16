@@ -23,11 +23,11 @@ namespace MSS_DEMO.Controllers
         }
         [Route("Import-data")]
         [HttpPost]
-        public ActionResult Index(HttpPostedFileBase postedFile1)//,HttpPostedFileBase postedFile2)//, HttpPostedFileBase postedFile3)
+        public ActionResult Index(HttpPostedFileBase postedFile1,HttpPostedFileBase postedFile2)//, HttpPostedFileBase postedFile3)
         {
             ArrayList postedList = new ArrayList();
             postedList.Add(postedFile1);
-           // postedList.Add(postedFile2);
+            postedList.Add(postedFile2);
             //  postedList.Add(postedFile3);
             foreach (HttpPostedFileBase postedFile in postedList)
             {
@@ -52,24 +52,24 @@ namespace MSS_DEMO.Controllers
                                 {
                                     if (postedFile.FileName.Contains("specialization-report_sample"))
                                     {
-                                    string[] headers = sreader.ReadLine().Split(',');
-                                    while (!sreader.EndOfStream)
+                                        string[] headers = sreader.ReadLine().Split(',');
+                                        while (!sreader.EndOfStream)
+                                        {
+                                            string[] rows = sreader.ReadLine().Split(',');
+                                            context.Student_Specification_Log.Add(GetStudentSpec(rows));
+                                        }
+                                    }
+                                    else
+                                    if (postedFile.FileName.Contains("usage-report_sample"))
                                     {
-                                        string[] rows = sreader.ReadLine().Split(',');                                
-                                        context.Student_Specification_Log.Add(GetStudentSpec(rows));                                   
+                                        string[] headers = sreader.ReadLine().Split(',');
+                                        while (!sreader.EndOfStream)
+                                        {
+                                            string[] rows = sreader.ReadLine().Split(',');
+                                            context.Student_Course_Log.Add(GetStudentCourse(rows));
+                                        }
+
                                     }
-                                    }
-                                    //else
-                                    //    if (postedFile.FileName.Contains("usage-report_sample"))
-                                    //{
-                                    //    string[] headers = sreader.ReadLine().Split(',');
-                                    //    while (!sreader.EndOfStream)
-                                    //    {
-                                    //        string[] rows = sreader.ReadLine().Split(',');
-                                    //        context.Student_Course_Log.Add(GetStudentCourse(rows));
-                                    //    }
-                                       
-                                    //}
                                 }
                                 context.SaveChanges();
                             }
@@ -104,13 +104,13 @@ namespace MSS_DEMO.Controllers
                 Specialization = row[5].ToString(),
                 Specialization_Slug = row[6].ToString(),
                 University = row[7].ToString(),
-              //  Specialization_Enrollment_Time = DateTime.Parse(row[8].ToString()),
-               // Last_Specialization_Activity_Time = DateTime.Parse(row[9].ToString()),
+                Specialization_Enrollment_Time = DateTime.Parse(row[8].ToString()),
+                Last_Specialization_Activity_Time = DateTime.Parse(row[9].ToString()),
                 Completed = bool.Parse(ChangeBoolean(row[10].ToString())),
                 Status = bool.Parse(ChangeBoolean(row[11].ToString())),
                 Program_Slug = row[12].ToString(),
                 Program_Name = row[13].ToString(),
-               // Specialization_Completion_Time = DateTime.Parse(row[15].ToString()),
+                Specialization_Completion_Time = DateTime.Parse(row[15].ToString()),
 
             };
         }
@@ -119,16 +119,16 @@ namespace MSS_DEMO.Controllers
             return new Student_Course_Log
             {
                 Roll = row[2].ToString().Split('-')[2],
-             //   Course_Enrollment_Time = DateTime.Parse(row[7].ToString()),
-               // Course_Start_Time = DateTime.Parse(row[8].ToString()),
-                //Last_Course_Activity_Time = DateTime.Parse(row[9].ToString()),
+                Course_Enrollment_Time = DateTime.Parse(row[7].ToString()),
+                Course_Start_Time = DateTime.Parse(row[8].ToString()),
+                Last_Course_Activity_Time = DateTime.Parse(row[9].ToString()),
                 Overall_Progress = Double.Parse(row[10].ToString()),
                 Estimated = Double.Parse(row[11].ToString()),
                 Completed = Boolean.Parse(ChangeBoolean(row[12].ToString())),
                 Status = Boolean.Parse(ChangeBoolean(row[13].ToString())),
                 Program_Slug = row[14].ToString(),
                 Program_Name = row[15].ToString(),
-                //Completion_Time = DateTime.Parse(row[17].ToString()),
+                Completion_Time = DateTime.Parse(row[17].ToString()),
                 Course_Grade = Double.Parse(row[18].ToString()),
 
             };
