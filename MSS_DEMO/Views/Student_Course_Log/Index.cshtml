@@ -1,0 +1,107 @@
+﻿@model IEnumerable<MSS_DEMO.Models.Student_Course_Log>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<br />
+
+@using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
+{
+    <p>
+        <input type="submit" value="Clear All Data" />
+    </p>
+}
+<hr />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Course_Enrollment_Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course_Start_Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Last_Course_Activity_Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Overall_Progress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estimated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Completed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Program_Slug)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Program_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Completion_Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course_Grade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.Course_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Student.Email)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course_Start_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Overall_Progress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estimated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Completed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Program_Slug)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Program_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Completion_Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course_Grade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Course_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.Email)
+            </td>
+
+        </tr>
+    }
+
+</table>

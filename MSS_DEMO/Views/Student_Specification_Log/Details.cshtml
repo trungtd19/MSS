@@ -1,0 +1,138 @@
+﻿@model MSS_DEMO.Models.Student_Specification_Log
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Student_Specification_Log</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Campus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Campus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specialization)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specialization)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specialization_Slug)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specialization_Slug)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.University)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.University)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specialization_Enrollment_Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specialization_Enrollment_Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Last_Specialization_Activity_Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Last_Specialization_Activity_Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Completed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Completed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Program_Slug)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Program_Slug)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Program_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Program_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specialization_Completion_Time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specialization_Completion_Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specification.Subject_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specification.Subject_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.Email)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

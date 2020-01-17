@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MSS_DEMO.Models.Student>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Roll)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Roll)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+
+        </tr>
+    }
+
+</table>
