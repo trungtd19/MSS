@@ -9,6 +9,7 @@ using System.Data.Entity.Validation;
 using System.IO;
 using System;
 using System.Collections;
+using System.Data.Entity;
 
 namespace MSS_DEMO.Controllers
 {
@@ -23,7 +24,7 @@ namespace MSS_DEMO.Controllers
         }
         [Route("Import-data")]
         [HttpPost]
-        public ActionResult Index(HttpPostedFileBase postedFile1,HttpPostedFileBase postedFile2)//, HttpPostedFileBase postedFile3)
+        public ActionResult Index(HttpPostedFileBase postedFile1, HttpPostedFileBase postedFile2)//, HttpPostedFileBase postedFile3)
         {
             ArrayList postedList = new ArrayList();
             postedList.Add(postedFile1);
@@ -46,35 +47,49 @@ namespace MSS_DEMO.Controllers
                         if (fileExtension == ".csv")
                         {
                             using (var context = new MSSEntities())
-
                             {
-                                using (var sreader = new StreamReader(postedFile.InputStream))
+                                using (DbContextTransaction transaction = context.Database.BeginTransaction())
                                 {
-                                    if (postedFile.FileName.Contains("specialization-report_sample"))
+                                    try
                                     {
-                                        string[] headers = sreader.ReadLine().Split(',');
-                                        while (!sreader.EndOfStream)
+                                        using (var sreader = new StreamReader(postedFile.InputStream))
                                         {
-                                            string[] rows = sreader.ReadLine().Split(',');
-                                            context.Student_Specification_Log.Add(GetStudentSpec(rows));
-                                        }
-                                    }
-                                    else
-                                    if (postedFile.FileName.Contains("usage-report_sample"))
-                                    {
-                                        string[] headers = sreader.ReadLine().Split(',');
-                                        while (!sreader.EndOfStream)
-                                        {
-                                            string[] rows = sreader.ReadLine().Split(',');
-                                            context.Student_Course_Log.Add(GetStudentCourse(rows));
-                                        }
+                                            if (postedFile.FileName.Contains("specialization-report_sample"))
+                                            {
+                                                string[] headers = sreader.ReadLine().Split(',');
+                                                while (!sreader.EndOfStream)
+                                                {
+                                                    string stringFormat = sreader.ReadLine();
+                                                  //  stringFormat = Between(stringFormat).Replace(",", "-");
+                                                    string[] rows = stringFormat.Split(',');
+                                                    context.Student_Specification_Log.Add(GetStudentSpec(rows));
+                                                }
+                                            }
+                                            else
+                                            if (postedFile.FileName.Contains("usage-report_sample"))
+                                            {
+                                                string[] headers = sreader.ReadLine().Split(',');
+                                                while (!sreader.EndOfStream)
+                                                {
+                                                    string[] rows = sreader.ReadLine().Split(',');
+                                                    context.Student_Course_Log.Add(GetStudentCourse(rows));
+                                                }
 
+                                            }
+                                        }
+                                        context.SaveChanges();
+                                        transaction.Commit();
+                                        ViewBag.Message = "Data Imported Successfully.";
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        transaction.Rollback();
+                                        ViewBag.Message = ex.Message;
                                     }
                                 }
-                                context.SaveChanges();
                             }
-                        }                      
-                        ViewBag.Message = "Data Imported Successfully.";
+                        }
+
                     }
                     catch (Exception ex)
                     {
@@ -88,16 +103,29 @@ namespace MSS_DEMO.Controllers
             }
             return View("~/Views/ExportData/Index.cshtml");
         }
+        //private String Between(string STR)
+        //{
+        //    if (STR.IndexOf(",\"") > 0)
+        //    {
+        //        string FinalString;
+        //        int Pos1 = STR.IndexOf(",\"") + ",\"".Length;
+        //        int Pos2 = STR.IndexOf("\",");
+        //        FinalString = STR.Substring(Pos1, Pos2 - Pos1);
+        //        return FinalString;
+        //    }
+        //    return STR;
+        //}
+
         private String ChangeBoolean(string name)
         {
             if (name.ToLower() == "yes") return "True";
-            else return "False";         
+            else return "False";
         }
 
         private Student_Specification_Log GetStudentSpec(String[] row)
         {
             return new Student_Specification_Log
-            {               
+            {
                 Roll = row[2].ToString().Split('-')[2],
                 Subject_ID = row[3].ToString(),
                 Campus = row[4].ToString(),
@@ -133,36 +161,5 @@ namespace MSS_DEMO.Controllers
 
             };
         }
-        private Course GetCourse(String[] row)
-        {
-            return new Course
-            {
-               Course_ID = row[1].ToString(),
-               Course_Name = row[1].ToString(),
-               Course_Slug = row[1].ToString(),
-               Specification_ID = row[1].ToString(),
-               //Subject_ID = row[1].ToString(),
-            };
-        }
-        private Specification GetSpec(String[] row)
-        {
-            return new Specification
-            {
-                Specification_ID = row[1].ToString(),
-                Subject_ID = row[1].ToString(),
-             
-            };
-        }
-        private Subject GetSubject(String[] row)
-        {
-            return new Subject
-            {
-                
-                Subject_ID = row[1].ToString(),
-                Subject_Name = row[1].ToString(),
-
-            };
-        }
-      
     }
 }

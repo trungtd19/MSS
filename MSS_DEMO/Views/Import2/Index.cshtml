@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
+<hr />
+<h2>Import Student</h2>
+<div class="container">
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div class="row">
+                @using (Html.BeginForm("Upload", "Import2", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">
+                        @Html.Label("File Upload", new { @class = "col-sm-3" })
+                        <div class="col-sm-7">
+                            <input type="file" id="postedFile" name="postedFile" class="form-control" accept=".csv" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-10">
+                            <br />
+                            <input type="submit" title="Upload" value="Upload" class="btn btn-default" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-10">
+                            <br />
+                            <span style="color:red;">
+                                @ViewBag.Message
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
