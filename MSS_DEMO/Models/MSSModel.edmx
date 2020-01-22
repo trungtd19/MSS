@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MSSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MSSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Campus">
           <Key>
             <PropertyRef Name="Campus_ID" />
@@ -121,7 +121,6 @@
           <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Specialization_Completion_Time" Type="datetime" />
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
-          <Property Name="Course_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -147,15 +146,6 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="User_ID" />
-          </Key>
-          <Property Name="User_ID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" />
-          <Property Name="Phone" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="User_Role">
           <Key>
@@ -334,18 +324,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Role_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="User_ID" />
-            </Principal>
-            <Dependent Role="User_Role">
-              <PropertyRef Name="User_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="MSSModelStoreContainer">
           <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
@@ -361,7 +339,6 @@
           <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
             <End Role="Campus" EntitySet="Campus" />
@@ -419,13 +396,8 @@
             <End Role="Role" EntitySet="Role" />
             <End Role="User_Role" EntitySet="User_Role" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Role_User" Association="Self.FK_User_Role_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="User_Role" EntitySet="User_Role" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MSSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -566,7 +538,6 @@
           <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Specialization_Completion_Time" Type="DateTime" Precision="3" />
           <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
         </EntityType>
@@ -589,26 +560,6 @@
           <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Subject_Student" ToRole="Student" />
           <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject_Student" ToRole="Subject" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="User_ID" />
-          </Key>
-          <Property Name="User_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="User_Role" Relationship="Self.FK_User_Role_User" FromRole="User" ToRole="User_Role" />
-        </EntityType>
         <EntityType Name="User_Role">
           <Key>
             <PropertyRef Name="User_ID" />
@@ -618,7 +569,6 @@
           <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="isActive" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role_Role" FromRole="User_Role" ToRole="Role" />
-          <NavigationProperty Name="User" Relationship="Self.FK_User_Role_User" FromRole="User_Role" ToRole="User" />
         </EntityType>
         <Association Name="FK_Class_Campus">
           <End Role="Campus" Type="Self.Campu" Multiplicity="0..1" />
@@ -788,18 +738,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Role_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="User_ID" />
-            </Principal>
-            <Dependent Role="User_Role">
-              <PropertyRef Name="User_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="MSSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Campus" EntityType="Self.Campu" />
           <EntitySet Name="Classes" EntityType="Self.Class" />
@@ -814,8 +752,6 @@
           <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" />
           <EntitySet Name="Subjects" EntityType="Self.Subject" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" />
           <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
             <End Role="Campus" EntitySet="Campus" />
@@ -873,11 +809,18 @@
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="Subject_Student" EntitySet="Subject_Student" />
           </AssociationSet>
-          <AssociationSet Name="FK_User_Role_User" Association="Self.FK_User_Role_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="User_Role" EntitySet="User_Role" />
-          </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="MSSModel.sysdiagram" />
         </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1009,7 +952,6 @@
                 <ScalarProperty Name="Program_Name" ColumnName="Program_Name" />
                 <ScalarProperty Name="Specialization_Completion_Time" ColumnName="Specialization_Completion_Time" />
                 <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
-                <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1030,27 +972,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="MSSModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="MSSModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="User_Role">
             <EntityTypeMapping TypeName="MSSModel.User_Role">
               <MappingFragment StoreEntitySet="User_Role">
@@ -1058,6 +979,17 @@
                 <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MSSModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

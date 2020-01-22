@@ -137,7 +137,6 @@
     <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="Specialization_Completion_Time" Type="DateTime" Precision="3" />
     <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
     <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
   </EntityType>
@@ -160,26 +159,6 @@
     <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Subject_Student" ToRole="Student" />
     <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject_Student" ToRole="Subject" />
   </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
-  <EntityType Name="User">
-    <Key>
-      <PropertyRef Name="User_ID" />
-    </Key>
-    <Property Name="User_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="User_Role" Relationship="Self.FK_User_Role_User" FromRole="User" ToRole="User_Role" />
-  </EntityType>
   <EntityType Name="User_Role">
     <Key>
       <PropertyRef Name="User_ID" />
@@ -189,7 +168,6 @@
     <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="isActive" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Role" Relationship="Self.FK_User_Role_Role" FromRole="User_Role" ToRole="Role" />
-    <NavigationProperty Name="User" Relationship="Self.FK_User_Role_User" FromRole="User_Role" ToRole="User" />
   </EntityType>
   <Association Name="FK_Class_Campus">
     <End Role="Campus" Type="Self.Campu" Multiplicity="0..1" />
@@ -359,18 +337,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_User_Role_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="User_ID" />
-      </Principal>
-      <Dependent Role="User_Role">
-        <PropertyRef Name="User_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="MSSEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Campus" EntityType="Self.Campu" />
     <EntitySet Name="Classes" EntityType="Self.Class" />
@@ -385,8 +351,6 @@
     <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" />
     <EntitySet Name="Subjects" EntityType="Self.Subject" />
     <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-    <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="User_Role" EntityType="Self.User_Role" />
     <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
       <End Role="Campus" EntitySet="Campus" />
@@ -444,9 +408,16 @@
       <End Role="Subject" EntitySet="Subjects" />
       <End Role="Subject_Student" EntitySet="Subject_Student" />
     </AssociationSet>
-    <AssociationSet Name="FK_User_Role_User" Association="Self.FK_User_Role_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="User_Role" EntitySet="User_Role" />
-    </AssociationSet>
+    <EntitySet Name="sysdiagrams" EntityType="MSSModel.sysdiagram" />
   </EntityContainer>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
 </Schema>

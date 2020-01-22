@@ -29,7 +29,6 @@ namespace MSS_DEMO.Models
         public string Program_Name { get; set; }
         public Nullable<System.DateTime> Specialization_Completion_Time { get; set; }
         public string Specification_ID { get; set; }
-        public string Course_ID { get; set; }
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }

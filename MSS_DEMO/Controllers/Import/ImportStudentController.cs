@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MSS_DEMO.Models;
 using LINQtoCSV;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace MSS_DEMO.Controllers
 {
@@ -50,26 +51,26 @@ namespace MSS_DEMO.Controllers
 
                                         string[] rows = sreader.ReadLine().Split(',');
                                     
-                                            var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
-                                            var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
+                                            //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
+                                         // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
 
-                                        if (context.Students.Find(GetStudent(rows).Roll) != null 
-                                            && context.Subjects.Find(GetSubjectStudent(rows).Subject_ID) == null)
-                                        {
-                                            context.Subject_Student.Add(GetSubjectStudent(rows));
-                                            context.Class_Student.Add(GetClassStudent(rows));
-                                        }
-                                        else
+                                        //if (context.Students.Find(GetStudent(rows).Roll) != null
+                                        //    && context.Subjects.Find(GetSubjectStudent(rows).Subject_ID) == null)
+                                        //{
+                                        //    context.Subject_Student.Add(GetSubjectStudent(rows));
+                                        //    //context.Class_Student.Add(GetClassStudent(rows));
+                                        //}
+                                        //else
+                                        if (context.Students.Find(GetStudent(rows).Roll) == null)
                                         {
                                             context.Students.Add(GetStudent(rows));
-                                            context.Subject_Student.Add(GetSubjectStudent(rows));
-                                            context.Class_Student.Add(GetClassStudent(rows));
+                                       //   context.Subject_Student.Add(GetSubjectStudent(rows));
+                                            //  context.Class_Student.Add(GetClassStudent(rows));
                                         }
-                                            //classes.Students.Add(GetStudent(rows));    
-                                            //subject.Students.Add(GetStudent(rows));                                  
-                                                                          
-                                    }
-                                    context.SaveChanges();                                   
+                                     
+
+                                        }
+                                        context.SaveChanges();                                   
                                     transaction.Commit();
                                     ViewBag.Message = "Import successfull!";
                                 }
@@ -99,8 +100,8 @@ namespace MSS_DEMO.Controllers
         {
             return new Student
             {
-                Email = row[0].ToString(),
-                Roll = row[1].ToString(),
+                Email = row[1].ToString(),
+                Roll = row[0].ToString(),
             };
 
         }
@@ -117,8 +118,8 @@ namespace MSS_DEMO.Controllers
         {
             return new Subject_Student
             {
-                Roll = row[1].ToString(),
-                Subject_ID = row[3].ToString(),
+                Roll = row[0].ToString(),
+                Subject_ID = row[2].ToString().Split('-')[0],
             };
 
         }

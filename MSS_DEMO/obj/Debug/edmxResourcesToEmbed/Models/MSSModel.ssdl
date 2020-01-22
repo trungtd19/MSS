@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="MSSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="MSSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Campus">
     <Key>
       <PropertyRef Name="Campus_ID" />
@@ -116,7 +116,6 @@
     <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
     <Property Name="Specialization_Completion_Time" Type="datetime" />
     <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Course_ID" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Subject">
     <Key>
@@ -142,15 +141,6 @@
     <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
-  <EntityType Name="User">
-    <Key>
-      <PropertyRef Name="User_ID" />
-    </Key>
-    <Property Name="User_ID" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Email" Type="varchar" MaxLength="50" />
-    <Property Name="Phone" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="User_Role">
     <Key>
@@ -329,18 +319,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_User_Role_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="User_ID" />
-      </Principal>
-      <Dependent Role="User_Role">
-        <PropertyRef Name="User_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="MSSModelStoreContainer">
     <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
@@ -356,7 +334,6 @@
     <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Role" EntityType="Self.User_Role" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
       <End Role="Campus" EntitySet="Campus" />
@@ -412,10 +389,6 @@
     </AssociationSet>
     <AssociationSet Name="FK_User_Role_Role" Association="Self.FK_User_Role_Role">
       <End Role="Role" EntitySet="Role" />
-      <End Role="User_Role" EntitySet="User_Role" />
-    </AssociationSet>
-    <AssociationSet Name="FK_User_Role_User" Association="Self.FK_User_Role_User">
-      <End Role="User" EntitySet="User" />
       <End Role="User_Role" EntitySet="User_Role" />
     </AssociationSet>
   </EntityContainer>

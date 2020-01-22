@@ -246,9 +246,6 @@
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\User.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>

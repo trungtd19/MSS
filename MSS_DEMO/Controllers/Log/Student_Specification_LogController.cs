@@ -85,7 +85,7 @@ namespace MSS_DEMO.Controllers.Log
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Roll,Subject_ID,Campus,Specialization,Specialization_Slug,University,Specialization_Enrollment_Time,Last_Specialization_Activity_Time,Completed,Status,Program_Slug,Program_Name,Specialization_Completion_Time,Specification_ID,Course_ID")] Student_Specification_Log student_Specification_Log)
+        public ActionResult Edit([Bind(Include = "ID,Roll,Subject_ID,Campus,Specialization,Specialization_Slug,University,Specialization_Enrollment_Time,Last_Specialization_Activity_Time,Completed,Status,Program_Slug,Program_Name,Specialization_Completion_Time,Specification_ID")] Student_Specification_Log student_Specification_Log)
         {
             if (ModelState.IsValid)
             {
