@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 
-namespace MSS_DEMO.Controllers
+namespace MSS_DEMO.Controllers.SetUp
 {
     public class CoursesController : Controller
     {
@@ -39,13 +39,22 @@ namespace MSS_DEMO.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
-            ViewBag.Specification_ID = new SelectList(db.Specifications, "Specification_ID", "Subject_ID");
+            List<Specification> spec = new List<Specification>();
+
+            foreach (var coures in db.Specifications)
+            {
+                if (coures.Is_Real_Specification == true) {
+                    spec.Add(coures);
+                }
+            }
+            ViewBag.Specification_ID = new SelectList(spec, "Specification_ID", "Subject_ID");
+
             return View();
         }
 
         // POST: Courses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
@@ -79,7 +88,7 @@ namespace MSS_DEMO.Controllers
 
         // POST: Courses/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)

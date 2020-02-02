@@ -7,9 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
-using System.Data.SqlClient;
 
-namespace MSS_DEMO.Controllers
+namespace MSS_DEMO.Controllers.SetUp
 {
     public class SpecificationsController : Controller
     {
@@ -40,34 +39,21 @@ namespace MSS_DEMO.Controllers
         // GET: Specifications/Create
         public ActionResult Create()
         {
-         //   Subject subject = new Subject { Subject_ID = "3", Subject_Name = "None" };
-
-            var ListSubject = new List<Subject>();
-         //   ListSubject.Add(subject);
-            foreach (var subjects in db.Subjects.ToList<Subject>())
-            {
-                ListSubject.Add(subjects);
-            }
-               
-            ViewBag.Subject_ID = new SelectList(ListSubject, "Subject_ID", "Subject_Name");
+            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name");
             return View();
         }
 
         // POST: Specifications/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Specification_ID,Subject_ID")] Specification specification)
+        public ActionResult Create([Bind(Include = "Specification_ID,Specification_Name,Subject_ID,Is_Real_Specification")] Specification specification)
         {
             if (ModelState.IsValid)
             {
-                //db.Database.ExecuteSqlCommand(
-                // "Insert into Specification Values(@Specification_ID, @Subject_ID)",
-                //          new SqlParameter("Specification_ID", specification.Specification_ID),
-                //          new SqlParameter("Subject_ID", specification.Subject_ID));      
-             db.Specifications.Add(specification);
-               db.SaveChanges();
+                db.Specifications.Add(specification);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -93,7 +79,7 @@ namespace MSS_DEMO.Controllers
 
         // POST: Specifications/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Specification_ID,Subject_ID")] Specification specification)

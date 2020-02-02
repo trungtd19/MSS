@@ -17,7 +17,6 @@ namespace MSS_DEMO.Models
         public int ID { get; set; }
         public string Roll { get; set; }
         public string Subject_ID { get; set; }
-        public string Campus { get; set; }
         public string Specialization { get; set; }
         public string Specialization_Slug { get; set; }
         public string University { get; set; }

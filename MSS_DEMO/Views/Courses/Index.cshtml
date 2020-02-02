@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "Index";
 }
-<br/>
+
+<br />
 <h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
 <hr />
 <p>
@@ -12,40 +13,35 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Course_ID)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Course_Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Course_Slug)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Specification_ID)
+            @Html.DisplayNameFor(model => model.Specification.Subject_ID)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Course_ID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Course_Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Course_Slug)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specification_ID)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Course_ID }) |
-        @Html.ActionLink("Details", "Details", new { id = item.Course_ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Course_ID })
-    </td>
-</tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course_Slug)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Specification.Subject_ID)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Course_ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Course_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Course_ID })
+            </td>
+        </tr>
+    }
 
 </table>
