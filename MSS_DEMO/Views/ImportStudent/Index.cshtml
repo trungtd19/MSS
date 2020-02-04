@@ -2,39 +2,92 @@
 @{
     ViewBag.Title = "Index";
 }
-    <br />
-<h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
+<br />
+<h4>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h4>
 <hr />
-<h2>Import Student</h2>
+<h4>Import Student</h4>
+<div id='progress_container' class="hero-content">
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only" ">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+
+        </div>
+    </div>
+Please Wait..
+</div>
+
 <div class="container">
     <div class="tab-content">
         <div class="tab-pane active">
             <div class="row">
-                @using (Html.BeginForm("Index", "ImportStudent", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="form-group">
-                        @Html.Label("File Upload", new { @class = "col-sm-3" })
-                        <div class="col-sm-7">
-                            <input type="file" id="postedFile" name="postedFile" class="form-control" accept=".csv" />
-                        </div>
+                @*@using (Html.BeginForm("Index", "ImportStudent", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {*@
+                <div class="form-group">
+                    @Html.Label("File Upload", new { @class = "col-sm-3" })
+                    <div class="col-sm-7">
+                        <input type="file" id="postedFile" name="postedFile" class="form-control" accept=".csv" />
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <div class="col-md-offset-3 col-md-10">
-                            <br />
-                            <input type="submit" title="Upload" value="Upload" class="btn btn-default" />
-                        </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-10">
+                        <br />
+                        <input type="submit" title="Upload" value="Upload" class="btn btn-default" id="btn" />
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-3 col-md-10">
-                            <br />
-                            <span style="color:red;">
-                                @ViewBag.Message
-                            </span>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-10">
+                        <br />
+                        <span style="color:red;">
+                            @ViewBag.Message
+                        </span>
                     </div>
-                }
+                </div>
+                @*}*@
             </div>
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script>
+      $('#progress_container').hide();
+        $("#btn").click(function () {
+           var formData = new FormData();
+           var file = document.getElementById("postedFile").files[0];
+           formData.append("FileUpload", file);
+            $('#progress_container').show();
+            $.ajax({
+                url: '@Url.Action("Import","ImportStudent")',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert(data.message);
+                }
+            }).done(function () {
+                $('#progress_container').hide();
+            });
+        });
+</script>
+<style>
+   #progress_container{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    z-index:1000;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+</style>

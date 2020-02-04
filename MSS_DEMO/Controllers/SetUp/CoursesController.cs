@@ -14,14 +14,12 @@ namespace MSS_DEMO.Controllers.SetUp
     {
         private MSSEntities db = new MSSEntities();
 
-        // GET: Courses
         public ActionResult Index()
         {
             var courses = db.Courses.Include(c => c.Specification);
             return View(courses.ToList());
         }
 
-        // GET: Courses/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -36,14 +34,14 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(course);
         }
 
-        // GET: Courses/Create
+
         public ActionResult Create()
         {
             List<Specification> spec = new List<Specification>();
 
             foreach (var coures in db.Specifications)
             {
-                if (coures.Is_Real_Specification == true) {
+                if (!coures.Is_Real_Specification) {
                     spec.Add(coures);
                 }
             }
@@ -52,9 +50,6 @@ namespace MSS_DEMO.Controllers.SetUp
             return View();
         }
 
-        // POST: Courses/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
@@ -70,7 +65,7 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(course);
         }
 
-        // GET: Courses/Edit/5
+
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -86,9 +81,6 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(course);
         }
 
-        // POST: Courses/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
@@ -103,7 +95,6 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(course);
         }
 
-        // GET: Courses/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -118,7 +109,6 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(course);
         }
 
-        // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)

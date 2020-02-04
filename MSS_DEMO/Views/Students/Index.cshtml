@@ -1,5 +1,5 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Student>
-
+﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -9,10 +9,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Roll)
+           Student ID
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+           Student Name
         </th>
 
     </tr>
@@ -31,3 +31,7 @@
     }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))

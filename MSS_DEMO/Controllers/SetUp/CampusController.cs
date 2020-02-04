@@ -7,96 +7,65 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
+using MSS_DEMO.Repository;
 
 namespace MSS_DEMO.Controllers
 {
     public class CampusController : Controller
     {
-        private MSSEntities db = new MSSEntities();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
-        // GET: Campus
         public ActionResult Index()
         {
-            return View(db.Campus.ToList());
+            var campus = unitOfWork.Campus.GetAll();
+            return View(campus.ToList());
         }
 
-        // GET: Campus/Details/5
-        public ActionResult Details(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Campu campu = db.Campus.Find(id);
-            if (campu == null)
-            {
-                return HttpNotFound();
-            }
-            return View(campu);
-        }
-
-        // GET: Campus/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Campus/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Campus_ID,Campus_Name,Address,Contact_Point")] Campu campu)
         {
             if (ModelState.IsValid)
             {
-                db.Campus.Add(campu);
-                db.SaveChanges();
+                unitOfWork.Campus.Insert(campu);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
             return View(campu);
         }
 
-        // GET: Campus/Edit/5
         public ActionResult Edit(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Campu campu = db.Campus.Find(id);
-            if (campu == null)
-            {
-                return HttpNotFound();
-            }
+            var campu = unitOfWork.Campus.GetById(id);        
             return View(campu);
         }
 
-        // POST: Campus/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Campus_ID,Campus_Name,Address,Contact_Point")] Campu campu)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(campu).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.Campus.Update(campu);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(campu);
         }
 
-        // GET: Campus/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Campu campu = db.Campus.Find(id);
+            var campu = unitOfWork.Campus.GetById(id);
             if (campu == null)
             {
                 return HttpNotFound();
@@ -104,24 +73,14 @@ namespace MSS_DEMO.Controllers
             return View(campu);
         }
 
-        // POST: Campus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Campu campu = db.Campus.Find(id);
-            db.Campus.Remove(campu);
-            db.SaveChanges();
+            var campu = unitOfWork.Campus.GetById(id);
+            unitOfWork.Campus.Delete(campu);
+            unitOfWork.Save();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

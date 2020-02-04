@@ -130,3 +130,5 @@ C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.pdb
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csprojAssemblyReference.cache
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csproj.CoreCompileInputs.cache
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.csproj.CopyComplete
+C:\Users\asus\Desktop\MSS\MSS_DEMO\bin\PagedList.dll
+C:\Users\asus\Desktop\MSS\MSS_DEMO\bin\PagedList.xml

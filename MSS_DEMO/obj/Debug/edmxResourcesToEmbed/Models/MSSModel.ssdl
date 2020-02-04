@@ -70,6 +70,8 @@
     </Key>
     <Property Name="Specification_ID" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Specification_Name" Type="nvarchar" MaxLength="150" />
+    <Property Name="Is_Real_Specification" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Student">
     <Key>
@@ -104,7 +106,6 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Roll" Type="varchar" MaxLength="50" />
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
-    <Property Name="Campus" Type="varchar" MaxLength="50" />
     <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
     <Property Name="Specialization_Slug" Type="nvarchar" MaxLength="50" />
     <Property Name="University" Type="nvarchar" MaxLength="250" />
@@ -115,6 +116,7 @@
     <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
     <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
     <Property Name="Specialization_Completion_Time" Type="datetime" />
+    <Property Name="Campus" Type="nvarchar" MaxLength="150" />
     <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Subject">
@@ -131,16 +133,6 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="User_Role">
     <Key>
@@ -333,7 +325,6 @@
     <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Role" EntityType="Self.User_Role" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
       <End Role="Campus" EntitySet="Campus" />

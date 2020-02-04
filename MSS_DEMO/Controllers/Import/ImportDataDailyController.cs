@@ -17,12 +17,10 @@ namespace MSS_DEMO.Controllers
     public class ExportDataController : Controller
     {
         private MSSEntities db = new MSSEntities();
-        private static SqlDateTime sqldatenull;
-
         [Route("Import-data")]
         public ActionResult Index()
         {
-            return View("~/Views/ExportData/Index.cshtml");
+            return View("~/Views/ImportDataDaily/Index.cshtml");
         }
         [Route("Import-data")]
         [HttpPost]
@@ -108,7 +106,7 @@ namespace MSS_DEMO.Controllers
                     ViewBag.Message = "Please select the file first to upload.";
                 }
             }
-            return View("~/Views/ExportData/Index.cshtml");
+            return View("~/Views/ImportDataDaily/Index.cshtml");
         }
         //private String Between(string STR)
         //{
@@ -169,22 +167,6 @@ namespace MSS_DEMO.Controllers
                 Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString()) : DateTime.Parse("01/01/1970"),
                 Course_Grade = Double.Parse(row[18].ToString()),
             };
-            //Student_Course_Log log2 = new Student_Course_Log
-            //{
-            //    Roll = row[2].ToString().Split('-')[2],
-            //    Course_Enrollment_Time = DateTime.Parse(row[7].ToString()),
-            //    Course_Start_Time = DateTime.Parse(row[8].ToString()),
-            //    Last_Course_Activity_Time = DateTime.Parse(row[9].ToString()),
-            //    Overall_Progress = Double.Parse(row[10].ToString()),
-            //    Estimated = Double.Parse(row[11].ToString()),
-            //    Completed = Boolean.Parse(ChangeBoolean(row[12].ToString())),
-            //    Status = Boolean.Parse(ChangeBoolean(row[13].ToString())),
-            //    Program_Slug = row[14].ToString(),
-            //    Program_Name = row[15].ToString(),
-            //   // NullDate = row[17].ToString(),
-            //    Course_Grade = Double.Parse(row[18].ToString()),
-            //};
-            //if (row[17].ToString() == "-") return log2; else
             return log1;
         }
     }

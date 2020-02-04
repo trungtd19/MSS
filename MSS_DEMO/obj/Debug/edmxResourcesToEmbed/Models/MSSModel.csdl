@@ -82,6 +82,8 @@
     </Key>
     <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Specification_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Is_Real_Specification" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Specification1" FromRole="Specification" ToRole="Course" />
     <NavigationProperty Name="Subject" Relationship="Self.FK_Specification_Subject" FromRole="Specification" ToRole="Subject" />
     <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Specification" ToRole="Student_Specification_Log" />
@@ -125,7 +127,6 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Campus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Specialization" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="Specialization_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="University" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -136,6 +137,7 @@
     <Property Name="Program_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="Specialization_Completion_Time" Type="DateTime" Precision="3" />
+    <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
     <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
@@ -408,16 +410,5 @@
       <End Role="Subject" EntitySet="Subjects" />
       <End Role="Subject_Student" EntitySet="Subject_Student" />
     </AssociationSet>
-    <EntitySet Name="sysdiagrams" EntityType="MSSModel.sysdiagram" />
   </EntityContainer>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
 </Schema>

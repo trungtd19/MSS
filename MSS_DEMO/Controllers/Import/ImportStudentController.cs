@@ -22,8 +22,12 @@ namespace MSS_DEMO.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Index(HttpPostedFileBase postedFile)
+        public ActionResult Import()//HttpPostedFileBase postedFile)
         {
+            string messageImport = "";
+            try
+            {
+                HttpPostedFileBase postedFile = Request.Files[0];          
             if (postedFile != null)
             {
                 try
@@ -32,8 +36,8 @@ namespace MSS_DEMO.Controllers
 
                     if (fileExtension != ".csv")
                     {
-                        ViewBag.Message = "Please select the csv file with .csv extension";
-                        return View();
+                        messageImport = "Please select the csv file with .csv extension";
+                        return Json(new { message = messageImport });
                     }
 
 
@@ -50,9 +54,9 @@ namespace MSS_DEMO.Controllers
                                     {
 
                                         string[] rows = sreader.ReadLine().Split(',');
-                                    
-                                            //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
-                                         // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
+
+                                        //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
+                                        // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
 
                                         //if (context.Students.Find(GetStudent(rows).Roll) != null
                                         //    && context.Subjects.Find(GetSubjectStudent(rows).Subject_ID) == null)
@@ -64,37 +68,41 @@ namespace MSS_DEMO.Controllers
                                         if (context.Students.Find(GetStudent(rows).Roll) == null)
                                         {
                                             context.Students.Add(GetStudent(rows));
-                                       //   context.Subject_Student.Add(GetSubjectStudent(rows));
+                                            //   context.Subject_Student.Add(GetSubjectStudent(rows));
                                             //  context.Class_Student.Add(GetClassStudent(rows));
                                         }
-                                     
 
-                                        }
-                                        context.SaveChanges();                                   
+
+                                    }
+                                    context.SaveChanges();
                                     transaction.Commit();
-                                    ViewBag.Message = "Import successfull!";
+                                    messageImport = "Import successfull!";
                                 }
                             }
                             catch (Exception ex)
                             {
                                 transaction.Rollback();
-                                ViewBag.Message = ex.Message;                    
+                                messageImport = ex.Message;
                             }
 
                         }
                     }
-                    return View();
+                    return Json(new { message = messageImport });
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = ex.Message;
+                    messageImport = ex.Message;
                 }
             }
             else
             {
-                ViewBag.Message = "Please select the file first to upload.";
+                messageImport = "Please select the file first to upload.";
             }
-            return View();
+        }
+        catch{
+                messageImport = "Please select the file first to upload.";
+            }
+            return Json(new { message = messageImport });
         }
         private Student GetStudent(String[] row)
         {

@@ -82,6 +82,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -187,6 +190,11 @@
     <Compile Include="Controllers\SetUp\SpecificationsController.cs" />
     <Compile Include="Controllers\SetUp\StudentsController.cs" />
     <Compile Include="Controllers\SetUp\SubjectsController.cs" />
+    <Compile Include="Core\Components\CampusRepository.cs" />
+    <Compile Include="Core\Components\ClassRepository.cs" />
+    <Compile Include="Core\Components\CoursesRepository.cs" />
+    <Compile Include="Core\Components\SemestersRepository.cs" />
+    <Compile Include="Core\Components\SpecificationsRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -245,13 +253,15 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\Components\GenericRepository.cs" />
+    <Compile Include="Core\Service\IGenericRepository.cs" />
+    <Compile Include="Core\Service\IUnitOfWork.cs" />
+    <Compile Include="Core\Components\StudentRepository.cs" />
+    <Compile Include="Core\Components\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -259,6 +269,16 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\MSSModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MSSModel.edmx</DependentUpon>
+      <LastGenOutput>MSSModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\MSSModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MSSModel.edmx</DependentUpon>
+      <LastGenOutput>MSSModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -270,18 +290,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\MSSModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MSSModel.edmx</DependentUpon>
-      <LastGenOutput>MSSModel.Context.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\MSSModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MSSModel.edmx</DependentUpon>
-      <LastGenOutput>MSSModel.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -308,7 +318,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\ExportData\Index.cshtml" />
+    <Content Include="Views\ImportDataDaily\Index.cshtml" />
     <Content Include="Views\ImportStudent\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\SetupBeginSemester\Index.cshtml" />
@@ -329,7 +339,6 @@
     <Content Include="Views\Semesters\Index.cshtml" />
     <Content Include="Views\Campus\Create.cshtml" />
     <Content Include="Views\Campus\Delete.cshtml" />
-    <Content Include="Views\Campus\Details.cshtml" />
     <Content Include="Views\Campus\Edit.cshtml" />
     <Content Include="Views\Campus\Index.cshtml" />
     <Content Include="Views\Courses\Create.cshtml" />
@@ -352,7 +361,6 @@
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Students\Edit.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
-    <Content Include="Views\Import2\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
