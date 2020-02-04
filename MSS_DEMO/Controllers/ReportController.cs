@@ -41,7 +41,7 @@ namespace MSS_DEMO.Controllers
                              where sub.Subject_ID == a.Subject_ID && a.Campus == "CT"
                              select a.Roll).Count();
                 var Type = (from a in context.Specifications
-                            where sub.Subject_ID == a.Subject_ID
+                            where sub.Subject_ID == a.Subject_ID && a.Is_Real_Specification == true
                             select a.Specification_ID).Count();
                 String ListType = "";
                 if(Type == 1)
@@ -61,7 +61,7 @@ namespace MSS_DEMO.Controllers
                 int DaNangStudy = Count(sub.Subject_ID, "DN");
                 int SaiGonStudy = Count(sub.Subject_ID, "SG");
                 int CanThoStudy = Count(sub.Subject_ID, "CT");
-                rep2.Add(new Report2 { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = Math.Round(((double)Total/(double)Totall)*100),Total = Total, HN = HaNoiStudy, DN = DaNangStudy, SG = SaiGonStudy, CT = CanThoStudy });
+                rep2.Add(new Report2 { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total,Totall),Total = Total, HN = HaNoiStudy, DN = DaNangStudy, SG = SaiGonStudy, CT = CanThoStudy });
 
             }
 
@@ -82,9 +82,9 @@ namespace MSS_DEMO.Controllers
             ViewBag.Complete = Complete();
 
             rep.Add(new Report { Total = Total1, HN = HN1, DN = DN1, SG = SG1, CT = CT1 });
-            rep2.Add(new Report2 { Study = Math.Round(((double)Total2 / (double)Total1) * 100), Total = Total2, HN = HN2, DN = DN2, SG = SG2, CT = CT2 });
-            rep3.Add(new Report3 { Title = "% Vào học",HN = Math.Round(((double)HN2 / (double)HN1) * 100), DN = Math.Round(((double)DN2 / (double)DN1) * 100),
-            SG = Math.Round(((double)SG2 / (double)SG1) * 100), CT = Math.Round(((double)CT2 / (double)CT1) * 100)});
+            rep2.Add(new Report2 { Study = percent(Total2,Total1), Total = Total2, HN = HN2, DN = DN2, SG = SG2, CT = CT2 });
+            rep3.Add(new Report3 { Title = "% Vào học",HN = percent((int)HN2,HN1), DN = percent((int)DN2,DN1),
+            SG = percent((int)SG2,SG1), CT = percent((int)CT2,CT1)});
             rp.Info = rep;
             rp.Info2 = rep2;
             rp.Info3 = rep3;
@@ -176,6 +176,20 @@ namespace MSS_DEMO.Controllers
                 }
             }
             return count;
+        }
+
+        private double percent(int a, int b)
+        {
+            double per;
+            if (b > 0)
+            {
+                per = Math.Round(((double)a / (double)b) * 100);
+            }
+            else
+            {
+                per = 0;
+            }
+            return per;
         }
     }
 }
