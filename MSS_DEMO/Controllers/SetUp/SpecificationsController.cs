@@ -7,126 +7,81 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
+using MSS_DEMO.Repository;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
     public class SpecificationsController : Controller
     {
-        private MSSEntities db = new MSSEntities();
-
-        // GET: Specifications
+        private IUnitOfWork unitOfWork;
+        public SpecificationsController(IUnitOfWork _unitOfWork)
+        {
+            this.unitOfWork = _unitOfWork;
+        }
         public ActionResult Index()
         {
-            var specifications = db.Specifications.Include(s => s.Subject);
-            return View(specifications.ToList());
+            var specifications = unitOfWork.Specifications.GetAll();
+            return View(specifications);
         }
 
-        // GET: Specifications/Details/5
-        public ActionResult Details(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Specification specification = db.Specifications.Find(id);
-            if (specification == null)
-            {
-                return HttpNotFound();
-            }
-            return View(specification);
-        }
 
-        // GET: Specifications/Create
         public ActionResult Create()
         {
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name");
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll(), "Subject_ID", "Subject_Name");
             return View();
         }
 
-        // POST: Specifications/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Specification_ID,Specification_Name,Subject_ID,Is_Real_Specification")] Specification specification)
         {
             if (ModelState.IsValid)
             {
-                db.Specifications.Add(specification);
-                db.SaveChanges();
+                unitOfWork.Specifications.Insert(specification);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name", specification.Subject_ID);
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll(), "Subject_ID", "Subject_Name", specification.Subject_ID);
             return View(specification);
         }
 
-        // GET: Specifications/Edit/5
+
         public ActionResult Edit(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Specification specification = db.Specifications.Find(id);
-            if (specification == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name", specification.Subject_ID);
+            var specification = unitOfWork.Specifications.GetById(id);
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll(), "Subject_ID", "Subject_Name", specification.Subject_ID);
             return View(specification);
         }
 
-        // POST: Specifications/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Specification_ID,Subject_ID")] Specification specification)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(specification).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.Specifications.Update(specification);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Subject_Name", specification.Subject_ID);
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll(), "Subject_ID", "Subject_Name", specification.Subject_ID);
             return View(specification);
         }
 
-        // GET: Specifications/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Specification specification = db.Specifications.Find(id);
-            if (specification == null)
-            {
-                return HttpNotFound();
-            }
+            var specification = unitOfWork.Specifications.GetById(id);
             return View(specification);
         }
 
-        // POST: Specifications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Specification specification = db.Specifications.Find(id);
-            db.Specifications.Remove(specification);
-            db.SaveChanges();
+            var specification = unitOfWork.Specifications.GetById(id);
+            unitOfWork.Specifications.Delete(specification);
+            unitOfWork.Save();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

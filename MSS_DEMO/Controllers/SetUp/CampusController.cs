@@ -13,12 +13,16 @@ namespace MSS_DEMO.Controllers
 {
     public class CampusController : Controller
     {
-        private UnitOfWork unitOfWork = new UnitOfWork();
+        private IUnitOfWork unitOfWork;
+        public CampusController(IUnitOfWork _unitOfWork)
+        {
+            this.unitOfWork = _unitOfWork;
+        }
 
         public ActionResult Index()
         {
             var campus = unitOfWork.Campus.GetAll();
-            return View(campus.ToList());
+            return View(campus);
         }
 
         public ActionResult Create()

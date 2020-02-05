@@ -10,126 +10,108 @@ using MSS_DEMO.Models;
 using LINQtoCSV;
 using System.IO;
 using System.Linq.Expressions;
+using MSS_DEMO.Repository;
+using MSS_DEMO.Core.Interface;
 
 namespace MSS_DEMO.Controllers
 {
     public class ImportStudentController : Controller
     {
-        private MSSEntities db = new MSSEntities();
+        private IUnitOfWork unitOfWork;
+        private IGetRow getRow;
+        public ImportStudentController(IUnitOfWork _unitOfWork,IGetRow _getRow)
+        {
+            this.unitOfWork = _unitOfWork;
+            this.getRow = _getRow;
+        }
 
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Import()//HttpPostedFileBase postedFile)
         {
             string messageImport = "";
             try
             {
-                HttpPostedFileBase postedFile = Request.Files[0];          
-            if (postedFile != null)
-            {
-                try
+                HttpPostedFileBase postedFile = Request.Files[0];
+                if (postedFile != null)
                 {
-                    string fileExtension = Path.GetExtension(postedFile.FileName);
-
-                    if (fileExtension != ".csv")
+                    try
                     {
-                        messageImport = "Please select the csv file with .csv extension";
-                        return Json(new { message = messageImport });
-                    }
-
-
-                    using (var context = new MSSEntities())
-                    {
-                        using (DbContextTransaction transaction = context.Database.BeginTransaction())
+                        string fileExtension = Path.GetExtension(postedFile.FileName);
+                        if (fileExtension != ".csv")
                         {
-                            try
+                            messageImport = "Please select the csv file with .csv extension";
+                            return Json(new { message = messageImport });
+                        }
+                        try
+                        {
+                            using (var sreader = new StreamReader(postedFile.InputStream))
                             {
-                                using (var sreader = new StreamReader(postedFile.InputStream))
+                                string[] headers = sreader.ReadLine().Split(',');
+                                while (!sreader.EndOfStream)
                                 {
-                                    string[] headers = sreader.ReadLine().Split(',');
-                                    while (!sreader.EndOfStream)
+
+                                    string[] rows = sreader.ReadLine().Split(',');
+                                    //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
+                                    // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
+
+                                    //if (context.Students.Find(GetStudent(rows).Roll) != null
+                                    //    && context.Subjects.Find(GetSubjectStudent(rows).Subject_ID) == null)
+                                    //{
+                                    //    context.Subject_Student.Add(GetSubjectStudent(rows));
+                                    //    //context.Class_Student.Add(GetClassStudent(rows));
+                                    //}
+                                    //else
+                                    //var x = unitOfWork.Students.GetById(GetStudent(rows).Roll);
+                                    var x = unitOfWork.Students.CheckExits(getRow.GetStudent(rows).Roll);
+                                    if (x == null)
                                     {
-
-                                        string[] rows = sreader.ReadLine().Split(',');
-
-                                        //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
-                                        // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
-
-                                        //if (context.Students.Find(GetStudent(rows).Roll) != null
-                                        //    && context.Subjects.Find(GetSubjectStudent(rows).Subject_ID) == null)
-                                        //{
-                                        //    context.Subject_Student.Add(GetSubjectStudent(rows));
-                                        //    //context.Class_Student.Add(GetClassStudent(rows));
-                                        //}
-                                        //else
-                                        if (context.Students.Find(GetStudent(rows).Roll) == null)
-                                        {
-                                            context.Students.Add(GetStudent(rows));
-                                            //   context.Subject_Student.Add(GetSubjectStudent(rows));
-                                            //  context.Class_Student.Add(GetClassStudent(rows));
-                                        }
-
-
+                                        unitOfWork.Students.Insert(getRow.GetStudent(rows));
+                                        //   context.Subject_Student.Add(GetSubjectStudent(rows));
+                                        //  context.Class_Student.Add(GetClassStudent(rows));
                                     }
-                                    context.SaveChanges();
-                                    transaction.Commit();
+                                    else
+                                    {
+                                        messageImport = "ROll exits";
+                                        return Json(new { message = messageImport });
+                                    }
+                                }
+                                unitOfWork.Save();
+                                if (unitOfWork.Save())
+                                {
                                     messageImport = "Import successfull!";
                                 }
+                                else
+                                {
+                                    messageImport = "Exception!";
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                transaction.Rollback();
-                                messageImport = ex.Message;
-                            }
-
                         }
+                        catch (Exception ex)
+                        {
+                            messageImport = ex.Message;
+                        }
+                        return Json(new { message = messageImport });
                     }
-                    return Json(new { message = messageImport });
+                    catch (Exception ex)
+                    {
+                        messageImport = ex.Message;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    messageImport = ex.Message;
+                    messageImport = "Please select the file first to upload.";
                 }
             }
-            else
+            catch
             {
-                messageImport = "Please select the file first to upload.";
-            }
-        }
-        catch{
                 messageImport = "Please select the file first to upload.";
             }
             return Json(new { message = messageImport });
-        }
-        private Student GetStudent(String[] row)
-        {
-            return new Student
-            {
-                Email = row[1].ToString(),
-                Roll = row[0].ToString(),
-            };
-
-        }
-        private Class_Student GetClassStudent(String[] row)
-        {
-            return new Class_Student
-            {
-                Roll = row[1].ToString(),
-                Class_ID = row[2].ToString(),
-            };
-
-        }
-        private Subject_Student GetSubjectStudent(String[] row)
-        {
-            return new Subject_Student
-            {
-                Roll = row[0].ToString(),
-                Subject_ID = row[2].ToString().Split('-')[0],
-            };
-
-        }
+        }      
     }
 }

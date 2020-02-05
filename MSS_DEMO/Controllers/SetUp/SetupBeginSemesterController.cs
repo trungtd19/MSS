@@ -8,7 +8,6 @@ namespace MSS_DEMO.Controllers
 {
     public class SetupBeginSemesterController : Controller
     {
-        // GET: SetupBeginSemester
         public ActionResult Index()
         {
             return View();

@@ -9,7 +9,11 @@ namespace MSS_DEMO.Controllers.SetUp
 {
     public class StudentsController : Controller
     {
-        private UnitOfWork unitOfWork = new UnitOfWork();
+        private IUnitOfWork unitOfWork;
+        public StudentsController(IUnitOfWork _unitOfWork)
+        {
+            this.unitOfWork = _unitOfWork;           
+        }
         public ActionResult Index(int? page)
         {
             List<Student> students = unitOfWork.Students.GetPageList();      
