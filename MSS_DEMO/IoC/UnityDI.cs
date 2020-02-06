@@ -7,7 +7,7 @@ using Unity.Mvc5;
 
 namespace MSS_DEMO
 {
-    public static class UnityConfig
+    public static class UnityDI
     {
         public static void RegisterComponents()
         {
