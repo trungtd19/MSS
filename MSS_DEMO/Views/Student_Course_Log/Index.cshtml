@@ -1,5 +1,5 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Student_Course_Log>
-
+﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student_Course_Log>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -17,43 +17,43 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Course_Enrollment_Time)
+           Course_Enrollment_Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Course_Start_Time)
+           Course_Start_Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Last_Course_Activity_Time)
+           Last_Course_Activity_Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Overall_Progress)
+           Overall_Progress
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Estimated)
+           Estimated
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Completed)
+           Completed
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+           Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Program_Slug)
+           Program_Slug
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Program_Name)
+           Program_Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Completion_Time)
+           Completion_Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Course_Grade)
+           Course_Grade
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Course.Course_Name)
+           Course_Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Student.Email)
+           Roll
         </th>
 
     </tr>
@@ -98,10 +98,14 @@
                 @Html.DisplayFor(modelItem => item.Course.Course_Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.Email)
+                @Html.DisplayFor(modelItem => item.Roll)
             </td>
 
         </tr>
     }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))

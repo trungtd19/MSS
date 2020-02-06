@@ -1,5 +1,5 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Student_Specification_Log>
-
+﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student_Specification_Log>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -10,52 +10,52 @@
         <input type="submit" value="Clear All Data" />
     </p>
 }
-<hr/>
+<hr />
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Subject_ID)
+          Subject_ID
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Campus)
+            Campus
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Specialization)
+           Specialization
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Specialization_Slug)
+           Specialization_Slug
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.University)
+           University
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Specialization_Enrollment_Time)
+           Specialization_Enrollment_Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Last_Specialization_Activity_Time)
+           Last_Specialization_Activity_Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Completed)
+           Completed
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+           Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Program_Slug)
+           Program_Slug
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Program_Name)
+           Program_Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Specialization_Completion_Time)
+           Specialization_Completion_Time
         </th>
-    
+
         <th>
-            @Html.DisplayNameFor(model => model.Specification.Subject_ID)
+            Specification
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Student.Email)
+           Email
         </th>
 
     </tr>
@@ -99,15 +99,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
             </td>
-      
+
             <td>
                 @Html.DisplayFor(modelItem => item.Specification.Subject_ID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.Email)
+                @Html.DisplayFor(modelItem => item.Roll)
             </td>
 
         </tr>
     }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))

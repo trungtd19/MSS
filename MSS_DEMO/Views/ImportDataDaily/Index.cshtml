@@ -2,53 +2,176 @@
 @{
     ViewBag.Title = "Import Data";
 }
+<div id='progress_container' class="hero-content">
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only" ">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
 
-<h1 style="text-align: center;">Import Excel to Database</h1>
+        </div>
+    </div>
+    Please Wait..
+</div>
+@*<h1 style="text-align: center;">Import Excel to Database</h1>
 
+    <div class="container">
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div class="row">
+                    <h2 style="text-align:center;"> Upload File</h2>
+                    @using (Html.BeginForm("Index", "ExportData", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="form-group" style="padding: 20px; margin-left: 35%;">
+                            <div class="col-sm-7">
+                                <input type="file" id="postedFile1" name="postedFile1" class="form-control" accept=".xls,.xlsx,.csv" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding: 20px; margin-left: 35%;">
+
+                            <div class="col-sm-7">
+                                <input type="file" id="postedFile2" name="postedFile2" class="form-control" accept=".xls,.xlsx,.csv" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding: 20px; margin-left: 35%;">
+                            <div class="col-sm-7">
+                                <input type="file" id="postedFile3" name="postedFile3" class="form-control" accept=".xls,.xlsx,.csv" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding: 20px; margin-left: 35%;">
+
+                            <div class="col-md-offset-3 col-md-10" style="margin-left: 15%;">
+                                <br />
+                                <input type="submit" title="Upload" value="Upload" class="btn btn-default" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-md-offset-3 col-md-10" style="margin-left: 37%;">
+                                <br />
+                                <span style="color:red;">
+                                    @ViewBag.Message
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<h4>Import Data</h4>
+<h5>Choose one or multiple files</h5>
 <div class="container">
     <div class="tab-content">
         <div class="tab-pane active">
             <div class="row">
-                <h2 style="text-align:center;"> Upload File</h2>
-                @using (Html.BeginForm("Index", "ExportData", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="form-group" style="padding: 20px; margin-left: 35%;">
-                        <div class="col-sm-7">
-                            <input type="file" id="postedFile1" name="postedFile1" class="form-control" accept=".xls,.xlsx,.csv" />
+                <form id="uploader">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input id="fileInput" type="file" name="postedFile" class="form-control" accept=".csv" multiple>
+                            <table class="table" id="FilesList" style="visibility:hidden">
+                                <tr>
+                                    <th>
+                                        Attachment(s)
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </table>
+                            <input type="button" id="btnupload" value="Upload" class="btn btn-default" style="float:right" />
                         </div>
                     </div>
-
-                    <div class="form-group" style="padding: 20px; margin-left: 35%;">
-
-                        <div class="col-sm-7">
-                            <input type="file" id="postedFile2" name="postedFile2" class="form-control" accept=".xls,.xlsx,.csv" />
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="padding: 20px; margin-left: 35%;">
-                        <div class="col-sm-7">
-                            <input type="file" id="postedFile3" name="postedFile3" class="form-control" accept=".xls,.xlsx,.csv" />
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="padding: 20px; margin-left: 35%;">
-
-                        <div class="col-md-offset-3 col-md-10" style="margin-left: 15%;">
-                            <br />
-                            <input type="submit" title="Upload" value="Upload" class="btn btn-default" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        
-                        <div class="col-md-offset-3 col-md-10" style="margin-left: 37%;">
-                            <br />
-                            <span style="color:red;">
-                                @ViewBag.Message
-                            </span>
-                        </div>
-                    </div>
-                }
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection">
+<script>
+    var formdata = new FormData(); //FormData object
+    $(document).ready(function () {
+
+        //$("#fileInput").on("change", function () {
+        //    var fileInput = document.getElementById('fileInput');
+
+        //    for (i = 0; i < fileInput.files.length; i++) {
+
+        //        var sfilename = fileInput.files[i].name;
+        //        let srandomid = Math.random().toString(36).substring(7);
+
+        //        formdata.append(sfilename, fileInput.files[i]);
+
+        //        var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td><a href='#' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
+        //            "\")'><span>Delete</span></a></td></tr>";
+        //        $("#FilesList tbody").append(markup);
+        //    }
+            //chkatchtbl();
+            ////$('#fileInput2').val(this.val());
+            //$('#fileInput').val('');
+        });
+        $('#progress_container').hide();
+        $("#btnupload").click(function () {
+            $('#progress_container').show();
+            var files = $("#fileInput").get(0).files;
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append("fileInput", files[i]);
+            }
+
+            $.ajax({
+                url: '/ExportData/UploadFiles',
+                type: "POST",
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                data: fileData,
+                success: function (data) {
+                    if (data.message != "") {
+                        alert(data.message);
+                        $('#progress_container').hide();
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                    $('#progress_container').hide();
+                }
+            });
+        });
+    });
+    function DeleteFile(Fileid, FileName) {
+        formdata.delete(FileName)
+        $("#" + Fileid).remove();
+        chkatchtbl();
+    }
+    function chkatchtbl() {
+        if ($('#FilesList tr').length > 1) {
+            $("#FilesList").css("visibility", "visible");
+        } else {
+            $("#FilesList").css("visibility", "hidden");
+        }
+    }
+</script>
+<style>
+    #progress_container {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+</style>

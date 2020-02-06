@@ -18,7 +18,7 @@ namespace MSS_DEMO.Repository
             using (MSSEntities db = new MSSEntities())
             {
                 student = (from o in db.Students
-                          orderby o.Roll descending
+                          orderby o.Roll ascending
                           select o)                      
                           .ToList();
 
