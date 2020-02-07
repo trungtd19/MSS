@@ -16,8 +16,8 @@ namespace MSS_DEMO.Repository
         CoursesRepository Courses { get; }
         SpecificationsRepository Specifications { get; }
         SubjectRepository Subject { get; }
-        SpecificationLogRepository SpecificationsLog { get; }
-        CoursesLogRepository CoursesLog { get; }
+        StudentSpecificationLogRepository SpecificationsLog { get; }
+        StudentCoursesLogRepository CoursesLog { get; }
 
         bool Save();
     }

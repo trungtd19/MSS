@@ -16,8 +16,8 @@ namespace MSS_DEMO.Repository
         private SubjectRepository SubjectRepository;
         private SpecificationsRepository SpecificationsRepository;
         private CoursesRepository CoursesRepository;
-        private SpecificationLogRepository SpecificationLogRepository;
-        private CoursesLogRepository CoursesLogRepository;
+        private StudentSpecificationLogRepository SpecificationLogRepository;
+        private StudentCoursesLogRepository CoursesLogRepository;
         public StudentRepository Students
         {
             get
@@ -53,18 +53,18 @@ namespace MSS_DEMO.Repository
                 return CoursesRepository ?? (CoursesRepository = new CoursesRepository(context));
             }
         }
-        public SpecificationLogRepository SpecificationsLog
+        public StudentSpecificationLogRepository SpecificationsLog
         {
             get
             {
-                return SpecificationLogRepository ?? (SpecificationLogRepository = new SpecificationLogRepository(context));
+                return SpecificationLogRepository ?? (SpecificationLogRepository = new StudentSpecificationLogRepository(context));
             }
         }
-        public CoursesLogRepository CoursesLog
+        public StudentCoursesLogRepository CoursesLog
         {
             get
             {
-                return CoursesLogRepository ?? (CoursesLogRepository = new CoursesLogRepository(context));
+                return CoursesLogRepository ?? (CoursesLogRepository = new StudentCoursesLogRepository(context));
             }
         }
         public bool Save()
