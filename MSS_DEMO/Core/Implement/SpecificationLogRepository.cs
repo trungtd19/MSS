@@ -11,8 +11,8 @@ namespace MSS_DEMO.Core.Implement
     {
         public SpecificationLogRepository(MSSEntities context)
            : base(context)
-    {
-    }
+        {
+        }
         public List<Student_Specification_Log> GetPageList()
         {
             List<Student_Specification_Log> student = new List<Student_Specification_Log>();
