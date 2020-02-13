@@ -9,7 +9,7 @@ namespace MSS_DEMO.Core.Import
 {
     public class GetRow : IGetRow
     {
-        public Student GetStudent(String[] row)
+        public Student GetStudent(List<string> row)
         {
             return new Student
             {
@@ -18,7 +18,7 @@ namespace MSS_DEMO.Core.Import
             };
 
         }
-        public Class_Student GetClassStudent(String[] row)
+        public Class_Student GetClassStudent(List<string> row)
         {
             return new Class_Student
             {
@@ -27,7 +27,7 @@ namespace MSS_DEMO.Core.Import
             };
 
         }
-        public Subject_Student GetSubjectStudent(String[] row)
+        public Subject_Student GetSubjectStudent(List<string> row)
         {
             return new Subject_Student
             {
@@ -36,7 +36,7 @@ namespace MSS_DEMO.Core.Import
             };
 
         }
-        public Student_Specification_Log GetStudentSpec(String[] row)
+        public Student_Specification_Log GetStudentSpec(List<string> row)
         {
             return new Student_Specification_Log
             {
@@ -57,7 +57,7 @@ namespace MSS_DEMO.Core.Import
 
             };
         }
-        public Student_Course_Log GetStudentCourse(String[] row)
+        public Student_Course_Log GetStudentCourse(List<string> row)
         {
 
             Student_Course_Log log1 = new Student_Course_Log

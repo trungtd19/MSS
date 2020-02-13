@@ -1,8 +1,11 @@
 ﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student_Specification_Log>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Specialization Report";
 }
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home")>SpecializationReport</span>
+<hr />
 <br />
 @using (Html.BeginForm("DeleteAll", "Student_Specification_Log"))
 {
@@ -15,47 +18,47 @@
 <table class="table">
     <tr>
         <th>
-          Subject_ID
+            Subject_ID
         </th>
         <th>
             Campus
         </th>
         <th>
-           Specialization
+            Specialization
         </th>
         <th>
-           Specialization_Slug
+            Specialization_Slug
         </th>
         <th>
-           University
+            University
         </th>
         <th>
-           Specialization_Enrollment_Time
+            Specialization_Enrollment_Time
         </th>
         <th>
-           Last_Specialization_Activity_Time
+            Last_Specialization_Activity_Time
         </th>
         <th>
-           Completed
+            Completed
         </th>
         <th>
-           Status
+            Status
         </th>
         <th>
-           Program_Slug
+            Program_Slug
         </th>
         <th>
-           Program_Name
+            Program_Name
         </th>
         <th>
-           Specialization_Completion_Time
+            Specialization_Completion_Time
         </th>
 
         <th>
             Specification
         </th>
         <th>
-           Email
+            Email
         </th>
 
     </tr>

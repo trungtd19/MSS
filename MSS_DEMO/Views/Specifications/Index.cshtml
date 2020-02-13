@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<MSS_DEMO.Models.Specification>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Specification";
 }
-
-<h2>Index</h2>
+<br/>
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>Specification</span>
+<hr/>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -23,22 +24,23 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specification_ID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specification_Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Is_Real_Specification)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Specification_ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Specification_ID })
-    </td>
-</tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Specification_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Specification_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Is_Real_Specification)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Specification_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Specification_ID })
+            </td>
+        </tr>
+    }
 
 </table>

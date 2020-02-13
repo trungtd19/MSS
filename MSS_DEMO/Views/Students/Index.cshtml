@@ -1,37 +1,70 @@
 ﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Student";
 }
 <br />
-<h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
-
-<table class="table">
-    <tr>
-        <th>
-           Student ID
-        </th>
-        <th>
-           Student Name
-        </th>
-
-    </tr>
-
-    @foreach (var item in Model)
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>Student</span>
+<hr />
+<div class="form-group">
+    <div class="col-md-2">
+        <a href="ImportStudent/Index"><input type="button" class="waves-effect waves-light btn blue darken-1 blue" value="Import Student" /></a>
+    </div>
+    <div class="col-md-2">
+        @using (Html.BeginForm("Export_Student_CSV", "Students", FormMethod.Get))
+        {
+            <input class="waves-effect waves-light btn blue darken-1 blue" type="submit" accept="" id="btnSubmit" value="Export Student" />
+        }
+    </div>
+</div>
+<br />
+<hr />
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Students", FormMethod.Get))
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Roll)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-
-        </tr>
+        <div class="col-md-2">
+            Find by ID:
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", "", new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <input class="waves-effect waves-light btn blue darken-1 blue" type="submit" value="Search" />
+        </div>
     }
+</div>
+<br />
+<br />
+        <table class="table">
+            <tr>
+                <th>
+                    Student ID
+                </th>
+                <th>
+                    Student Name
+                </th>
 
-</table>
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </tr>
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page }))
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Roll)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+            new { page }))
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+        <script>
+
+        </script>

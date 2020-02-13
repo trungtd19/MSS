@@ -3,7 +3,12 @@
     ViewBag.Title = "Index";
 }
 <br />
-<h4>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h4>
+<span>
+    @Html.ActionLink("Home", "Index", "Home")>
+    @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>
+    @Html.ActionLink("Student", "Index", "Students")>
+    ImportStudent
+</span>
 <hr />
 <h4>Import Student</h4>
 <div id='progress_container' class="hero-content">

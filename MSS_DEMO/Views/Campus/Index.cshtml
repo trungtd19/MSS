@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<MSS_DEMO.Models.Campu>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Campus";
 }
-
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home")>Campus</span>
+<hr/>
 <h2>Campus</h2>
 
 <p>
@@ -23,22 +25,23 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Campus_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Contact_Point)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Campus_ID }) |  
-            @Html.ActionLink("Delete", "Delete", new { id=item.Campus_ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Campus_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact_Point)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Campus_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Campus_ID })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -9,11 +9,11 @@ namespace MSS_DEMO.Core.Interface
 {
     public interface IGetRow
     {
-        Student GetStudent(String[] row);
-        Class_Student GetClassStudent(String[] row);
-        Subject_Student GetSubjectStudent(String[] row);
-        Student_Specification_Log GetStudentSpec(String[] row);
-        Student_Course_Log GetStudentCourse(String[] row);
+        Student GetStudent(List<string> row);
+        Class_Student GetClassStudent(List<string> row);
+        Subject_Student GetSubjectStudent(List<string> row);
+        Student_Specification_Log GetStudentSpec(List<string> row);
+        Student_Course_Log GetStudentCourse(List<string> row);
         String ChangeBoolean(string name);
     }
 }

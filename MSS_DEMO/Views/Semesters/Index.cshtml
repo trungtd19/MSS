@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<MSS_DEMO.Models.Semester>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Semester";
 }
-<br/>
-<h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>Semester</span>
+
 <hr />
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -23,23 +24,24 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Semester_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Start_Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.End_Date)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Semester_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Semester_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Semester_ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Semester_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.End_Date)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Semester_ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Semester_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Semester_ID })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<MSS_DEMO.Models.Course>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Course";
 }
 
 <br />
-<h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>Course</span>
+
 <hr />
 <p>
     @Html.ActionLink("Create New", "Create")

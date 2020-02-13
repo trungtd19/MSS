@@ -1,12 +1,14 @@
 ﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student_Course_Log>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Usage Report";
 }
-
-<h2>Index</h2>
 <br />
-
+<span>@Html.ActionLink("Home", "Index", "Home")>UsageReport</span>
+<hr />
+<a href="ExportData/Index"><input type="button" class="waves-effect waves-light btn blue darken-1 blue" value="Import Usage Report" /></a>
+<br />
+<hr />
 @using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
 {
     <p>
@@ -17,50 +19,54 @@
 <table class="table">
     <tr>
         <th>
-           Course_Enrollment_Time
+            Roll
         </th>
         <th>
-           Course_Start_Time
+            Course_Enrollment_Time
         </th>
         <th>
-           Last_Course_Activity_Time
+            Course_Start_Time
         </th>
         <th>
-           Overall_Progress
+            Last_Course_Activity_Time
         </th>
         <th>
-           Estimated
+            Overall_Progress
         </th>
         <th>
-           Completed
+            Estimated
         </th>
         <th>
-           Status
+            Completed
         </th>
         <th>
-           Program_Slug
+            Status
         </th>
         <th>
-           Program_Name
+            Program_Slug
         </th>
         <th>
-           Completion_Time
+            Program_Name
         </th>
         <th>
-           Course_Grade
+            Completion_Time
         </th>
         <th>
-           Course_Name
+            Course_Grade
         </th>
         <th>
-           Roll
+            Course_Name
         </th>
+
 
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Roll)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
             </td>
@@ -96,9 +102,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Course.Course_Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Roll)
             </td>
 
         </tr>

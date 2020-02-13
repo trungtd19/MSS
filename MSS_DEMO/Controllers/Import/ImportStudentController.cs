@@ -12,6 +12,9 @@ using System.IO;
 using System.Linq.Expressions;
 using MSS_DEMO.Repository;
 using MSS_DEMO.Core.Interface;
+using System.Text.RegularExpressions;
+using System.Text;
+using MSS_DEMO.Core.Import;
 
 namespace MSS_DEMO.Controllers
 {
@@ -34,6 +37,7 @@ namespace MSS_DEMO.Controllers
         public ActionResult Import()//HttpPostedFileBase postedFile)
         {
             string messageImport = "";
+            CSVConvert csv = new CSVConvert();
             try
             {
                 HttpPostedFileBase postedFile = Request.Files[0];
@@ -54,8 +58,8 @@ namespace MSS_DEMO.Controllers
                                 string[] headers = sreader.ReadLine().Split(',');
                                 while (!sreader.EndOfStream)
                                 {
+                                    List<string> rows = csv.RegexRow(sreader);
 
-                                    string[] rows = sreader.ReadLine().Split(',');
                                     //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
                                     // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
 
@@ -112,6 +116,6 @@ namespace MSS_DEMO.Controllers
                 messageImport = "Please select the file first to upload.";
             }
             return Json(new { message = messageImport });
-        }      
+        }    
     }
 }

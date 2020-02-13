@@ -1,24 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MSS_DEMO.Models;
-using System.Data.OleDb;
-using System.Data.Entity.Validation;
 using System.IO;
 using System;
-using System.Collections;
-using System.Data.Entity;
-using System.Data.SqlTypes;
 using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Repository;
+using MSS_DEMO.Core.Import;
 
 namespace MSS_DEMO.Controllers
 {
     public class ExportDataController : Controller
     {
-        private MSSEntities db = new MSSEntities();
         private IUnitOfWork unitOfWork;
         private IGetRow getRow;
 
@@ -32,10 +24,10 @@ namespace MSS_DEMO.Controllers
         {
             return View("~/Views/ImportDataDaily/Index.cshtml");
         }
-
         [HttpPost]
         public ActionResult UploadFiles()
         {
+            CSVConvert csv = new CSVConvert();
             string messageImport = null;
             HttpFileCollectionBase files = Request.Files;
             for (int i = 0; i < files.Count; i++)
@@ -47,9 +39,9 @@ namespace MSS_DEMO.Controllers
                     try
                     {
                         string fileExtension = Path.GetExtension(postedFile.FileName);
-                        if (fileExtension != ".xls" && fileExtension != ".xlsx" && fileExtension != ".csv")
+                        if (fileExtension != ".csv")
                         {
-                            messageImport = "Please select the excel file with .xls or .xlsx or .csv extension";
+                            messageImport = "Please select the excel file with .csv extension";
                             return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
                         }
                         else
@@ -63,10 +55,8 @@ namespace MSS_DEMO.Controllers
 
                                     while (!sreader.EndOfStream)
                                     {
-                                        string stringFormat = sreader.ReadLine();
-                                        string[] rows = stringFormat.Split(',');
-                                        Student_Specification_Log st = getRow.GetStudentSpec(rows);
-                                        unitOfWork.SpecificationsLog.Insert(st);
+                                        List<string> rows = csv.RegexRow(sreader);                                  
+                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows));
                                     }
                                 }
                                 else
@@ -75,11 +65,9 @@ namespace MSS_DEMO.Controllers
                                     string[] headers = sreader.ReadLine().Split(',');
                                     while (!sreader.EndOfStream)
                                     {
-                                        string stringFormat = sreader.ReadLine();
-                                        string[] rows = stringFormat.Split(',');
+                                        List<string> rows = csv.RegexRow(sreader);
                                         unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows));
                                     }
-
                                 }
                                 else
                                 {
@@ -111,6 +99,5 @@ namespace MSS_DEMO.Controllers
             return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
         }
     }
-
 }
 

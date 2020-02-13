@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<MSS_DEMO.Models.Subject>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Subject";
 }
-    <br />
-  <h2>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</h2>
-<hr/>
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>Subject</span>
+<hr />
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -20,19 +20,20 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Subject_ID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Subject_Name)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Subject_ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Subject_ID })
-    </td>
-</tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject_Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Subject_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Subject_ID })
+            </td>
+        </tr>
+    }
 
 </table>
