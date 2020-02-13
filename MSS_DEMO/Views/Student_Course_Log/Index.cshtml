@@ -4,7 +4,7 @@
     ViewBag.Title = "Usage Report";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home")>UsageReport</span>
+<span>@Html.ActionLink("Home", "Index", "Home") > Usage Report</span>
 <hr />
 <a href="ExportData/Index"><input type="button" class="waves-effect waves-light btn blue darken-1 blue" value="Import Usage Report" /></a>
 <br />
@@ -15,100 +15,102 @@
         <input type="submit" value="Clear All Data" />
     </p>
 }
-<hr />
-<table class="table">
-    <tr>
-        <th>
-            Roll
-        </th>
-        <th>
-            Course_Enrollment_Time
-        </th>
-        <th>
-            Course_Start_Time
-        </th>
-        <th>
-            Last_Course_Activity_Time
-        </th>
-        <th>
-            Overall_Progress
-        </th>
-        <th>
-            Estimated
-        </th>
-        <th>
-            Completed
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Program_Slug
-        </th>
-        <th>
-            Program_Name
-        </th>
-        <th>
-            Completion_Time
-        </th>
-        <th>
-            Course_Grade
-        </th>
-        <th>
-            Course_Name
-        </th>
-
-
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<br />
+<div class="table-responsive">
+    <table class="table table-bordered">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Roll)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course_Start_Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Overall_Progress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estimated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Completed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Program_Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Program_Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Completion_Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course_Grade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Course_Name)
-            </td>
+            <th>
+                Roll
+            </th>
+            <th>
+                Course_Enrollment_Time
+            </th>
+            <th>
+                Course_Start_Time
+            </th>
+            <th>
+                Last_Course_Activity_Time
+            </th>
+            <th>
+                Overall_Progress
+            </th>
+            <th>
+                Estimated
+            </th>
+            <th>
+                Completed
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Program_Slug
+            </th>
+            <th>
+                Program_Name
+            </th>
+            <th>
+                Completion_Time
+            </th>
+            <th>
+                Course_Grade
+            </th>
+            <th>
+                Course_Name
+            </th>
+
 
         </tr>
-    }
 
-</table>
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Roll)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course_Start_Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Overall_Progress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estimated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Completed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Program_Slug)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Program_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Completion_Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course_Grade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Course_Name)
+                </td>
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page }))
+            </tr>
+        }
+
+    </table>
+    </div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page }))

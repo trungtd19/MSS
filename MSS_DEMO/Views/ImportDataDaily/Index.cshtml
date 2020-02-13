@@ -2,6 +2,15 @@
 @{
     ViewBag.Title = "Import Data";
 }
+
+<br />
+<span>
+    @Html.ActionLink("Home", "Index", "Home") >
+    @Html.ActionLink("Usage Report", "Index", "Student_Course_Log") >
+    Import Usage Report
+</span>
+<hr />
+<h4>Import Data</h4>
 <div id='progress_container' class="hero-content">
     <div class="preloader-wrapper big active">
         <div class="spinner-layer spinner-blue-only" ">
@@ -95,9 +104,6 @@
         </div>
     </div>
 </div>
-
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection">
 <script>
     var formdata = new FormData(); //FormData object
     $(document).ready(function () {
@@ -116,10 +122,10 @@
         //            "\")'><span>Delete</span></a></td></tr>";
         //        $("#FilesList tbody").append(markup);
         //    }
-            //chkatchtbl();
-            ////$('#fileInput2').val(this.val());
-            //$('#fileInput').val('');
-     //   });
+        //chkatchtbl();
+        ////$('#fileInput2').val(this.val());
+        //$('#fileInput').val('');
+        //   });
         $('#progress_container').hide();
         $("#btnupload").click(function () {
             $('#progress_container').show();

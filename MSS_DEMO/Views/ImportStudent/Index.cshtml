@@ -2,12 +2,18 @@
 @{
     ViewBag.Title = "Index";
 }
-<br />
+<br/>
+@*<ul class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")</li>
+    <li>@Html.ActionLink("Student", "Index", "Students")</li>
+    <li>ImportStudent</li>
+</ul>*@
 <span>
-    @Html.ActionLink("Home", "Index", "Home")>
-    @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester")>
-    @Html.ActionLink("Student", "Index", "Students")>
-    ImportStudent
+    @Html.ActionLink("Home", "Index", "Home") >
+    @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") >
+    @Html.ActionLink("Student", "Index", "Students") >
+    Import Student
 </span>
 <hr />
 <h4>Import Student</h4>
