@@ -6,7 +6,7 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > Usage Report</span>
 <hr />
-<a href="ExportData/Index"><input type="button" class="waves-effect waves-light btn blue darken-1 blue" value="Import Usage Report" /></a>
+<a href="ExportData/Index"><input type="button" class="btn btn-sm" value="Import Usage Report" /></a>
 <br />
 <hr />
 @using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
@@ -15,6 +15,20 @@
         <input type="submit" value="Clear All Data" />
     </p>
 }
+<br />
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
+    {
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Search With ID" })
+        </div>
+        <div class="col-md-2">
+            <input class="btn btn-sm" type="submit" value="Search" />
+        </div>
+        <div class="col-md-6"></div>
+    }
+</div>
+<br />
 <br />
 <div class="table-responsive">
     <table class="table table-bordered">
@@ -109,7 +123,7 @@
         }
 
     </table>
-    </div>
+</div>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
     @Html.PagedListPager(Model, page => Url.Action("Index",

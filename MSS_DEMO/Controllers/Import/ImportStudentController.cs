@@ -34,7 +34,7 @@ namespace MSS_DEMO.Controllers
         }
 
         [HttpPost]
-        public ActionResult Import()//HttpPostedFileBase postedFile)
+        public ActionResult Import()
         {
             string messageImport = "";
             CSVConvert csv = new CSVConvert();

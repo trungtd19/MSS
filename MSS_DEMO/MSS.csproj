@@ -280,9 +280,11 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\favicon.ico" />
+    <Content Include="favicon.ico" />
     <Content Include="Content\materialize.min.css" />
+    <Content Include="Content\Scripts\jquery-3.4.1.js" />
     <Content Include="Content\Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Content\sweetalert.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Models\MSSModel.Context.tt">
@@ -363,6 +365,7 @@
     <Content Include="Views\Student_Specification_Log\Index.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Content\Scripts\sweetalert.min.js" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

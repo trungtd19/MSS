@@ -28,7 +28,7 @@ namespace MSS_DEMO.Controllers
         public ActionResult UploadFiles()
         {
             CSVConvert csv = new CSVConvert();
-            string messageImport = null;
+            string messageImport = "";
             HttpFileCollectionBase files = Request.Files;
             for (int i = 0; i < files.Count; i++)
             {
