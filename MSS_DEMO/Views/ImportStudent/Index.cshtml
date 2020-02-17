@@ -17,10 +17,12 @@
 </span>
 <hr />
 <h4>Import Student</h4>
+@Html.DropDownList("Semester_ID", null , htmlAttributes: new { @class = "form-control" })
+<br />
 <div class="container">
     <div class="tab-content">
         <div class="tab-pane active">
-            <div class="row">         
+            <div class="row">
                 <div class="form-group">
                     @Html.Label("File Upload", new { @class = "col-sm-3" })
                     <div class="col-sm-7">
@@ -42,9 +44,14 @@
 <script>
         $('#progress_container').hide();
         $("#btn").click(function () {
-           var formData = new FormData();
-           var file = document.getElementById("postedFile").files[0];
-           formData.append("FileUpload", file);
+           var selectSemester = $("#Semester_ID").val();
+            if (selectSemester == "None") {
+                  sweetAlert("Lỗi!","Choose semester please!", "error");
+            }
+            else {
+            var formData = new FormData();
+            var file = document.getElementById("postedFile").files[0];
+            formData.append("FileUpload", file);
             $('#progress_container').show();
             $.ajax({
                 url: '@Url.Action("Import","ImportStudent")',
@@ -59,10 +66,10 @@
                     }
                     else
                     sweetAlert("Lỗi!", data.message, "error");
-
-                }
-            }).done(function () {
-                $('#progress_container').hide();
-            });
+                 }
+                 }).done(function () {
+                    $('#progress_container').hide();
+                });
+            }         
         });
 </script>

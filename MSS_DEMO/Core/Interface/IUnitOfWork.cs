@@ -19,6 +19,7 @@ namespace MSS_DEMO.Repository
         StudentSpecificationLogRepository SpecificationsLog { get; }
         StudentCoursesLogRepository CoursesLog { get; }
         UserRepository User { get; }
+        SemestersRepository Semesters { get; }
         bool Save();
     }
 }

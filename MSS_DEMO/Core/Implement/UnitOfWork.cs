@@ -19,6 +19,7 @@ namespace MSS_DEMO.Repository
         private StudentSpecificationLogRepository SpecificationLogRepository;
         private StudentCoursesLogRepository CoursesLogRepository;
         private UserRepository UserRepository;
+        private SemestersRepository SemestersRepository;
         public StudentRepository Students
         {
             get
@@ -74,6 +75,13 @@ namespace MSS_DEMO.Repository
             get
             {
                 return CoursesLogRepository ?? (CoursesLogRepository = new StudentCoursesLogRepository(context));
+            }
+        }
+        public SemestersRepository Semesters
+        {
+            get
+            {
+                return SemestersRepository ?? (SemestersRepository = new SemestersRepository(context));
             }
         }
         public bool Save()
