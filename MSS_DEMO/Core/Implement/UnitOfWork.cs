@@ -18,11 +18,20 @@ namespace MSS_DEMO.Repository
         private CoursesRepository CoursesRepository;
         private StudentSpecificationLogRepository SpecificationLogRepository;
         private StudentCoursesLogRepository CoursesLogRepository;
+        private UserRepository UserRepository;
         public StudentRepository Students
         {
             get
             {
                 return StudentRepository ?? (StudentRepository = new StudentRepository(context));
+            }
+        }
+
+        public UserRepository User
+        {
+            get
+            {
+                return UserRepository ?? (UserRepository = new UserRepository(context));
             }
         }
         public CampusRepository Campus
