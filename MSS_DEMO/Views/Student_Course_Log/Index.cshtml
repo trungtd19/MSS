@@ -78,6 +78,8 @@
 
         @foreach (var item in Model)
         {
+            var complete = item.Completed == true ? "Yes" : "No";
+            var status = item.Status == true ? "Yes" : "No";
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Roll)
@@ -98,10 +100,10 @@
                     @Html.DisplayFor(modelItem => item.Estimated)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Completed)
+                    @complete
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @status
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Program_Slug)

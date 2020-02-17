@@ -183,8 +183,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\StudentCoursesLogRepository.cs" />
     <Compile Include="Core\Implement\StudentSpecificationLogRepository.cs" />
+    <Compile Include="Core\Implement\UserRepository.cs" />
     <Compile Include="Core\Import\CSVConvert.cs" />
     <Compile Include="IoC\UnityDI.cs" />
     <Compile Include="Controllers\ImportDemo.cs" />
@@ -215,6 +217,9 @@
     <Compile Include="Models\Campu.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Certificate.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Class.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -222,6 +227,9 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Course.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Course_Deadline.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Mentor.cs">
@@ -267,6 +275,9 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -287,29 +298,12 @@
     <Content Include="Content\sweetalert.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\MSSModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MSSModel.edmx</DependentUpon>
-      <LastGenOutput>MSSModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\MSSModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MSSModel.edmx</DependentUpon>
-      <LastGenOutput>MSSModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Content\Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Content\Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Content\Scripts\bootstrap.js" />
     <Content Include="Content\Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="Models\MSSModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\MSSModel.edmx.diagram">
-      <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
@@ -323,6 +317,16 @@
     <Content Include="Content\Scripts\respond.js" />
     <Content Include="Content\Scripts\respond.min.js" />
     <Content Include="Content\Scripts\_references.js" />
+    <Content Include="Models\MSSModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MSSModel.edmx</DependentUpon>
+      <LastGenOutput>MSSModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\MSSModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MSSModel.edmx</DependentUpon>
+      <LastGenOutput>MSSModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -366,6 +370,18 @@
     <Content Include="Views\Students\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Content\Scripts\sweetalert.min.js" />
+    <Content Include="Views\User_Role\Create.cshtml" />
+    <Content Include="Views\User_Role\Delete.cshtml" />
+    <Content Include="Views\User_Role\Details.cshtml" />
+    <Content Include="Views\User_Role\Edit.cshtml" />
+    <Content Include="Views\User_Role\Index.cshtml" />
+    <EntityDeploy Include="Models\MSSModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\MSSModel.edmx.diagram">
+      <DependentUpon>MSSModel.edmx</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
