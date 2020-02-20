@@ -184,8 +184,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
+    <Compile Include="Core\Implement\ClassStudentRepository.cs" />
     <Compile Include="Core\Implement\StudentCoursesLogRepository.cs" />
     <Compile Include="Core\Implement\StudentSpecificationLogRepository.cs" />
+    <Compile Include="Core\Implement\SubjectStudentRepository.cs" />
     <Compile Include="Core\Implement\UserRepository.cs" />
     <Compile Include="Core\Import\CSVConvert.cs" />
     <Compile Include="IoC\UnityDI.cs" />
