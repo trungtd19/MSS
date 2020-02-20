@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using PagedList;
@@ -31,6 +32,7 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public void Export_Student_CSV()
         {
+            CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             IEnumerable<Student> query = unitOfWork.Students.GetAll();
             var list = query.ToList();
@@ -40,7 +42,7 @@ namespace MSS_DEMO.Controllers.SetUp
             sb.Append(Environment.NewLine);
             foreach (var item in list)
             {
-                sb.Append(string.Join(",", item.Roll, item.Email));
+                sb.Append(string.Join(",", csv.AddCSVQuotes(item.Roll), csv.AddCSVQuotes(item.Email)));
                 sb.Append(Environment.NewLine);            
             }
             var response = System.Web.HttpContext.Current.Response;
@@ -53,6 +55,5 @@ namespace MSS_DEMO.Controllers.SetUp
             response.Write(sb.ToString());
             response.End();
         }
-      
     }
 }

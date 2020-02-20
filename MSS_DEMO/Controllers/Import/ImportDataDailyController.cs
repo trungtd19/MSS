@@ -30,6 +30,11 @@ namespace MSS_DEMO.Controllers
             CSVConvert csv = new CSVConvert();
             string messageImport = "";
             HttpFileCollectionBase files = Request.Files;
+            if (files.Count == 0)
+            {
+                messageImport = "Please select the file first to upload!";
+                return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
+            }
             for (int i = 0; i < files.Count; i++)
             {
                 HttpPostedFileBase postedFile = files[i];
@@ -71,7 +76,7 @@ namespace MSS_DEMO.Controllers
                                 }
                                 else
                                 {
-                                    messageImport = "File không chuẩn!";
+                                    messageImport = "Please choose Specialization-report file or Usage-report file!";
                                     return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
                                 }
                             }
@@ -93,7 +98,7 @@ namespace MSS_DEMO.Controllers
                 }
                 else
                 {
-                    messageImport = "Please select the file first to upload.";
+                    messageImport = "Please select the file first to upload!";
                 }
             }
             return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
