@@ -30,6 +30,14 @@ namespace MSS_DEMO.Controllers
 
         public ActionResult Index()
         {
+            List<Semester> semester = unitOfWork.Semesters.GetAll();
+            List<Semester> _semester = new List<Semester>();
+            _semester.Add(new Semester { Semester_ID = "None", Semester_Name = "--- Choose Semester ---" });
+            foreach (var sem in semester)
+            {
+                _semester.Add(sem);
+            }
+            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
             return View();
         }
 
