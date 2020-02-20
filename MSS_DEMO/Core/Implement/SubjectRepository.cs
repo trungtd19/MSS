@@ -13,6 +13,31 @@ namespace MSS_DEMO.Core.Implement
            : base(context)
         {
         }
+        public bool IsExitsSubject(string id)
+        {
+            bool check = true;
+            Subject subject = context.Subjects.Where(x => x.Subject_ID == id).FirstOrDefault();
+            if (subject != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
+        public bool CheckExitsSubject(string id)
+        {
+            bool check = true;
+            Subject subject = context.Subjects.Where(x => x.Subject_ID == id).FirstOrDefault();
+            if (subject == null)
+            {
+                check = false;
+                throw new Exception("Môn học " + id + " không tồn tại!");
+            }
+            else
+                check = true;
+            return check;
+        }
     }
 
 }

@@ -49,9 +49,11 @@
                   sweetAlert("Lỗi!","Choose semester please!", "error");
             }
             else {
+            var semester = $("#Semester_ID").val();
             var formData = new FormData();
             var file = document.getElementById("postedFile").files[0];
-            formData.append("FileUpload", file);
+                formData.append("FileUpload", file);
+                formData.append("Semester", semester);
             $('#progress_container').show();
             $.ajax({
                 url: '@Url.Action("Import","ImportStudent")',

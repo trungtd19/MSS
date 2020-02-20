@@ -22,7 +22,7 @@ namespace MSS_DEMO.Controllers
     {
         private IUnitOfWork unitOfWork;
         private IGetRow getRow;
-        public ImportStudentController(IUnitOfWork _unitOfWork,IGetRow _getRow)
+        public ImportStudentController(IUnitOfWork _unitOfWork, IGetRow _getRow)
         {
             this.unitOfWork = _unitOfWork;
             this.getRow = _getRow;
@@ -49,6 +49,7 @@ namespace MSS_DEMO.Controllers
             try
             {
                 HttpPostedFileBase postedFile = Request.Files[0];
+                string semester = Request["Semester"];
                 if (postedFile != null)
                 {
                     try
@@ -67,40 +68,32 @@ namespace MSS_DEMO.Controllers
                                 while (!sreader.EndOfStream)
                                 {
                                     List<string> rows = csv.RegexRow(sreader);
-
-                                    //var classes = context.Classes.Find(GetClassStudent(rows).Class_ID);
-                                    // var subject = context.Subjects.Find(GetSubjectStudent(rows).Subject_ID);
-
-                                    //if (context.Students.Find(GetStudent(rows).Roll) != null
-                                    //    && context.Subjects.Find(GetSubjectStudent(rows).Subject_ID) == null)
+                                    //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID) 
+                                    //    || !unitOfWork.Subject.CheckExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
                                     //{
-                                    //    context.Subject_Student.Add(GetSubjectStudent(rows));
-                                    //    //context.Class_Student.Add(GetClassStudent(rows));
-                                    //}
-                                    //else
-                                    //var x = unitOfWork.Students.GetById(GetStudent(rows).Roll);
-                                    var x = unitOfWork.Students.CheckExits(getRow.GetStudent(rows).Roll);
-                                    if (x == null)
-                                    {
-                                        unitOfWork.Students.Insert(getRow.GetStudent(rows));
-                                        //   context.Subject_Student.Add(GetSubjectStudent(rows));
-                                        //  context.Class_Student.Add(GetClassStudent(rows));
-                                    }
-                                    else
-                                    {
-                                        messageImport = "ROll exits";
-                                        return Json(new { message = messageImport });
-                                    }
+                                        //if (unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll)
+                                        //    && !unitOfWork.Students.IsExitsSubject(getRow.GetSubject(rows).Subject_ID))
+                                        //{                                 
+                                        //unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
+                                        //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
+                                        //}
+                                        //else
+                                        if (!unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll))
+                                        {
+                                            unitOfWork.Students.Insert(getRow.GetStudent(rows));
+                                            //unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
+                                            //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
+                                        }
+                                 //   }                                                               
                                 }
-                                unitOfWork.Save();
-                                if (unitOfWork.Save())
-                                {
-                                    messageImport = "Import successfull!";
-                                }
-                                else
-                                {
-                                    messageImport = "Exception!";
-                                }
+                            }
+                            if (unitOfWork.Save())
+                            {
+                                messageImport = "Import successfull!";
+                            }
+                            else
+                            {
+                                messageImport = "Import Fail!";
                             }
                         }
                         catch (Exception ex)
@@ -124,6 +117,6 @@ namespace MSS_DEMO.Controllers
                 messageImport = "Please select the file first to upload.";
             }
             return Json(new { message = messageImport });
-        }    
+        }
     }
 }

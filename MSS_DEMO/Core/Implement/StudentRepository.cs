@@ -15,24 +15,26 @@ namespace MSS_DEMO.Repository
         public List<Student> GetPageList()
         {
             List<Student> student = new List<Student>();
-            using (MSSEntities db = new MSSEntities())
-            {
-                student = (from o in db.Students
+
+                student = (from o in context.Students
                           orderby o.Roll ascending
                           select o)                      
                           .ToList();
 
                 return student;
-            }
 
         }
-        public Student CheckExits(string id)
+        public bool CheckExitsStudent(string id)
         {
-            using (MSSEntities db = new MSSEntities())
+            bool check = true;
+            Student student = context.Students.Where(x => x.Roll == id).FirstOrDefault();
+            if (student != null)
             {
-                Student student = db.Students.Where(x => x.Roll == id).FirstOrDefault();
-                return student;
+                throw new Exception("Sinh viên " + id + " đã tồn tại!");
             }
+            else
+                check = false;
+            return check;
         }
     }
 }

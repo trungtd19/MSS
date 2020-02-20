@@ -20,6 +20,9 @@ namespace MSS_DEMO.Repository
         private StudentCoursesLogRepository CoursesLogRepository;
         private UserRepository UserRepository;
         private SemestersRepository SemestersRepository;
+        private ClassStudentRepository ClassStudentRepository;
+        private SubjectStudentRepository SubjectStudentRepository;
+        private ClassRepository ClassRepository;
         public StudentRepository Students
         {
             get
@@ -84,6 +87,28 @@ namespace MSS_DEMO.Repository
                 return SemestersRepository ?? (SemestersRepository = new SemestersRepository(context));
             }
         }
+        public ClassStudentRepository ClassStudent
+        {
+            get
+            {
+                return ClassStudentRepository ?? (ClassStudentRepository = new ClassStudentRepository(context));
+            }
+        }
+        public SubjectStudentRepository SubjectStudent
+        {
+            get
+            {
+                return SubjectStudentRepository ?? (SubjectStudentRepository = new SubjectStudentRepository(context));
+            }
+        }
+
+        public ClassRepository Classes
+        {
+            get
+            {
+                return ClassRepository ?? (ClassRepository = new ClassRepository(context));
+            }
+        }
         public bool Save()
         {
             bool returnValue = true;
@@ -95,12 +120,12 @@ namespace MSS_DEMO.Repository
                     dbContextTransaction.Commit();
                 }
                 catch (Exception)
-                {                   
+                {
                     returnValue = false;
                     dbContextTransaction.Rollback();
                 }
             }
             return returnValue;
-        }   
+        }
     }
 }

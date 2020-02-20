@@ -12,13 +12,10 @@ namespace MSS_DEMO.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User_Role
+    public partial class Course_Deadline
     {
-        public int User_ID { get; set; }
-        public string Role_ID { get; set; }
-        public string Login { get; set; }
-        public string isActive { get; set; }
-    
-        public virtual Role Role { get; set; }
+        public string Semester_Name { get; set; }
+        public string Course_Name { get; set; }
+        public System.DateTime Deadline { get; set; }
     }
 }
