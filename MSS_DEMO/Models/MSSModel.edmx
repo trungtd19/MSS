@@ -14,6 +14,20 @@
           <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Contact_Point" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MSS.dbo.Certificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="Certificate_ID" />
+            <PropertyRef Name="Link" />
+            <PropertyRef Name="Date_Submit" />
+            <PropertyRef Name="Roll" />
+          </Key>
+          <Property Name="Certificate_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Link" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Date_Submit" Type="datetime" Nullable="false" />
+          <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="Class_ID" />
@@ -42,6 +56,18 @@
           <Property Name="Course_Name" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Course_Slug" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Course_Deadline">
+          <Key>
+            <PropertyRef Name="Semester_Name" />
+            <PropertyRef Name="Course_Name" />
+            <PropertyRef Name="Deadline" />
+          </Key>
+          <Property Name="Semester_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Course_Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Deadline" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Mentor">
           <Key>
@@ -139,15 +165,37 @@
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="User_Role">
           <Key>
             <PropertyRef Name="User_ID" />
           </Key>
-          <Property Name="User_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Role_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="isActive" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Certificate_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Roll" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Roll" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Class_Campus">
           <End Role="Campus" Type="Self.Campus" Multiplicity="0..1" />
           <End Role="Class" Type="Self.Class" Multiplicity="*" />
@@ -330,7 +378,27 @@
           <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Certificate" EntityType="Self.Certificate" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Certificate].[Certificate_ID] AS [Certificate_ID], 
+    [Certificate].[Link] AS [Link], 
+    [Certificate].[Date_Submit] AS [Date_Submit], 
+    [Certificate].[Roll] AS [Roll]
+    FROM [dbo].[Certificate] AS [Certificate]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Course_Deadline" EntityType="Self.Course_Deadline" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Course_Deadline].[Semester_Name] AS [Semester_Name], 
+    [Course_Deadline].[Course_Name] AS [Course_Name], 
+    [Course_Deadline].[Deadline] AS [Deadline]
+    FROM [dbo].[Course_Deadline] AS [Course_Deadline]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
           <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Class" EntitySet="Class" />
@@ -488,6 +556,7 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Student" FromRole="Student" ToRole="Class_Student" />
+          <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificate_Student" FromRole="Student" ToRole="Certificate" />
           <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student" ToRole="Student_Course_Log" />
           <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student" ToRole="Student_Specification_Log" />
           <NavigationProperty Name="Subject_Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Student" ToRole="Subject_Student" />
@@ -554,15 +623,48 @@
           <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Subject_Student" ToRole="Student" />
           <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject_Student" ToRole="Subject" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="User_Role">
           <Key>
             <PropertyRef Name="User_ID" />
           </Key>
-          <Property Name="User_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Role_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="isActive" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role_Role" FromRole="User_Role" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="Certificate_ID" />
+            <PropertyRef Name="Link" />
+            <PropertyRef Name="Date_Submit" />
+            <PropertyRef Name="Roll" />
+          </Key>
+          <Property Name="Certificate_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Link" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date_Submit" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Certificate_Student" FromRole="Certificate" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Course_Deadline">
+          <Key>
+            <PropertyRef Name="Semester_Name" />
+            <PropertyRef Name="Course_Name" />
+            <PropertyRef Name="Deadline" />
+          </Key>
+          <Property Name="Semester_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Course_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK_Class_Campus">
           <End Role="Campus" Type="Self.Campu" Multiplicity="0..1" />
@@ -684,6 +786,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Certificate_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Roll" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Roll" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Course_Log_Student">
           <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
@@ -746,7 +860,10 @@
           <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" />
           <EntitySet Name="Subjects" EntityType="Self.Subject" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" />
+          <EntitySet Name="Certificates" EntityType="Self.Certificate" />
+          <EntitySet Name="Course_Deadline" EntityType="Self.Course_Deadline" />
           <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Class" EntitySet="Classes" />
@@ -786,6 +903,10 @@
           <AssociationSet Name="FK_Student_Specification_Log_Specification" Association="Self.FK_Student_Specification_Log_Specification">
             <End Role="Specification" EntitySet="Specifications" />
             <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Certificate" EntitySet="Certificates" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_Course_Log_Student" Association="Self.FK_Student_Course_Log_Student">
             <End Role="Student" EntitySet="Students" />
@@ -957,6 +1078,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MSSModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="User_Role">
             <EntityTypeMapping TypeName="MSSModel.User_Role">
               <MappingFragment StoreEntitySet="User_Role">
@@ -964,6 +1096,25 @@
                 <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Certificates">
+            <EntityTypeMapping TypeName="MSSModel.Certificate">
+              <MappingFragment StoreEntitySet="Certificate">
+                <ScalarProperty Name="Certificate_ID" ColumnName="Certificate_ID" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Date_Submit" ColumnName="Date_Submit" />
+                <ScalarProperty Name="Roll" ColumnName="Roll" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Course_Deadline">
+            <EntityTypeMapping TypeName="MSSModel.Course_Deadline">
+              <MappingFragment StoreEntitySet="Course_Deadline">
+                <ScalarProperty Name="Semester_Name" ColumnName="Semester_Name" />
+                <ScalarProperty Name="Course_Name" ColumnName="Course_Name" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

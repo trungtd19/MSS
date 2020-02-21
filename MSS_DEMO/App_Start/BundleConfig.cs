@@ -28,6 +28,7 @@ namespace MSS_DEMO
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/HoldOn.css",
                       "~/Content/materialize.min.css",
                       "~/Content/sweetalert.css",
                       "~/Content/site.css"));

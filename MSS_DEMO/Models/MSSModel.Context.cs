@@ -38,6 +38,9 @@ namespace MSS_DEMO.Models
         public virtual DbSet<Student_Specification_Log> Student_Specification_Log { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<Subject_Student> Subject_Student { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User_Role> User_Role { get; set; }
+        public virtual DbSet<Certificate> Certificates { get; set; }
+        public virtual DbSet<Course_Deadline> Course_Deadline { get; set; }
     }
 }

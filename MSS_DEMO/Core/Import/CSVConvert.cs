@@ -25,5 +25,13 @@ namespace MSS_DEMO.Core.Import
                        .Select(m => RemoveCSVQuotes(m.Value).Replace('|', '¦'))
                        .ToList<string>();
         }
+        public string AddCSVQuotes(string item)
+        {
+            if (item.Contains(","))
+            {
+                item = @"""" + item + @"""";
+            }
+            return item;
+        }
     }
 }

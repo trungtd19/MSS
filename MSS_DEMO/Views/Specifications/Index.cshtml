@@ -26,6 +26,7 @@
 
     @foreach (var item in Model)
     {
+        var check = item.Is_Real_Specification == true ? "Yes" : "No";
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Specification_ID)
@@ -34,7 +35,7 @@
                 @Html.DisplayFor(modelItem => item.Specification_Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Is_Real_Specification)
+                @check
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Specification_ID }) |

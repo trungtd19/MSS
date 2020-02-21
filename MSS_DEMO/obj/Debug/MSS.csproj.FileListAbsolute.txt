@@ -73,4 +73,3 @@ C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS.csproj.CoreCompileInputs.cache
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS.csproj.CopyComplete
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.dll
 C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS_DEMO.pdb
-C:\Users\asus\Desktop\MSS\MSS_DEMO\obj\Debug\MSS.csprojAssemblyReference.cache

@@ -1,7 +1,8 @@
 ﻿@model MSS_DEMO.Models.Report
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <!DOCTYPE html>
@@ -17,8 +18,8 @@
     <div>
         @if (Model.Info.Count > 0)
         {
-        <h2>Tổng số SV: @ViewBag.Total1</h2>
-        <table border="1">
+        <h4>Tổng số SV: @ViewBag.Total1</h4>
+        <table class="table table-bordered">
             <tr>
                 <th>Sub</th>
                 <th>Name</th>
@@ -48,8 +49,8 @@
     <div>
         @if (Model.Info2.Count > 0 && Model.Info3.Count > 0)
         {
-        <h2>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.Total2</h2>
-        <table border="1">
+        <h4>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.Total2</h4>
+        <table class="table table-bordered">
             <tr>
                 <th>Sub</th>
                 <th>Name</th>
@@ -90,7 +91,7 @@
         </table>
         }
     </div>
-    <h3>@ViewBag.Complete sinh viên đã hoàn thành khóa học bắt buộc</h3>
+    <h4>@ViewBag.Complete sinh viên đã hoàn thành khóa học bắt buộc</h4>
     }
 </body>
 </html>

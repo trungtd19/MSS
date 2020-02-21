@@ -18,12 +18,24 @@ namespace MSS_DEMO.Repository
         private CoursesRepository CoursesRepository;
         private StudentSpecificationLogRepository SpecificationLogRepository;
         private StudentCoursesLogRepository CoursesLogRepository;
+        private UserRepository UserRepository;
         private SemestersRepository SemestersRepository;
+        private ClassStudentRepository ClassStudentRepository;
+        private SubjectStudentRepository SubjectStudentRepository;
+        private ClassRepository ClassRepository;
         public StudentRepository Students
         {
             get
             {
                 return StudentRepository ?? (StudentRepository = new StudentRepository(context));
+            }
+        }
+
+        public UserRepository User
+        {
+            get
+            {
+                return UserRepository ?? (UserRepository = new UserRepository(context));
             }
         }
         public CampusRepository Campus
@@ -75,6 +87,28 @@ namespace MSS_DEMO.Repository
                 return SemestersRepository ?? (SemestersRepository = new SemestersRepository(context));
             }
         }
+        public ClassStudentRepository ClassStudent
+        {
+            get
+            {
+                return ClassStudentRepository ?? (ClassStudentRepository = new ClassStudentRepository(context));
+            }
+        }
+        public SubjectStudentRepository SubjectStudent
+        {
+            get
+            {
+                return SubjectStudentRepository ?? (SubjectStudentRepository = new SubjectStudentRepository(context));
+            }
+        }
+
+        public ClassRepository Classes
+        {
+            get
+            {
+                return ClassRepository ?? (ClassRepository = new ClassRepository(context));
+            }
+        }
         public bool Save()
         {
             bool returnValue = true;
@@ -86,12 +120,12 @@ namespace MSS_DEMO.Repository
                     dbContextTransaction.Commit();
                 }
                 catch (Exception)
-                {                   
+                {
                     returnValue = false;
                     dbContextTransaction.Rollback();
                 }
             }
             return returnValue;
-        }   
+        }
     }
 }
