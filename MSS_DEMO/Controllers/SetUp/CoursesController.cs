@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
+using PagedList;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
@@ -20,9 +21,27 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public ActionResult Index()
         {
-            return View(unitOfWork.Courses.GetAll());
+            List<Course> LogList = new List<Course>();
+            return View(LogList.ToList().ToPagedList(1, 1));
         }
+        [HttpPost]
+        public ActionResult Index(int? page, string SearchString)
+        {
+            List<Course> LogList = unitOfWork.Courses.GetPageList();
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                LogList = LogList.Where(s => s.Course_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
 
+        }
+        public ActionResult Details(string id)
+        {
+            var Courses = unitOfWork.Courses.GetById(id);
+            return View(Courses);
+        }
         public ActionResult Create()
         {
             List<Specification> spec = new List<Specification>();

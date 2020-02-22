@@ -13,6 +13,20 @@ namespace MSS_DEMO.Core.Implement
            : base(context)
         {
         }
+        public List<Subject> GetPageList()
+        {
+            List<Subject> cour = new List<Subject>();
+            using (MSSEntities db = new MSSEntities())
+            {
+                cour = (from o in db.Subjects
+                        orderby o.Subject_ID descending
+                        select o)
+                          .ToList();
+
+                return cour;
+            }
+
+        }
         public bool IsExitsSubject(string id)
         {
             bool check = true;

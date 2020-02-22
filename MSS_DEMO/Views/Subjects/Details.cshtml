@@ -1,0 +1,36 @@
+﻿@model MSS_DEMO.Models.Subject
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Semester</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject_Name)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Subject_ID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Subject_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -191,7 +191,6 @@
     <Compile Include="Core\Implement\UserRepository.cs" />
     <Compile Include="Core\Import\CSVConvert.cs" />
     <Compile Include="IoC\UnityDI.cs" />
-    <Compile Include="Controllers\ImportDemo.cs" />
     <Compile Include="Controllers\Log\Student_Course_LogController.cs" />
     <Compile Include="Controllers\Log\Student_Specification_LogController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -386,6 +385,10 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Subjects\Details.cshtml" />
+    <Content Include="Views\Campus\Details.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Specifications\Details.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

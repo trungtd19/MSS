@@ -7,121 +7,77 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
+using MSS_DEMO.Repository;
 
 namespace MSS_DEMO.Controllers
 {
     public class SemestersController : Controller
     {
-        private MSSEntities db = new MSSEntities();
-
-        // GET: Semesters
+        private IUnitOfWork unitOfWork;
+        public SemestersController(IUnitOfWork _unitOfWork)
+        {
+            this.unitOfWork = _unitOfWork;
+        }
         public ActionResult Index()
         {
-            return View(db.Semesters.ToList());
+            return View(unitOfWork.Semesters.GetAll());
         }
 
-        // GET: Semesters/Details/5
         public ActionResult Details(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Semester semester = db.Semesters.Find(id);
-            if (semester == null)
-            {
-                return HttpNotFound();
-            }
+            var semester = unitOfWork.Semesters.GetById(id);
             return View(semester);
         }
 
-        // GET: Semesters/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Semesters/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Semester_ID,Semester_Name,Start_Date,End_Date")] Semester semester)
         {
             if (ModelState.IsValid)
             {
-                db.Semesters.Add(semester);
-                db.SaveChanges();
+                unitOfWork.Semesters.Insert(semester);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
             return View(semester);
         }
-
-        // GET: Semesters/Edit/5
         public ActionResult Edit(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Semester semester = db.Semesters.Find(id);
-            if (semester == null)
-            {
-                return HttpNotFound();
-            }
+            var semester = unitOfWork.Semesters.GetById(id);
             return View(semester);
         }
-
-        // POST: Semesters/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Semester_ID,Semester_Name,Start_Date,End_Date")] Semester semester)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(semester).State = EntityState.Modified;
-                db.SaveChanges();
+                unitOfWork.Semesters.Update(semester);
+                unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(semester);
         }
 
-        // GET: Semesters/Delete/5
         public ActionResult Delete(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Semester semester = db.Semesters.Find(id);
-            if (semester == null)
-            {
-                return HttpNotFound();
-            }
+            var semester = unitOfWork.Semesters.GetById(id);
             return View(semester);
         }
 
-        // POST: Semesters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Semester semester = db.Semesters.Find(id);
-            db.Semesters.Remove(semester);
-            db.SaveChanges();
+            var semester = unitOfWork.Semesters.GetById(id);
+            unitOfWork.Semesters.Delete(semester);
+            unitOfWork.Save();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

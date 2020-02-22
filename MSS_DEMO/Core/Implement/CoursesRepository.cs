@@ -13,6 +13,20 @@ namespace MSS_DEMO.Core.Components
            : base(context)
         {
         }
+        public List<Course> GetPageList()
+        {
+            List<Course> cour = new List<Course>();
+            using (MSSEntities db = new MSSEntities())
+            {
+                cour = (from o in db.Courses
+                           orderby o.Course_ID descending
+                           select o)
+                          .ToList();
+
+                return cour;
+            }
+
+        }
     }
  
 }

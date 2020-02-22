@@ -17,65 +17,67 @@
 }
 <br />
 <div class="form-group">
-    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
+    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Post))
     {
         <div class="col-md-2">
             @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Search With ID" })
         </div>
         <div class="col-md-2">
+            @Html.TextBox("ImportDate", "", new { @class = "form-control", @type = "date",  @placeholder = "Search Import Date" })
+        </div>
+        <div class="col-md-2">
             <input class="btn btn-sm" type="submit" value="Search" />
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-4"></div>
     }
 </div>
 <br />
 <br />
-<div class="table-responsive">
+<div class="panel-body table-responsive">
     <table class="table table-bordered">
-        <tr>
-            <th>
-                Roll
-            </th>
-            <th>
-                Course_Enrollment_Time
-            </th>
-            <th>
-                Course_Start_Time
-            </th>
-            <th>
-                Last_Course_Activity_Time
-            </th>
-            <th>
-                Overall_Progress
-            </th>
-            <th>
-                Estimated
-            </th>
-            <th>
-                Completed
-            </th>
-            <th>
-                Status
-            </th>
-            <th>
-                Program_Slug
-            </th>
-            <th>
-                Program_Name
-            </th>
-            <th>
-                Completion_Time
-            </th>
-            <th>
-                Course_Grade
-            </th>
-            <th>
-                Course_Name
-            </th>
-
-
-        </tr>
-
+        <thead>
+            <tr>
+                <th>
+                    Roll
+                </th>
+                <th>
+                    Enrollment Time
+                </th>
+                <th>
+                    Start Time
+                </th>
+                <th>
+                    Last ActivityTime
+                </th>
+                <th>
+                    Overall Progress
+                </th>
+                <th>
+                    Estimated
+                </th>
+                <th>
+                    Completed
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Program Slug
+                </th>
+                <th>
+                    Program Name
+                </th>
+                <th>
+                    Completion Time
+                </th>
+                <th>
+                    Course Grade
+                </th>
+                <th>
+                    Course Name
+                </th>
+            </tr>
+        </thead>
         @foreach (var item in Model)
         {
             var complete = item.Completed == true ? "Yes" : "No";
@@ -127,6 +129,5 @@
     </table>
 </div>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
     @Html.PagedListPager(Model, page => Url.Action("Index",
         new { page }))

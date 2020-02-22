@@ -19,6 +19,12 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
+        public ActionResult Index()
+        {
+            List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
+            return View(LogList.ToList().ToPagedList(1,1));
+        }
+        [HttpPost]
         public ActionResult Index(int? page, string SearchString)
         {
             List<Student_Specification_Log> LogList = unitOfWork.SpecificationsLog.GetPageList();

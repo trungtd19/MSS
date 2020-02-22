@@ -19,17 +19,22 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
+        public ActionResult Index()
+        {
+            List<Student_Course_Log> LogList = new List<Student_Course_Log>();
+            return View(LogList.ToList().ToPagedList(1, 1));
+        }
+        [HttpPost]
         public ActionResult Index(int? page, string SearchString)
         {
             List<Student_Course_Log> LogList = unitOfWork.CoursesLog.GetPageList();
             if (!String.IsNullOrEmpty(SearchString))
             {
                 LogList = LogList.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();
-            }
+            }      
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
-
         }
         public ActionResult DeleteAll()
         {
