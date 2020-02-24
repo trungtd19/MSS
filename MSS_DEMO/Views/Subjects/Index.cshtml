@@ -7,10 +7,11 @@
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Subject</span>
 <hr />
 <div class="form-group">
-    @using (Html.BeginForm("Index", "Subjects", FormMethod.Post))
+    @using (Html.BeginForm("Index", "Subjects", FormMethod.Get))
     {
         <div class="col-md-2">
-            @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-1">
             <input class="btn btn-sm" type="submit" value="Search" />
@@ -23,31 +24,37 @@
 </div>
 <br />
 <br />
-<table class="table table-bordered">
-    <tr>
-        <th>
-            Subject ID
-        </th>
-        <th>
-            Subject Name
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@if (Model.PageCount != 0)
+{
+    <table class="table table-bordered">
         <tr>
-            <td>
-                @Html.ActionLink(item.Subject_ID, "Details", new { id = item.Subject_ID })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject_Name)
-            </td>
-
+            <th>
+                Subject ID
+            </th>
+            <th>
+                Subject Name
+            </th>
         </tr>
-    }
 
-</table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Subject_ID, "Details", new { id = item.Subject_ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject_Name)
+                </td>
 
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page }))
+            </tr>
+        }
+
+    </table>
+
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+   new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

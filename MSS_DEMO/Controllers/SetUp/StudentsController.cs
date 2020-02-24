@@ -18,12 +18,26 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             this.unitOfWork = _unitOfWork;           
         }
-        public ActionResult Index(int? page, string SearchString)
+
+        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
         {
-            List<Student> students = unitOfWork.Students.GetPageList();
-            if (!String.IsNullOrEmpty(SearchString))
+            List<Student> students = new List<Student>();
+            if (SearchString != null)
             {
-                students = students.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();                                 
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = SearchString;
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                students = unitOfWork.Students.GetPageList();
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    students = students.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
             }
             int pageSize = 10;
             int pageNumber = (page ?? 1);

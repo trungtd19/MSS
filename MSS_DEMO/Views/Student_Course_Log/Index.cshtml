@@ -6,7 +6,7 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > Usage Report</span>
 <hr />
-<a href="ExportData/Index"><input type="button" class="btn btn-sm" value="Import Usage Report" /></a>
+<a href="ExportData/Index"><input type="button" class="btn btn-default" value="Import Usage Report" /></a>
 <br />
 <hr />
 @using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
@@ -17,117 +17,123 @@
 }
 <br />
 <div class="form-group">
-    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Post))
+    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
     {
         <div class="col-md-2">
-            @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-2">
-            @Html.TextBox("ImportDate", "", new { @class = "form-control", @type = "date",  @placeholder = "Search Import Date" })
+            @Html.TextBox("ImportDate", "", new { @class = "form-control", @type = "date", @placeholder = "Search Import Date" })
         </div>
         <div class="col-md-2">
-            <input class="btn btn-sm" type="submit" value="Search" />
+            <input class="btn btn-default" type="submit" value="Search" />
         </div>
         <div class="col-md-4"></div>
     }
 </div>
 <br />
 <br />
-<div class="panel-body table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>
-                    Roll
-                </th>
-                <th>
-                    Enrollment Time
-                </th>
-                <th>
-                    Start Time
-                </th>
-                <th>
-                    Last ActivityTime
-                </th>
-                <th>
-                    Overall Progress
-                </th>
-                <th>
-                    Estimated
-                </th>
-                <th>
-                    Completed
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Program Slug
-                </th>
-                <th>
-                    Program Name
-                </th>
-                <th>
-                    Completion Time
-                </th>
-                <th>
-                    Course Grade
-                </th>
-                <th>
-                    Course Name
-                </th>
-            </tr>
-        </thead>
-        @foreach (var item in Model)
-        {
-            var complete = item.Completed == true ? "Yes" : "No";
-            var status = item.Status == true ? "Yes" : "No";
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Roll)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course_Start_Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Overall_Progress)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estimated)
-                </td>
-                <td>
-                    @complete
-                </td>
-                <td>
-                    @status
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Program_Slug)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Program_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Completion_Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course_Grade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course.Course_Name)
-                </td>
+@if (Model.PageCount != 0)
+{
+    <div class="panel-body table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Roll
+                    </th>
+                    <th>
+                        Enrollment Time
+                    </th>
+                    <th>
+                        Start Time
+                    </th>
+                    <th>
+                        Last ActivityTime
+                    </th>
+                    <th>
+                        Overall Progress
+                    </th>
+                    <th>
+                        Estimated
+                    </th>
+                    <th>
+                        Completed
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Program Slug
+                    </th>
+                    <th>
+                        Program Name
+                    </th>
+                    <th>
+                        Completion Time
+                    </th>
+                    <th>
+                        Course Grade
+                    </th>
+                    <th>
+                        Course Name
+                    </th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                var complete = item.Completed == true ? "Yes" : "No";
+                var status = item.Status == true ? "Yes" : "No";
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Roll)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Start_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Overall_Progress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estimated)
+                    </td>
+                    <td>
+                        @complete
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Completion_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Grade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.Course_Name)
+                    </td>
 
-            </tr>
-        }
+                </tr>
+            }
 
-    </table>
-</div>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page }))
+        </table>
+    </div>
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+@Html.PagedListPager(Model, page => Url.Action("Index",
+       new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

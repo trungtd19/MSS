@@ -19,22 +19,30 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             this.unitOfWork = _unitOfWork;
         }
-        public ActionResult Index()
+
+        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
         {
-            List<Specification> LogList = new List<Specification>();
-            return View(LogList.ToList().ToPagedList(1, 1));
-        }
-        [HttpPost]
-        public ActionResult Index(int? page, string SearchString)
-        {
-            List<Specification> LogList = unitOfWork.Specifications.GetPageList();
-            if (!String.IsNullOrEmpty(SearchString))
+            List<Specification> List = new List<Specification>();
+            if (SearchString != null)
             {
-                LogList = LogList.Where(s => s.Specification_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = SearchString;
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                List = unitOfWork.Specifications.GetPageList();
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    List = List.Where(s => s.Specification_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
             }
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
+            return View(List.ToList().ToPagedList(pageNumber, pageSize));
         }
         public ActionResult Details(string id)
         {
