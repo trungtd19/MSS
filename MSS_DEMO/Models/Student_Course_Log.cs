@@ -14,7 +14,7 @@ namespace MSS_DEMO.Models
     
     public partial class Student_Course_Log
     {
-        public int ID { get; set; }
+        public int Course_Log_ID { get; set; }
         public Nullable<System.DateTime> Course_Enrollment_Time { get; set; }
         public Nullable<System.DateTime> Course_Start_Time { get; set; }
         public Nullable<System.DateTime> Last_Course_Activity_Time { get; set; }
@@ -28,8 +28,11 @@ namespace MSS_DEMO.Models
         public string Course_ID { get; set; }
         public Nullable<double> Course_Grade { get; set; }
         public string Roll { get; set; }
+        public Nullable<System.DateTime> Date_Import { get; set; }
+        public Nullable<int> User_ID { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }
+        public virtual User_Role User_Role { get; set; }
     }
 }

@@ -14,8 +14,12 @@ namespace MSS_DEMO.Models
     
     public partial class Course_Deadline
     {
-        public string Semester_Name { get; set; }
-        public string Course_Name { get; set; }
+        public string Semester_ID { get; set; }
+        public string Course_ID { get; set; }
         public System.DateTime Deadline { get; set; }
+        public int Course_Deadline_ID { get; set; }
+    
+        public virtual Course Course { get; set; }
+        public virtual Semester Semester { get; set; }
     }
 }

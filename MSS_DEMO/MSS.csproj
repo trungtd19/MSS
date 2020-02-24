@@ -276,9 +276,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -378,6 +375,10 @@
     <Content Include="Views\User_Role\Details.cshtml" />
     <Content Include="Views\User_Role\Edit.cshtml" />
     <Content Include="Views\User_Role\Index.cshtml" />
+    <Content Include="Views\Subjects\Details.cshtml" />
+    <Content Include="Views\Campus\Details.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Specifications\Details.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -385,10 +386,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Subjects\Details.cshtml" />
-    <Content Include="Views\Campus\Details.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Specifications\Details.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -27,6 +27,8 @@ namespace MSS_DEMO.Controllers
         [HttpPost]
         public ActionResult UploadFiles()
         {
+            int userID = 6;
+            string _dateImport = Request["dateImport"];          
             CSVConvert csv = new CSVConvert();
             string messageImport = "";
             HttpFileCollectionBase files = Request.Files;
@@ -61,7 +63,7 @@ namespace MSS_DEMO.Controllers
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);                                  
-                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows));
+                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows, userID,_dateImport));
                                     }
                                 }
                                 else
@@ -71,7 +73,7 @@ namespace MSS_DEMO.Controllers
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows));
+                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport));
                                     }
                                 }
                                 else
@@ -80,7 +82,6 @@ namespace MSS_DEMO.Controllers
                                     return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
                                 }
                             }
-                            unitOfWork.Save();
                             if (unitOfWork.Save())
                             {
                                 messageImport = "Import successfull!";
