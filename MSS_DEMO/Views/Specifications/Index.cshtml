@@ -1,47 +1,65 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Specification>
-
+﻿@model PagedList.IPagedList<MSS_DEMO.Models.Specification>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Specification";
 }
-<br/>
+<br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Specification</span>
-<hr/>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Specification_ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Specification_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Is_Real_Specification)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+<hr />
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Specifications", FormMethod.Get))
     {
-        var check = item.Is_Real_Specification == true ? "Yes" : "No";
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Specification_ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Specification_Name)
-            </td>
-            <td>
-                @check
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Specification_ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Specification_ID })
-            </td>
-        </tr>
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-1">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+        <div class="col-md-1">
+            @Html.ActionLink("Add New", "Create")
+        </div>
+        <div class="col-md-5"></div>
     }
+</div>
+<br />
+<br />
+@if (Model.PageCount != 0)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Specification ID
+            </th>
+            <th>
+                Specification Name
+            </th>
+            <th>
+                Is Real Specification
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+            var check = item.Is_Real_Specification == true ? "Yes" : "No";
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Specification_ID, "Details", new { id = item.Specification_ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Specification_Name)
+                </td>
+                <td>
+                    @check
+                </td>
+            </tr>
+        }
+
+    </table>
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+       new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

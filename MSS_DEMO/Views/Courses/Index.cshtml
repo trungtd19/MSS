@@ -1,47 +1,65 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Course>
-
+﻿@model PagedList.IPagedList<MSS_DEMO.Models.Course>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Course";
 }
 
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Course</span>
-
 <hr />
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Course_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Course_Slug)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Specification.Subject_ID)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Courses", FormMethod.Get))
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course_Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course_Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Specification.Subject_ID)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Course_ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Course_ID })
-            </td>
-        </tr>
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-1">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+        <div class="col-md-1">
+            @Html.ActionLink("Add New", "Create")
+        </div>
+        <div class="col-md-5"></div>
     }
+</div>
+<br />
+<br />
+@if (Model.PageCount != 0)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Course ID
+            </th>
+            <th>
+                Course Name
+            </th>
+            <th>
+                Course Slug
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Course_ID, "Details", new { id = item.Course_ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course_Slug)
+                </td>
+            </tr>
+        }
+
+    </table>
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+     new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

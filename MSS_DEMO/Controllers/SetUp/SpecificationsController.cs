@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
+using PagedList;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
@@ -18,12 +19,36 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             this.unitOfWork = _unitOfWork;
         }
-        public ActionResult Index()
-        {
-            var specifications = unitOfWork.Specifications.GetAll();
-            return View(specifications);
-        }
 
+        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
+        {
+            List<Specification> List = new List<Specification>();
+            if (SearchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = SearchString;
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                List = unitOfWork.Specifications.GetPageList();
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    List = List.Where(s => s.Specification_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(List.ToList().ToPagedList(pageNumber, pageSize));
+        }
+        public ActionResult Details(string id)
+        {
+            var Specifications = unitOfWork.Specifications.GetById(id);
+            return View(Specifications);
+        }
 
         public ActionResult Create()
         {

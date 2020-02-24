@@ -9,9 +9,9 @@
 <h5>Campus</h5>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New", "Create")
 </p>
-<table class="table">
+<table class="table table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Campus_Name)
@@ -22,24 +22,19 @@
         <th>
             @Html.DisplayNameFor(model => model.Contact_Point)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Campus_Name)
+                @Html.ActionLink(item.Campus_Name, "Details", new { id = item.Campus_ID })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Contact_Point)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Campus_ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Campus_ID })
             </td>
         </tr>
     }

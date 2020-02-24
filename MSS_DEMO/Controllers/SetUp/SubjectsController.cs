@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
+using PagedList;
 
 namespace MSS_DEMO.Controllers
 {
@@ -18,12 +15,36 @@ namespace MSS_DEMO.Controllers
         {
             this.unitOfWork = _unitOfWork;
         }
-        public ActionResult Index()
+        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
         {
-            var subjects = unitOfWork.Subject.GetAll();
-            return View(subjects);
-        }
+            List<Subject> List = new List<Subject>();
+            if (SearchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = SearchString;
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                List = unitOfWork.Subject.GetPageList();
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    List = List.Where(s => s.Subject_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(List.ToList().ToPagedList(pageNumber, pageSize));
 
+        }
+        public ActionResult Details(string id)
+        {
+            var Subject = unitOfWork.Subject.GetById(id);
+            return View(Subject);
+        }
         public ActionResult Create()
         {
             return View();

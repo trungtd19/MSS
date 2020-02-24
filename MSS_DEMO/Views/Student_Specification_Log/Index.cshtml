@@ -18,121 +18,129 @@
     @using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
     {
         <div class="col-md-2">
-            @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-2">
-            <input class="btn btn-sm" type="submit" value="Search" />
+            @Html.TextBox("ImportDate", "", new { @class = "form-control", @type = "date", @placeholder = "Search Import Date" })
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-2">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+        <div class="col-md-4"></div>
     }
 </div>
 <br />
 <br />
-<table class="table table-bordered">
-    <tr>
-        <th>
-            ROLL
-        </th>
-        <th>
-            Subject_ID
-        </th>
-        <th>
-            Campus
-        </th>
-        <th>
-            Specialization
-        </th>
-        <th>
-            Specialization_Slug
-        </th>
-        <th>
-            University
-        </th>
-        <th>
-            Specialization_Enrollment_Time
-        </th>
-        <th>
-            Last_Specialization_Activity_Time
-        </th>
-        <th>
-            Completed
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Program_Slug
-        </th>
-        <th>
-            Program_Name
-        </th>
-        <th>
-            Specialization_Completion_Time
-        </th>
+@if (Model.PageCount != 0)
+{
+    <div class="panel-body table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    ROLL
+                </th>
+                <th>
+                    Subject ID
+                </th>
+                <th>
+                    Campus
+                </th>
+                <th>
+                    Specialization
+                </th>
+                <th>
+                    Specialization Slug
+                </th>
+                <th>
+                    University
+                </th>
+                <th>
+                    Enrollment_Time
+                </th>
+                <th>
+                    Last Activity Time
+                </th>
+                <th>
+                    Completed
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Program Slug
+                </th>
+                <th>
+                    Program Name
+                </th>
+                <th>
+                    Completion Time
+                </th>
 
-        <th>
-            Specification
-        </th>
-
-
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        
-            var complete = item.Completed == true ? "Yes" : "No";
-            var status = item.Status == true ? "Yes" : "No";
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Roll)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Subject_ID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Campus)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specialization)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specialization_Slug)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.University)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
-    </td>
-    <td>
-        @complete
-    </td>
-    <td>
-        @status
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Program_Slug)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Program_Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
-    </td>
-
-    <td>
-        @Html.DisplayFor(modelItem => item.Specification.Subject_ID)
-    </td>
+                <th>
+                    Specification
+                </th>
 
 
-</tr>
-    }
+            </tr>
 
-</table>
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @foreach (var item in Model)
+            {
+
+                var complete = item.Completed == true ? "Yes" : "No";
+                var status = item.Status == true ? "Yes" : "No";
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Roll)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Campus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.University)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
+                    </td>
+                    <td>
+                        @complete
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specification.Subject_ID)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page }))
+   new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

@@ -24,7 +24,11 @@ namespace MSS_DEMO.Controllers
             var campus = unitOfWork.Campus.GetAll();
             return View(campus);
         }
-
+        public ActionResult Details(string id)
+        {
+            var Campus = unitOfWork.Campus.GetById(id);
+            return View(Campus);
+        }
         public ActionResult Create()
         {
             return View();
