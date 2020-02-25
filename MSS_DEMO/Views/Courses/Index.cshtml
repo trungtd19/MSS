@@ -38,10 +38,14 @@
             <th>
                 Course Slug
             </th>
+            <th>
+                Specification ID
+            </th>
         </tr>
 
         @foreach (var item in Model)
         {
+            var specID = item.Specification_ID == null ? "Not Map" : item.Specification_ID;
             <tr>
                 <td>
                     @Html.ActionLink(item.Course_ID, "Details", new { id = item.Course_ID })
@@ -51,6 +55,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Course_Slug)
+                </td>
+                <td>
+                    @specID
                 </td>
             </tr>
         }

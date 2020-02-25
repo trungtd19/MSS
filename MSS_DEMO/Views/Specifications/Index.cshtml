@@ -35,6 +35,9 @@
                 Specification Name
             </th>
             <th>
+                Subject ID
+            </th>
+            <th>
                 Is Real Specification
             </th>
         </tr>
@@ -42,12 +45,16 @@
         @foreach (var item in Model)
         {
             var check = item.Is_Real_Specification == true ? "Yes" : "No";
+            var subjectID = item.Subject_ID == null ? "Not Map" : item.Subject_ID;
             <tr>
                 <td>
                     @Html.ActionLink(item.Specification_ID, "Details", new { id = item.Specification_ID })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Specification_Name)
+                </td>
+                <td>
+                    @subjectID
                 </td>
                 <td>
                     @check

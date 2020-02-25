@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c036b6749a5b4b0bb6833df26609523e" Name="Diagram1">
+      <Diagram DiagramId="0b668aa7551c4e18a9943a1483ef9c73" Name="Diagram1">
         <EntityTypeShape EntityType="MSSModel.Campu" Width="1.5" PointX="1.5" PointY="27.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.Certificate" Width="1.5" PointX="3" PointY="11.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.Class" Width="1.5" PointX="3.75" PointY="30" IsExpanded="true" />
@@ -20,7 +20,7 @@
         <EntityTypeShape EntityType="MSSModel.Student_Specification_Log" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.Subject" Width="1.5" PointX="1.5" PointY="21.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.Subject_Student" Width="1.5" PointX="6" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.User_Role" Width="1.5" PointX="0.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.User_Role" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
         <AssociationConnector Association="MSSModel.FK_Class_Campus" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Certificate_Course" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Certificate_Specification" ManuallyRouted="false" />

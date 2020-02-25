@@ -14,6 +14,8 @@ namespace MSS_DEMO.Controllers.SetUp
 {
     public class CoursesController : Controller
     {
+        private const string NONE = "--- None ---";
+        private const string NOTMAP = "Not Map";
         private IUnitOfWork unitOfWork;
         public CoursesController(IUnitOfWork _unitOfWork)
         {
@@ -48,20 +50,12 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult Details(string id)
         {
             var Courses = unitOfWork.Courses.GetById(id);
+            if (Courses.Specification_ID == null) Courses.Specification_ID = NOTMAP;
             return View(Courses);
         }
         public ActionResult Create()
         {
-            List<Specification> spec = new List<Specification>();
-
-            foreach (var coures in unitOfWork.Specifications.GetAll())
-            {
-                if (!coures.Is_Real_Specification) {
-                    spec.Add(coures);
-                }
-            }
-            ViewBag.Specification_ID = new SelectList(spec, "Specification_ID", "Subject_ID");
-
+            SelectSpecID();
             return View();
         }
 
@@ -69,15 +63,15 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
         {
+            if (course.Specification_ID == NONE) course.Specification_ID = null;
             if (ModelState.IsValid)
             {
-
                 unitOfWork.Courses.Insert(course);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Subject_ID", course.Specification_ID);
+            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
             return View(course);
         }
 
@@ -85,7 +79,7 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult Edit(string id)
         {
             Course course = unitOfWork.Courses.GetById(id);
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Subject_ID", course.Specification_ID);
+            SelectSpecID();
             return View(course);
         }
 
@@ -93,13 +87,14 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
         {
+            if (course.Specification_ID == NONE) course.Specification_ID = null;
             if (ModelState.IsValid)
             {
                 unitOfWork.Courses.Update(course);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Subject_ID", course.Specification_ID);
+            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
             return View(course);
         }
 
@@ -120,5 +115,20 @@ namespace MSS_DEMO.Controllers.SetUp
             return RedirectToAction("Index");
         }
       
+        public void SelectSpecID()
+        {
+            List<Specification> _specs = new List<Specification>();
+            List<Specification> specs = unitOfWork.Specifications.GetAll();
+            _specs.Add(new Specification { Specification_ID = NONE, Is_Real_Specification = false });
+
+            foreach (var spec in specs)
+            {
+                if (!spec.Is_Real_Specification)
+                {
+                    _specs.Add(spec);
+                }
+            }
+            ViewBag.Specification_ID = new SelectList(_specs, "Specification_ID", "Specification_ID");
+        }
     }
 }
