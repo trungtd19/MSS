@@ -14,7 +14,7 @@ namespace MSS_DEMO.Models
     
     public partial class Student_Specification_Log
     {
-        public int ID { get; set; }
+        public int Specification_Log_ID { get; set; }
         public string Roll { get; set; }
         public string Subject_ID { get; set; }
         public string Specialization { get; set; }
@@ -29,8 +29,11 @@ namespace MSS_DEMO.Models
         public Nullable<System.DateTime> Specialization_Completion_Time { get; set; }
         public string Campus { get; set; }
         public string Specification_ID { get; set; }
+        public Nullable<System.DateTime> Date_Import { get; set; }
+        public Nullable<int> User_ID { get; set; }
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }
+        public virtual User_Role User_Role { get; set; }
     }
 }

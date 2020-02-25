@@ -119,7 +119,7 @@ namespace MSS_DEMO.Repository
                     context.SaveChanges();
                     dbContextTransaction.Commit();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     returnValue = false;
                     dbContextTransaction.Rollback();
