@@ -15,7 +15,8 @@ namespace MSS_DEMO.Core.Import
             {
                 Email = row[2].ToString(),
                 Roll = row[0].ToString(),
-                Campus = row[3].ToString().Split('-')[2],
+                Full_Name = row[1].ToString(),
+                Campus = row[3].ToString().Split('-')[1],
             };
 
         }

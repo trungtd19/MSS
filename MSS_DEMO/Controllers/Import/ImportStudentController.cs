@@ -77,7 +77,7 @@ namespace MSS_DEMO.Controllers
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
                                             //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                         }
-                                    }                                                               
+                                    }                       
                                 }
                             }
                             if (unitOfWork.Save())
