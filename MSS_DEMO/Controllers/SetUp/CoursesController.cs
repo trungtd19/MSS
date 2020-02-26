@@ -61,9 +61,13 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
+        public ActionResult Create([Bind(Include = "Course_Name,Course_Slug,Specification_ID")] Course course)
         {
-            if (course.Specification_ID == NONE) course.Specification_ID = null;
+            if (course.Specification_ID == NONE)
+            {
+                course.Specification_ID = null;
+            }
+                course.Course_ID = Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
                 unitOfWork.Courses.Insert(course);
