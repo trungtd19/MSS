@@ -17,6 +17,7 @@ namespace MSS_DEMO.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Specification()
         {
+            this.Certificates = new HashSet<Certificate>();
             this.Courses = new HashSet<Course>();
             this.Student_Specification_Log = new HashSet<Student_Specification_Log>();
         }
@@ -26,6 +27,8 @@ namespace MSS_DEMO.Models
         public string Specification_Name { get; set; }
         public bool Is_Real_Specification { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Certificate> Certificates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Courses { get; set; }
         public virtual Subject Subject { get; set; }

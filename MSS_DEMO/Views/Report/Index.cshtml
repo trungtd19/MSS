@@ -15,83 +15,84 @@
 <body>
     @if (Model != null)
     {
-    <div>
-        @if (Model.Info.Count > 0)
-        {
-        <h4>Tổng số SV: @ViewBag.Total1</h4>
-        <table class="table table-bordered">
-            <tr>
-                <th>Sub</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>All</th>
-                <th>HN</th>
-                <th>DN</th>
-                <th>SG</th>
-                <th>CT</th>
-            </tr>
-            @foreach (var t in Model.Info)
+        <div>
+            @if (Model.Info.Count > 0)
             {
-                <tr>
-                    <th>@Html.DisplayFor(m => t.Sub)</th>
-                    <th>@Html.DisplayFor(m => t.Name)</th>
-                    <th>@Html.DisplayFor(m => t.Type)</th>
-                    <th>@Html.DisplayFor(m => t.Total)</th>
-                    <th>@Html.DisplayFor(m => t.HN)</th>
-                    <th>@Html.DisplayFor(m => t.DN)</th>
-                    <th>@Html.DisplayFor(m => t.SG)</th>
-                    <th>@Html.DisplayFor(m => t.CT)</th>
-                </tr>
+                <h4>Tổng số SV: @ViewBag.Total1</h4>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Sub</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>All</th>
+                        <th>HN</th>
+                        <th>DN</th>
+                        <th>SG</th>
+                        <th>CT</th>
+                    </tr>
+                    @foreach (var t in Model.Info)
+                    {
+                        <tr>
+                            <th>@Html.DisplayFor(m => t.Sub)</th>
+                            <th>@Html.DisplayFor(m => t.Name)</th>
+                            <th>@Html.DisplayFor(m => t.Type)</th>
+                            <th>@Html.DisplayFor(m => t.Total)</th>
+                            <th>@Html.DisplayFor(m => t.HN)</th>
+                            <th>@Html.DisplayFor(m => t.DN)</th>
+                            <th>@Html.DisplayFor(m => t.SG)</th>
+                            <th>@Html.DisplayFor(m => t.CT)</th>
+                        </tr>
+                    }
+                </table>
             }
-        </table>
-        }
-    </div>
-    <div>
-        @if (Model.Info2.Count > 0 && Model.Info3.Count > 0)
-        {
-        <h4>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.Total2</h4>
-        <table class="table table-bordered">
-            <tr>
-                <th>Sub</th>
-                <th>Name</th>
-                <th>% Vào học</th>
-                <th>All</th>
-                <th>HN</th>
-                <th>DN</th>
-                <th>SG</th>
-                <th>CT</th>
-            </tr>
-            @foreach (var t in Model.Info2)
-        {
-                <tr>
-                    <th>@Html.DisplayFor(m => t.Sub)</th>
-                    <th>@Html.DisplayFor(m => t.Name)</th>
-                    <th>@Html.DisplayFor(m => t.Study)%</th>
-                    <th>@Html.DisplayFor(m => t.Total)</th>
-                    <th>@Html.DisplayFor(m => t.HN)</th>
-                    <th>@Html.DisplayFor(m => t.DN)</th>
-                    <th>@Html.DisplayFor(m => t.SG)</th>
-                    <th>@Html.DisplayFor(m => t.CT)</th>
-                </tr>
-        }
-            @foreach (var t in Model.Info3)
+        </div>
+        <div>
+            @if (Model.Info2.Count > 0 && Model.Info3.Count > 0)
             {
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>@Html.DisplayFor(m => t.Title)</th>
-                    <th>@Html.DisplayFor(m => t.HN)%</th>
-                    <th>@Html.DisplayFor(m => t.DN)%</th>
-                    <th>@Html.DisplayFor(m => t.SG)%</th>
-                    <th>@Html.DisplayFor(m => t.CT)%</th>
-                </tr>
-            }
+                <h4>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.Total2</h4>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Sub</th>
+                        <th>Name</th>
+                        <th>% Vào học</th>
+                        <th>All</th>
+                        <th>HN</th>
+                        <th>DN</th>
+                        <th>SG</th>
+                        <th>CT</th>
+                    </tr>
+                    @foreach (var t in Model.Info2)
+                    {
+                        <tr>
+                            <th>@Html.DisplayFor(m => t.Sub)</th>
+                            <th>@Html.DisplayFor(m => t.Name)</th>
+                            <th>@Html.DisplayFor(m => t.Study)%</th>
+                            <th>@Html.DisplayFor(m => t.Total)</th>
+                            <th>@Html.DisplayFor(m => t.HN)</th>
+                            <th>@Html.DisplayFor(m => t.DN)</th>
+                            <th>@Html.DisplayFor(m => t.SG)</th>
+                            <th>@Html.DisplayFor(m => t.CT)</th>
+                        </tr>
+                    }
+                    @foreach (var t in Model.Info3)
+                    {
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>@Html.DisplayFor(m => t.Title)</th>
+                            <th>@Html.DisplayFor(m => t.HN)%</th>
+                            <th>@Html.DisplayFor(m => t.DN)%</th>
+                            <th>@Html.DisplayFor(m => t.SG)%</th>
+                            <th>@Html.DisplayFor(m => t.CT)%</th>
+                        </tr>
+                    }
 
-        </table>
-        }
-    </div>
-    <h4>@ViewBag.Complete sinh viên đã hoàn thành khóa học bắt buộc</h4>
+                </table>
+            }
+        </div>
+        <h4>@ViewBag.studentComplete sinh viên đã hoàn thành @ViewBag.courseComplete khóa học bắt buộc</h4>
+        <h4>@ViewBag.Estimated sinh viên có số giờ học nhỏ hơn 5/Tuần(@ViewBag.Percent%)</h4>
     }
 </body>
 </html>

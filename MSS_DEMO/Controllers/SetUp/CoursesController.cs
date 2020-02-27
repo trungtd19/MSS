@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -8,49 +8,74 @@ using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
+using PagedList;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
     public class CoursesController : Controller
     {
+        private const string NONE = "--- None ---";
+        private const string NOTMAP = "Not Map";
         private IUnitOfWork unitOfWork;
         public CoursesController(IUnitOfWork _unitOfWork)
         {
             this.unitOfWork = _unitOfWork;
         }
-        public ActionResult Index()
+  
+        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
         {
-            return View(unitOfWork.Courses.GetAll());
-        }
-
-        public ActionResult Create()
-        {
-            List<Specification> spec = new List<Specification>();
-
-            foreach (var coures in unitOfWork.Specifications.GetAll())
+            List<Course> LogList = new List<Course>();
+            if (SearchString != null)
             {
-                if (!coures.Is_Real_Specification) {
-                    spec.Add(coures);
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = SearchString;
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+               LogList = unitOfWork.Courses.GetPageList();
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    LogList = LogList.Where(s => s.Course_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
             }
-            ViewBag.Specification_ID = new SelectList(spec, "Specification_ID", "Subject_ID");
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
 
+        }
+        public ActionResult Details(string id)
+        {
+            var Courses = unitOfWork.Courses.GetById(id);
+            if (Courses.Specification_ID == null) Courses.Specification_ID = NOTMAP;
+            return View(Courses);
+        }
+        public ActionResult Create()
+        {
+            SelectSpecID();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
+        public ActionResult Create([Bind(Include = "Course_Name,Course_Slug,Specification_ID")] Course course)
         {
+            if (course.Specification_ID == NONE)
+            {
+                course.Specification_ID = null;
+            }
+                course.Course_ID = Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
-
                 unitOfWork.Courses.Insert(course);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Subject_ID", course.Specification_ID);
+            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
             return View(course);
         }
 
@@ -58,7 +83,7 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult Edit(string id)
         {
             Course course = unitOfWork.Courses.GetById(id);
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Subject_ID", course.Specification_ID);
+            SelectSpecID();
             return View(course);
         }
 
@@ -66,13 +91,14 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
         {
+            if (course.Specification_ID == NONE) course.Specification_ID = null;
             if (ModelState.IsValid)
             {
                 unitOfWork.Courses.Update(course);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Subject_ID", course.Specification_ID);
+            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
             return View(course);
         }
 
@@ -93,5 +119,20 @@ namespace MSS_DEMO.Controllers.SetUp
             return RedirectToAction("Index");
         }
       
+        public void SelectSpecID()
+        {
+            List<Specification> _specs = new List<Specification>();
+            List<Specification> specs = unitOfWork.Specifications.GetAll();
+            _specs.Add(new Specification { Specification_ID = NONE, Is_Real_Specification = false });
+
+            foreach (var spec in specs)
+            {
+                //if (!spec.Is_Real_Specification)
+               // {
+                    _specs.Add(spec);
+              //  }
+            }
+            ViewBag.Specification_ID = new SelectList(_specs, "Specification_ID", "Specification_ID");
+        }
     }
 }

@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
-using LINQtoCSV;
 using System.IO;
-using System.Linq.Expressions;
 using MSS_DEMO.Repository;
 using MSS_DEMO.Core.Interface;
-using System.Text.RegularExpressions;
-using System.Text;
 using MSS_DEMO.Core.Import;
 
 namespace MSS_DEMO.Controllers
@@ -68,23 +60,24 @@ namespace MSS_DEMO.Controllers
                                 while (!sreader.EndOfStream)
                                 {
                                     List<string> rows = csv.RegexRow(sreader);
-                                    //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID) 
-                                    //    || !unitOfWork.Subject.CheckExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
-                                    //{
-                                        //if (unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll)
-                                        //    && !unitOfWork.Students.IsExitsSubject(getRow.GetSubject(rows).Subject_ID))
-                                        //{                                 
-                                        //unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
-                                        //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
-                                        //}
-                                        //else
+                                    //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID)
+                                    //    || 
+                                    if (unitOfWork.Subject.CheckExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
+                                    {
+                                        if (unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll)
+                                            && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
+                                        {
+                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));
+                                           // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
+                                        }
+                                        else
                                         if (!unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll))
                                         {
                                             unitOfWork.Students.Insert(getRow.GetStudent(rows));
-                                            //unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
+                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
                                             //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                         }
-                                 //   }                                                               
+                                    }                       
                                 }
                             }
                             if (unitOfWork.Save())

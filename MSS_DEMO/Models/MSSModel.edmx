@@ -14,19 +14,16 @@
           <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Contact_Point" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MSS.dbo.Certificate' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Certificate">
           <Key>
             <PropertyRef Name="Certificate_ID" />
-            <PropertyRef Name="Link" />
-            <PropertyRef Name="Date_Submit" />
-            <PropertyRef Name="Roll" />
           </Key>
           <Property Name="Certificate_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Link" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="Date_Submit" Type="datetime" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Course_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
@@ -57,17 +54,14 @@ warning 6002: The table/view 'MSS.dbo.Certificate' does not have a primary key d
           <Property Name="Course_Slug" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Course_Deadline">
           <Key>
-            <PropertyRef Name="Semester_Name" />
-            <PropertyRef Name="Course_Name" />
-            <PropertyRef Name="Deadline" />
+            <PropertyRef Name="Course_Deadline_ID" />
           </Key>
-          <Property Name="Semester_Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Course_Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Course_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Deadline" Type="datetime" Nullable="false" />
+          <Property Name="Course_Deadline_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Mentor">
           <Key>
@@ -100,7 +94,7 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             <PropertyRef Name="Specification_ID" />
           </Key>
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
           <Property Name="Specification_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Is_Real_Specification" Type="bit" Nullable="false" />
         </EntityType>
@@ -110,12 +104,14 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           </Key>
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Full_Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Campus" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Student_Course_Log">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Course_Log_ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Course_Log_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Course_Enrollment_Time" Type="datetime" />
           <Property Name="Course_Start_Time" Type="datetime" />
           <Property Name="Last_Course_Activity_Time" Type="datetime" />
@@ -129,12 +125,14 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Course_ID" Type="varchar" MaxLength="50" />
           <Property Name="Course_Grade" Type="float" />
           <Property Name="Roll" Type="varchar" MaxLength="50" />
+          <Property Name="Date_Import" Type="datetime" />
+          <Property Name="User_ID" Type="int" />
         </EntityType>
         <EntityType Name="Student_Specification_Log">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Specification_Log_ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Specification_Log_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" />
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
           <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
@@ -149,6 +147,8 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Specialization_Completion_Time" Type="datetime" />
           <Property Name="Campus" Type="nvarchar" MaxLength="150" />
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Date_Import" Type="datetime" />
+          <Property Name="User_ID" Type="int" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -165,16 +165,6 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="User_Role">
           <Key>
             <PropertyRef Name="User_ID" />
@@ -184,6 +174,30 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="isActive" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Certificate_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Course_ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Specification_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Specification">
+          <End Role="Specification" Type="Self.Specification" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specification">
+              <PropertyRef Name="Specification_ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Roll" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Certificate_Student">
           <End Role="Student" Type="Self.Student" Multiplicity="1" />
           <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
@@ -256,6 +270,30 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Course_Deadline_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Course_Deadline" Type="Self.Course_Deadline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Course_ID" />
+            </Principal>
+            <Dependent Role="Course_Deadline">
+              <PropertyRef Name="Course_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_Deadline_Semester">
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
+          <End Role="Course_Deadline" Type="Self.Course_Deadline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semester">
+              <PropertyRef Name="Semester_ID" />
+            </Principal>
+            <Dependent Role="Course_Deadline">
+              <PropertyRef Name="Semester_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Course_Specification1">
           <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
           <End Role="Course" Type="Self.Course" Multiplicity="*" />
@@ -269,7 +307,7 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Specification_Subject">
-          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
           <End Role="Specification" Type="Self.Specification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Subject">
@@ -304,6 +342,18 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Student_Course_Log_User_Role">
+          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
+          <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Role">
+              <PropertyRef Name="User_ID" />
+            </Principal>
+            <Dependent Role="Student_Course_Log">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Specification_Log_Specification">
           <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
           <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
@@ -325,6 +375,18 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Principal>
             <Dependent Role="Student_Specification_Log">
               <PropertyRef Name="Roll" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Specification_Log_User_Role">
+          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
+          <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Role">
+              <PropertyRef Name="User_ID" />
+            </Principal>
+            <Dependent Role="Student_Specification_Log">
+              <PropertyRef Name="User_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -366,9 +428,11 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
         </Association>
         <EntityContainer Name="MSSModelStoreContainer">
           <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Certificate" EntityType="Self.Certificate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Class_Student" EntityType="Self.Class_Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course_Deadline" EntityType="Self.Course_Deadline" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mentor" EntityType="Self.Mentor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Semester" EntityType="Self.Semester" Schema="dbo" store:Type="Tables" />
@@ -378,23 +442,15 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Certificate" EntityType="Self.Certificate" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Certificate].[Certificate_ID] AS [Certificate_ID], 
-    [Certificate].[Link] AS [Link], 
-    [Certificate].[Date_Submit] AS [Date_Submit], 
-    [Certificate].[Roll] AS [Roll]
-    FROM [dbo].[Certificate] AS [Certificate]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Course_Deadline" EntityType="Self.Course_Deadline" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Course_Deadline].[Semester_Name] AS [Semester_Name], 
-    [Course_Deadline].[Course_Name] AS [Course_Name], 
-    [Course_Deadline].[Deadline] AS [Deadline]
-    FROM [dbo].[Course_Deadline] AS [Course_Deadline]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_Certificate_Course" Association="Self.FK_Certificate_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Specification" Association="Self.FK_Certificate_Specification">
+            <End Role="Specification" EntitySet="Specification" />
+            <End Role="Certificate" EntitySet="Certificate" />
+          </AssociationSet>
           <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
             <End Role="Student" EntitySet="Student" />
             <End Role="Certificate" EntitySet="Certificate" />
@@ -419,6 +475,14 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             <End Role="Student" EntitySet="Student" />
             <End Role="Class_Student" EntitySet="Class_Student" />
           </AssociationSet>
+          <AssociationSet Name="FK_Course_Deadline_Course" Association="Self.FK_Course_Deadline_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Course_Deadline" EntitySet="Course_Deadline" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_Deadline_Semester" Association="Self.FK_Course_Deadline_Semester">
+            <End Role="Semester" EntitySet="Semester" />
+            <End Role="Course_Deadline" EntitySet="Course_Deadline" />
+          </AssociationSet>
           <AssociationSet Name="FK_Course_Specification1" Association="Self.FK_Course_Specification1">
             <End Role="Specification" EntitySet="Specification" />
             <End Role="Course" EntitySet="Course" />
@@ -435,12 +499,20 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             <End Role="Student" EntitySet="Student" />
             <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
           </AssociationSet>
+          <AssociationSet Name="FK_Student_Course_Log_User_Role" Association="Self.FK_Student_Course_Log_User_Role">
+            <End Role="User_Role" EntitySet="User_Role" />
+            <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
+          </AssociationSet>
           <AssociationSet Name="FK_Student_Specification_Log_Specification" Association="Self.FK_Student_Specification_Log_Specification">
             <End Role="Specification" EntitySet="Specification" />
             <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_Specification_Log_Student" Association="Self.FK_Student_Specification_Log_Student">
             <End Role="Student" EntitySet="Student" />
+            <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Specification_Log_User_Role" Association="Self.FK_Student_Specification_Log_User_Role">
+            <End Role="User_Role" EntitySet="User_Role" />
             <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
           </AssociationSet>
           <AssociationSet Name="FK_Subject_Student_Student" Association="Self.FK_Subject_Student_Student">
@@ -470,6 +542,20 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Contact_Point" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Classes" Relationship="Self.FK_Class_Campus" FromRole="Campus" ToRole="Class" />
+        </EntityType>
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="Certificate_ID" />
+          </Key>
+          <Property Name="Certificate_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Link" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date_Submit" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_Certificate_Course" FromRole="Certificate" ToRole="Course" />
+          <NavigationProperty Name="Specification" Relationship="Self.FK_Certificate_Specification" FromRole="Certificate" ToRole="Specification" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Certificate_Student" FromRole="Certificate" ToRole="Student" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
@@ -505,8 +591,21 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Course_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Course_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificate_Course" FromRole="Course" ToRole="Certificate" />
+          <NavigationProperty Name="Course_Deadline" Relationship="Self.FK_Course_Deadline_Course" FromRole="Course" ToRole="Course_Deadline" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Course_Specification1" FromRole="Course" ToRole="Specification" />
           <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Course" ToRole="Student_Course_Log" />
+        </EntityType>
+        <EntityType Name="Course_Deadline">
+          <Key>
+            <PropertyRef Name="Course_Deadline_ID" />
+          </Key>
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Course_Deadline_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_Course_Deadline_Course" FromRole="Course_Deadline" ToRole="Course" />
+          <NavigationProperty Name="Semester" Relationship="Self.FK_Course_Deadline_Semester" FromRole="Course_Deadline" ToRole="Semester" />
         </EntityType>
         <EntityType Name="Mentor">
           <Key>
@@ -536,15 +635,17 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Start_Date" Type="DateTime" Precision="3" />
           <Property Name="End_Date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Classes" Relationship="Self.FK_Class_Semester" FromRole="Semester" ToRole="Class" />
+          <NavigationProperty Name="Course_Deadline" Relationship="Self.FK_Course_Deadline_Semester" FromRole="Semester" ToRole="Course_Deadline" />
         </EntityType>
         <EntityType Name="Specification">
           <Key>
             <PropertyRef Name="Specification_ID" />
           </Key>
           <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Specification_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Is_Real_Specification" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificate_Specification" FromRole="Specification" ToRole="Certificate" />
           <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Specification1" FromRole="Specification" ToRole="Course" />
           <NavigationProperty Name="Subject" Relationship="Self.FK_Specification_Subject" FromRole="Specification" ToRole="Subject" />
           <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Specification" ToRole="Student_Specification_Log" />
@@ -555,17 +656,19 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           </Key>
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Student" FromRole="Student" ToRole="Class_Student" />
+          <Property Name="Full_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificate_Student" FromRole="Student" ToRole="Certificate" />
+          <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Student" FromRole="Student" ToRole="Class_Student" />
           <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student" ToRole="Student_Course_Log" />
           <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student" ToRole="Student_Specification_Log" />
           <NavigationProperty Name="Subject_Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Student" ToRole="Subject_Student" />
         </EntityType>
         <EntityType Name="Student_Course_Log">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Course_Log_ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Course_Log_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Course_Enrollment_Time" Type="DateTime" Precision="3" />
           <Property Name="Course_Start_Time" Type="DateTime" Precision="3" />
           <Property Name="Last_Course_Activity_Time" Type="DateTime" Precision="3" />
@@ -579,14 +682,17 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Course_Grade" Type="Double" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date_Import" Type="DateTime" Precision="3" />
+          <Property Name="User_ID" Type="Int32" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Student_Course_Log" ToRole="Course" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student_Course_Log" ToRole="Student" />
+          <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="Student_Course_Log" ToRole="User_Role" />
         </EntityType>
         <EntityType Name="Student_Specification_Log">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Specification_Log_ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Specification_Log_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Specialization" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -601,8 +707,11 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Specialization_Completion_Time" Type="DateTime" Precision="3" />
           <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date_Import" Type="DateTime" Precision="3" />
+          <Property Name="User_ID" Type="Int32" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
+          <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="Student_Specification_Log" ToRole="User_Role" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -623,16 +732,6 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Subject_Student" ToRole="Student" />
           <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject_Student" ToRole="Subject" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="User_Role">
           <Key>
             <PropertyRef Name="User_ID" />
@@ -642,29 +741,8 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="isActive" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role_Role" FromRole="User_Role" ToRole="Role" />
-        </EntityType>
-        <EntityType Name="Certificate">
-          <Key>
-            <PropertyRef Name="Certificate_ID" />
-            <PropertyRef Name="Link" />
-            <PropertyRef Name="Date_Submit" />
-            <PropertyRef Name="Roll" />
-          </Key>
-          <Property Name="Certificate_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Link" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Date_Submit" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Student" Relationship="Self.FK_Certificate_Student" FromRole="Certificate" ToRole="Student" />
-        </EntityType>
-        <EntityType Name="Course_Deadline">
-          <Key>
-            <PropertyRef Name="Semester_Name" />
-            <PropertyRef Name="Course_Name" />
-            <PropertyRef Name="Deadline" />
-          </Key>
-          <Property Name="Semester_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Course_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="User_Role" ToRole="Student_Course_Log" />
+          <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="User_Role" ToRole="Student_Specification_Log" />
         </EntityType>
         <Association Name="FK_Class_Campus">
           <End Role="Campus" Type="Self.Campu" Multiplicity="0..1" />
@@ -675,6 +753,42 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Principal>
             <Dependent Role="Class">
               <PropertyRef Name="Campus_Name" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Course_ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Specification_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Specification">
+          <End Role="Specification" Type="Self.Specification" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specification">
+              <PropertyRef Name="Specification_ID" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Roll" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Certificate_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Roll" />
+            </Principal>
+            <Dependent Role="Certificate">
+              <PropertyRef Name="Roll" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -726,6 +840,18 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Course_Deadline_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Course_Deadline" Type="Self.Course_Deadline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="Course_ID" />
+            </Principal>
+            <Dependent Role="Course_Deadline">
+              <PropertyRef Name="Course_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Course_Specification1">
           <End Role="Specification" Type="Self.Specification" Multiplicity="0..1" />
           <End Role="Course" Type="Self.Course" Multiplicity="*" />
@@ -750,6 +876,18 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Course_Deadline_Semester">
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
+          <End Role="Course_Deadline" Type="Self.Course_Deadline" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semester">
+              <PropertyRef Name="Semester_ID" />
+            </Principal>
+            <Dependent Role="Course_Deadline">
+              <PropertyRef Name="Semester_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Role_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="1" />
           <End Role="User_Role" Type="Self.User_Role" Multiplicity="*" />
@@ -763,7 +901,7 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Specification_Subject">
-          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
           <End Role="Specification" Type="Self.Specification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Subject">
@@ -783,18 +921,6 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Principal>
             <Dependent Role="Student_Specification_Log">
               <PropertyRef Name="Specification_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Certificate_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
-          <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="Roll" />
-            </Principal>
-            <Dependent Role="Certificate">
-              <PropertyRef Name="Roll" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -834,6 +960,30 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Student_Course_Log_User_Role">
+          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
+          <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Role">
+              <PropertyRef Name="User_ID" />
+            </Principal>
+            <Dependent Role="Student_Course_Log">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Specification_Log_User_Role">
+          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
+          <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Role">
+              <PropertyRef Name="User_ID" />
+            </Principal>
+            <Dependent Role="Student_Specification_Log">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Subject_Student_Subject">
           <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
           <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
@@ -848,9 +998,11 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
         </Association>
         <EntityContainer Name="MSSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Campus" EntityType="Self.Campu" />
+          <EntitySet Name="Certificates" EntityType="Self.Certificate" />
           <EntitySet Name="Classes" EntityType="Self.Class" />
           <EntitySet Name="Class_Student" EntityType="Self.Class_Student" />
           <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="Course_Deadline" EntityType="Self.Course_Deadline" />
           <EntitySet Name="Mentors" EntityType="Self.Mentor" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Semesters" EntityType="Self.Semester" />
@@ -860,13 +1012,22 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <EntitySet Name="Student_Specification_Log" EntityType="Self.Student_Specification_Log" />
           <EntitySet Name="Subjects" EntityType="Self.Subject" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" />
-          <EntitySet Name="Certificates" EntityType="Self.Certificate" />
-          <EntitySet Name="Course_Deadline" EntityType="Self.Course_Deadline" />
           <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Class" EntitySet="Classes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Course" Association="Self.FK_Certificate_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Certificate" EntitySet="Certificates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Specification" Association="Self.FK_Certificate_Specification">
+            <End Role="Specification" EntitySet="Specifications" />
+            <End Role="Certificate" EntitySet="Certificates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Certificate" EntitySet="Certificates" />
           </AssociationSet>
           <AssociationSet Name="FK_Class_Mentor" Association="Self.FK_Class_Mentor">
             <End Role="Mentor" EntitySet="Mentors" />
@@ -884,6 +1045,10 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             <End Role="Student" EntitySet="Students" />
             <End Role="Class_Student" EntitySet="Class_Student" />
           </AssociationSet>
+          <AssociationSet Name="FK_Course_Deadline_Course" Association="Self.FK_Course_Deadline_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Course_Deadline" EntitySet="Course_Deadline" />
+          </AssociationSet>
           <AssociationSet Name="FK_Course_Specification1" Association="Self.FK_Course_Specification1">
             <End Role="Specification" EntitySet="Specifications" />
             <End Role="Course" EntitySet="Courses" />
@@ -891,6 +1056,10 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <AssociationSet Name="FK_Student_Course_Log_Course" Association="Self.FK_Student_Course_Log_Course">
             <End Role="Course" EntitySet="Courses" />
             <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_Deadline_Semester" Association="Self.FK_Course_Deadline_Semester">
+            <End Role="Semester" EntitySet="Semesters" />
+            <End Role="Course_Deadline" EntitySet="Course_Deadline" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Role_Role" Association="Self.FK_User_Role_Role">
             <End Role="Role" EntitySet="Roles" />
@@ -904,10 +1073,6 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
             <End Role="Specification" EntitySet="Specifications" />
             <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
           </AssociationSet>
-          <AssociationSet Name="FK_Certificate_Student" Association="Self.FK_Certificate_Student">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="Certificate" EntitySet="Certificates" />
-          </AssociationSet>
           <AssociationSet Name="FK_Student_Course_Log_Student" Association="Self.FK_Student_Course_Log_Student">
             <End Role="Student" EntitySet="Students" />
             <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
@@ -919,6 +1084,14 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
           <AssociationSet Name="FK_Subject_Student_Student" Association="Self.FK_Subject_Student_Student">
             <End Role="Student" EntitySet="Students" />
             <End Role="Subject_Student" EntitySet="Subject_Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Course_Log_User_Role" Association="Self.FK_Student_Course_Log_User_Role">
+            <End Role="User_Role" EntitySet="User_Role" />
+            <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Specification_Log_User_Role" Association="Self.FK_Student_Specification_Log_User_Role">
+            <End Role="User_Role" EntitySet="User_Role" />
+            <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
           </AssociationSet>
           <AssociationSet Name="FK_Subject_Student_Subject" Association="Self.FK_Subject_Student_Subject">
             <End Role="Subject" EntitySet="Subjects" />
@@ -938,6 +1111,18 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
                 <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Contact_Point" ColumnName="Contact_Point" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Certificates">
+            <EntityTypeMapping TypeName="MSSModel.Certificate">
+              <MappingFragment StoreEntitySet="Certificate">
+                <ScalarProperty Name="Certificate_ID" ColumnName="Certificate_ID" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Date_Submit" ColumnName="Date_Submit" />
+                <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
+                <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -970,6 +1155,16 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
                 <ScalarProperty Name="Course_Name" ColumnName="Course_Name" />
                 <ScalarProperty Name="Course_Slug" ColumnName="Course_Slug" />
                 <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Course_Deadline">
+            <EntityTypeMapping TypeName="MSSModel.Course_Deadline">
+              <MappingFragment StoreEntitySet="Course_Deadline">
+                <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
+                <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Course_Deadline_ID" ColumnName="Course_Deadline_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1017,13 +1212,15 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
               <MappingFragment StoreEntitySet="Student">
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="Full_Name" ColumnName="Full_Name" />
+                <ScalarProperty Name="Campus" ColumnName="Campus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Student_Course_Log">
             <EntityTypeMapping TypeName="MSSModel.Student_Course_Log">
               <MappingFragment StoreEntitySet="Student_Course_Log">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Course_Log_ID" ColumnName="Course_Log_ID" />
                 <ScalarProperty Name="Course_Enrollment_Time" ColumnName="Course_Enrollment_Time" />
                 <ScalarProperty Name="Course_Start_Time" ColumnName="Course_Start_Time" />
                 <ScalarProperty Name="Last_Course_Activity_Time" ColumnName="Last_Course_Activity_Time" />
@@ -1037,13 +1234,15 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
                 <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
                 <ScalarProperty Name="Course_Grade" ColumnName="Course_Grade" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="Date_Import" ColumnName="Date_Import" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Student_Specification_Log">
             <EntityTypeMapping TypeName="MSSModel.Student_Specification_Log">
               <MappingFragment StoreEntitySet="Student_Specification_Log">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Specification_Log_ID" ColumnName="Specification_Log_ID" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
                 <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
                 <ScalarProperty Name="Specialization" ColumnName="Specialization" />
@@ -1058,6 +1257,8 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
                 <ScalarProperty Name="Specialization_Completion_Time" ColumnName="Specialization_Completion_Time" />
                 <ScalarProperty Name="Campus" ColumnName="Campus" />
                 <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+                <ScalarProperty Name="Date_Import" ColumnName="Date_Import" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1078,17 +1279,6 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="MSSModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="User_Role">
             <EntityTypeMapping TypeName="MSSModel.User_Role">
               <MappingFragment StoreEntitySet="User_Role">
@@ -1096,25 +1286,6 @@ warning 6002: The table/view 'MSS.dbo.Course_Deadline' does not have a primary k
                 <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Certificates">
-            <EntityTypeMapping TypeName="MSSModel.Certificate">
-              <MappingFragment StoreEntitySet="Certificate">
-                <ScalarProperty Name="Certificate_ID" ColumnName="Certificate_ID" />
-                <ScalarProperty Name="Link" ColumnName="Link" />
-                <ScalarProperty Name="Date_Submit" ColumnName="Date_Submit" />
-                <ScalarProperty Name="Roll" ColumnName="Roll" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Course_Deadline">
-            <EntityTypeMapping TypeName="MSSModel.Course_Deadline">
-              <MappingFragment StoreEntitySet="Course_Deadline">
-                <ScalarProperty Name="Semester_Name" ColumnName="Semester_Name" />
-                <ScalarProperty Name="Course_Name" ColumnName="Course_Name" />
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

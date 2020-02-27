@@ -41,6 +41,7 @@
     </div>
 </div>
 <script src="/Content/Scripts/jquery-3.4.1.js"></script>
+<script src="/Content/Scripts/HoldOn.js"></script>
 <script>
         $('#progress_container').hide();
         $("#btn").click(function () {
@@ -52,9 +53,12 @@
             var semester = $("#Semester_ID").val();
             var formData = new FormData();
             var file = document.getElementById("postedFile").files[0];
-                formData.append("FileUpload", file);
-                formData.append("Semester", semester);
-            $('#progress_container').show();
+            formData.append("FileUpload", file);
+            formData.append("Semester", semester);
+            HoldOn.open({
+                    message: 'Please wait...',
+                    theme: "sk-circle"
+                        });
             $.ajax({
                 url: '@Url.Action("Import","ImportStudent")',
                 type: 'POST',
@@ -64,13 +68,13 @@
                 processData: false,
                 success: function (data) {
                     if (data.message == "Import successfull!") {
-                         sweetAlert("Thành công!", data.message, "success");
+                         sweetAlert("Successfull!", data.message, "success");
                     }
                     else
-                    sweetAlert("Lỗi!", data.message, "error");
+                    sweetAlert("Error!", data.message, "error");
                  }
                  }).done(function () {
-                    $('#progress_container').hide();
+                     HoldOn.close();
                 });
             }         
         });

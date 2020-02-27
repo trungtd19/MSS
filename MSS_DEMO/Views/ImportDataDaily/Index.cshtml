@@ -12,58 +12,72 @@
 <hr />
 <h4>Import Data</h4>
 <h5>Choose one or multiple files</h5>
+<div class="form-group">
+    <div class="col-md-2"><label>Enter date import</label></div>
+    <div class="col-md-2"><input type="date" id="dateImport" name="dateImport" /></div>
+    <div class="col-md-6"></div>
+</div>
+<br />
 <div class="container">
     <div class="tab-content">
         <div class="tab-pane active">
-            <div class="row">
-                <form id="uploader">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <input id="fileInput" type="file" name="postedFile" class="form-control" accept=".csv" multiple>
-                            <br />
-                            <br />
-                            <input type="button" id="btnupload" value="Upload" class="btn btn-default" style="float:right" />
-                        </div>
+            <form id="uploader">
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-sm-3 col-md-3">
+                        <input id="fileInput" type="file" name="postedFile" class="form-control" accept=".csv" multiple>
+                        <br />
+                        <br />
+                        <input type="button" id="btnupload" value="Upload" class="btn btn-default" style="float:right" />
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <script src="/Content/Scripts/jquery-3.4.1.js"></script>
+<script src="/Content/Scripts/HoldOn.js"></script>
 <script>
-    var formdata = new FormData(); 
     $(document).ready(function () {
         $("#btnupload").click(function () {
-            $('#progress_container').show();
-            var files = $("#fileInput").get(0).files;
-            var fileData = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                fileData.append("fileInput", files[i]);
-            }
 
-            $.ajax({
-                url: '/ExportData/UploadFiles',
-                type: "POST",
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                data: fileData,
-                success: function (data) {
-                   
+            HoldOn.open({
+                message: 'Please wait...',
+                theme: "sk-circle"
+            });
+            var dateImport = $("#dateImport").val();
+            if (dateImport == "") {
+                sweetAlert("Lỗi!", "Choose date import please!", "error");
+                HoldOn.close();
+            }
+            else {
+                var files = $("#fileInput").get(0).files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append("fileInput", files[i]);
+                }
+                fileData.append("dateImport", dateImport);
+                $.ajax({
+                    url: '/ExportData/UploadFiles',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    data: fileData,
+                    success: function (data) {
                         if (data.message == "Import successfull!") {
-                            sweetAlert("Thành công!", data.message, "success");
+                            sweetAlert("Successfull!", data.message, "success");
                         }
                         else
-                            sweetAlert("Lỗi!", data.message, "error");
-                        $('#progress_container').hide();
-                  
-                },
-                error: function (err) {
-                    alert(err.statusText);
-                    $('#progress_container').hide();
-                }
-            });
+                            sweetAlert("Error!", data.message, "error");
+                        HoldOn.close();
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                        HoldOn.close();
+                    }
+                });
+            }
         });
     });
 </script>

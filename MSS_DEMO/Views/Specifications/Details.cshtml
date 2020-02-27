@@ -1,0 +1,48 @@
+﻿@model MSS_DEMO.Models.Specification
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Semester</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Specification_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specification_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specification_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Specification_Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject_ID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Is_Real_Specification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Is_Real_Specification)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Specification_ID }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Specification_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

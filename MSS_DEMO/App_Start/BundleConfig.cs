@@ -5,7 +5,6 @@ namespace MSS_DEMO
 {
     public class BundleConfig
     {
-        // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
            
@@ -28,7 +27,8 @@ namespace MSS_DEMO
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/materialize.min.css",
+                      "~/Content/HoldOn.css",
+                      //"~/Content/materialize.min.css",
                       "~/Content/sweetalert.css",
                       "~/Content/site.css"));
         }

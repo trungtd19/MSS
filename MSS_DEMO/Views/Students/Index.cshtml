@@ -6,62 +6,70 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Student</span>
 <hr />
+
 <div class="form-group">
     <div class="col-md-3"></div>
     <div class="col-md-3">
-        <a href="ImportStudent/Index"><input type="button" class="btn btn-small" value="Import" /></a>
+        <a href="ImportStudent/Index"><input type="button" class="btn btn-default" value="Import" /></a>
     </div>
     <div class="col-md-3">
         @using (Html.BeginForm("Export_Student_CSV", "Students", FormMethod.Get))
         {
-            <input class="btn btn-sm" type="submit" accept="" id="btnSubmit" value="Export" />
+            <input class="btn btn-default" type="submit" accept="" id="btnSubmit" value="Export" />
         }
     </div>
     <div class="col-md-1"></div>
     <br />
 </div>
-    <br />
-    <hr />
-    <div class="form-group">
-        @using (Html.BeginForm("Index", "Students", FormMethod.Get))
+<br />
+<hr />
+<div class="form-group">
+
+    @using (Html.BeginForm("Index", "Students", FormMethod.Get))
+    {
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-2">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+        <div class="col-md-6"></div>
+    }
+</div>
+<br />
+<br />
+<br />
+@if (Model.PageCount != 0)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Student ID
+            </th>
+            <th>
+                Student Name
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
         {
-            <div class="col-md-2">
-                @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Search With ID"  })
-            </div>
-            <div class="col-md-2">
-                <input class="btn btn-sm" type="submit" value="Search" />
-            </div>
-            <div class="col-md-6"></div>
-          }
-    </div>
-            <br />
-            <br />
-            <table class="table table-bordered">
-                <tr>
-                    <th>
-                        Student ID
-                    </th>
-                    <th>
-                        Student Name
-                    </th>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Roll)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
 
-                </tr>
+            </tr>
+        }
 
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Roll)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-
-                    </tr>
-                }
-
-            </table>
-            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-            @Html.PagedListPager(Model, page => Url.Action("Index",
-                new { page }))
+    </table>
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+@Html.PagedListPager(Model, page => Url.Action("Index",
+      new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

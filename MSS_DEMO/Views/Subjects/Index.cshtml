@@ -1,39 +1,60 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Subject>
-
+﻿@model PagedList.IPagedList<MSS_DEMO.Models.Subject>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Subject";
 }
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Subject</span>
 <hr />
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject_ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject_Name)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Subjects", FormMethod.Get))
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject_ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject_Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Subject_ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Subject_ID })
-            </td>
-        </tr>
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
+            @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-1">
+            <input class="btn btn-sm" type="submit" value="Search" />
+        </div>
+        <div class="col-md-1">
+            @Html.ActionLink("Add New", "Create")
+        </div>
+        <div class="col-md-5"></div>
     }
+</div>
+<br />
+<br />
+@if (Model.PageCount != 0)
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Subject ID
+            </th>
+            <th>
+                Subject Name
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Subject_ID, "Details", new { id = item.Subject_ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject_Name)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+   new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))

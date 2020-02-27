@@ -191,7 +191,6 @@
     <Compile Include="Core\Implement\UserRepository.cs" />
     <Compile Include="Core\Import\CSVConvert.cs" />
     <Compile Include="IoC\UnityDI.cs" />
-    <Compile Include="Controllers\ImportDemo.cs" />
     <Compile Include="Controllers\Log\Student_Course_LogController.cs" />
     <Compile Include="Controllers\Log\Student_Specification_LogController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -277,9 +276,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -293,6 +289,8 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\HoldOn.css" />
+    <Content Include="Content\Scripts\HoldOn.js" />
     <Content Include="favicon.ico" />
     <Content Include="Content\materialize.min.css" />
     <Content Include="Content\Scripts\jquery-3.4.1.js" />
@@ -377,6 +375,10 @@
     <Content Include="Views\User_Role\Details.cshtml" />
     <Content Include="Views\User_Role\Edit.cshtml" />
     <Content Include="Views\User_Role\Index.cshtml" />
+    <Content Include="Views\Subjects\Details.cshtml" />
+    <Content Include="Views\Campus\Details.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Specifications\Details.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
