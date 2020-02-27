@@ -94,7 +94,7 @@
             <PropertyRef Name="Specification_ID" />
           </Key>
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
           <Property Name="Specification_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Is_Real_Specification" Type="bit" Nullable="false" />
         </EntityType>
@@ -307,7 +307,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Specification_Subject">
-          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
           <End Role="Specification" Type="Self.Specification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Subject">
@@ -642,7 +642,7 @@
             <PropertyRef Name="Specification_ID" />
           </Key>
           <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Specification_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Is_Real_Specification" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificate_Specification" FromRole="Specification" ToRole="Certificate" />
@@ -901,7 +901,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Specification_Subject">
-          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
           <End Role="Specification" Type="Self.Specification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Subject">
