@@ -118,51 +118,21 @@ namespace MSS_DEMO.Controllers
             var context = new MSSEntities();
             if (a2 == "")
             {
-                List<SubExtend> rp = (from a in context.Student_Specification_Log
-                                      join b in context.Subjects on a.Subject_ID equals b.Subject_ID
-                                      where a1 == a.Subject_ID
-                                      select new
-                                      {
-                                          Specialization_Slug = a.Specialization_Slug,
-                                          Subject_Name = b.Subject_Name
-                                      }).ToList().Select(p => new SubExtend
-                                      {
-                                          Specialization_Slug = p.Specialization_Slug,
-                                          Subject_Name = p.Subject_Name
-                                      }).ToList();
-                foreach (var item in rp)
-                {
-                    string s1 = item.Subject_Name.Trim().ToLower();
-                    string s2 = item.Specialization_Slug.Replace("-", " ").Trim().ToLower();
-                    if (s1.Equals(s2))
-                    {
-                        count++;
-                    }
-                }
+                count = (from a in context.Student_Specification_Log
+                         join b in context.Specifications on a.Specification_ID equals b.Specification_ID
+                         join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                         join d in context.Courses on b.Specification_ID equals d.Specification_ID
+                         where a1 == a.Subject_ID
+                         select a.Roll).Distinct().Count();
             }
             else
             {
-                List<SubExtend> rp = (from a in context.Student_Specification_Log
-                                      join b in context.Subjects on a.Subject_ID equals b.Subject_ID
-                                      where a1 == a.Subject_ID && a.Campus == a2
-                                      select new
-                                      {
-                                          Specialization_Slug = a.Specialization_Slug,
-                                          Subject_Name = b.Subject_Name
-                                      }).ToList().Select(p => new SubExtend
-                                      {
-                                          Specialization_Slug = p.Specialization_Slug,
-                                          Subject_Name = p.Subject_Name
-                                      }).ToList();
-                foreach (var item in rp)
-                {
-                    string s1 = item.Subject_Name.Trim().ToLower();
-                    string s2 = item.Specialization_Slug.Replace("-", " ").Trim().ToLower();
-                    if (s1.Equals(s2))
-                    {
-                        count++;
-                    }
-                }
+                count = (from a in context.Student_Specification_Log
+                         join b in context.Specifications on a.Specification_ID equals b.Specification_ID
+                         join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                         join d in context.Courses on b.Specification_ID equals d.Specification_ID
+                         where a1 == a.Subject_ID && a.Campus == a2
+                         select a.Roll).Distinct().Count();
             }
             return count;
             
