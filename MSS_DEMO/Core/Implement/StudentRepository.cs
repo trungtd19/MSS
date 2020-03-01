@@ -36,5 +36,17 @@ namespace MSS_DEMO.Repository
                 check = false;
             return check;
         }
+        public bool IsExtisStudent(string id)
+        {
+            bool check = true;
+            Student student = context.Students.Where(x => x.Roll == id).FirstOrDefault();
+            if (student != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
     }
 }
