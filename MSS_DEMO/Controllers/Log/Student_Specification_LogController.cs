@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
@@ -20,24 +18,32 @@ namespace MSS_DEMO.Controllers.Log
             this.unitOfWork = _unitOfWork;
         }
 
-        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
+        public ActionResult Index(int? page, string SearchString,string dateImport , string dateFilter,string searchCheck, string currentFilter)
         {
             List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
-            if (SearchString != null)
+            if (SearchString != null && dateImport != null)
             {
                 page = 1;
             }
             else
             {
                 SearchString = currentFilter;
+                dateImport = dateFilter;
             }
+            string date = String.IsNullOrEmpty(dateImport) ? "1900/01/01" : dateImport.Replace("-", "/");
+            DateTime _dateImport = DateTime.ParseExact(date, "yyyy/MM/dd", CultureInfo.InvariantCulture);
             ViewBag.CurrentFilter = SearchString;
+            ViewBag.DateFilter = dateImport;
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 LogList = unitOfWork.SpecificationsLog.GetPageList();
                 if (!String.IsNullOrEmpty(SearchString))
                 {
                     LogList = LogList.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+                if (!String.IsNullOrEmpty(dateImport))
+                {
+                    LogList = LogList.Where(s => s.Date_Import == _dateImport).ToList();
                 }
             }
             int pageSize = 10;

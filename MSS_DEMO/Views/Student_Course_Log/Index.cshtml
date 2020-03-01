@@ -24,7 +24,7 @@
             @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-2">
-            @Html.TextBox("ImportDate", "", new { @class = "form-control", @type = "date", @placeholder = "Search Import Date" })
+            @Html.TextBox("dateImport", ViewBag.DateFilter as string, new { @class = "form-control", @type = "date", @placeholder = "Search Import Date" })
         </div>
         <div class="col-md-2">
             <input class="btn btn-default" type="submit" value="Search" />
@@ -136,4 +136,4 @@
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model, page => Url.Action("Index",
-       new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))
+       new { page, currentFilter = ViewBag.CurrentFilter, dateFilter = ViewBag.DateFilter,searchCheck = "true" }))
