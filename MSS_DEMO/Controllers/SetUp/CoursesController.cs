@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -127,10 +127,10 @@ namespace MSS_DEMO.Controllers.SetUp
 
             foreach (var spec in specs)
             {
-                if (!spec.Is_Real_Specification)
-                {
+                //if (!spec.Is_Real_Specification)
+               // {
                     _specs.Add(spec);
-                }
+              //  }
             }
             ViewBag.Specification_ID = new SelectList(_specs, "Specification_ID", "Specification_ID");
         }

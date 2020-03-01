@@ -59,21 +59,22 @@ namespace MSS_DEMO.Controllers
                                 if (postedFile.FileName.Contains("specialization-report"))
                                 {
                                     string[] headers = sreader.ReadLine().Split(',');
-
+                                    var listIdSubject = unitOfWork.Specifications.GetAll();
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);                                  
-                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows, userID,_dateImport));
+                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows, userID,_dateImport, listIdSubject));
                                     }
                                 }
                                 else
                                 if (postedFile.FileName.Contains("usage-report"))
                                 {
                                     string[] headers = sreader.ReadLine().Split(',');
+                                    var listIdCourses = unitOfWork.Courses.GetListID();
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport));
+                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport, listIdCourses));
                                     }
                                 }
                                 else

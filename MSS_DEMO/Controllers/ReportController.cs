@@ -25,21 +25,17 @@ namespace MSS_DEMO.Controllers
 
             foreach (var sub in context.Subjects)
             {
-                var Totall = (from a in context.Student_Specification_Log
+                var Totall = (from a in context.Subjects
+                              join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
+                              join c in context.Students on b.Roll equals c.Roll
                              where sub.Subject_ID == a.Subject_ID
-                             select a.Roll).Count();
-                var HaNoi = (from a in context.Student_Specification_Log
-                             where sub.Subject_ID == a.Subject_ID && a.Campus == "HN"                                                                        
-                             select a.Roll).Count();
-                var DaNang = (from a in context.Student_Specification_Log
-                             where sub.Subject_ID == a.Subject_ID && a.Campus == "DN"
-                             select a.Roll).Count();
-                var SaiGon = (from a in context.Student_Specification_Log
-                             where sub.Subject_ID == a.Subject_ID && a.Campus == "SG"
-                             select a.Roll).Count();
-                var CanTho = (from a in context.Student_Specification_Log
-                             where sub.Subject_ID == a.Subject_ID && a.Campus == "CT"
-                             select a.Roll).Count();
+                             select c.Roll).Count();
+
+                var HaNoi = Campus(sub.Subject_ID, "HN");
+                var DaNang = Campus(sub.Subject_ID, "DN");
+                var SaiGon = Campus(sub.Subject_ID, "SG");
+                var CanTho = Campus(sub.Subject_ID, "CT");
+
                 var Type = (from a in context.Specifications
                             where sub.Subject_ID == a.Subject_ID && a.Is_Real_Specification == true
                             select a.Specification_ID).Count();
@@ -79,7 +75,29 @@ namespace MSS_DEMO.Controllers
 
             ViewBag.Total1 = Total1;
             ViewBag.Total2 = Total2;
-            ViewBag.Complete = Complete();
+
+            var studentComplete = (from a in context.Student_Course_Log
+                                   join b in context.Courses on a.Course_ID equals b.Course_ID
+                                   join c in context.Specifications on b.Specification_ID equals c.Specification_ID
+                                   where a.Completed == true
+                                   select a.Roll).Distinct().Count();
+            var courseComplete = (from a in context.Student_Course_Log
+                                   join b in context.Courses on a.Course_ID equals b.Course_ID
+                                   join c in context.Specifications on b.Specification_ID equals c.Specification_ID
+                                   where a.Completed == true
+                                   select a.Course_ID).Distinct().Count();
+
+            ViewBag.studentComplete = studentComplete;
+            ViewBag.courseComplete = courseComplete;
+
+
+            var Estimated = (from a in context.Student_Course_Log
+                             where a.Estimated < 5
+                             select a.Roll).Distinct().Count();
+            var per = percent(Estimated, Total1);
+            ViewBag.Estimated = Estimated;
+            ViewBag.Percent = per;
+            
 
             rep.Add(new Report { Total = Total1, HN = HN1, DN = DN1, SG = SG1, CT = CT1 });
             rep2.Add(new Report2 { Study = percent(Total2,Total1), Total = Total2, HN = HN2, DN = DN2, SG = SG2, CT = CT2 });
@@ -100,82 +118,24 @@ namespace MSS_DEMO.Controllers
             var context = new MSSEntities();
             if (a2 == "")
             {
-                List<SubExtend> rp = (from a in context.Student_Specification_Log
-                                      join b in context.Subjects on a.Subject_ID equals b.Subject_ID
-                                      where a1 == a.Subject_ID
-                                      select new
-                                      {
-                                          Specialization_Slug = a.Specialization_Slug,
-                                          Subject_Name = b.Subject_Name
-                                      }).ToList().Select(p => new SubExtend
-                                      {
-                                          Specialization_Slug = p.Specialization_Slug,
-                                          Subject_Name = p.Subject_Name
-                                      }).ToList();
-                foreach (var item in rp)
-                {
-                    string s1 = item.Subject_Name.Trim().ToLower();
-                    string s2 = item.Specialization_Slug.Replace("-", " ").Trim().ToLower();
-                    if (s1.Equals(s2))
-                    {
-                        count++;
-                    }
-                }
+                count = (from a in context.Student_Specification_Log
+                         join b in context.Specifications on a.Specification_ID equals b.Specification_ID
+                         join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                         join d in context.Courses on b.Specification_ID equals d.Specification_ID
+                         where a1 == a.Subject_ID
+                         select a.Roll).Distinct().Count();
             }
             else
             {
-                List<SubExtend> rp = (from a in context.Student_Specification_Log
-                                      join b in context.Subjects on a.Subject_ID equals b.Subject_ID
-                                      where a1 == a.Subject_ID && a.Campus == a2
-                                      select new
-                                      {
-                                          Specialization_Slug = a.Specialization_Slug,
-                                          Subject_Name = b.Subject_Name
-                                      }).ToList().Select(p => new SubExtend
-                                      {
-                                          Specialization_Slug = p.Specialization_Slug,
-                                          Subject_Name = p.Subject_Name
-                                      }).ToList();
-                foreach (var item in rp)
-                {
-                    string s1 = item.Subject_Name.Trim().ToLower();
-                    string s2 = item.Specialization_Slug.Replace("-", " ").Trim().ToLower();
-                    if (s1.Equals(s2))
-                    {
-                        count++;
-                    }
-                }
+                count = (from a in context.Student_Specification_Log
+                         join b in context.Specifications on a.Specification_ID equals b.Specification_ID
+                         join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                         join d in context.Courses on b.Specification_ID equals d.Specification_ID
+                         where a1 == a.Subject_ID && a.Campus == a2
+                         select a.Roll).Distinct().Count();
             }
             return count;
             
-        }
-
-        private int Complete()
-        {
-            int count = 0;
-            var context = new MSSEntities();
-            List<SubExtend> cp = (from a in context.Student_Specification_Log
-                                  join b in context.Subjects on a.Subject_ID equals b.Subject_ID
-                                  where a.Completed == true
-                                  select new
-                                  {
-                                      Specialization_Slug = a.Specialization_Slug,
-                                      Subject_Name = b.Subject_Name
-                                  }).ToList().Select(p => new SubExtend
-                                  {
-                                      Specialization_Slug = p.Specialization_Slug,
-                                      Subject_Name = p.Subject_Name
-                                  }).ToList();
-            foreach (var item in cp)
-            {
-                string s1 = item.Subject_Name.Trim().ToLower();
-                string s2 = item.Specialization_Slug.Replace("-", " ").Trim().ToLower();
-                if (s1.Equals(s2))
-                {
-                    count++;
-                }
-            }
-            return count;
         }
 
         private double percent(int a, int b)
@@ -190,6 +150,17 @@ namespace MSS_DEMO.Controllers
                 per = 0;
             }
             return per;
+        }
+
+        private int Campus(string subjectId, string campus)
+        {
+            var context = new MSSEntities();
+            var student = (from a in context.Subjects
+                         join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
+                         join c in context.Students on b.Roll equals c.Roll
+                         where subjectId == a.Subject_ID && c.Campus == campus
+                         select c.Roll).Count();
+            return student;
         }
     }
 }
