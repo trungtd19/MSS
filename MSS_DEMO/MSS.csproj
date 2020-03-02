@@ -185,6 +185,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\ClassStudentRepository.cs" />
+    <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
     <Compile Include="Core\Implement\StudentCoursesLogRepository.cs" />
     <Compile Include="Core\Implement\StudentSpecificationLogRepository.cs" />
     <Compile Include="Core\Implement\SubjectStudentRepository.cs" />

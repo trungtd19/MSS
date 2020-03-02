@@ -31,6 +31,7 @@ namespace MSS_DEMO.Models
         public string Specification_ID { get; set; }
         public Nullable<System.DateTime> Date_Import { get; set; }
         public Nullable<int> User_ID { get; set; }
+        public string Email { get; set; }
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }

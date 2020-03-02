@@ -23,6 +23,7 @@ namespace MSS_DEMO.Repository
         private ClassStudentRepository ClassStudentRepository;
         private SubjectStudentRepository SubjectStudentRepository;
         private ClassRepository ClassRepository;
+        private CoursesDeadlineRepository CoursesDeadlineRepository;
         public StudentRepository Students
         {
             get
@@ -30,7 +31,13 @@ namespace MSS_DEMO.Repository
                 return StudentRepository ?? (StudentRepository = new StudentRepository(context));
             }
         }
-
+        public CoursesDeadlineRepository DeadLine
+        {
+            get
+            {
+                return CoursesDeadlineRepository ?? (CoursesDeadlineRepository = new CoursesDeadlineRepository(context));
+            }
+        }
         public UserRepository User
         {
             get

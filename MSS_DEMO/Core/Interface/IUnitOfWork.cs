@@ -23,6 +23,7 @@ namespace MSS_DEMO.Repository
         ClassStudentRepository ClassStudent { get; }
         SubjectStudentRepository SubjectStudent { get; }
         ClassRepository Classes { get; }
+        CoursesDeadlineRepository DeadLine { get; }
         bool Save();
     }
 }

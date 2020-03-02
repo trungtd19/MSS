@@ -19,6 +19,7 @@ namespace MSS_DEMO.Models
         {
             this.Classes = new HashSet<Class>();
             this.Course_Deadline = new HashSet<Course_Deadline>();
+            this.Students = new HashSet<Student>();
         }
     
         public string Semester_ID { get; set; }
@@ -30,5 +31,7 @@ namespace MSS_DEMO.Models
         public virtual ICollection<Class> Classes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course_Deadline> Course_Deadline { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Student> Students { get; set; }
     }
 }
