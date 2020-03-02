@@ -6,135 +6,158 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > Specialization Report</span>
 <hr />
-<br />
+
 @using (Html.BeginForm("DeleteAll", "Student_Specification_Log"))
 {
     <p>
-        <input type="submit" value="Clear All Data" />
+        <input type="submit" value="Clear All Data" hidden />
     </p>
 }
-<br />
-<div class="form-group">
-    @using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
-    {
-        <div class="col-md-2">
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
-            @Html.Hidden("searchCheck", "true")
-        </div>
-        <div class="col-md-2">
-            @Html.TextBox("ImportDate", "", new { @class = "form-control", @type = "date", @placeholder = "Search Import Date" })
-        </div>
-        <div class="col-md-2">
-            <input class="btn btn-default" type="submit" value="Search" />
-        </div>
-        <div class="col-md-4"></div>
-    }
+
+<div class="panel panel-default">
+    <div class="panel-body" style="padding-top: initial;">
+
+        @using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
+        {
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by email</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+                    @Html.Hidden("searchCheck", "true")
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label class="control-label"> Search by date import</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBox("dateImport", ViewBag.DateFilter as string, new { @class = "form-control", @type = "date" })
+                </div>
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by </label>
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <input class="btn btn-default" type="submit" value="Search" />
+                </div>
+            </div>
+
+        }
+    </div>
 </div>
-<br />
-<br />
+
 @if (Model.PageCount != 0)
 {
-    <div class="panel-body table-responsive">
+    <div class="table-responsive text-nowrap">
         <table class="table table-bordered">
-            <tr>
-                <th>
-                    ROLL
-                </th>
-                <th>
-                    Subject ID
-                </th>
-                <th>
-                    Campus
-                </th>
-                <th>
-                    Specialization
-                </th>
-                <th>
-                    Specialization Slug
-                </th>
-                <th>
-                    University
-                </th>
-                <th>
-                    Enrollment_Time
-                </th>
-                <th>
-                    Last Activity Time
-                </th>
-                <th>
-                    Completed
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Program Slug
-                </th>
-                <th>
-                    Program Name
-                </th>
-                <th>
-                    Completion Time
-                </th>
-
-                <th>
-                    Specification ID
-                </th>
-
-
-            </tr>
-
-            @foreach (var item in Model)
-            {
-
-                var complete = item.Completed == true ? "Yes" : "No";
-                var status = item.Status == true ? "Yes" : "No";
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Roll)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Subject_ID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Campus)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.University)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
-                    </td>
-                    <td>
-                        @complete
-                    </td>
-                    <td>
-                        @status
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
-                    </td>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Subject ID
+                    </th>
+                    <th>
+                        Campus
+                    </th>
+                    <th>
+                        Specialization
+                    </th>
+                    <th>
+                        Specialization Slug
+                    </th>
+                    <th>
+                        University
+                    </th>
+                    <th>
+                        Enrollment Time
+                    </th>
+                    <th>
+                        Last Activity Time
+                    </th>
+                    <th>
+                        Completed
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Program Slug
+                    </th>
+                    <th>
+                        Program Name
+                    </th>
+                    <th>
+                        Completion Time
+                    </th>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specification_ID)
-                    </td>
+                    <th>
+                        Specification ID
+                    </th>
+
                 </tr>
-            }
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+
+                    var complete = item.Completed == true ? "Yes" : "No";
+                    var status = item.Status == true ? "Yes" : "No";
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specification_ID)
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
     var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
@@ -143,4 +166,4 @@
 }
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
-   new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))
+    new { page, currentFilter = ViewBag.CurrentFilter, dateFilter = ViewBag.DateFilter, SelectFilter = ViewBag.SelectString, searchCheck = "true" }))

@@ -64,16 +64,16 @@ namespace MSS_DEMO.Controllers
                                     //    || 
                                     if (unitOfWork.Subject.CheckExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
                                     {
-                                        if (unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll)
+                                        if (unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows, semester).Roll)
                                             && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
                                         {
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));
                                            // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                         }
                                         else
-                                        if (!unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows).Roll))
+                                        if (!unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows, semester).Roll))
                                         {
-                                            unitOfWork.Students.Insert(getRow.GetStudent(rows));
+                                            unitOfWork.Students.Insert(getRow.GetStudent(rows, semester));
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
                                             //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                         }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
@@ -19,19 +17,23 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-
-        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
+        public ActionResult Index(int? page, string SearchString, string dateImport, string dateFilter, string searchCheck, string currentFilter, string SelectFilter, string SelectString)
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
-            if (SearchString != null)
+            if (SearchString != null && dateImport != null && SearchString != "")
             {
                 page = 1;
             }
             else
             {
                 SearchString = currentFilter;
+                dateImport = dateFilter;
+                SearchString = SelectFilter;
             }
+            string date = String.IsNullOrEmpty(dateImport) ? "1900/01/01" : dateImport.Replace("-", "/");
+            DateTime _dateImport = DateTime.ParseExact(date, "yyyy/MM/dd", CultureInfo.InvariantCulture);
             ViewBag.CurrentFilter = SearchString;
+            ViewBag.DateFilter = dateImport;
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 LogList = unitOfWork.CoursesLog.GetPageList();
@@ -39,10 +41,24 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = LogList.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
+                if (!String.IsNullOrEmpty(dateImport))
+                {
+                    LogList = LogList.Where(s => s.Date_Import == _dateImport).ToList();
+                    if (!String.IsNullOrEmpty(SelectString))
+                    {
+                        LogList = SelectFilter == "Compeleted" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == true).ToList();
+                    }
+                }
             }
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+                ViewBag.SelectString = new List<SelectListItem>
+                {
+                     new SelectListItem { Selected = true, Text = "---None---", Value = ""},
+                     new SelectListItem { Selected = false, Text = "Compeleted", Value = "Compeleted"},
+                     new SelectListItem { Selected = false, Text = "Compulsory", Value = "Compulsory"},
+                };
+               return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
         }
         public ActionResult DeleteAll()
         {

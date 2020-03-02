@@ -62,7 +62,11 @@ namespace MSS_DEMO.Controllers
                                     var listIdSubject = unitOfWork.Specifications.GetAll();
                                     while (!sreader.EndOfStream)
                                     {
-                                        List<string> rows = csv.RegexRow(sreader);                                  
+                                        List<string> rows = csv.RegexRow(sreader);
+                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0]))
+                                        {
+                                            continue;
+                                        }
                                         unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows, userID,_dateImport, listIdSubject));
                                     }
                                 }
@@ -74,6 +78,10 @@ namespace MSS_DEMO.Controllers
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
+                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0]))
+                                        {
+                                            continue;
+                                        }
                                         unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport, listIdCourses));
                                     }
                                 }

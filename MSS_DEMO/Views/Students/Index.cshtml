@@ -8,15 +8,11 @@
 <hr />
 
 <div class="form-group">
-    <div class="col-md-3"></div>
-    <div class="col-md-3">
-        <a href="ImportStudent/Index"><input type="button" class="btn btn-default" value="Import" /></a>
+    <div class="col-md-2">
+        <a href="ImportStudent/Index">Import Student</a>
     </div>
-    <div class="col-md-3">
-        @using (Html.BeginForm("Export_Student_CSV", "Students", FormMethod.Get))
-        {
-            <input class="btn btn-default" type="submit" accept="" id="btnSubmit" value="Export" />
-        }
+    <div class="col-md-2">
+        @Html.ActionLink("Export Student", "Export_Student_CSV", "Students")
     </div>
     <div class="col-md-1"></div>
     <br />
@@ -48,22 +44,34 @@
                 Student ID
             </th>
             <th>
-                Student Name
+                Full Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Campus
             </th>
 
         </tr>
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Roll)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Roll)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Full_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Campus)
+        </td>
 
-            </tr>
+    </tr>
         }
 
     </table>

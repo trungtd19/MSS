@@ -19,7 +19,7 @@ namespace MSS_DEMO.Models
         public System.DateTime Date_Submit { get; set; }
         public string Roll { get; set; }
         public string Course_ID { get; set; }
-        public string Specification_ID { get; set; }
+        public Nullable<int> Specification_ID { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Specification Specification { get; set; }
