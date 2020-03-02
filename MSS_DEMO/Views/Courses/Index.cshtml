@@ -29,14 +29,9 @@
 {
     <table class="table table-bordered">
         <tr>
-            <th>
-                Course ID
-            </th>
+
             <th>
                 Course Name
-            </th>
-            <th>
-                Course Slug
             </th>
             <th>
                 Specification ID
@@ -48,14 +43,8 @@
             var specID = item.Specification_ID == null ? "Not Map" : item.Specification_ID;
             <tr>
                 <td>
-                    @Html.ActionLink(item.Course_ID, "Details", new { id = item.Course_ID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course_Slug)
-                </td>
+                    @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
+                </td>             
                 <td>
                     @specID
                 </td>
