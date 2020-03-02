@@ -10,7 +10,7 @@ namespace MSS_DEMO.Core.Import
 {
     public class GetRow : IGetRow
     {
-        public Student GetStudent(List<string> row)
+        public Student GetStudent(List<string> row,string semester)
         {
             return new Student
             {
@@ -18,6 +18,7 @@ namespace MSS_DEMO.Core.Import
                 Roll = row[0].ToString(),
                 Full_Name = row[1].ToString(),
                 Campus = row[3].ToString().Split('-')[1],
+                Semester_ID = semester
             };
 
         }
@@ -50,6 +51,7 @@ namespace MSS_DEMO.Core.Import
             }
             return new Student_Specification_Log
             {
+                Email = row[1].ToString(),
                 Roll = row[1].ToString().Split('@')[0],
                 Subject_ID = row[2].ToString().Split('-')[0],
                 Specification_ID = Spec_ID_CSV,
@@ -71,14 +73,15 @@ namespace MSS_DEMO.Core.Import
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs)
         {    
             DateTime _dateImport = DateTime.Parse(dateImport);
-            var Cour_ID_CSV = "";
+            int Cour_ID_CSV = -1;
             foreach (var listID in course_Spec_Subs)
             {
-                Cour_ID_CSV = listID.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listID.Course_ID.Trim() : null;
-                if (Cour_ID_CSV != null) break;
+                Cour_ID_CSV = listID.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listID.Course_ID : -1;
+                if (Cour_ID_CSV != -1) break;
             }
             Student_Course_Log log1 = new Student_Course_Log
             {
+                Email = row[1].ToString(),
                 Roll = row[1].ToString().Split('@')[0],
                 Course_ID = Cour_ID_CSV,
                 Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
