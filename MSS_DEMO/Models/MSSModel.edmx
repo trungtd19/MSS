@@ -60,8 +60,8 @@
           </Key>
           <Property Name="Semester_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Course_ID" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Deadline" Type="datetime" />
-          <Property Name="Course_Deadline_ID" Type="int" Nullable="false" />
+          <Property Name="Deadline" Type="datetime" Nullable="false" />
+          <Property Name="Course_Deadline_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Mentor">
           <Key>
@@ -622,8 +622,8 @@
           </Key>
           <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Course_ID" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-          <Property Name="Course_Deadline_ID" Type="Int32" Nullable="false" />
+          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Course_Deadline_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Course_Deadline_Course" FromRole="Course_Deadline" ToRole="Course" />
           <NavigationProperty Name="Semester" Relationship="Self.FK_Course_Deadline_Semester" FromRole="Course_Deadline" ToRole="Semester" />
         </EntityType>

@@ -84,6 +84,7 @@ namespace MSS_DEMO.Core.Import
                 Email = row[1].ToString(),
                 Roll = row[1].ToString().Split('@')[0],
                 Course_ID = Cour_ID_CSV,
+                Campus = row[2].ToString().Split('-')[1],
                 Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
                 Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
                 Last_Course_Activity_Time = row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970"),
