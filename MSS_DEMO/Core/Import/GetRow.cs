@@ -73,11 +73,11 @@ namespace MSS_DEMO.Core.Import
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs)
         {    
             DateTime _dateImport = DateTime.Parse(dateImport);
-            int Cour_ID_CSV = -1;
+            string Cour_ID_CSV = "";
             foreach (var listID in course_Spec_Subs)
             {
-                Cour_ID_CSV = listID.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listID.Course_ID : -1;
-                if (Cour_ID_CSV != -1) break;
+                Cour_ID_CSV = listID.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listID.Course_ID : "";
+                if (Cour_ID_CSV != "") break;
             }
             Student_Course_Log log1 = new Student_Course_Log
             {

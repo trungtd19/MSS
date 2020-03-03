@@ -26,7 +26,7 @@ namespace MSS_DEMO.Models
         public string Enrollment_Source { get; set; }
         public string Mentor_ID { get; set; }
         public string Semester_ID { get; set; }
-        public string Campus_Name { get; set; }
+        public string Campus_ID { get; set; }
     
         public virtual Campu Campu { get; set; }
         public virtual Mentor Mentor { get; set; }
