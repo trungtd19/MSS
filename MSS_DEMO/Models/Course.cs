@@ -22,7 +22,7 @@ namespace MSS_DEMO.Models
             this.Student_Course_Log = new HashSet<Student_Course_Log>();
         }
     
-        public int Course_ID { get; set; }
+        public string Course_ID { get; set; }
         public string Course_Name { get; set; }
         public string Course_Slug { get; set; }
         public string Specification_ID { get; set; }

@@ -23,7 +23,7 @@
           <Property Name="Date_Submit" Type="datetime" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Course_ID" Type="varchar" MaxLength="50" />
-          <Property Name="Specification_ID" Type="int" />
+          <Property Name="Specification_ID" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
@@ -35,7 +35,7 @@
           <Property Name="Enrollment_Source" Type="nchar" MaxLength="10" />
           <Property Name="Mentor_ID" Type="varchar" MaxLength="50" />
           <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
-          <Property Name="Campus_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Campus_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Class_Student">
           <Key>
@@ -49,7 +49,7 @@
           <Key>
             <PropertyRef Name="Course_ID" />
           </Key>
-          <Property Name="Course_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Course_ID" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Course_Name" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Course_Slug" Type="varchar" MaxLength="50" />
           <Property Name="Specification_ID" Type="varchar" MaxLength="50" />
@@ -59,9 +59,9 @@
             <PropertyRef Name="Course_Deadline_ID" />
           </Key>
           <Property Name="Semester_ID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Course_ID" Type="int" Nullable="false" />
+          <Property Name="Course_ID" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Deadline" Type="datetime" Nullable="false" />
-          <Property Name="Course_Deadline_ID" Type="int" Nullable="false" />
+          <Property Name="Course_Deadline_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Mentor">
           <Key>
@@ -123,12 +123,13 @@
           <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
           <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Completion_Time" Type="datetime" />
-          <Property Name="Course_ID" Type="int" />
+          <Property Name="Course_ID" Type="varchar" MaxLength="150" />
           <Property Name="Course_Grade" Type="float" />
           <Property Name="Roll" Type="varchar" MaxLength="50" />
           <Property Name="Date_Import" Type="datetime" />
           <Property Name="User_ID" Type="int" />
           <Property Name="Email" Type="nvarchar" MaxLength="150" />
+          <Property Name="Campus" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Student_Specification_Log">
           <Key>
@@ -213,7 +214,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Class_Campus">
+        <Association Name="FK_Class_Campus1">
           <End Role="Campus" Type="Self.Campus" Multiplicity="0..1" />
           <End Role="Class" Type="Self.Class" Multiplicity="*" />
           <ReferentialConstraint>
@@ -221,7 +222,7 @@
               <PropertyRef Name="Campus_ID" />
             </Principal>
             <Dependent Role="Class">
-              <PropertyRef Name="Campus_Name" />
+              <PropertyRef Name="Campus_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -470,7 +471,7 @@
             <End Role="Student" EntitySet="Student" />
             <End Role="Certificate" EntitySet="Certificate" />
           </AssociationSet>
-          <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
+          <AssociationSet Name="FK_Class_Campus1" Association="Self.FK_Class_Campus1">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Class" EntitySet="Class" />
           </AssociationSet>
@@ -560,7 +561,7 @@
           <Property Name="Campus_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Contact_Point" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Classes" Relationship="Self.FK_Class_Campus" FromRole="Campus" ToRole="Class" />
+          <NavigationProperty Name="Classes" Relationship="Self.FK_Class_Campus1" FromRole="Campus" ToRole="Class" />
         </EntityType>
         <EntityType Name="Certificate">
           <Key>
@@ -571,7 +572,7 @@
           <Property Name="Date_Submit" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Specification_ID" Type="Int32" />
+          <Property Name="Specification_ID" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Certificate_Course" FromRole="Certificate" ToRole="Course" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Certificate_Specification" FromRole="Certificate" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Certificate_Student" FromRole="Certificate" ToRole="Student" />
@@ -586,8 +587,8 @@
           <Property Name="Enrollment_Source" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Mentor_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Campus_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Campu" Relationship="Self.FK_Class_Campus" FromRole="Class" ToRole="Campus" />
+          <Property Name="Campus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Campu" Relationship="Self.FK_Class_Campus1" FromRole="Class" ToRole="Campus" />
           <NavigationProperty Name="Mentor" Relationship="Self.FK_Class_Mentor" FromRole="Class" ToRole="Mentor" />
           <NavigationProperty Name="Semester" Relationship="Self.FK_Class_Semester" FromRole="Class" ToRole="Semester" />
           <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Class" FromRole="Class" ToRole="Class_Student" />
@@ -606,7 +607,7 @@
           <Key>
             <PropertyRef Name="Course_ID" />
           </Key>
-          <Property Name="Course_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Course_ID" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Course_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Course_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Specification_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -620,9 +621,9 @@
             <PropertyRef Name="Course_Deadline_ID" />
           </Key>
           <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Course_ID" Type="Int32" Nullable="false" />
+          <Property Name="Course_ID" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Course_Deadline_ID" Type="Int32" Nullable="false" />
+          <Property Name="Course_Deadline_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Course_Deadline_Course" FromRole="Course_Deadline" ToRole="Course" />
           <NavigationProperty Name="Semester" Relationship="Self.FK_Course_Deadline_Semester" FromRole="Course_Deadline" ToRole="Semester" />
         </EntityType>
@@ -701,12 +702,13 @@
           <Property Name="Program_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Completion_Time" Type="DateTime" Precision="3" />
-          <Property Name="Course_ID" Type="Int32" />
+          <Property Name="Course_ID" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Course_Grade" Type="Double" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Date_Import" Type="DateTime" Precision="3" />
           <Property Name="User_ID" Type="Int32" />
           <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Student_Course_Log" ToRole="Course" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student_Course_Log" ToRole="Student" />
           <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="Student_Course_Log" ToRole="User_Role" />
@@ -768,7 +770,7 @@
           <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="User_Role" ToRole="Student_Course_Log" />
           <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="User_Role" ToRole="Student_Specification_Log" />
         </EntityType>
-        <Association Name="FK_Class_Campus">
+        <Association Name="FK_Class_Campus1">
           <End Role="Campus" Type="Self.Campu" Multiplicity="0..1" />
           <End Role="Class" Type="Self.Class" Multiplicity="*" />
           <ReferentialConstraint>
@@ -776,7 +778,7 @@
               <PropertyRef Name="Campus_ID" />
             </Principal>
             <Dependent Role="Class">
-              <PropertyRef Name="Campus_Name" />
+              <PropertyRef Name="Campus_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1049,7 +1051,7 @@
           <EntitySet Name="Subjects" EntityType="Self.Subject" />
           <EntitySet Name="Subject_Student" EntityType="Self.Subject_Student" />
           <EntitySet Name="User_Role" EntityType="Self.User_Role" />
-          <AssociationSet Name="FK_Class_Campus" Association="Self.FK_Class_Campus">
+          <AssociationSet Name="FK_Class_Campus1" Association="Self.FK_Class_Campus1">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Class" EntitySet="Classes" />
           </AssociationSet>
@@ -1175,7 +1177,7 @@
                 <ScalarProperty Name="Enrollment_Source" ColumnName="Enrollment_Source" />
                 <ScalarProperty Name="Mentor_ID" ColumnName="Mentor_ID" />
                 <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
-                <ScalarProperty Name="Campus_Name" ColumnName="Campus_Name" />
+                <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1278,6 +1280,7 @@
                 <ScalarProperty Name="Date_Import" ColumnName="Date_Import" />
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Campus" ColumnName="Campus" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
