@@ -47,7 +47,7 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
 
         }
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
             var Courses = unitOfWork.Courses.GetById(id);
             if (Courses.Specification_ID == null) Courses.Specification_ID = NOTMAP;
@@ -69,18 +69,19 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Course_Name,Course_Slug,Specification_ID")] Course course, string Semester_ID)
+        public ActionResult Create([Bind(Include = "Course_Name,Course_Slug,Specification_ID")] Course course, string Semester_ID, string deadline)
         {
-         
+            DateTime _deadline = DateTime.Parse(deadline);
             if (course.Specification_ID == NONE)
             {
                 course.Specification_ID = null;
-            }             
+            }
+            course.Course_ID = Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
-               // Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID };
+                Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID, Deadline =_deadline };
                 unitOfWork.Courses.Insert(course);
-               // unitOfWork.DeadLine.Insert(deadlines);
+                unitOfWork.DeadLine.Insert(deadlines);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -90,7 +91,7 @@ namespace MSS_DEMO.Controllers.SetUp
         }
 
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             Course course = unitOfWork.Courses.GetById(id);
             SelectSpecID();
@@ -112,7 +113,7 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(course);
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
 
             Course course = unitOfWork.Courses.GetById(id);
@@ -121,7 +122,7 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string id)
         {
             var course = unitOfWork.Courses.GetById(id);
             unitOfWork.Courses.Delete(course);
