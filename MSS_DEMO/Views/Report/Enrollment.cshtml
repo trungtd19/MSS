@@ -1,0 +1,62 @@
+﻿
+@model PagedList.IPagedList<MSS_DEMO.Models.Student>
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Enrollment";
+}
+<div>
+    <h4>
+        @Html.ActionLink("Sumary reports", "Index")
+        @Html.ActionLink("No Enrollment", "Enrollment")
+        @Html.ActionLink("Member Report", "Member")
+    </h4>
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding-top: initial;">
+
+            @using (Html.BeginForm("Enrollment", "Report", FormMethod.Get))
+            {
+                <div class="form-group">
+                    <p>
+                        <label class="control-label"> Search by Roll Number</label>
+                        @Html.TextBox("SearchString")
+                        @Html.Hidden("searchCheck", "true")
+                        <input class="btn btn-default" type="submit" value="Search" />
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    <div>
+        @if (Model.Count > 0)
+        {
+            <table class="table table-bordered">
+                <tr>
+                    <th>Email</th>
+                    <th>Roll</th>
+                    <th>Full_Name</th>
+                    <th>Campus</th>
+                </tr>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <th>@Html.DisplayFor(m => t.Email)</th>
+                        <th>@Html.DisplayFor(m => t.Roll)</th>
+                        <th>@Html.DisplayFor(m => t.Full_Name)</th>
+                        <th>@Html.DisplayFor(m => t.Campus)</th>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+}
+<br />
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Enrollment",
+    new { page, searchCheck = "true" }))
+
