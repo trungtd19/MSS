@@ -16,7 +16,7 @@ namespace MSS_DEMO.Models
     {
         public string Semester_ID { get; set; }
         public string Course_ID { get; set; }
-        public Nullable<System.DateTime> Deadline { get; set; }
+        public System.DateTime Deadline { get; set; }
         public int Course_Deadline_ID { get; set; }
     
         public virtual Course Course { get; set; }
