@@ -380,6 +380,8 @@
     <Content Include="Views\Campus\Details.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Specifications\Details.cshtml" />
+    <Content Include="Views\Report\Enrollment.cshtml" />
+    <Content Include="Views\Report\Member.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -387,8 +389,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\Enrollment.cshtml" />
-    <Content Include="Views\Report\Member.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
