@@ -15,42 +15,52 @@
         <input type="submit" value="Clear All Data" hidden />
     </p>
 }
-<div class="panel panel-default">
-    <div class="panel-body" style="padding-top: initial;">
-
         @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
         {
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by email</label>
-                </div>
-                <div class="col-md-3">
-                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <label class="control-label"> Search by date import</label>
-                </div>
-                <div class="col-md-3">
-                    @Html.TextBox("dateImport", ViewBag.DateFilter as string, new { @class = "form-control", @type = "date" })
-                </div>
-            </div>
-            <br /> <br />
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by </label>
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
-                </div>
-                <div class="col-md-6">
-                    <input class="btn btn-default" type="submit" value="Search" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Email</label>
+                                            <div class="col-md-9 col-xs-12">
+                                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+                                                @Html.Hidden("searchCheck", "true")
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Date Import</label>
+                                            <div class="col-md-9 col-xs-12">
+                                                @Html.TextBox("dateImport", ViewBag.DateFilter as string, new { @class = "form-control", @type = "date" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Search by</label>
+                                            <div class="col-md-9 col-xs-12">
+                                                @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
+                                            </div>
+                                            @Html.Hidden("SelectPage", ViewBag.SelectPage as string)
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="panel-footer text-center">
+                            <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         }
-    </div>
-</div>
 @if (Model.PageCount != 0)
 {
     <div class="table-responsive text-nowrap">
@@ -93,9 +103,6 @@
                     <th>
                         Course Grade
                     </th>
-                    <th>
-                        Course ID
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -103,48 +110,44 @@
                 {
                     var complete = item.Completed == true ? "Yes" : "No";
                     var status = item.Status == true ? "Yes" : "No";
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Start_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Overall_Progress)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estimated)
-                        </td>
-                        <td>
-                            @complete
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Completion_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Grade)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_ID)
-                        </td>
-
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Start_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Overall_Progress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estimated)
+                    </td>
+                    <td>
+                        @complete
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Completion_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Grade)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -154,5 +157,10 @@
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model, page => Url.Action("Index",
- new { page, currentFilter = ViewBag.CurrentFilter, dateFilter = ViewBag.DateFilter, SelectFilter = ViewBag.SelectString, searchCheck = "true" }))
-
+ new { page, currentFilter = ViewBag.CurrentFilter, dateFilter = ViewBag.DateFilter, SelectFilter = ViewBag.SelectPage, searchCheck = "true" }))
+<script>
+        $(document).ready(function () {
+            var x = $("#SelectString").val();
+            $("#SelectPage").val(x);
+        });
+</script>
