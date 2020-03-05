@@ -184,6 +184,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
+    <Compile Include="Controllers\SetUp\UserController.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\ClassStudentRepository.cs" />
     <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
