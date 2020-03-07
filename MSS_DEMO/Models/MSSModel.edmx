@@ -176,7 +176,7 @@
           <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Role_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="isActive" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Certificate_Course">
           <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
@@ -346,18 +346,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Student_Course_Log_User_Role">
-          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-          <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_Role">
-              <PropertyRef Name="User_ID" />
-            </Principal>
-            <Dependent Role="Student_Course_Log">
-              <PropertyRef Name="User_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Student_Semester">
           <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
@@ -391,18 +379,6 @@
             </Principal>
             <Dependent Role="Student_Specification_Log">
               <PropertyRef Name="Roll" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Student_Specification_Log_User_Role">
-          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-          <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_Role">
-              <PropertyRef Name="User_ID" />
-            </Principal>
-            <Dependent Role="Student_Specification_Log">
-              <PropertyRef Name="User_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -515,10 +491,6 @@
             <End Role="Student" EntitySet="Student" />
             <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
           </AssociationSet>
-          <AssociationSet Name="FK_Student_Course_Log_User_Role" Association="Self.FK_Student_Course_Log_User_Role">
-            <End Role="User_Role" EntitySet="User_Role" />
-            <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
-          </AssociationSet>
           <AssociationSet Name="FK_Student_Semester" Association="Self.FK_Student_Semester">
             <End Role="Semester" EntitySet="Semester" />
             <End Role="Student" EntitySet="Student" />
@@ -529,10 +501,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Student_Specification_Log_Student" Association="Self.FK_Student_Specification_Log_Student">
             <End Role="Student" EntitySet="Student" />
-            <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_Specification_Log_User_Role" Association="Self.FK_Student_Specification_Log_User_Role">
-            <End Role="User_Role" EntitySet="User_Role" />
             <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
           </AssociationSet>
           <AssociationSet Name="FK_Subject_Student_Student" Association="Self.FK_Subject_Student_Student">
@@ -711,7 +679,6 @@
           <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Student_Course_Log" ToRole="Course" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student_Course_Log" ToRole="Student" />
-          <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="Student_Course_Log" ToRole="User_Role" />
         </EntityType>
         <EntityType Name="Student_Specification_Log">
           <Key>
@@ -737,7 +704,6 @@
           <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
-          <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="Student_Specification_Log" ToRole="User_Role" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -765,10 +731,8 @@
           <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Role_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="isActive" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role_Role" FromRole="User_Role" ToRole="Role" />
-          <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="User_Role" ToRole="Student_Course_Log" />
-          <NavigationProperty Name="Student_Specification_Log" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="User_Role" ToRole="Student_Specification_Log" />
         </EntityType>
         <Association Name="FK_Class_Campus1">
           <End Role="Campus" Type="Self.Campu" Multiplicity="0..1" />
@@ -998,30 +962,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Student_Course_Log_User_Role">
-          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-          <End Role="Student_Course_Log" Type="Self.Student_Course_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_Role">
-              <PropertyRef Name="User_ID" />
-            </Principal>
-            <Dependent Role="Student_Course_Log">
-              <PropertyRef Name="User_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Student_Specification_Log_User_Role">
-          <End Role="User_Role" Type="Self.User_Role" Multiplicity="0..1" />
-          <End Role="Student_Specification_Log" Type="Self.Student_Specification_Log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_Role">
-              <PropertyRef Name="User_ID" />
-            </Principal>
-            <Dependent Role="Student_Specification_Log">
-              <PropertyRef Name="User_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Subject_Student_Subject">
           <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
           <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
@@ -1126,14 +1066,6 @@
           <AssociationSet Name="FK_Subject_Student_Student" Association="Self.FK_Subject_Student_Student">
             <End Role="Student" EntitySet="Students" />
             <End Role="Subject_Student" EntitySet="Subject_Student" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_Course_Log_User_Role" Association="Self.FK_Student_Course_Log_User_Role">
-            <End Role="User_Role" EntitySet="User_Role" />
-            <End Role="Student_Course_Log" EntitySet="Student_Course_Log" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_Specification_Log_User_Role" Association="Self.FK_Student_Specification_Log_User_Role">
-            <End Role="User_Role" EntitySet="User_Role" />
-            <End Role="Student_Specification_Log" EntitySet="Student_Specification_Log" />
           </AssociationSet>
           <AssociationSet Name="FK_Subject_Student_Subject" Association="Self.FK_Subject_Student_Subject">
             <End Role="Subject" EntitySet="Subjects" />

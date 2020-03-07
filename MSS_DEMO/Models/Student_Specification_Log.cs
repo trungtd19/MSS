@@ -35,6 +35,5 @@ namespace MSS_DEMO.Models
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }
-        public virtual User_Role User_Role { get; set; }
     }
 }

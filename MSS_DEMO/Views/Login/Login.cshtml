@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<!DOCTYPE html>
+<br />
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" });
+        <label>User name:</label> <input type="text" name="UserName" required="true" /><br />
+        <label>Pass Word:</label> <input type="password" name="PassWord" required="true" />
+        <button type="submit">Login</button>
+
+    }
+
+</body>
+</html>

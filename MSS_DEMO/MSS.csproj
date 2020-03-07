@@ -183,6 +183,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Common\CommonConstants.cs" />
+    <Compile Include="Common\UserLogin.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\ClassStudentRepository.cs" />
     <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
@@ -286,6 +290,7 @@
     <Compile Include="Core\Interface\IUnitOfWork.cs" />
     <Compile Include="Core\Implement\StudentRepository.cs" />
     <Compile Include="Core\Implement\UnitOfWork.cs" />
+    <Compile Include="Role_provider\CustomRoleProvider .cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -305,6 +310,7 @@
     <Content Include="Content\Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
@@ -328,7 +334,9 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
       <LastGenOutput>MSSModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -380,6 +388,7 @@
     <Content Include="Views\Campus\Details.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Specifications\Details.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -387,14 +396,20 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Login\Logout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Logout\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>

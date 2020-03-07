@@ -11,7 +11,7 @@ using MSS_DEMO.Repository;
 using PagedList;
 
 namespace MSS_DEMO.Controllers.UserManagement
-{
+{     [Authorize(Roles ="Admin")]
     public class User_RoleController : Controller
     {
         private IUnitOfWork unitOfWork;

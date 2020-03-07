@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using MSS_DEMO.Common
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -9,6 +10,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @{ 
+        var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
+    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -25,9 +29,20 @@
                 <ul class="nav navbar-nav">
                     @*<li style="font-size:25px;">@Html.ActionLink("Home", "Index", "Home")</li>*@
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
-                @*@Html.Partial("_LoginPartial")*@
+                @if (session != null)
+                {
+                <ul class="nav navbar-nav navbar-right">                 
+                    <li>@Html.ActionLink("Welcome :" +@session.UserName,"", "")</li>
+                </ul>
+                    <ul class="nav navbar-nav navbar-right">                     
+                        <li>@Html.ActionLink("Logout", "Logout", "Login")</li>
+                    </ul>
+                }
+
+
+
             </div>
         </div>
     </div>

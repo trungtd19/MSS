@@ -1,7 +1,7 @@
 ﻿@model MSS_DEMO.Models.User_Role
 
 @{
-    Layout = null;
+    ViewBag.Title = "Edit";
 }
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@
             @Html.HiddenFor(model => model.User_ID)
 
             <div class="form-group">
-                <label>Role</label>
+                @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("Role_ID", null, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Role_ID, "", new { @class = "text-danger" })
@@ -35,9 +35,9 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Login, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control" } })<label>@@fpt.edu.vn</label>
                     @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
-                    <label>@@fpt.edu.vn</label>
+                    
                 </div>
             </div>
 
