@@ -13,6 +13,14 @@
     <title>Report</title>
 </head>
 <body>
+    <div>
+        <h4>
+            @Html.ActionLink("Sumary reports", "Index")
+            @Html.ActionLink("No Enrollment", "Enrollment")
+            @Html.ActionLink("Member Report", "Member")
+            </h4>
+    </div>
+
     @if (Model != null)
     {
         <div>

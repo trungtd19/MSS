@@ -43,11 +43,4 @@ namespace MSS_DEMO.Models
         public double SG { get; set; }
         public double CT { get; set; }
     }
-
-    public class SubExtend
-    {
-        public string Specialization_Slug { get; set; }
-        public string Subject_Name { get; set; }
-        public Boolean Complete { get; set; }
-    }
 }
