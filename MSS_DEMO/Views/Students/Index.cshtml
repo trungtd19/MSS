@@ -4,7 +4,7 @@
     ViewBag.Title = "Student";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Student</span>
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Student</span>
 <hr />
 @{ 
    SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
@@ -56,6 +56,7 @@
                                         </div>
                                     </div>                    
                                 </div>
+
                             </div>
 
                         </div>

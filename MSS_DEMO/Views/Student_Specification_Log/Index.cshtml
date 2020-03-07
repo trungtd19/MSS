@@ -1,65 +1,74 @@
-﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student_Specification_Log>
+﻿@model MSS_DEMO.Models.SpecReportViewModel
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Specialization Report";
 }
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > Specialization Report</span>
-
+@{
+    SelectList listOption = new SelectList((IList<string>)Model.listOption);
+    SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
+}
 @using (Html.BeginForm("DeleteAll", "Student_Specification_Log"))
 {
     <p>
         <input type="submit" value="Clear All Data" hidden />
     </p>
 }
-        @using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
-        {
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Email</label>
-                                            <div class="col-md-9 col-xs-12">
-                                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
-                                                @Html.Hidden("searchCheck", "true")
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Date Import</label>
-                                            <div class="col-md-9 col-xs-12">
-                                                @Html.TextBox("dateImport", ViewBag.DateFilter as string, new { @class = "form-control", @type = "date" })
-                                            </div>
-                                        </div>
+@using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Email</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.TextBox("Email",  Model.Email , new { @class = "form-control" })
+                                        @Html.Hidden("searchCheck", "true")
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Search by</label>
-                                            <div class="col-md-9 col-xs-12">
-                                                @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
-                                            </div>
-                                            @Html.Hidden("SelectPage", ViewBag.SelectPage as string)
-                                        </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Date Import</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-                        <div class="panel-footer text-center">
-                            <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Search by</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("option", listOption , "---None---", new { @name = "option", @class = "form-control select" })
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Subject</label>
+                                <div class="col-md-9 col-xs-12">
+                                    @Html.DropDownList("Subject_ID", listSubject, "---None---", new { @name = "Subject_ID", @class = "form-control select" })
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
+                <div class="panel-footer text-center">
+                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
+                </div>
             </div>
+        </div>
+    </div>
 
-        }
-@if (Model.PageCount != 0)
+}
+@if (Model.PageList.PageCount != 0)
 {
     <div class="table-responsive text-nowrap">
         <table class="table table-bordered">
@@ -105,7 +114,7 @@
             </thead>
             <tbody>
 
-                @foreach (var item in Model)
+                @foreach (var item in Model.PageList)
                 {
 
                     var complete = item.Completed == true ? "Yes" : "No";
@@ -152,15 +161,9 @@
             </tbody>
         </table>
     </div>
-    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
-    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
-@Html.PagedListPager(Model, page => Url.Action("Index",
- new { page, currentFilter = ViewBag.CurrentFilter, dateFilter = ViewBag.DateFilter, SelectFilter = ViewBag.SelectPage, searchCheck = "true" }))
-<script>
-    $(document).ready(function () {
-        var x = $("#SelectString").val();
-        $("#SelectPage").val(x);
-    });
-</script>
+@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+ new { page, Email = Model.Email, Date_Import = Model.Date_Import, option = Model.option, Subject_ID = Model.Subject_ID, searchCheck = "true" }))
