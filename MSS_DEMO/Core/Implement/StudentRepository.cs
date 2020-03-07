@@ -1,6 +1,7 @@
 ﻿using MSS_DEMO.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -48,5 +49,6 @@ namespace MSS_DEMO.Repository
                 check = false;
             return check;
         }
+
     }
 }

@@ -21,7 +21,7 @@ namespace MSS_DEMO.Controllers.Log
         public ActionResult Index(int? page, string SearchString,string dateImport , string dateFilter,string searchCheck, string currentFilter, string SelectFilter, string SelectString)
         {
             List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
-            if (SearchString != null && dateImport != null && SearchString != "")
+            if (SearchString != null && dateImport != null && SelectString != "")
             {
                 page = 1;
             }
@@ -29,12 +29,13 @@ namespace MSS_DEMO.Controllers.Log
             {
                 SearchString = currentFilter;
                 dateImport = dateFilter;
-                SearchString = SelectFilter;
+                SelectString = SelectFilter;
             }
             string date = String.IsNullOrEmpty(dateImport) ? "1900/01/01" : dateImport.Replace("-", "/");
             DateTime _dateImport = DateTime.ParseExact(date, "yyyy/MM/dd", CultureInfo.InvariantCulture);
             ViewBag.CurrentFilter = SearchString;
             ViewBag.DateFilter = dateImport;
+            ViewBag.SelectPage = SelectString;
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 LogList = unitOfWork.SpecificationsLog.GetPageList();
@@ -48,7 +49,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (!String.IsNullOrEmpty(SelectString))
                 {
-                    LogList = SelectFilter == "Compeleted" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == true).ToList();
+                    LogList = SelectString == "Compeleted" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == true).ToList();
                 }
             }
             int pageSize = 10;
@@ -59,6 +60,24 @@ namespace MSS_DEMO.Controllers.Log
                      new SelectListItem { Selected = false, Text = "Compeleted", Value = "Compeleted"},
                      new SelectListItem { Selected = false, Text = "Compulsory", Value = "Compulsory"},
                 };
+            if (SelectString == "Compeleted")
+            {
+                ViewBag.SelectString = new List<SelectListItem>
+                {
+                     new SelectListItem { Selected = false, Text = "---None---", Value = ""},
+                     new SelectListItem { Selected = true, Text = "Compeleted", Value = "Compeleted"},
+                     new SelectListItem { Selected = false, Text = "Compulsory", Value = "Compulsory"},
+                };
+            }
+            else
+            {
+                ViewBag.SelectString = new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = false, Text = "---None---", Value = "" },
+                     new SelectListItem { Selected = false, Text = "Compeleted", Value = "Compeleted" },
+                     new SelectListItem { Selected = false, Text = "Compulsory", Value = "Compulsory" },
+                };
+            }
             return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
 
         }
