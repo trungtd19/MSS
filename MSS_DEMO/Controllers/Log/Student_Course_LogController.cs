@@ -41,7 +41,7 @@ namespace MSS_DEMO.Controllers.Log
             {
                 if (!String.IsNullOrEmpty(SearchString))
                 {
-                    LogList = LogList.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    LogList = LogList.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
                 if (!String.IsNullOrEmpty(model.Date_Import.ToString()))
                 {

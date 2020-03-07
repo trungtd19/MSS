@@ -45,20 +45,20 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Search by</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("option", listOption , "---None---", new { @name = "option", @class = "form-control select" })
+                                        @Html.DropDownList("option", listOption, "--- All ---", new { @name = "option", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
-                            <br />
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Subject</label>
-                                <div class="col-md-9 col-xs-12">
-                                    @Html.DropDownList("Subject_ID", listSubject, "---None---", new { @name = "Subject_ID", @class = "form-control select" })
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Subject</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("Subject_ID", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                    </div>
+                        </div>
                 </div>
                 <div class="panel-footer text-center">
                     <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
@@ -78,7 +78,7 @@
                         Email
                     </th>
                     <th>
-                        Campus
+                        Subject ID
                     </th>
                     <th>
                         Specialization
@@ -110,6 +110,9 @@
                     <th>
                         Completion Time
                     </th>
+                    <th>
+                        Date Import
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -119,44 +122,47 @@
 
                     var complete = item.Completed == true ? "Yes" : "No";
                     var status = item.Status == true ? "Yes" : "No";
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Campus)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Specialization)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Specialization_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.University)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
-                        </td>
-                        <td>
-                            @complete
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.University)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
+                    </td>
+                    <td>
+                        @complete
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date_Import)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

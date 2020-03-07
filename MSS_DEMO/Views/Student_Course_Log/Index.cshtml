@@ -48,20 +48,20 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Search by</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("option", listOption, "---None---", new { @name = "option", @class = "form-control select" })
+                                        @Html.DropDownList("option", listOption, "--- All ---", new { @name = "option", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
-                            <br />
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Subject</label>
-                                <div class="col-md-9 col-xs-12">
-                                    @Html.DropDownList("Subject_ID", listSubject, "---None---", new { @name = "Subject_ID", @class = "form-control select" })
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Subject</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("Subject_ID", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                    </div>
+                        </div>
                 </div>
                 <div class="panel-footer text-center">
                     <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
@@ -78,6 +78,9 @@
                 <tr>
                     <th>
                         Email
+                    </th>
+                    <th>
+                        Subject ID
                     </th>
                     <th>
                         Enrollment Time
@@ -112,6 +115,9 @@
                     <th>
                         Course Grade
                     </th>
+                    <th>
+                        Date Import
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -119,44 +125,50 @@
                 {
                     var complete = item.Completed == true ? "Yes" : "No";
                     var status = item.Status == true ? "Yes" : "No";
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Start_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Overall_Progress)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estimated)
-                        </td>
-                        <td>
-                            @complete
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Completion_Time)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Grade)
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Start_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Overall_Progress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estimated)
+                    </td>
+                    <td>
+                        @complete
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Completion_Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Grade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date_Import)
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

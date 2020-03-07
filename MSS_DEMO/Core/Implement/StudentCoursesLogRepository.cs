@@ -19,7 +19,7 @@ namespace MSS_DEMO.Core.Implement
             using (MSSEntities db = new MSSEntities())
             {
                 student = (from o in db.Student_Course_Log
-                           orderby o.Roll descending
+                           orderby o.Course_Log_ID descending
                            select o)
                           .ToList();
 
