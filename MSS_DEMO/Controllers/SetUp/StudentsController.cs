@@ -201,5 +201,16 @@ namespace MSS_DEMO.Controllers.SetUp
             response.Write(sb.ToString());
             response.End();
         }
+        [HttpPost]
+        public ActionResult GetID()
+        {
+            string roll = Request["roll"];
+            if (unitOfWork.Students.IsExtisStudent(roll))
+            {
+                return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+                return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
