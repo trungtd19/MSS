@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<MSS_DEMO.Models.Course>
+﻿@model PagedList.IPagedList<MSS_DEMO.Core.Components.Cour_dealine>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Course";
@@ -34,6 +34,12 @@
                 Course Name
             </th>
             <th>
+                Semester ID
+            </th>
+            <th>
+                Deadline 
+            </th>
+            <th>
                 Specification ID
             </th>
         </tr>
@@ -41,14 +47,20 @@
         @foreach (var item in Model)
         {
             var specID = item.Specification_ID == null ? "Not Map" : item.Specification_ID;
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
-                </td>             
-                <td>
-                    @specID
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deadline)
+        </td>
+        <td>
+            @specID
+        </td>
+    </tr>
         }
 
     </table>

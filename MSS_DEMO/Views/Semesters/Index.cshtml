@@ -13,6 +13,9 @@
 <table class="table table-bordered">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Semester_ID)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Semester_Name)
         </th>
         <th>
@@ -26,17 +29,20 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.ActionLink(item.Semester_Name, "Details", new { id = item.Semester_ID })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End_Date)
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.ActionLink(item.Semester_ID, "Details", new { id = item.Semester_ID })
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Semester_Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Start_Date)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.End_Date)
+    </td>
+</tr>
     }
 
 </table>

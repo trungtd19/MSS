@@ -18,7 +18,7 @@
         @Html.LabelFor(model => model.Course_Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Course_Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Course_Name, "", new { @class = "text-danger" })
+            <label style="color:red" id="checkName" hidden> This field is a required </label>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
         @Html.LabelFor(model => model.Specification_ID, "Specification_ID", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("Specification_ID", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Specification_ID, "", new { @class = "text-danger" })
+            <label style="color:red" id="checkSpec" hidden> This field is a required </label>
         </div>
     </div>
 
@@ -34,19 +34,21 @@
         <label class="control-label col-md-2">Semester</label>
         <div class="col-md-10">
             @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
+            <label style="color:red" id="checkSem" hidden> This field is a required </label>
         </div>
     </div>
 
     <div class="form-group">
         <label class="control-label col-md-2">Deadline Courses</label>
         <div class="col-md-10">
-            <input id="deadline" name="deadline" type="date" class = "form-control" />
+            <input id="deadline" name="deadline" type="date" class="form-control" />
+            <label style="color:red" id="checkDate" hidden> This field is a required </label>
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input id="btn" value="Create" class="btn btn-default" />
         </div>
     </div>
 </div>
@@ -55,3 +57,19 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script>
+        $("#btn").click(function () {
+    
+        if ($("#Course_Name").val() != "" && $("#Specification_ID").val() != "--- None ---" 
+        && $("#deadline").val() != "" && $("#Semester_ID").val() != "None") {
+            $("#btn").attr("type", "submit");
+        }
+        else {
+            if ($("#Course_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)
+            if ($("#deadline").val() == "") $("#checkDate").removeAttr("hidden");  else $("#checkDate").prop("hidden",true)
+            if ($("#Specification_ID").val() == "--- None ---") $("#checkSpec").removeAttr("hidden");  else $("#checkSpec").prop("hidden",true)
+            if ($("#Semester_ID").val() == "None") $("#checkSem").removeAttr("hidden");  else $("#checkSem").prop("hidden",true)
+           
+        }
+    });
+</script>

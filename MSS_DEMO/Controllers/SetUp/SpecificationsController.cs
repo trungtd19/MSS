@@ -85,7 +85,7 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Specification_ID,Specification_Name,Subject_ID")] Specification specification)
+        public ActionResult Edit([Bind(Include = "Specification_ID,Specification_Name,Subject_ID,Is_Real_Specification")] Specification specification)
         {
             if (specification.Subject_ID == NONE) specification.Subject_ID = null;
             if (ModelState.IsValid)
