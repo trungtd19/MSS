@@ -42,7 +42,7 @@ namespace MSS_DEMO.Controllers.SetUp
                     List = List.Where(s => s.Specification_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
             }
-            int pageSize = 10;
+            int pageSize = 30;
             int pageNumber = (page ?? 1);
             return View(List.ToList().ToPagedList(pageNumber, pageSize));
         }

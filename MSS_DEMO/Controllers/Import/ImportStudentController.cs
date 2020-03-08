@@ -7,6 +7,8 @@ using System.IO;
 using MSS_DEMO.Repository;
 using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Core.Import;
+using System.Text;
+using System.Linq;
 
 namespace MSS_DEMO.Controllers
 {
@@ -111,5 +113,32 @@ namespace MSS_DEMO.Controllers
             }
             return Json(new { message = messageImport });
         }
+        public void Export_Student_CSV()
+        {
+            CSVConvert csv = new CSVConvert();
+            var sb = new StringBuilder();
+            IEnumerable<Student> query = unitOfWork.Students.GetAll();
+            var list = query.ToList();
+            Type type = typeof(Student);
+            var props = type.GetProperties();
+            sb.Append(string.Join(",", "No", "Full Name","Email", "External Id","Subject"));
+            sb.Append(Environment.NewLine);
+            sb.Append(string.Join(",", "SE0001", "Full Name SE0001", "FullnameSE0001@fpt.edu.vn", "HRM201c-HN-SE0001", "HRM201c"));
+            sb.Append(Environment.NewLine);
+            sb.Append(string.Join(",", "SE0002", "Full Name SE0002", "FullnameSE0002@fpt.edu.vn", "SSL201c-SG-SE0002", "SSL201c"));
+            sb.Append(Environment.NewLine);
+            sb.Append(string.Join(",", "SE0003", "Full Name SE0003", "FullnameSE0003@fpt.edu.vn", "PMG201c-DN-SE0003", "PMG201c"));
+            sb.Append(Environment.NewLine);
+            var response = System.Web.HttpContext.Current.Response;
+            response.BufferOutput = true;
+            response.Clear();
+            response.ClearHeaders();
+            response.ContentEncoding = Encoding.Unicode;
+            response.AddHeader("content-disposition", "attachment;filename=StudentTemplate.CSV ");
+            response.ContentType = "text/plain";
+            response.Write(sb.ToString());
+            response.End();
+        }
+
     }
 }

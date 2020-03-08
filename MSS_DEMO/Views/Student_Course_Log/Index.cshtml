@@ -7,7 +7,8 @@
 <span>@Html.ActionLink("Home", "Index", "Home") > Usage Report</span>
 <hr />
 @{
-    SelectList listOption = new SelectList((IList<string>)Model.listOption);
+    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
 }
 @Html.ActionLink("Import Usage Report", "Index", "ExportData")
@@ -36,7 +37,7 @@
                                 </div>
                                 <br />
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Date Import</label>
+                                    <label class="col-md-3 control-label">Import Date</label>
                                     <div class="col-md-9 col-xs-12">
                                         @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
                                     </div>
@@ -46,25 +47,29 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Search by</label>
+                                    <label class="col-md-3 control-label">Subject</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("option", listOption, "--- All ---", new { @name = "option", @class = "form-control select" })
+                                        @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Subject</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Subject_ID", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                    <label class="col-md-2 control-label">Completed</label>
+                                    <div class="col-md-3 col-xs-12">
+                                        @Html.CheckBox("completedCourse", false)
+                                    </div>
+                                    <label class="col-md-2 control-label">Completed</label>
+                                    <div class="col-md-3 col-xs-12">
+                                        @Html.CheckBox("compulsoryCourse", false)
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                 </div>
                 <div class="panel-footer text-center">
-                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
+                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
                 </div>
             </div>
         </div>
@@ -72,8 +77,9 @@
 }
 @if (Model.PageList.PageCount != 0)
 {
+    <label>Total of the records: @ViewBag.Count</label>
     <div class="table-responsive text-nowrap">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>
@@ -116,7 +122,7 @@
                         Course Grade
                     </th>
                     <th>
-                        Date Import
+                        Import Date
                     </th>
                 </tr>
             </thead>
@@ -125,57 +131,64 @@
                 {
                     var complete = item.Completed == true ? "Yes" : "No";
                     var status = item.Status == true ? "Yes" : "No";
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Subject_ID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Course_Start_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Overall_Progress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Estimated)
-                    </td>
-                    <td>
-                        @complete
-                    </td>
-                    <td>
-                        @status
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Completion_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Course_Grade)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date_Import)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Start_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overall_Progress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estimated)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Completion_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Grade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date_Import)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
-    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
-    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
- new { page, Email = Model.Email, Date_Import = Model.Date_Import, option = Model.option, Subject_ID = Model.Subject_ID, searchCheck = "true" }))
+ new
+ {
+     page,
+     Email = Model.Email,
+     Date_Import = Model.Date_Import,
+     compulsoryCourse = Model.compulsoryCourse,
+     completedCourse = Model.completedCourse,
+     Subject_Name = Model.Subject_Name,
+     searchCheck = "true"
+ }))

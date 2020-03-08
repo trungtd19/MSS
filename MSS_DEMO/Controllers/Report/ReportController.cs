@@ -120,7 +120,7 @@ namespace MSS_DEMO.Controllers
             {
                 page = 1;
             }
-            int pageSize = 10;
+            int pageSize = 30;
             int pageNumber = (page ?? 1);
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
@@ -197,7 +197,7 @@ namespace MSS_DEMO.Controllers
             {
                 page = 1;
             }
-            int pageSize = 10;
+            int pageSize = 30;
             int pageNumber = (page ?? 1);
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
