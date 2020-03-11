@@ -1,11 +1,11 @@
-﻿@model PagedList.IPagedList<MSS_DEMO.Models.Course>
+﻿@model PagedList.IPagedList<MSS_DEMO.Core.Components.Cour_dealine>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Course";
 }
 
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Course</span>
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Course</span>
 <hr />
 <div class="form-group">
     @using (Html.BeginForm("Index", "Courses", FormMethod.Get))
@@ -27,11 +27,17 @@
 <br />
 @if (Model.PageCount != 0)
 {
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <tr>
 
             <th>
                 Course Name
+            </th>
+            <th>
+                Semester ID
+            </th>
+            <th>
+                Deadline 
             </th>
             <th>
                 Specification ID
@@ -41,14 +47,20 @@
         @foreach (var item in Model)
         {
             var specID = item.Specification_ID == null ? "Not Map" : item.Specification_ID;
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
-                </td>             
-                <td>
-                    @specID
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deadline)
+        </td>
+        <td>
+            @specID
+        </td>
+    </tr>
         }
 
     </table>

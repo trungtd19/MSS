@@ -184,6 +184,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
+    <Compile Include="Controllers\SetUp\UserController.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\ClassStudentRepository.cs" />
     <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
@@ -253,6 +254,7 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\CoursesReportViewModel.cs" />
     <Compile Include="Models\Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -262,9 +264,11 @@
     <Compile Include="Models\Specification.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SpecReportViewModel.cs" />
     <Compile Include="Models\Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\Student_Course_Log.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -380,6 +384,12 @@
     <Content Include="Views\Campus\Details.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Specifications\Details.cshtml" />
+    <Content Include="Views\Students\Create.cshtml" />
+    <Content Include="Views\Students\Edit.cshtml" />
+    <Content Include="Views\Students\Delete.cshtml" />
+    <Content Include="Views\Students\Details.cshtml" />
+    <Content Include="Views\Report\Enrollment.cshtml" />
+    <Content Include="Views\Report\Member.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -387,8 +397,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\Enrollment.cshtml" />
-    <Content Include="Views\Report\Member.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

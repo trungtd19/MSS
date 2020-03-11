@@ -20,13 +20,13 @@
             @Html.LabelFor(model => model.Subject_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Subject_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Subject_Name, "", new { @class = "text-danger" })
+                <label style="color:red" id="checkName" hidden> This field is a required </label>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input id="btn" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -35,3 +35,13 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script>
+        $("#btn").click(function () {
+        if ($("#Subject_Name").val() != "") {
+            $("#btn").attr("type", "submit");
+        }
+        else {
+            if ($("#Subject_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)
+        }
+    });
+</script>

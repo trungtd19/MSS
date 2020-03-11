@@ -4,7 +4,7 @@
     ViewBag.Title = "Specification";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Specification</span>
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Specification</span>
 <hr />
 <div class="form-group">
     @using (Html.BeginForm("Index", "Specifications", FormMethod.Get))
@@ -26,7 +26,7 @@
 <br />
 @if (Model.PageCount != 0)
 {
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <tr>
             <th>
                 Specification ID

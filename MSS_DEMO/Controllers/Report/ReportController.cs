@@ -130,13 +130,6 @@ namespace MSS_DEMO.Controllers
             List<string> NoEnrollment = new List<string>();
             List<ListStudent> s = new List<ListStudent>();
 
-
-            //if(page == null)
-            //{
-            //    page = 1;
-            //}
-            //int pageSize = 10;
-            //int pageNumber = (page ?? 1);
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
                                  {
@@ -262,12 +255,6 @@ namespace MSS_DEMO.Controllers
             List<string> NoEnrollment = new List<string>();
             List<ListStudent> s = new List<ListStudent>();
 
-            //if (page == null)
-            //{
-            //    page = 1;
-            //}
-            //int pageSize = 10;
-            //int pageNumber = (page ?? 1);
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
                                  {

@@ -17,48 +17,50 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        public ActionResult Index(int? page, string SearchString, string dateImport, string dateFilter, string searchCheck, string currentFilter, string SelectFilter, string SelectString)
+        public ActionResult Index(CoursesReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
-            if (SearchString != null && dateImport != null && SearchString != "")
+            string SearchString = model.Email;
+            model.searchCheck = searchCheck;
+            List<string> listSubjiect = unitOfWork.Subject.GetAll().Select(o => o.Subject_Name).ToList();
+            model.listSubject = listSubjiect;
+            if (searchCheck == null)
             {
                 page = 1;
             }
             else
             {
-                SearchString = currentFilter;
-                dateImport = dateFilter;
-                SearchString = SelectFilter;
+                LogList = unitOfWork.CoursesLog.GetPageList();
             }
-            string date = String.IsNullOrEmpty(dateImport) ? "1900/01/01" : dateImport.Replace("-", "/");
-            DateTime _dateImport = DateTime.ParseExact(date, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            ViewBag.CurrentFilter = SearchString;
-            ViewBag.DateFilter = dateImport;
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                LogList = unitOfWork.CoursesLog.GetPageList();
                 if (!String.IsNullOrEmpty(SearchString))
                 {
-                    LogList = LogList.Where(s => s.Roll.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    LogList = LogList.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrEmpty(dateImport))
+                if (!String.IsNullOrEmpty(model.Date_Import.ToString()))
                 {
-                    LogList = LogList.Where(s => s.Date_Import == _dateImport).ToList();
-                    if (!String.IsNullOrEmpty(SelectString))
-                    {
-                        LogList = SelectFilter == "Compeleted" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == true).ToList();
-                    }
+                    LogList = LogList.Where(s => s.Date_Import == model.Date_Import).ToList();
                 }
-            }
-                int pageSize = 10;
-                int pageNumber = (page ?? 1);
-                ViewBag.SelectString = new List<SelectListItem>
+                if (model.completedCourse)
                 {
-                     new SelectListItem { Selected = true, Text = "---None---", Value = ""},
-                     new SelectListItem { Selected = false, Text = "Compeleted", Value = "Compeleted"},
-                     new SelectListItem { Selected = false, Text = "Compulsory", Value = "Compulsory"},
-                };
-               return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
+                    LogList = LogList.Where(s => s.Completed == true).ToList();
+                }
+                if (model.compulsoryCourse)
+                {
+                    LogList = LogList.Where(s => s.Course_ID != null).ToList();
+                }
+                if (!String.IsNullOrEmpty(model.Subject_Name))
+                {
+                    var sub = unitOfWork.Subject.GetAll().Where(x => x.Subject_Name == model.Subject_Name).Select(y => y.Subject_ID).FirstOrDefault();
+                    LogList = LogList.Where(s => s.Subject_ID == sub).ToList();
+                }
+            }           
+            ViewBag.Count = LogList.Count();
+            int pageSize = 30;
+            int pageNumber = (page ?? 1);
+            model.PageList = LogList.ToList().ToPagedList(pageNumber, pageSize);
+            return View(model);
         }
         public ActionResult DeleteAll()
         {

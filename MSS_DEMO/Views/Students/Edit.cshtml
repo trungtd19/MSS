@@ -1,0 +1,64 @@
+﻿@model MSS_DEMO.Models.Student
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Student</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Full_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control" } })
+            <label style="color:red" id="checkName" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            <label style="color:red" id="checkEmail" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Campus, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Campus, new { htmlAttributes = new { @class = "form-control" } })
+            <label style="color:red" id="checkCampus" hidden> This field is a required </label>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Roll)
+    @Html.HiddenFor(model => model.Semester_ID)
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="btn" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+        $("#btn").click(function () {
+    
+        if ($("#Email").val() != "" && $("#Full_Name").val() != ""
+        && $("#Campus").val() != "") {
+            $("#btn").attr("type", "submit");
+        }
+        else {
+            if ($("#Email").val() == "") $("#checkEmail").removeAttr("hidden");  else $("#checkEmail").prop("hidden",true)
+            if ($("#Full_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)
+            if ($("#Campus").val() == "") $("#checkCampus").removeAttr("hidden");  else $("#checkCampus").prop("hidden",true)          
+        }
+    });
+</script>

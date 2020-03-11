@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MSS_DEMO.Core.Components;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using PagedList;
@@ -24,7 +25,7 @@ namespace MSS_DEMO.Controllers.SetUp
   
         public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
         {
-            List<Course> LogList = new List<Course>();
+            List<Cour_dealine> LogList = new List<Cour_dealine>();
             if (SearchString != null)
             {
                 page = 1;
@@ -42,7 +43,7 @@ namespace MSS_DEMO.Controllers.SetUp
                     LogList = LogList.Where(s => s.Course_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
             }
-            int pageSize = 10;
+            int pageSize = 30;
             int pageNumber = (page ?? 1);
             return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
 
@@ -56,14 +57,7 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult Create()
         {
             SelectSpecID();
-            List<Semester> semester = unitOfWork.Semesters.GetAll();
-            List<Semester> _semester = new List<Semester>();
-            _semester.Add(new Semester { Semester_ID = "None", Semester_Name = "--- Choose Semester ---" });
-            foreach (var sem in semester)
-            {
-                _semester.Add(sem);
-            }
-            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
+            listSemester();
             return View();
         }
 
@@ -95,17 +89,21 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             Course course = unitOfWork.Courses.GetById(id);
             SelectSpecID();
+            listSemester();
             return View(course);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course)
+        public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course, string Semester_ID, string deadline)
         {
+            DateTime _deadline = DateTime.Parse(deadline);
             if (course.Specification_ID == NONE) course.Specification_ID = null;
             if (ModelState.IsValid)
             {
+                Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID, Deadline = _deadline };
                 unitOfWork.Courses.Update(course);
+                unitOfWork.DeadLine.Update(deadlines);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -144,6 +142,18 @@ namespace MSS_DEMO.Controllers.SetUp
               //  }
             }
             ViewBag.Specification_ID = new SelectList(_specs, "Specification_ID", "Specification_ID");
+        }
+        public void listSemester()
+        {
+            SelectSpecID();
+            List<Semester> semester = unitOfWork.Semesters.GetAll();
+            List<Semester> _semester = new List<Semester>();
+            _semester.Add(new Semester { Semester_ID = "None", Semester_Name = "--- Choose Semester ---" });
+            foreach (var sem in semester)
+            {
+                _semester.Add(sem);
+            }
+            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
         }
     }
 }

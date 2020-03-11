@@ -4,14 +4,17 @@
     ViewBag.Title = "Semester";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Semester</span>
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Semester</span>
 
 <hr />
 <p>
     @Html.ActionLink("Add New", "Create")
 </p>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Semester_ID)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Semester_Name)
         </th>
@@ -26,17 +29,20 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.ActionLink(item.Semester_Name, "Details", new { id = item.Semester_ID })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start_Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End_Date)
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.ActionLink(item.Semester_ID, "Details", new { id = item.Semester_ID })
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Semester_Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Start_Date)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.End_Date)
+    </td>
+</tr>
     }
 
 </table>

@@ -2,7 +2,11 @@
 @{
     ViewBag.Title = "Import Data";
 }
-
+<style>
+    .form-control {
+        height: 32px;
+    }
+</style>
 <br />
 <span>
     @Html.ActionLink("Home", "Index", "Home") >
@@ -12,21 +16,20 @@
 <hr />
 <h4>Import Data</h4>
 <h5>Choose one or multiple files</h5>
-<div class="form-group">
-    <div class="col-md-2"><label>Enter date import</label></div>
-    <div class="col-md-2"><input type="date" id="dateImport" name="dateImport" /></div>
-    <div class="col-md-6"></div>
-</div>
-<br />
 <div class="container">
     <div class="tab-content">
         <div class="tab-pane active">
+            <div class="form-group">
+                <div class="col-md-2"><label>Enter date import</label></div>
+                <div class="col-md-2"><input type="date" id="dateImport" name="dateImport" class="form-control" /></div>
+                <div class="col-md-6"></div>
+            </div>
+            <br />
             <form id="uploader">
                 <div class="form-group">
                     <div class="col-md-2"></div>
                     <div class="col-sm-3 col-md-3">
                         <input id="fileInput" type="file" name="postedFile" class="form-control" accept=".csv" multiple>
-                        <br />
                         <br />
                         <input type="button" id="btnupload" value="Upload" class="btn btn-default" style="float:right" />
                     </div>
@@ -35,8 +38,6 @@
         </div>
     </div>
 </div>
-<script src="/Content/Scripts/jquery-3.4.1.js"></script>
-<script src="/Content/Scripts/HoldOn.js"></script>
 <script>
     $(document).ready(function () {
         $("#btnupload").click(function () {

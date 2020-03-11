@@ -1,12 +1,15 @@
-﻿@model PagedList.IPagedList<MSS_DEMO.Models.Student>
+﻿@model MSS_DEMO.Models.StudentViewModel
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Student";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") > Student</span>
+<span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Student</span>
 <hr />
-
+@{ 
+   SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
+   SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
+}
 <div class="form-group">
     <div class="col-md-2">
         <a href="ImportStudent/Index">Import Student</a>
@@ -14,31 +17,61 @@
     <div class="col-md-2">
         @Html.ActionLink("Export Student", "Export_Student_CSV", "Students")
     </div>
-    <div class="col-md-1"></div>
+    <div class="col-md-2">@Html.ActionLink("Add New", "Create")</div>
     <br />
 </div>
-<br />
-<hr />
 <div class="form-group">
 
     @using (Html.BeginForm("Index", "Students", FormMethod.Get))
     {
-        <div class="col-md-2">
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
-            @Html.Hidden("searchCheck", "true")
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Email</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.Hidden("searchCheck", "true")
+                                            @Html.TextBox("Roll", Model.Roll, new { @class = "form-control", @placeholder = "Search by email" })
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Semester</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.DropDownList("Semester_ID", listSem ,"---None---", new { @name = "Semester_ID",@class="form-control select"})
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Campus</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.DropDownList("Campus", listCampus, "---None---", new { @name = "Campus", @class = "form-control select" })
+                                        </div>
+                                    </div>                    
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer text-center">
+                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            <input class="btn btn-default" type="submit" value="Search" />
-        </div>
-        <div class="col-md-6"></div>
     }
 </div>
-<br />
-<br />
-<br />
-@if (Model.PageCount != 0)
+@if (Model.PageList.PageCount > 0)
 {
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <tr>
             <th>
                 Student ID
@@ -52,32 +85,36 @@
             <th>
                 Campus
             </th>
-
+            <th>
+                Semester
+            </th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.PageList)
         {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Roll)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Full_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Campus)
-        </td>
-
-    </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Roll, "Details", new { id = item.Roll })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Full_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Campus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
+                </td>
+            </tr>
         }
 
     </table>
-    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
-    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
-@Html.PagedListPager(Model, page => Url.Action("Index",
-      new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))
+@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+      new { page, Roll = Model.Roll, Semester_ID = Model.Semester_ID , Campus = Model.Campus ,searchCheck = "true" }))

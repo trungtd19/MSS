@@ -13,16 +13,18 @@ namespace MSS_DEMO.Core.Components
            : base(context)
         {
         }
-        public List<Course> GetPageList()
+        public List<Cour_dealine> GetPageList()
         {
-            List<Course> cour = new List<Course>();
+            List<Cour_dealine> cour = new List<Cour_dealine>();
             using (MSSEntities db = new MSSEntities())
             {
-                cour = (from o in db.Courses
-                           orderby o.Course_ID descending
+                cour = (from cou in db.Courses
+                        join dl in db.Course_Deadline on cou.Course_ID equals dl.Course_ID
+                        select new Cour_dealine { Course_ID = cou.Course_ID, Deadline = dl.Deadline, Semester_ID = dl.Semester_ID, Course_Name = cou.Course_Name, Specification_ID = cou.Specification_ID }).ToList();
+                cour = (from o in cour
+                        orderby o.Course_ID descending
                            select o)
                           .ToList();
-
                 return cour;
             }
 
@@ -44,5 +46,9 @@ namespace MSS_DEMO.Core.Components
     {
         public string Subject_ID { get; set; }
     }
- 
+    public class Cour_dealine : Course
+    {
+        public string Semester_ID { get; set; }
+        public DateTime Deadline { get; set; }
+    }
 }
