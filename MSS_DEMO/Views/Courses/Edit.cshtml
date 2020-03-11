@@ -25,24 +25,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Specification_ID, "Specification_ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">Specification_Name</label>
         <div class="col-md-10">
-            @Html.DropDownList("Specification_ID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.DropDownList("Specification_Name", null, htmlAttributes: new { @class = "form-control" })
             <label style="color:red" id="checkSpec" hidden> This field is a required </label>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-md-2">Semester</label>
-        <div class="col-md-10">
-            @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
-            <label style="color:red" id="checkSem" hidden> This field is a required </label>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-md-2">Deadline Courses</label>
-        <div class="col-md-10">
-            <input id="deadline" name="deadline" type="date" class="form-control" />
-            <label style="color:red" id="checkDate" hidden> This field is a required </label>
         </div>
     </div>
     <div class="form-group">
@@ -59,15 +45,12 @@
 <script>
         $("#btn").click(function () {
 
-        if ($("#Course_Name").val() != "" && $("#Specification_ID").val() != "--- None ---"
-        && $("#deadline").val() != "" && $("#Semester_ID").val() != "None") {
+        if ($("#Course_Name").val() != "" && $("#Specification_ID").val() != -1 ) {
             $("#btn").attr("type", "submit");
         }
         else {
-            if ($("#Course_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)
-            if ($("#deadline").val() == "") $("#checkDate").removeAttr("hidden");  else $("#checkDate").prop("hidden",true)
-            if ($("#Specification_ID").val() == "--- None ---") $("#checkSpec").removeAttr("hidden");  else $("#checkSpec").prop("hidden",true)
-            if ($("#Semester_ID").val() == "None") $("#checkSem").removeAttr("hidden");  else $("#checkSem").prop("hidden",true)
+            if ($("#Course_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)           
+            if ($("#Specification_Name").val() == -1) $("#checkSpec").removeAttr("hidden");  else $("#checkSpec").prop("hidden",true)        
         }
     });
 </script>

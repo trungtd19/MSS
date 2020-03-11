@@ -13,7 +13,7 @@ namespace MSS_DEMO.Core.Components
            : base(context)
         {
         }
-        public List<Cour_dealine> GetPageList()
+        public List<Cour_dealine> GetPageList2()
         {
             List<Cour_dealine> cour = new List<Cour_dealine>();
             using (MSSEntities db = new MSSEntities())
@@ -24,6 +24,23 @@ namespace MSS_DEMO.Core.Components
                 cour = (from o in cour
                         orderby o.Course_ID descending
                            select o)
+                          .ToList();
+                return cour;
+            }
+
+        }
+        public List<Cours_Spec> GetPageList()
+        {
+            List<Cours_Spec> cour = new List<Cours_Spec>();
+            using (MSSEntities db = new MSSEntities())
+            {
+                cour = (from cou in db.Courses
+                        join dl in db.Specifications on cou.Specification_ID equals dl.Specification_ID into empSpec
+                        from ed in empSpec.DefaultIfEmpty()
+                        select new Cours_Spec { Course_ID = cou.Course_ID, Course_Name = cou.Course_Name, Specification_ID = cou.Specification_ID, Specification_Name = ed.Specification_Name == null ? "Not Map" : ed.Specification_Name }).ToList();
+                cour = (from o in cour
+                        orderby o.Course_ID descending
+                        select o)
                           .ToList();
                 return cour;
             }
@@ -50,5 +67,10 @@ namespace MSS_DEMO.Core.Components
     {
         public string Semester_ID { get; set; }
         public DateTime Deadline { get; set; }
+    }
+    public class Cours_Spec : Course
+    {
+        public string Specification_Name { get; set; }
+
     }
 }

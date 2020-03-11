@@ -390,6 +390,7 @@
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Report\Enrollment.cshtml" />
     <Content Include="Views\Report\Member.cshtml" />
+    <Content Include="Views\Courses\EditDeadline.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>

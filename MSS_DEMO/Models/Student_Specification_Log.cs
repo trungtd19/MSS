@@ -28,10 +28,10 @@ namespace MSS_DEMO.Models
         public string Program_Name { get; set; }
         public Nullable<System.DateTime> Specialization_Completion_Time { get; set; }
         public string Campus { get; set; }
-        public string Specification_ID { get; set; }
         public Nullable<System.DateTime> Date_Import { get; set; }
         public Nullable<int> User_ID { get; set; }
         public string Email { get; set; }
+        public Nullable<int> Specification_ID { get; set; }
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }

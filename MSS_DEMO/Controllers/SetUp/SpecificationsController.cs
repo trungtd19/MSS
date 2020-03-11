@@ -39,14 +39,14 @@ namespace MSS_DEMO.Controllers.SetUp
                 List = unitOfWork.Specifications.GetPageList();
                 if (!String.IsNullOrEmpty(SearchString))
                 {
-                    List = List.Where(s => s.Specification_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    List = List.Where(s => s.Specification_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
             }
             int pageSize = 30;
             int pageNumber = (page ?? 1);
             return View(List.ToList().ToPagedList(pageNumber, pageSize));
         }
-        public ActionResult Details(string id)
+        public ActionResult Details(int id)
         {
             var Specifications = unitOfWork.Specifications.GetById(id);
             if (Specifications.Subject_ID == null) Specifications.Subject_ID = NOTMAP;
@@ -61,7 +61,7 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Specification_ID,Specification_Name,Subject_ID,Is_Real_Specification")] Specification specification)
+        public ActionResult Create(Specification specification)
         {
             if (specification.Subject_ID == NONE) specification.Subject_ID = null;
             if (ModelState.IsValid)
@@ -76,7 +76,7 @@ namespace MSS_DEMO.Controllers.SetUp
         }
 
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id)
         {
             var specification = unitOfWork.Specifications.GetById(id);
             SelectSubjectID();
@@ -85,7 +85,7 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Specification_ID,Specification_Name,Subject_ID,Is_Real_Specification")] Specification specification)
+        public ActionResult Edit(Specification specification)
         {
             if (specification.Subject_ID == NONE) specification.Subject_ID = null;
             if (ModelState.IsValid)
@@ -98,7 +98,7 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(specification);
         }
 
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id)
         {
             var specification = unitOfWork.Specifications.GetById(id);
             return View(specification);
@@ -106,7 +106,7 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
             var specification = unitOfWork.Specifications.GetById(id);
             unitOfWork.Specifications.Delete(specification);
@@ -117,7 +117,7 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             List<Subject> subject = unitOfWork.Subject.GetAll();
             List<Subject> _subject = new List<Subject>();
-            _subject.Add(new Subject { Subject_ID = NONE });
+            _subject.Add(new Subject { Subject_ID = NONE , Subject_Name = NONE});
             foreach (var sub in subject)
             {
                 _subject.Add(sub);

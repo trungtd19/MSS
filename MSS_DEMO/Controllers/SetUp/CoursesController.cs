@@ -25,7 +25,7 @@ namespace MSS_DEMO.Controllers.SetUp
   
         public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
         {
-            List<Cour_dealine> LogList = new List<Cour_dealine>();
+            List<Cours_Spec> LogList = new List<Cours_Spec>();
             if (SearchString != null)
             {
                 page = 1;
@@ -48,34 +48,27 @@ namespace MSS_DEMO.Controllers.SetUp
             return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
 
         }
-        public ActionResult Details(string id)
+        public ActionResult Details(int id)
         {
             var Courses = unitOfWork.Courses.GetById(id);
-            if (Courses.Specification_ID == null) Courses.Specification_ID = NOTMAP;
             return View(Courses);
         }
         public ActionResult Create()
         {
             SelectSpecID();
+            specList();
             listSemester();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Course_Name,Course_Slug,Specification_ID")] Course course, string Semester_ID, string deadline)
+        public ActionResult Create([Bind(Include = "Course_Name,Specification_ID")] Course course, string Specification_Name)
         {
-            DateTime _deadline = DateTime.Parse(deadline);
-            if (course.Specification_ID == NONE)
-            {
-                course.Specification_ID = null;
-            }
-            course.Course_ID = Guid.NewGuid().ToString();
+            if (Specification_Name != "-1" ) course.Specification_ID = int.Parse(Specification_Name);
             if (ModelState.IsValid)
-            {
-                Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID, Deadline =_deadline };
+            {             
                 unitOfWork.Courses.Insert(course);
-                unitOfWork.DeadLine.Insert(deadlines);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -85,33 +78,54 @@ namespace MSS_DEMO.Controllers.SetUp
         }
 
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id)
         {
             Course course = unitOfWork.Courses.GetById(id);
             SelectSpecID();
             listSemester();
+            specList();
             return View(course);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Course_Slug,Specification_ID")] Course course, string Semester_ID, string deadline)
+        public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Specification_ID")]  Course course, string Specification_Name)
         {
-            DateTime _deadline = DateTime.Parse(deadline);
-            if (course.Specification_ID == NONE) course.Specification_ID = null;
+            course.Specification_ID = int.Parse(Specification_Name);
             if (ModelState.IsValid)
-            {
-                Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID, Deadline = _deadline };
+            {              
                 unitOfWork.Courses.Update(course);
-                unitOfWork.DeadLine.Update(deadlines);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
             return View(course);
         }
+        public ActionResult EditDeadline(int id)
+        {
+            Course course = unitOfWork.Courses.GetById(id);
+            SelectSpecID();
+            listSemester();
+            specList();
+            return View(course);
+        }
 
-        public ActionResult Delete(string id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDeadline([Bind(Include = "Course_ID,Course_Name")] Course course, string Semester_ID, string deadline)
+        {
+            DateTime _deadline = DateTime.Parse(deadline);
+            if (ModelState.IsValid)
+            {
+                Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID, Deadline = _deadline };
+                unitOfWork.DeadLine.Insert(deadlines);
+                unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
+            return View(course);
+        }
+        public ActionResult Delete(int id)
         {
 
             Course course = unitOfWork.Courses.GetById(id);
@@ -120,7 +134,7 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
             var course = unitOfWork.Courses.GetById(id);
             unitOfWork.Courses.Delete(course);
@@ -132,7 +146,7 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             List<Specification> _specs = new List<Specification>();
             List<Specification> specs = unitOfWork.Specifications.GetAll();
-            _specs.Add(new Specification { Specification_ID = NONE, Is_Real_Specification = false });
+            _specs.Add(new Specification { Specification_Name = NONE, Is_Real_Specification = false });
 
             foreach (var spec in specs)
             {
@@ -141,7 +155,7 @@ namespace MSS_DEMO.Controllers.SetUp
                     _specs.Add(spec);
               //  }
             }
-            ViewBag.Specification_ID = new SelectList(_specs, "Specification_ID", "Specification_ID");
+            ViewBag.Specification_ID = new SelectList(_specs, "Semester_Name", "Semester_Name");
         }
         public void listSemester()
         {
@@ -154,6 +168,18 @@ namespace MSS_DEMO.Controllers.SetUp
                 _semester.Add(sem);
             }
             ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
+        }
+        public void specList()
+        {
+            SelectSpecID();
+            List<Specification> spec = unitOfWork.Specifications.GetAll();
+            List<Specification> _spec = new List<Specification>();
+            _spec.Add(new Specification { Specification_ID =-1, Specification_Name = "--- Choose Specification ---" });
+            foreach (var sem in spec)
+            {
+                _spec.Add(sem);
+            }
+            ViewBag.Specification_Name = new SelectList(_spec, "Specification_ID", "Specification_Name");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<MSS_DEMO.Core.Components.Cour_dealine>
+﻿@model PagedList.IPagedList<MSS_DEMO.Core.Components.Cours_Spec>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Course";
@@ -10,7 +10,10 @@
 <div class="form-group">
     @using (Html.BeginForm("Index", "Courses", FormMethod.Get))
     {
-        <div class="col-md-2">
+    <div class="col-md-2" style="width: 11.666667%;">
+        Courses name:
+    </div>
+        <div class="col-md-2" >
             @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
             @Html.Hidden("searchCheck", "true")
         </div>
@@ -36,31 +39,19 @@
             <th>
                 Semester ID
             </th>
-            <th>
-                Deadline 
-            </th>
-            <th>
-                Specification ID
-            </th>
         </tr>
 
         @foreach (var item in Model)
         {
-            var specID = item.Specification_ID == null ? "Not Map" : item.Specification_ID;
-    <tr>
+            //var specName = item.Specification_ID.ToString() == "" ? "Not Map" : item.Specification_Name;
+         <tr>
         <td>
             @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Semester_ID)
+            @Html.DisplayFor(modelItem => item.Specification_Name)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Deadline)
-        </td>
-        <td>
-            @specID
-        </td>
-    </tr>
+         </tr>
         }
 
     </table>
