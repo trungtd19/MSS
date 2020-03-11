@@ -1,6 +1,5 @@
 ﻿
-@model PagedList.IPagedList<MSS_DEMO.Models.Student>
-@using PagedList.Mvc;
+@model MSS_DEMO.Models.ListStudent
 
 
 @{
@@ -18,12 +17,34 @@
             @using (Html.BeginForm("Member", "Report", FormMethod.Get))
             {
                 <div class="form-group">
-                    <p>
+                    <div class="col-md-2">
                         <label class="control-label"> Search by Roll Number</label>
+                    </div>
+                    <div class="col-lg-3">
                         @Html.TextBox("SearchString")
                         @Html.Hidden("searchCheck", "true")
+                    </div>
+                </div>
+                <br /><br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Subject </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectString3", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <br /><br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Campus </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectString2", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
-                    </p>
+                    </div>
                 </div>
             }
         </div>
@@ -32,22 +53,33 @@
 @if (Model != null)
 {
     <div>
-        @if (Model.Count > 0)
+        @if (Model.ls1.Count > 0)
         {
             <table class="table table-bordered">
                 <tr>
+                    <th>STT</th>
                     <th>Email</th>
                     <th>Roll</th>
                     <th>Full_Name</th>
                     <th>Campus</th>
+                    <th>Subject</th>
                 </tr>
-                @foreach (var t in Model)
+                @{ int a = 1;}
+                @foreach (var t in Model.ls1)
                 {
                     <tr>
+                        <th>@(a++)</th>
                         <th>@Html.DisplayFor(m => t.Email)</th>
                         <th>@Html.DisplayFor(m => t.Roll)</th>
                         <th>@Html.DisplayFor(m => t.Full_Name)</th>
                         <th>@Html.DisplayFor(m => t.Campus)</th>
+                        <th>
+                            @foreach (var d in t.ListSubject)
+                            {
+                                @Html.DisplayFor(m => d)
+                                <br />
+                            }
+                        </th>
                     </tr>
                 }
             </table>
@@ -55,8 +87,4 @@
     </div>
 }
 <br />
-Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Member",
-    new { page, searchCheck = "true" }))
 

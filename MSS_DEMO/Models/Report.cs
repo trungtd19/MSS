@@ -10,37 +10,25 @@ namespace MSS_DEMO.Models
         public string Sub { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public int Total { get; set; }
-        public int HN { get; set; }
-        public int DN { get; set; }
-        public int SG { get; set; }
-        public int CT { get; set; }
-
-        public List<Report> Info { get; set; }
-        public List<Report2> Info2 { get; set; }
-        public List<Report3> Info3 { get; set; }
-
-    }
-
-    public class Report2
-    {
-        public string Sub { get; set; }
-        public string Name { get; set; }
+        public double Total { get; set; }
         public double Study { get; set; }
-        public int Total { get; set; }
-        public double HN { get; set; }
-        public double DN { get; set; }
-        public double SG { get; set; }
-        public double CT { get; set; }
 
+        public List<double> Cmp { get; set; }
+        public List<Report> rp1 { get; set; }
+        public List<Report> rp2 { get; set; }
     }
 
-    public class Report3
+    public class ListStudent
     {
-        public string Title { get; set; }
-        public double HN { get; set; }
-        public double DN { get; set; }
-        public double SG { get; set; }
-        public double CT { get; set; }
+        public int STT { get; set; }
+        public string Email { get; set; }
+        public string Roll { get; set; }
+        public string Full_Name { get; set; }
+        public string Campus { get; set; }
+        public string Subject { get; set; }
+        public string Semester_ID { get; set; }
+        public List<string> ListSubject { get; set; }
+        public virtual Campu Campuss { get; set; }
+        public List<ListStudent> ls1 { get; set; }
     }
 }

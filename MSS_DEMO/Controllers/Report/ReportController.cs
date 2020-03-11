@@ -19,8 +19,7 @@ namespace MSS_DEMO.Controllers
         public ActionResult Index(Report rp)
         {
             List<Report> rep = new List<Report>();
-            List<Report2> rep2= new List<Report2>();
-            List<Report3> rep3 = new List<Report3>();
+            List<Report> rep2= new List<Report>();      
 
             var context = new MSSEntities();
 
@@ -32,16 +31,11 @@ namespace MSS_DEMO.Controllers
                              where sub.Subject_ID == a.Subject_ID
                              select c.Roll).Count();
 
-                var HaNoi = Campus(sub.Subject_ID, "HN");
-                var DaNang = Campus(sub.Subject_ID, "DN");
-                var SaiGon = Campus(sub.Subject_ID, "SG");
-                var CanTho = Campus(sub.Subject_ID, "CT");
-
                 var Type = (from a in context.Specifications
                             where sub.Subject_ID == a.Subject_ID && a.Is_Real_Specification == true
                             select a.Specification_ID).Count();
                 String ListType = "";
-                if(Type == 1)
+                if (Type == 1)
                 {
                     ListType = "Spec";
                 }
@@ -50,32 +44,58 @@ namespace MSS_DEMO.Controllers
                     ListType = "Course";
                 }
 
-                rep.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Type = ListType, Total = Totall, HN = HaNoi, DN = DaNang, SG = SaiGon, CT = CanTho });
+                List<double> count = new List<double>();
+                List<string> name = new List<string>();
 
+                foreach (var cp in context.Campus)
+                {
+                    count.Add(Campus(sub.Subject_ID, cp.Campus_ID));
+                    name.Add(cp.Campus_ID);
+                }
+                ViewBag.Name = name;
+                ViewBag.Cmp = count;
 
+                rep.Add(new Report {Sub = sub.Subject_ID, Name = sub.Subject_Name, Type = ListType, Total = Totall, Cmp = count });
+
+                List<double> count2 = new List<double>();
                 int Total = Count(sub.Subject_ID, "");
-                int HaNoiStudy = Count(sub.Subject_ID, "HN");
-                int DaNangStudy = Count(sub.Subject_ID, "DN");
-                int SaiGonStudy = Count(sub.Subject_ID, "SG");
-                int CanThoStudy = Count(sub.Subject_ID, "CT");
-                rep2.Add(new Report2 { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total,Totall),Total = Total, HN = HaNoiStudy, DN = DaNangStudy, SG = SaiGonStudy, CT = CanThoStudy });
 
+                foreach(var cp in context.Campus)
+                {
+                    count2.Add(Count(sub.Subject_ID, cp.Campus_ID));
+                }
+                rep2.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total, Totall),Total = Total, Cmp = count2 });
             }
+            var TotalStudent = (from a in context.Students
+                                select a.Roll).Count();
+            List<double> temp = new List<double>();
+            temp.Add(Campus("", ""));
+            foreach (var cp in context.Campus)
+            {
+                temp.Add(Campus("",cp.Campus_ID));
+            }
+            ViewBag.Count = temp;
+            ViewBag.TotalStudent1 = TotalStudent;
+            int TotalStudent2 = Count("", "");
+            ViewBag.TotalStudent2 = TotalStudent2;
 
-            int Total1 = rep.Sum(x => x.Total);
-            int HN1 = rep.Sum(x => x.HN);
-            int DN1 = rep.Sum(x => x.DN);
-            int SG1 = rep.Sum(x => x.SG);
-            int CT1 = rep.Sum(x => x.CT);
 
-            int Total2 = rep2.Sum(x => x.Total);
-            double HN2 = rep2.Sum(x => x.HN);
-            double DN2 = rep2.Sum(x => x.DN);
-            double SG2 = rep2.Sum(x => x.SG);
-            double CT2 = rep2.Sum(x => x.CT);
+            List<double> temp2 = new List<double>();
+            ViewBag.TotalPercent = percent(TotalStudent2, TotalStudent);
+            temp2.Add(Count("", ""));
+            foreach (var cp in context.Campus)
+            {
+                temp2.Add(Count("", cp.Campus_ID));
+            }
+            ViewBag.Count2 = temp2;
 
-            ViewBag.Total1 = Total1;
-            ViewBag.Total2 = Total2;
+            List<double> per = new List<double>();
+            //per.Add(percent(Count("", ""), Campus("", "")));
+            foreach (var cp in context.Campus)
+            {
+                per.Add(percent(Count("", cp.Campus_ID), Campus("", cp.Campus_ID)));
+            }
+            ViewBag.Per = per;
 
             var studentComplete = (from a in context.Student_Course_Log
                                    join b in context.Courses on a.Course_ID equals b.Course_ID
@@ -83,10 +103,10 @@ namespace MSS_DEMO.Controllers
                                    where a.Completed == true
                                    select a.Roll).Distinct().Count();
             var courseComplete = (from a in context.Student_Course_Log
-                                   join b in context.Courses on a.Course_ID equals b.Course_ID
-                                   join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                                   where a.Completed == true
-                                   select a.Course_ID).Count();
+                                  join b in context.Courses on a.Course_ID equals b.Course_ID
+                                  join c in context.Specifications on b.Specification_ID equals c.Specification_ID
+                                  where a.Completed == true
+                                  select a.Course_ID).Count();
 
             ViewBag.studentComplete = studentComplete;
             ViewBag.courseComplete = courseComplete;
@@ -95,33 +115,28 @@ namespace MSS_DEMO.Controllers
             var Estimated = (from a in context.Student_Course_Log
                              where a.Estimated < 5
                              select a.Roll).Distinct().Count();
-            var per = percent(Estimated, Total1);
+            var perc = percent(Estimated, TotalStudent);
             ViewBag.Estimated = Estimated;
-            ViewBag.Percent = per;
-            
+            ViewBag.Percent = perc;
 
-            rep.Add(new Report { Total = Total1, HN = HN1, DN = DN1, SG = SG1, CT = CT1 });
-            rep2.Add(new Report2 { Study = percent(Total2,Total1), Total = Total2, HN = HN2, DN = DN2, SG = SG2, CT = CT2 });
-            rep3.Add(new Report3 { Title = "% Vào học",HN = percent((int)HN2,HN1), DN = percent((int)DN2,DN1),
-            SG = percent((int)SG2,SG1), CT = percent((int)CT2,CT1)});
-            rp.Info = rep;
-            rp.Info2 = rep2;
-            rp.Info3 = rep3;
+            rp.rp1 = rep;
+            rp.rp2 = rep2;
             return View("Index", rp);
         }
 
-        public ActionResult Enrollment(int? page, string searchString, string searchCheck)
+        public ActionResult Enrollment(ListStudent ls,string searchString, string searchCheck, string selectString2, string selectString3)
         {
             var context = new MSSEntities();
             List<string> NoEnrollment = new List<string>();
-            List<Student> s = new List<Student>();
+            List<ListStudent> s = new List<ListStudent>();
 
-            if(page == null)
-            {
-                page = 1;
-            }
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
+
+            //if(page == null)
+            //{
+            //    page = 1;
+            //}
+            //int pageSize = 10;
+            //int pageNumber = (page ?? 1);
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
                                  {
@@ -155,50 +170,104 @@ namespace MSS_DEMO.Controllers
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
+                int rowNo = 0;
                 foreach (var b in NoEnrollment)
                 {
-                    List<Student> infoStudent = (from c in context.Students
-                                                 where c.Roll == b
-                                                 select new
-                                                 {
-                                                     Email = c.Email,
-                                                     Roll = c.Roll,
-                                                     Full_Name = c.Full_Name,
-                                                     Campus = c.Campus,
-                                                 }).ToList().Select(p => new Student
-                                                 {
-                                                     Email = p.Email,
-                                                     Roll = p.Roll,
-                                                     Full_Name = p.Full_Name,
-                                                     Campus = p.Campus
-                                                 }).ToList();
+                    List<ListStudent> infoStudent = (from c in context.Students
+                                                     where c.Roll == b
+                                                     select new
+                                                     {
+                                                         Email = c.Email,
+                                                         Roll = c.Roll,
+                                                         Full_Name = c.Full_Name,
+                                                         Campus = c.Campus
+                                                     }).ToList().Select(p => new ListStudent
+                                                     {
+                                                         STT = rowNo++,
+                                                         Email = p.Email,
+                                                         Roll = p.Roll,
+                                                         Full_Name = p.Full_Name,
+                                                         Campus = p.Campus
+                                                     }).ToList();
+                    List<string> subjectStudent =   (from c in context.Students
+                                                     join d in context.Subject_Student on c.Roll equals d.Roll
+                                                     join e in context.Subjects on d.Subject_ID equals e.Subject_ID
+                                                     where c.Roll == b
+                                                     select e.Subject_Name).ToList();
+
+                                
                     foreach (var i in infoStudent)
                     {
-                        s.Add(new Student { Email = i.Email, Roll = i.Roll, Full_Name = i.Full_Name, Campus = i.Campus });
+                        s.Add(new ListStudent { STT = rowNo, Email = i.Email, Roll = i.Roll, Full_Name = i.Full_Name, Campus = i.Campus, ListSubject = subjectStudent });
                     }
 
                 }
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    s = s.Where(a => a.Roll.Contains(searchString)).ToList();
+                    s = s.Where(a => a.Roll.Contains(searchString)).ToList();        
+                }
+                if (!String.IsNullOrEmpty(selectString2))
+                {
+                    s = s.Where(a => a.Campus.Contains(selectString2)).ToList();
+                }
+                if (!String.IsNullOrEmpty(selectString3))
+                {
+                    s = s.Where(a => a.ListSubject.Contains(selectString3)).ToList();
                 }
             }
+
+            var listCampus = (from a in context.Campus
+                              select a.Campus_ID).ToList();
+            var listSubject = (from a in context.Subjects
+                               select a.Subject_Name).ToList();
+            List<SelectListItem> selectCp = new List<SelectListItem>();
+            List<SelectListItem> selectSj = new List<SelectListItem>();
+            selectCp.Add(new SelectListItem
+            {
+                Text = "--Select Campus--",
+                Value = ""
+            });
+            foreach (var a in listCampus)
+            {
+                selectCp.Add(new SelectListItem
+                {
+                    Text = a,
+                    Value = a
+                });
+            }
+
+            selectSj.Add(new SelectListItem
+            {
+                Text = "--Select Subject--",
+                Value = ""
+            });
+            foreach (var a in listSubject)
+            {
+                selectSj.Add(new SelectListItem
+                {
+                    Text = a,
+                    Value = a
+                });
+            }
+            ViewBag.SelectString3 = selectSj;
+            ViewBag.SelectString2 = selectCp;
+            ls.ls1 = s;
             //rp.Students = s;
-            return View("Enrollment", s.ToList().ToPagedList(pageNumber, pageSize));
+            return View("Enrollment", ls);
         }
 
-        public ActionResult Member(int? page, string searchString, string searchCheck)
+        public ActionResult Member(ListStudent ls, string searchString, string searchCheck, string selectString2, string selectString3)
         {
             var context = new MSSEntities();
             List<string> NoEnrollment = new List<string>();
-            List<Student> s = new List<Student>();
+            List<ListStudent> s = new List<ListStudent>();
 
-            if (page == null)
-            {
-                page = 1;
-            }
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
+            //if (page == null)
+            //{
+            //    page = 1;
+            //}
+            //int pageSize = 10;
+            //int pageNumber = (page ?? 1);
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
                                  {
@@ -235,26 +304,35 @@ namespace MSS_DEMO.Controllers
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
+                int rowNo = 0;
                 foreach (var b in NoEnrollment)
                 {
-                    List<Student> infoStudent = (from c in context.Students
-                                                 where c.Roll == b
-                                                 select new
-                                                 {
-                                                     Email = c.Email,
-                                                     Roll = c.Roll,
-                                                     Full_Name = c.Full_Name,
-                                                     Campus = c.Campus,
-                                                 }).ToList().Select(p => new Student
-                                                 {
-                                                     Email = p.Email,
-                                                     Roll = p.Roll,
-                                                     Full_Name = p.Full_Name,
-                                                     Campus = p.Campus
-                                                 }).ToList();
+                    List<ListStudent> infoStudent = (from c in context.Students
+                                                     where c.Roll == b
+                                                     select new
+                                                     {
+                                                         Email = c.Email,
+                                                         Roll = c.Roll,
+                                                         Full_Name = c.Full_Name,
+                                                         Campus = c.Campus
+                                                     }).ToList().Select(p => new ListStudent
+                                                     {
+                                                         STT = rowNo++,
+                                                         Email = p.Email,
+                                                         Roll = p.Roll,
+                                                         Full_Name = p.Full_Name,
+                                                         Campus = p.Campus
+                                                     }).ToList();
+                    List<string> subjectStudent = (from c in context.Students
+                                                   join d in context.Subject_Student on c.Roll equals d.Roll
+                                                   join e in context.Subjects on d.Subject_ID equals e.Subject_ID
+                                                   where c.Roll == b
+                                                   select e.Subject_Name).ToList();
+
+
                     foreach (var i in infoStudent)
                     {
-                        s.Add(new Student { Email = i.Email, Roll = i.Roll, Full_Name = i.Full_Name, Campus = i.Campus });
+                        s.Add(new ListStudent { STT = rowNo, Email = i.Email, Roll = i.Roll, Full_Name = i.Full_Name, Campus = i.Campus, ListSubject = subjectStudent });
                     }
 
                 }
@@ -262,32 +340,93 @@ namespace MSS_DEMO.Controllers
                 {
                     s = s.Where(a => a.Roll.Contains(searchString)).ToList();
                 }
+                if (!String.IsNullOrEmpty(selectString2))
+                {
+                    s = s.Where(a => a.Campus.Contains(selectString2)).ToList();
+                }
+                if (!String.IsNullOrEmpty(selectString3))
+                {
+                    s = s.Where(a => a.ListSubject.Contains(selectString3)).ToList();
+                }
             }
+            var listCampus = (from a in context.Campus
+                              select a.Campus_ID).ToList();
+            var listSubject = (from a in context.Subjects
+                              select a.Subject_Name).ToList();
+            List<SelectListItem> selectCp = new List<SelectListItem>();
+            List<SelectListItem> selectSj = new List<SelectListItem>();
+            selectCp.Add(new SelectListItem
+            {
+                Text = "--Select Campus--",
+                Value = ""
+            });
+            foreach (var a in listCampus)
+            {
+                selectCp.Add(new SelectListItem
+                {
+                    Text = a,
+                    Value = a
+                });
+            }
+
+            selectSj.Add(new SelectListItem
+            {
+                Text = "--Select Subject--",
+                Value = ""
+            });
+            foreach (var a in listSubject)
+            {
+                selectSj.Add(new SelectListItem
+                {
+                    Text = a,
+                    Value = a
+                });
+            }
+            ViewBag.SelectString3 = selectSj;
+            ViewBag.SelectString2 = selectCp;
+            ls.ls1 = s;
             //rp.Students = s;
-            return View("Member", s.ToList().ToPagedList(pageNumber, pageSize));
+            return View("Member", ls);
         }
 
-        private int Count(string a1, string a2)
+        private int Count(string subject, string campus)
         {
             //double per;
             int count = 0;
             var context = new MSSEntities();
-            if (a2 == "")
+            if (subject != "" && campus == "")
             {
                 count = (from a in context.Student_Course_Log
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where a1 == d.Subject_ID
+                         where subject == d.Subject_ID
                          select a.Roll).Distinct().Count();
             }
-            else
+            else if (subject == "" && campus == "")
             {
                 count = (from a in context.Student_Course_Log
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where a1 == d.Subject_ID && a.Campus == a2
+                         select a.Roll).Distinct().Count();
+            }
+            else if(subject != "" && campus != "")
+            {
+                count = (from a in context.Student_Course_Log
+                         join b in context.Courses on a.Course_ID equals b.Course_ID
+                         join c in context.Specifications on b.Specification_ID equals c.Specification_ID
+                         join d in context.Subjects on c.Subject_ID equals d.Subject_ID
+                         where  a.Campus == campus && a.Subject_ID == subject
+                         select a.Roll).Distinct().Count();
+            }
+            else if(subject == "" && campus != "")
+            {
+                count = (from a in context.Student_Course_Log
+                         join b in context.Courses on a.Course_ID equals b.Course_ID
+                         join c in context.Specifications on b.Specification_ID equals c.Specification_ID
+                         join d in context.Subjects on c.Subject_ID equals d.Subject_ID
+                         where a.Campus == campus
                          select a.Roll).Distinct().Count();
             }
             return count;
@@ -310,11 +449,31 @@ namespace MSS_DEMO.Controllers
         private int Campus(string subjectId, string campus)
         {
             var context = new MSSEntities();
-            var student = (from a in context.Subjects
-                         join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
-                         join c in context.Students on b.Roll equals c.Roll
-                         where subjectId == a.Subject_ID && c.Campus == campus
-                         select c.Roll).Count();
+            var student = 0;
+            if (subjectId == "" && campus != "")
+            {
+                student = (from a in context.Subjects
+                               join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
+                               join c in context.Students on b.Roll equals c.Roll
+                               where c.Campus == campus
+                               select c.Roll).Count();
+            }
+            else if(subjectId == "" && campus == "")
+            {
+                student = (from a in context.Subjects
+                           join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
+                           join c in context.Students on b.Roll equals c.Roll
+                           select c.Roll).Count();
+            }
+            else
+            {
+                student = (from a in context.Subjects
+                               join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
+                               join c in context.Students on b.Roll equals c.Roll
+                               where subjectId == a.Subject_ID && c.Campus == campus
+                               select c.Roll).Count();
+            }
+            
             return student;
         }
     }
