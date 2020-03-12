@@ -398,6 +398,7 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Home\Report.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

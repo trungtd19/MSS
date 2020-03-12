@@ -43,6 +43,7 @@ namespace MSS_DEMO.Controllers.SetUp
                     LogList = LogList.Where(s => s.Course_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
             }
+            ViewBag.Count = LogList.Count();
             int pageSize = 30;
             int pageNumber = (page ?? 1);
             return View(LogList.ToList().ToPagedList(pageNumber, pageSize));
@@ -50,7 +51,7 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public ActionResult Details(int id)
         {
-            var Courses = unitOfWork.Courses.GetById(id);
+            var Courses = unitOfWork.Courses.GetListByID(id);
             return View(Courses);
         }
         public ActionResult Create()

@@ -42,6 +42,7 @@ namespace MSS_DEMO.Controllers.SetUp
                     List = List.Where(s => s.Specification_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
             }
+            ViewBag.Count = List.Count();
             int pageSize = 30;
             int pageNumber = (page ?? 1);
             return View(List.ToList().ToPagedList(pageNumber, pageSize));

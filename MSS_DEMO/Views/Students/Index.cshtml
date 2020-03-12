@@ -6,9 +6,9 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Student</span>
 <hr />
-@{ 
-   SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
-   SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
+@{
+    SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
+    SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
 }
 <div class="form-group">
     <div class="col-md-2">
@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Semester</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Semester_ID", listSem ,"---None---", new { @name = "Semester_ID",@class="form-control select"})
+                                            @Html.DropDownList("Semester_ID", listSem, "---None---", new { @name = "Semester_ID", @class = "form-control select" })
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                         <div class="col-md-9 col-xs-12">
                                             @Html.DropDownList("Campus", listCampus, "---None---", new { @name = "Campus", @class = "form-control select" })
                                         </div>
-                                    </div>                    
+                                    </div>
                                 </div>
 
                             </div>
@@ -71,6 +71,7 @@
 </div>
 @if (Model.PageList.PageCount > 0)
 {
+    <label>Total of the records: @ViewBag.Count</label>
     <table class="table table-bordered table-striped">
         <tr>
             <th>
@@ -117,4 +118,4 @@
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
-      new { page, Roll = Model.Roll, Semester_ID = Model.Semester_ID , Campus = Model.Campus ,searchCheck = "true" }))
+      new { page, Roll = Model.Roll, Semester_ID = Model.Semester_ID, Campus = Model.Campus, searchCheck = "true" }))

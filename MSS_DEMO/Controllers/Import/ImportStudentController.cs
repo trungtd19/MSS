@@ -115,10 +115,7 @@ namespace MSS_DEMO.Controllers
         }
         public void Export_Student_CSV()
         {
-            CSVConvert csv = new CSVConvert();
-            var sb = new StringBuilder();
-            IEnumerable<Student> query = unitOfWork.Students.GetAll();
-            var list = query.ToList();
+            var sb = new StringBuilder(); 
             Type type = typeof(Student);
             var props = type.GetProperties();
             sb.Append(string.Join(",", "No", "Full Name","Email", "External Id","Subject"));

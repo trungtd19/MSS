@@ -92,7 +92,7 @@
           <Key>
             <PropertyRef Name="Specification_ID" />
           </Key>
-          <Property Name="Specification_ID" Type="int" Nullable="false" />
+          <Property Name="Specification_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
           <Property Name="Specification_Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Is_Real_Specification" Type="bit" Nullable="false" />
@@ -663,7 +663,7 @@
           <Key>
             <PropertyRef Name="Specification_ID" />
           </Key>
-          <Property Name="Specification_ID" Type="Int32" Nullable="false" />
+          <Property Name="Specification_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Specification_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Is_Real_Specification" Type="Boolean" Nullable="false" />

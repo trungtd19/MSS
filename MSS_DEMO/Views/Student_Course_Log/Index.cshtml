@@ -4,7 +4,7 @@
     ViewBag.Title = "Usage Report";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home") > Usage Report</span>
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Report", "Report", "Home") > Usage Report</span>
 <hr />
 @{
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;

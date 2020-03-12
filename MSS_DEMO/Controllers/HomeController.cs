@@ -13,5 +13,9 @@ namespace MSS_DEMO.Controllers
         {
             return View();
         }
+        public ActionResult Report()
+        {
+            return View();
+        }
     }
 }

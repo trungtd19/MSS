@@ -53,6 +53,7 @@ namespace MSS_DEMO.Controllers.SetUp
             int pageSize = 30;
             int pageNumber = (page ?? 1);
             model.PageList = students.ToList().ToPagedList(pageNumber, pageSize);
+            ViewBag.Count = students.Count();
             return View(model);
 
         }

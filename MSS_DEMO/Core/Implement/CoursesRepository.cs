@@ -46,6 +46,12 @@ namespace MSS_DEMO.Core.Components
             }
 
         }
+
+        public Cours_Spec GetListByID(int id)
+        {
+            return GetPageList().Where(s => s.Course_ID == id).FirstOrDefault();
+        }
+
         public List<Course_Spec_Sub> GetListID()
         {
             List<Course_Spec_Sub> cour = new List<Course_Spec_Sub>();
