@@ -44,7 +44,8 @@
     </div>
     <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.User_ID }) |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Delete", "Delete", new { id = Model.User_ID })
+
     </p>
 </body>
 </html>

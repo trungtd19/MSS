@@ -1,7 +1,7 @@
-﻿using MSS_DEMO.Models;
+﻿using MSS_DEMO.Common;
+using MSS_DEMO.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration.Provider;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -11,8 +11,7 @@ namespace MSS_DEMO.Role_provider
     public class CustomRoleProvider : RoleProvider
     {
         private MSSEntities db = new MSSEntities();
-
-        public override string ApplicationName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override string ApplicationName { get ; set ; }
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
         {
@@ -39,17 +38,24 @@ namespace MSS_DEMO.Role_provider
             throw new NotImplementedException();
         }
 
-        public override string[] GetRolesForUser(string name)
+        public override string[] GetRolesForUser(string UserName)
         {
+            var userRoles = new string[] { };
             // tạo biến getrole, so sánh xem UserID đang đăng nhập có giống với tên trong db ko
-            User_Role account = db.User_Role.SingleOrDefault(x => x.Login.Equals(name+"@fpt.edu.vn"));
-            if (account != null) // Nếu giống
-            {
-                return new String[] { account.Role.Role_Name };
-            }
-            else
-                return new String[] { };
+            //User_Role account = db.User_Role.Single(x => x.Login.Equals("Admin"));
+            //if (account != null) // Nếu giống
+            //{
+            userRoles= new String[] { "Admin" };
+            //account.Role.Role_Name
+            //}
+            //else
+            //    return new String[] { };
+            return userRoles.ToArray();
         }
+
+
+
+
 
         public override string[] GetUsersInRole(string roleName)
         {
@@ -58,7 +64,8 @@ namespace MSS_DEMO.Role_provider
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            throw new NotImplementedException();
+            var userRoles = GetRolesForUser(username);
+            return userRoles.Contains(roleName);
         }
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)

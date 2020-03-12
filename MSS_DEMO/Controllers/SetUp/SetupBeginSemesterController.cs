@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSS_DEMO.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ namespace MSS_DEMO.Controllers
 {
     public class SetupBeginSemesterController : Controller
     {
+        [CheckCredential(Role_ID = "4")]
         public ActionResult Index()
         {
             return View();

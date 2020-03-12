@@ -30,7 +30,7 @@ namespace MSS_DEMO.Controllers.Login
             if (ModelState.IsValid)
             {
                 UserName = UserName + "@fpt.edu.vn";
-                var user = db.User_Role.SingleOrDefault(x => x.Login == UserName);
+                var user = db.User_Role.SingleOrDefault(x => x.Login.Equals(UserName) );
                 if (user == null)
                 {
                     ModelState.AddModelError("", " Accont is not exist");
@@ -41,10 +41,11 @@ namespace MSS_DEMO.Controllers.Login
                 }
                 else
                 {
-                   
+                    var role =user.Role_ID;
                     var UserSession =new UserLogin();
                     UserSession.UserID = user.User_ID;
                     UserSession.UserName = user.Login;
+                    Session.Add(CommonConstants.ROLE_Session, role);
                     Session.Add(CommonConstants.User_Session, UserSession); 
                     return RedirectToAction("Index","Home");
                 }

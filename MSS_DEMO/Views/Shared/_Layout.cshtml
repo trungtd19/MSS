@@ -42,7 +42,7 @@
                 @if (session != null)
                 {
                 <ul class="nav navbar-nav navbar-right">                 
-                    <li>@Html.ActionLink("Welcome :" +@session.UserName,"", "")</li>
+                    <li>@Html.ActionLink("Welcome :" +@session.UserName,"Index", "Home")</li>
                 </ul>
                     <ul class="nav navbar-nav navbar-right">                     
                         <li>@Html.ActionLink("Logout", "Logout", "Login")</li>
