@@ -286,9 +286,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -482,6 +479,9 @@
     <Content Include="Views\Report\Member.cshtml" />
     <Content Include="Views\Login\Logout.cshtml" />
     <Content Include="Views\Courses\EditDeadline.cshtml" />
+    <Content Include="Views\Shared\401.cshtml" />
+    <Content Include="Views\Home\Report.cshtml" />
+    <Content Include="Views\Login\Logout.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -489,9 +489,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Shared\401.cshtml" />
-    <Content Include="Views\Home\Report.cshtml" />
-    <Content Include="Views\Login\Logout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />

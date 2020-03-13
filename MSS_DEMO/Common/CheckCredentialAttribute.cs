@@ -22,8 +22,8 @@ namespace MSS_DEMO.Common
             {
                 return false;
             }
-            string role = (string)HttpContext.Current.Session[CommonConstants.ROLE_Session];
-            if(role =="1")
+            int role = (int)HttpContext.Current.Session[CommonConstants.ROLE_Session];
+            if(role ==1)
             {
                 if (admin.Contains(this.Role_ID))
                 {
@@ -34,7 +34,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-           else if (role == "3")
+           else if (role == 3)
             {
                 if (Mentor.Contains(this.Role_ID))
                 {
@@ -45,7 +45,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-            else if (role == "4")
+            else if (role == 4)
             {
                 if (Acad.Contains(this.Role_ID))
                 {
@@ -56,7 +56,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-            else if (role == "2")
+            else if (role == 2)
             {
                 if (Hana.Contains(this.Role_ID))
                 {

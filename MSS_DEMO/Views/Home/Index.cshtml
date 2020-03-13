@@ -1,9 +1,21 @@
-﻿
+﻿@using MSS_DEMO.Common
 @{
     ViewBag.Title = "Home";
 }
+@{
+    var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
+}
+@{
+    var Role = (int)HttpContext.Current.Session[CommonConstants.ROLE_Session];
+}
 <br />
-<h5>@Html.ActionLink("Campus", "Index", "Campus")</h5>
+@{ 
+    if (Role == 4){
+
+        < h5> @Html.ActionLink("Campus", "Index", "Campus") </ h5 >
+    }
+}
+
 <hr />
 <h5>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester")</h5>
 <hr />
