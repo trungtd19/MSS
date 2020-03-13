@@ -18,86 +18,94 @@
             @Html.ActionLink("Sumary reports", "Index")
             @Html.ActionLink("No Enrollment", "Enrollment")
             @Html.ActionLink("Member Report", "Member")
-            </h4>
+        </h4>
     </div>
 
     @if (Model != null)
     {
         <div>
-            @if (Model.Info.Count > 0)
-            {
-                <h4>Tổng số SV: @ViewBag.Total1</h4>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Sub</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>All</th>
-                        <th>HN</th>
-                        <th>DN</th>
-                        <th>SG</th>
-                        <th>CT</th>
-                    </tr>
-                    @foreach (var t in Model.Info)
+            <h4>Tổng số SV: @ViewBag.TotalStudent1</h4>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Sub</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>All</th>
+                    @foreach (var t in ViewBag.Name)
                     {
-                        <tr>
-                            <th>@Html.DisplayFor(m => t.Sub)</th>
-                            <th>@Html.DisplayFor(m => t.Name)</th>
-                            <th>@Html.DisplayFor(m => t.Type)</th>
-                            <th>@Html.DisplayFor(m => t.Total)</th>
-                            <th>@Html.DisplayFor(m => t.HN)</th>
-                            <th>@Html.DisplayFor(m => t.DN)</th>
-                            <th>@Html.DisplayFor(m => t.SG)</th>
-                            <th>@Html.DisplayFor(m => t.CT)</th>
-                        </tr>
+                        <th>@t</th>
                     }
-                </table>
-            }
+                </tr>
+                @foreach (var t in Model.rp1)
+                {
+                    <tr>
+                        <th>@Html.DisplayFor(m => t.Sub)</th>
+                        <th>@Html.DisplayFor(m => t.Name)</th>
+                        <th>@Html.DisplayFor(m => t.Type)</th>
+                        <th>@Html.DisplayFor(m => t.Total)</th>
+                        @foreach (var c in t.Cmp)
+                        {
+                            <th>@c</th>
+                        }
+                    </tr>
+                }
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    @foreach (var t in ViewBag.Count)
+                    {
+                        <th>@t</th>
+                    }
+                </tr>
+            </table>
         </div>
+        <h4>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.TotalStudent2</h4>
         <div>
-            @if (Model.Info2.Count > 0 && Model.Info3.Count > 0)
-            {
-                <h4>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.Total2</h4>
-                <table class="table table-bordered">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Sub</th>
+                    <th>Name</th>
+                    <th>% Vào học</th>
+                    <th>All</th>
+                    @foreach (var t in ViewBag.Name)
+                    {
+                        <th>@t</th>
+                    }
+                </tr>
+                @foreach (var t in Model.rp2)
+                {
                     <tr>
-                        <th>Sub</th>
-                        <th>Name</th>
-                        <th>% Vào học</th>
-                        <th>All</th>
-                        <th>HN</th>
-                        <th>DN</th>
-                        <th>SG</th>
-                        <th>CT</th>
+                        <th>@Html.DisplayFor(m => t.Sub)</th>
+                        <th>@Html.DisplayFor(m => t.Name)</th>
+                        <th>@Html.DisplayFor(m => t.Study)%</th>
+                        <th>@Html.DisplayFor(m => t.Total)</th>
+                        @foreach (var c in t.Cmp)
+                        {
+                            <th>@c</th>
+                        }
                     </tr>
-                    @foreach (var t in Model.Info2)
+                }
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>@ViewBag.TotalPercent%</th>
+                    @foreach (var o in ViewBag.Count2)
                     {
-                        <tr>
-                            <th>@Html.DisplayFor(m => t.Sub)</th>
-                            <th>@Html.DisplayFor(m => t.Name)</th>
-                            <th>@Html.DisplayFor(m => t.Study)%</th>
-                            <th>@Html.DisplayFor(m => t.Total)</th>
-                            <th>@Html.DisplayFor(m => t.HN)</th>
-                            <th>@Html.DisplayFor(m => t.DN)</th>
-                            <th>@Html.DisplayFor(m => t.SG)</th>
-                            <th>@Html.DisplayFor(m => t.CT)</th>
-                        </tr>
+                        <th>@o</th>
                     }
-                    @foreach (var t in Model.Info3)
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>% Vào học theo campus:</th>
+                    @foreach (var p in ViewBag.Per)
                     {
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>@Html.DisplayFor(m => t.Title)</th>
-                            <th>@Html.DisplayFor(m => t.HN)%</th>
-                            <th>@Html.DisplayFor(m => t.DN)%</th>
-                            <th>@Html.DisplayFor(m => t.SG)%</th>
-                            <th>@Html.DisplayFor(m => t.CT)%</th>
-                        </tr>
+                        <th>@p%</th>
                     }
-
-                </table>
-            }
+                </tr>
+            </table>
         </div>
         <h4>@ViewBag.studentComplete sinh viên đã hoàn thành @ViewBag.courseComplete khóa học bắt buộc</h4>
         <h4>@ViewBag.Estimated sinh viên có số giờ học nhỏ hơn 5/Tuần(@ViewBag.Percent%)</h4>

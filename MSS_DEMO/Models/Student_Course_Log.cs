@@ -25,7 +25,7 @@ namespace MSS_DEMO.Models
         public string Program_Slug { get; set; }
         public string Program_Name { get; set; }
         public Nullable<System.DateTime> Completion_Time { get; set; }
-        public string Course_ID { get; set; }
+        public Nullable<int> Course_ID { get; set; }
         public Nullable<double> Course_Grade { get; set; }
         public string Roll { get; set; }
         public Nullable<System.DateTime> Date_Import { get; set; }

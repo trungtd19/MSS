@@ -481,13 +481,7 @@
     <Content Include="Views\Report\Enrollment.cshtml" />
     <Content Include="Views\Report\Member.cshtml" />
     <Content Include="Views\Login\Logout.cshtml" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="obj\Debug\edmxResourcesToEmbed\Models\MSSModel.csdl" />
-    <Content Include="obj\Debug\edmxResourcesToEmbed\Models\MSSModel.msl" />
-    <Content Include="obj\Debug\edmxResourcesToEmbed\Models\MSSModel.ssdl" />
-    <Content Include="obj\Debug\MSS.csproj.CopyComplete" />
-    <Content Include="obj\Debug\MSS.csproj.CoreCompileInputs.cache" />
-    <Content Include="obj\Debug\MSS.csprojAssemblyReference.cache" />
+    <Content Include="Views\Courses\EditDeadline.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -496,6 +490,8 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
     <Content Include="Views\Shared\401.cshtml" />
+    <Content Include="Views\Home\Report.cshtml" />
+    <Content Include="Views\Login\Logout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />

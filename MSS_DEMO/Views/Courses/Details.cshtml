@@ -1,5 +1,4 @@
-﻿@model MSS_DEMO.Models.Course
-
+﻿@model MSS_DEMO.Core.Components.Cours_Spec
 @{
     ViewBag.Title = "Details";
 }
@@ -7,17 +6,9 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Semester</h4>
+    <h4>Courses</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Course_ID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course_ID)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Course_Name)
         </dt>
@@ -26,16 +17,17 @@
             @Html.DisplayFor(model => model.Course_Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Specification_ID)
+            @Html.DisplayNameFor(model => model.Specification_Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Specification_ID)
+            @Html.DisplayFor(model => model.Specification_Name)
         </dd>
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Course_ID }) |
+    @Html.ActionLink("Add deadline", "EditDeadline", new { id = Model.Course_ID }) |
     @Html.ActionLink("Delete", "Delete", new { id = Model.Course_ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

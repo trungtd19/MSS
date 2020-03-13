@@ -23,13 +23,8 @@ namespace MSS_DEMO.Controllers.Log
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
             string SearchString = model.Email;
-            string option = model.option;
             model.searchCheck = searchCheck;
-            List<string> listOption = new List<string>();
-            listOption.Add("Compeleted");
-            listOption.Add("Compulsory");
-            List<string> listSubjiect = unitOfWork.Subject.GetAll().Select(o => o.Subject_ID).ToList();
-            model.listOption = listOption;
+            List<string> listSubjiect = unitOfWork.Subject.GetAll().Select(o => o.Subject_Name).ToList();
             model.listSubject = listSubjiect;
             if (searchCheck == null)
             {
@@ -49,16 +44,22 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = LogList.Where(s => s.Date_Import == model.Date_Import).ToList();
                 }
-                if (!String.IsNullOrEmpty(option))
+                if (model.completedCourse)
                 {
-                    LogList = option == "Compeleted" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Course_ID != null).ToList();
+                    LogList = LogList.Where(s => s.Completed == true).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Subject_ID))
+                if (model.compulsoryCourse)
                 {
-                    LogList = LogList.Where(s => s.Subject_ID == model.Subject_ID).ToList();
+                    LogList = LogList.Where(s => s.Course_ID != null).ToList();
                 }
-            }
-            int pageSize = 10;
+                if (!String.IsNullOrEmpty(model.Subject_Name))
+                {
+                    var sub = unitOfWork.Subject.GetAll().Where(x => x.Subject_Name == model.Subject_Name).Select(y => y.Subject_ID).FirstOrDefault();
+                    LogList = LogList.Where(s => s.Subject_ID == sub).ToList();
+                }
+            }           
+            ViewBag.Count = LogList.Count();
+            int pageSize = 30;
             int pageNumber = (page ?? 1);
             model.PageList = LogList.ToList().ToPagedList(pageNumber, pageSize);
             return View(model);

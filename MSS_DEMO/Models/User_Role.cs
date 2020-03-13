@@ -15,7 +15,7 @@ namespace MSS_DEMO.Models
     public partial class User_Role
     {
         public int User_ID { get; set; }
-        public string Role_ID { get; set; }
+        public int Role_ID { get; set; }
         public string Login { get; set; }
         public bool isActive { get; set; }
     

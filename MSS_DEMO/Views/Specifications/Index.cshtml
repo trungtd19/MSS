@@ -10,6 +10,9 @@
     @using (Html.BeginForm("Index", "Specifications", FormMethod.Get))
     {
         <div class="col-md-2">
+            Specification name:
+        </div>
+        <div class="col-md-2">
             @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search With ID" })
             @Html.Hidden("searchCheck", "true")
         </div>
@@ -26,11 +29,9 @@
 <br />
 @if (Model.PageCount != 0)
 {
-    <table class="table table-bordered">
+    <label>Total of the records: @ViewBag.Count</label>
+    <table class="table table-bordered table-striped">
         <tr>
-            <th>
-                Specification ID
-            </th>
             <th>
                 Specification Name
             </th>
@@ -38,7 +39,13 @@
                 Subject ID
             </th>
             <th>
-                Is Real Specification
+                Description
+            </th>
+            <th>
+                Real Specification
+            </th>
+            <th>
+                Link Coursera
             </th>
         </tr>
 
@@ -48,16 +55,19 @@
             var subjectID = item.Subject_ID == null ? "Not Map" : item.Subject_ID;
             <tr>
                 <td>
-                    @Html.ActionLink(item.Specification_ID, "Details", new { id = item.Specification_ID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Specification_Name)
+                    @Html.ActionLink(item.Specification_Name, "Details", new { id = item.Specification_ID })
                 </td>
                 <td>
                     @subjectID
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
                     @check
+                </td>
+                <td>
+                    <a href="@item.Url">@item.Url</a>
                 </td>
             </tr>
         }

@@ -1,7 +1,7 @@
 # MSS
 Mentoring Support System
 
-Đây là project của nhóm New game
+Đây là project của nhóm MSS
 
 Project nhằm giúp đỡ mentor kiểm soát sinh viên học trên hệ thống online Coursera.
 
@@ -14,3 +14,5 @@ Trịnh Văn Thọ Lộc
 Nguyễn Tiến Đạt
 
 Nguyễn Xuân Hoàng Dũng
+
+Nguyễn Ngọc Thịnh

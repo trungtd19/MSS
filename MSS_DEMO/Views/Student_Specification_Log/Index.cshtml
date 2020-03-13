@@ -4,9 +4,10 @@
     ViewBag.Title = "Specialization Report";
 }
 <br />
-<span>@Html.ActionLink("Home", "Index", "Home") > Specialization Report</span>
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Report", "Report", "Home") > Specialization Report</span>
 @{
-    SelectList listOption = new SelectList((IList<string>)Model.listOption);
+    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
 }
 @using (Html.BeginForm("DeleteAll", "Student_Specification_Log"))
@@ -27,7 +28,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Email</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.TextBox("Email",  Model.Email , new { @class = "form-control" })
+                                        @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
                                         @Html.Hidden("searchCheck", "true")
                                     </div>
                                 </div>
@@ -43,25 +44,29 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Search by</label>
+                                    <label class="col-md-3 control-label">Subject</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("option", listOption, "--- All ---", new { @name = "option", @class = "form-control select" })
+                                        @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Subject</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Subject_ID", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                    <label class="col-md-2 control-label">Completed</label>
+                                    <div class="col-md-3 col-xs-12">
+                                        @Html.CheckBox("completedCourse", false)
+                                    </div>
+                                    <label class="col-md-2 control-label">Completed</label>
+                                    <div class="col-md-3 col-xs-12">
+                                        @Html.CheckBox("compulsoryCourse", false)
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                 </div>
                 <div class="panel-footer text-center">
-                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Tìm kiếm</button>
+                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
                 </div>
             </div>
         </div>
@@ -70,8 +75,9 @@
 }
 @if (Model.PageList.PageCount != 0)
 {
+    <label>Total of the records: @ViewBag.Count</label>
     <div class="table-responsive text-nowrap">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>
@@ -122,54 +128,61 @@
 
                     var complete = item.Completed == true ? "Yes" : "No";
                     var status = item.Status == true ? "Yes" : "No";
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Subject_ID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.University)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
-                    </td>
-                    <td>
-                        @complete
-                    </td>
-                    <td>
-                        @status
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date_Import)
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Enrollment_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Last_Specialization_Activity_Time)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Completion_Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date_Import)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
-    </div>
-    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
-    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
+    </div>   
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
- new { page, Email = Model.Email, Date_Import = Model.Date_Import, option = Model.option, Subject_ID = Model.Subject_ID, searchCheck = "true" }))
+ new
+ {
+     page,
+     Email = Model.Email,
+     Date_Import = Model.Date_Import,
+     compulsoryCourse = Model.compulsoryCourse,
+     completedCourse = Model.completedCourse,
+     Subject_Name = Model.Subject_Name,
+     searchCheck = "true"
+ }))

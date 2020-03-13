@@ -50,9 +50,10 @@ namespace MSS_DEMO.Controllers.SetUp
             model.lstSemester = semester;
             model.lstCampus = campus;
             model.searchCheck = searchCheck;
-            int pageSize = 10;
+            int pageSize = 30;
             int pageNumber = (page ?? 1);
             model.PageList = students.ToList().ToPagedList(pageNumber, pageSize);
+            ViewBag.Count = students.Count();
             return View(model);
 
         }

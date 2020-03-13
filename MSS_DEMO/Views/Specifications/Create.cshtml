@@ -15,37 +15,43 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.Specification_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Specification_ID, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Specification_ID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
         @Html.LabelFor(model => model.Specification_Name, "Specification Name", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Specification_Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Specification_Name, "", new { @class = "text-danger" })
+            <label style="color:red" id="checkName" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            <label style="color:red" id="checkDes" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Url, "Link Coursera", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+            <label style="color:red" id="checkUrl" hidden> This field is a required </label>
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Subject_ID, "Subject ID", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Subject_ID, "", new { @class = "text-danger" })
+            <label style="color:red" id="checkSubject" hidden> This field is a required </label>
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Is_Real_Specification, "Real Specification", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.CheckBoxFor(model => model.Is_Real_Specification, true)
-            @Html.ValidationMessageFor(model => model.Is_Real_Specification, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input id="btn" value="Create" class="btn btn-default" />
         </div>
     </div>
 </div>
@@ -54,3 +60,15 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script>
+        $("#btn").click(function () {
+        if ($("#Description").val() != "" && $("#Specification_Name").val() != "" && $("#Url").val() != "") {
+            $("#btn").attr("type", "submit");
+        }
+        else {
+            if ($("#Description").val() == "") $("#checkDes").removeAttr("hidden"); else $("#checkDes").prop("hidden", true)
+             if ($("#Url").val() == "") $("#checkUrl").removeAttr("hidden");  else $("#checkUrl").prop("hidden",true)
+            if ($("#Specification_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)        
+        }
+    });
+</script>

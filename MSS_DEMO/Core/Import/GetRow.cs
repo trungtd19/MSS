@@ -43,11 +43,11 @@ namespace MSS_DEMO.Core.Import
         public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> listIdSubjects)
         {
             DateTime _dateImport = DateTime.Parse(dateImport);
-            var Spec_ID_CSV = "";
+            var Spec_ID_CSV = -1;
             foreach (var listIdSubject in listIdSubjects)
             {
-                Spec_ID_CSV = listIdSubject.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listIdSubject.Specification_ID.Trim() : null;
-                if (Spec_ID_CSV != null) break;
+                Spec_ID_CSV = listIdSubject.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listIdSubject.Specification_ID : -1;
+                if (Spec_ID_CSV != -1) break;
             }
             return new Student_Specification_Log
             {
@@ -73,11 +73,11 @@ namespace MSS_DEMO.Core.Import
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs)
         {    
             DateTime _dateImport = DateTime.Parse(dateImport);
-            string Cour_ID_CSV = "";
+            int Cour_ID_CSV = -1;
             foreach (var listID in course_Spec_Subs)
             {
-                Cour_ID_CSV = listID.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listID.Course_ID : "";
-                if (Cour_ID_CSV != "") break;
+                Cour_ID_CSV = listID.Subject_ID == row[2].ToString().Split('-')[0] ? listID.Course_ID : -1;
+                if (Cour_ID_CSV != -1) break;
             }
             Student_Course_Log log1 = new Student_Course_Log
             {
