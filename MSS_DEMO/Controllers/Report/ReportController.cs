@@ -9,9 +9,11 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
 using PagedList;
+using MSS_DEMO.Common;
 
 namespace MSS_DEMO.Controllers
 {
+    [CheckCredential(Role_ID = "3")]
     public class ReportController : Controller
     {
         // GET: Report

@@ -14,22 +14,11 @@ namespace MSS_DEMO.Models
     
     public partial class User_Role
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User_Role()
-        {
-            this.Student_Course_Log = new HashSet<Student_Course_Log>();
-            this.Student_Specification_Log = new HashSet<Student_Specification_Log>();
-        }
-    
         public int User_ID { get; set; }
         public int Role_ID { get; set; }
         public string Login { get; set; }
         public bool isActive { get; set; }
     
         public virtual Role Role { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student_Course_Log> Student_Course_Log { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student_Specification_Log> Student_Specification_Log { get; set; }
     }
 }

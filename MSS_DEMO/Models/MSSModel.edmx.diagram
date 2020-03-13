@@ -40,8 +40,6 @@
         <AssociationConnector Association="MSSModel.FK_Student_Course_Log_Student" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Student_Specification_Log_Student" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Subject_Student_Student" ManuallyRouted="false" />
-        <AssociationConnector Association="MSSModel.FK_Student_Course_Log_User_Role" ManuallyRouted="false" />
-        <AssociationConnector Association="MSSModel.FK_Student_Specification_Log_User_Role" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Subject_Student_Subject" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MSS_DEMO.Models.User_Role>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Subject";
 }
 
 <!DOCTYPE html>
@@ -36,28 +36,22 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Role.Role_Name)
-                </th>
-                <th></th>
+                </th>              
             </tr>
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Login)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.isActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Role.Role_Name)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.User_ID }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.User_ID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.User_ID })
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Role_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isActive)
+                </td>              
+            </tr>
             }
 
         </table>

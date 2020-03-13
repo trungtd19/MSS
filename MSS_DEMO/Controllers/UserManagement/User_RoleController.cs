@@ -6,12 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MSS_DEMO.Common;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using PagedList;
 
 namespace MSS_DEMO.Controllers.UserManagement
 {
+    [CheckCredential(Role_ID = "1")]
     public class User_RoleController : Controller
     {
         private IUnitOfWork unitOfWork;
@@ -25,6 +27,7 @@ namespace MSS_DEMO.Controllers.UserManagement
             return View();
         }
         [HttpPost]
+        
         public ActionResult Index(string SearchString)
         {
             IQueryable<User_Role> model = db.User_Role;
@@ -35,9 +38,8 @@ namespace MSS_DEMO.Controllers.UserManagement
             }
             return View(model.OrderByDescending(x => x.Role_ID).ToList());
 
-        }
-
-
+        }                        
+        
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -51,7 +53,7 @@ namespace MSS_DEMO.Controllers.UserManagement
             }
             return View(user_Role);
         }
-
+        
         // GET: User_Role/Create
         public ActionResult Create()
         {
@@ -64,6 +66,7 @@ namespace MSS_DEMO.Controllers.UserManagement
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public ActionResult Create([Bind(Include = "User_ID,Role_ID,Login,isActive")] User_Role user_Role)
         {
             if (ModelState.IsValid)

@@ -11,7 +11,7 @@ namespace MSS_DEMO.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    [Serializable]
     public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
