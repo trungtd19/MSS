@@ -1,7 +1,12 @@
-﻿
+﻿@using MSS_DEMO.Common
 @{
     ViewBag.Title = "Import Data";
 }
+@{
+    var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
+    var user = session.UserID;
+}
+@Html.Hidden("UserID", user)
 <style>
     .form-control {
         height: 32px;
@@ -11,7 +16,7 @@
 <span>
     @Html.ActionLink("Home", "Index", "Home") >
     @Html.ActionLink("Usage Report", "Index", "Student_Course_Log") >
-    @Html.ActionLink("Report", "Report", "Home") > 
+    @Html.ActionLink("Report", "Report", "Home") >
     Import Usage Report
 </span>
 <hr />
@@ -48,6 +53,7 @@
                 theme: "sk-circle"
             });
             var dateImport = $("#dateImport").val();
+            var UserID = $("#UserID").val();
             if (dateImport == "") {
                 sweetAlert("Lỗi!", "Choose date import please!", "error");
                 HoldOn.close();
@@ -59,8 +65,9 @@
                     fileData.append("fileInput", files[i]);
                 }
                 fileData.append("dateImport", dateImport);
+                fileData.append("UserID", UserID);
                 $.ajax({
-                    url: '/ExportData/UploadFiles',
+                    url: '/ImportDataDaily/UploadFiles',
                     type: "POST",
                     contentType: false,
                     processData: false,

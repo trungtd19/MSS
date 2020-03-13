@@ -1,3 +1,4 @@
+using MSS_DEMO.Common;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Repository;
@@ -15,6 +16,7 @@ namespace MSS_DEMO
             container.RegisterType(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             container.RegisterType<IUnitOfWork, UnitOfWork>();
             container.RegisterType<IGetRow, GetRow>();
+            container.RegisterType(typeof (AuthorizeAttribute), typeof (CheckCredentialAttribute));
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

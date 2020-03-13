@@ -6,15 +6,16 @@ using System;
 using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Repository;
 using MSS_DEMO.Core.Import;
+using MSS_DEMO.Common;
 
 namespace MSS_DEMO.Controllers
 {
-    public class ExportDataController : Controller
+    [CheckCredential(Role_ID = "4")]
+    public class ImportDataDailyController : Controller
     {
         private IUnitOfWork unitOfWork;
         private IGetRow getRow;
-
-        public ExportDataController(IUnitOfWork _unitOfWork, IGetRow _getRow)
+        public ImportDataDailyController(IUnitOfWork _unitOfWork, IGetRow _getRow)
         {
             this.unitOfWork = _unitOfWork;
             this.getRow = _getRow;
@@ -22,12 +23,12 @@ namespace MSS_DEMO.Controllers
 
         public ActionResult Index()
         {
-            return View("~/Views/ImportDataDaily/Index.cshtml");
+            return View();
         }
         [HttpPost]
         public ActionResult UploadFiles()
         {
-            int userID = 1;
+            int userID = int.Parse(Request["UserID"]);
             string _dateImport = Request["dateImport"];          
             CSVConvert csv = new CSVConvert();
             string messageImport = "";

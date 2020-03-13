@@ -9,17 +9,24 @@
     var Role = (int)HttpContext.Current.Session[CommonConstants.ROLE_Session];
 }
 <br />
-@{ 
-    if (Role == 4){
+@{
+    if (Role == 4)
+    {
 
-        < h5> @Html.ActionLink("Campus", "Index", "Campus") </ h5 >
+        <h5> @Html.ActionLink("Campus", "Index", "Campus") </h5>
+        <hr />
+        <h5>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester")</h5>
+        <hr />
+        <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
+        <hr />
+
+    }
+}
+@{
+    if (Role == 4 || Role == 1)
+    {
+        <h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
     }
 }
 
-<hr />
-<h5>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester")</h5>
-<hr />
-<h5>@Html.ActionLink("Report", "Report", "Home")</h5>
-<hr />
-<h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
 

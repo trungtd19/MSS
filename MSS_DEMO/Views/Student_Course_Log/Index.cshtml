@@ -11,7 +11,7 @@
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
 }
-@Html.ActionLink("Import Usage Report", "Index", "ExportData")
+@Html.ActionLink("Import Usage Report", "Index", "ImportDataDaily")
 
 @using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
 {
