@@ -13,7 +13,7 @@ namespace MSS_DEMO
         public static void RegisterComponents()
         {
 			var container = new UnityContainer();
-            container.RegisterType(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            container.RegisterType(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             container.RegisterType<IUnitOfWork, UnitOfWork>();
             container.RegisterType<IGetRow, GetRow>();
             container.RegisterType(typeof (AuthorizeAttribute), typeof (CheckCredentialAttribute));

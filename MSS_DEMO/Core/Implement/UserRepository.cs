@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MSS_DEMO.Core.Implement
 {
-    public class UserRepository : GenericRepository<User_Role>
+    public class UserRepository : BaseRepository<User_Role>
     {
         public UserRepository(MSSEntities context)
            : base(context)

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MSS_DEMO.Core.Implement
 {
-    public class StudentCoursesLogRepository : GenericRepository<Student_Course_Log>
+    public class StudentCoursesLogRepository : BaseRepository<Student_Course_Log>
     {
         public StudentCoursesLogRepository(MSSEntities context)
            : base(context)

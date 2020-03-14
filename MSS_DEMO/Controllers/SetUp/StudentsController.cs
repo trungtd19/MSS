@@ -21,7 +21,7 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult Index(StudentViewModel model, int? page, string searchCheck, string Semester_ID)
         {
             List<Student> students = new List<Student>();
-            string SearchString = model.Roll;
+            string SearchString = model.Email;
             if (searchCheck != null)
             {
                 students = unitOfWork.Students.GetPageList();

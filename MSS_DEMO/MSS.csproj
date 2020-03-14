@@ -189,6 +189,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
+    <Compile Include="Controllers\SetUp\Course_DeadlineController.cs" />
     <Compile Include="Controllers\SetUp\UserController.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\ClassStudentRepository.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Models\Course_Deadline.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeadlineCoursesViewModel.cs" />
     <Compile Include="Models\Mentor.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -290,8 +292,8 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\Implement\GenericRepository.cs" />
-    <Compile Include="Core\Interface\IGenericRepository.cs" />
+    <Compile Include="Core\Implement\BasecRepository.cs" />
+    <Compile Include="Core\Interface\IBaseRepository.cs" />
     <Compile Include="Core\Interface\IUnitOfWork.cs" />
     <Compile Include="Core\Implement\StudentRepository.cs" />
     <Compile Include="Core\Implement\UnitOfWork.cs" />
@@ -411,6 +413,11 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Course_Deadline\Create.cshtml" />
+    <Content Include="Views\Course_Deadline\Delete.cshtml" />
+    <Content Include="Views\Course_Deadline\Details.cshtml" />
+    <Content Include="Views\Course_Deadline\Edit.cshtml" />
+    <Content Include="Views\Course_Deadline\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

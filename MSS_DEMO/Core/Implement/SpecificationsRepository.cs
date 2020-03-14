@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MSS_DEMO.Core.Components
 {
-    public class SpecificationsRepository : GenericRepository<Specification>
+    public class SpecificationsRepository : BaseRepository<Specification>
     {
         public SpecificationsRepository(MSSEntities context)
            : base(context)

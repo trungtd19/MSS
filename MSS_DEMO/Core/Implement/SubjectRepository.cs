@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MSS_DEMO.Core.Implement
 {
-    public class SubjectRepository : GenericRepository<Subject>
+    public class SubjectRepository : BaseRepository<Subject>
     {
         public SubjectRepository(MSSEntities context)
            : base(context)

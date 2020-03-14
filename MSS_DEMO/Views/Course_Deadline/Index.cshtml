@@ -1,0 +1,79 @@
+﻿@model MSS_DEMO.Models.DeadlineCoursesViewModel
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
+}
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Courses deadline</span>
+<hr />
+<div class="form-group">
+    @using (Html.BeginForm("Index", "Course_Deadline", FormMethod.Get))
+    {
+        <div class="col-md-2" style="width: 11.666667%;">
+            Courses name:
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("Courses_Name", Model.Courses_Name, new { @class = "form-control" })
+            @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-2" style="width: 11.666667%;">
+            Semester :
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
+        </div>
+        <div class="col-md-1">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+        <div class="col-md-1">
+            @Html.ActionLink("Add New", "Create")
+        </div>
+        <div class="col-md-5"></div>
+    }
+</div>
+<br />
+<br />
+@if (Model.PageList.PageCount > 0)
+{
+    <label>Total of the records: @ViewBag.Count</label>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>
+                Course Name
+            </th>
+            <th>
+                Deadline
+            </th>
+            <th>
+                Semester Name
+            </th>
+        </tr>
+
+        @foreach (var item in Model.PageList)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Courses_Name, "Details", new { id = item.Course_Deadline_ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semester_Name)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+
+@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+   new { page, Semester_ID = Model.Semester_ID, searchCheck = "true" }))

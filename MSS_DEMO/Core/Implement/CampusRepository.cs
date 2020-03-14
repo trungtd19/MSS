@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MSS_DEMO.Core.Components
 {
-    public class CampusRepository : GenericRepository<Campu>
+    public class CampusRepository : BaseRepository<Campu>
     {
         public CampusRepository(MSSEntities context)
            : base(context)

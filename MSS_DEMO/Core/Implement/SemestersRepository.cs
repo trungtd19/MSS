@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MSS_DEMO.Core.Components
 {
-    public class SemestersRepository : GenericRepository<Semester>
+    public class SemestersRepository : BaseRepository<Semester>
     {
         public SemestersRepository(MSSEntities context)
            : base(context)

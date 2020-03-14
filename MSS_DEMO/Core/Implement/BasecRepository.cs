@@ -4,12 +4,12 @@ using System.Linq;
 using MSS_DEMO.Models;
 namespace MSS_DEMO.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         internal MSSEntities context;
         internal DbSet<T> dbSet;
 
-        public GenericRepository(MSSEntities context)
+        public BaseRepository(MSSEntities context)
         {
             this.context = context;
             this.dbSet = context.Set<T>();
@@ -36,10 +36,5 @@ namespace MSS_DEMO.Repository
         {
             dbSet.Remove(obj);
         }
-        public void Save()
-        {
-            context.SaveChanges();
-        }
-
     }
 }
