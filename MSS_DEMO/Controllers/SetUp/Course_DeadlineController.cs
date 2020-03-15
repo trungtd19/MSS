@@ -71,14 +71,20 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Semester_ID,Course_ID,Deadline,Course_Deadline_ID")] Course_Deadline course_Deadline)
         {
+            ViewBag.CheckExits = "";
+            ViewBag.Course_ID = new SelectList(unitOfWork.Courses.GetAll(), "Course_ID", "Course_Name");
+            ViewBag.Semester_ID = new SelectList(unitOfWork.Semesters.GetAll(), "Semester_ID", "Semester_Name");
+            if (unitOfWork.DeadLine.IsExitsDeadline(course_Deadline))
+            {
+                ViewBag.CheckExits = "true";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.DeadLine.Insert(course_Deadline);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
-            }
-            ViewBag.Course_ID = new SelectList(unitOfWork.Courses.GetAll(), "Course_ID", "Course_Name");
-            ViewBag.Semester_ID = new SelectList(unitOfWork.Semesters.GetAll(), "Semester_ID", "Semester_Name");
+            }        
             return View(course_Deadline);
         }
 

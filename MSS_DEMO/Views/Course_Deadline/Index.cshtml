@@ -55,17 +55,17 @@
 
         @foreach (var item in Model.PageList)
         {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Courses_Name, "Details", new { id = item.Course_Deadline_ID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Deadline)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Semester_Name)
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @Html.ActionLink(item.Courses_Name, "Details", new { id = item.Course_Deadline_ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deadline)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester_Name)
+        </td>
+    </tr>
         }
 
     </table>

@@ -5,11 +5,10 @@
 }
 
 <h2>Create</h2>
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+    <input id="check" type="hidden" value="@ViewBag.CheckExits"/>
     <div class="form-horizontal">
         <h4>Course_Deadline</h4>
         <hr />
@@ -33,14 +32,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @type="date", @class = "form-control" }})
+                @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @type = "date", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input id="=btn" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -49,3 +48,11 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script>
+
+    $(document).ready(function () {
+        if ($("#check").val() == "true") {
+            sweetAlert("Add fail", "Course deadlines already exist this term!", "error");
+        }
+    });
+</script>  

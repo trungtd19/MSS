@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Semester</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Semester_ID", listSem, "---None---", new { @name = "Semester_ID", @class = "form-control select" })
+                                            @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Campus</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Campus", listCampus, "---None---", new { @name = "Campus", @class = "form-control select" })
+                                            @Html.DropDownList("Campus", listCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
                                         </div>
                                     </div>
                                 </div>
@@ -69,11 +69,13 @@
         </div>
     }
 </div>
+
 @if (Model.PageList.PageCount > 0)
 {
     <label>Total of the records: @ViewBag.Count</label>
     <table class="table table-bordered table-striped">
         <tr>
+
             <th>
                 Student ID
             </th>
@@ -93,23 +95,23 @@
 
         @foreach (var item in Model.PageList)
         {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Roll, "Details", new { id = item.Roll })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Full_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Campus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @Html.ActionLink(item.Roll, "Details", new { id = item.Roll })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Full_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Campus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
+        </td>
+    </tr>
         }
 
     </table>

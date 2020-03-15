@@ -39,6 +39,21 @@ namespace MSS_DEMO.Core.Implement
                 return cour;
             }
 
+        }       
+        public bool IsExitsDeadline(Course_Deadline dl)
+        {
+            bool check = true;
+            Course_Deadline cd = context
+                                .Course_Deadline
+                                .Where(x=> x.Course_ID == dl.Course_ID && x.Semester_ID == dl.Semester_ID)
+                                .FirstOrDefault();
+            if (cd != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
         }
     }
     public class Cour_dealine : Course_Deadline

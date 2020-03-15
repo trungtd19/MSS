@@ -42,11 +42,12 @@ namespace MSS_DEMO.Controllers.SetUp
                 }
                 if (!String.IsNullOrEmpty(model.Campus))
                 {
-                    students = students.Where(s => s.Campus.ToUpper().Contains(model.Campus.ToUpper())).ToList();
+                    var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
+                    students = students.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
                 }
             }           
             List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
-            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_ID).ToList();
+            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
             model.lstSemester = semester;
             model.lstCampus = campus;
             model.searchCheck = searchCheck;
