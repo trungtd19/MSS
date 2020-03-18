@@ -418,6 +418,7 @@
     <Content Include="Views\Course_Deadline\Details.cshtml" />
     <Content Include="Views\Course_Deadline\Edit.cshtml" />
     <Content Include="Views\Course_Deadline\Index.cshtml" />
+    <Content Include="Views\Report\NotRequiredCourse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
