@@ -100,14 +100,10 @@ namespace MSS_DEMO.Controllers
             ViewBag.Per = per;
 
             var studentComplete = (from a in context.Student_Course_Log
-                                   join b in context.Courses on a.Course_ID equals b.Course_ID
-                                   join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                                   where a.Completed == true
+                                   where a.Completed == true && a.Course_ID != null
                                    select a.Roll).Distinct().Count();
             var courseComplete = (from a in context.Student_Course_Log
-                                  join b in context.Courses on a.Course_ID equals b.Course_ID
-                                  join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                                  where a.Completed == true
+                                  where a.Completed == true && a.Course_ID != null
                                   select a.Course_ID).Count();
 
             ViewBag.studentComplete = studentComplete;
@@ -163,6 +159,7 @@ namespace MSS_DEMO.Controllers
                 }
                 
             }
+
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 int rowNo = 0;
@@ -247,6 +244,8 @@ namespace MSS_DEMO.Controllers
             ViewBag.SelectString3 = selectSj;
             ViewBag.SelectString2 = selectCp;
             ls.ls1 = s;
+
+            ViewBag.TotalSearch = s.Count();
             //rp.Students = s;
             return View("Enrollment", ls);
         }
@@ -374,9 +373,63 @@ namespace MSS_DEMO.Controllers
             ViewBag.SelectString3 = selectSj;
             ViewBag.SelectString2 = selectCp;
             ls.ls1 = s;
+            ViewBag.TotalSearch = s.Count();
             //rp.Students = s;
             return View("Member", ls);
         }
+
+        public ActionResult NotRequiredCourse(ListNotRequiredCourse lc, string SelectString, string searchCheck)
+        {
+            var context = new MSSEntities();
+            List<ListNotRequiredCourse> listNotRequiredCourses = new List<ListNotRequiredCourse>();
+
+            var NotRequired = (from a in context.Student_Course_Log
+                               where a.Course_ID == null
+                               select a.Course_Name).Distinct().ToList();
+
+           
+
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                foreach (var a in NotRequired)
+                {
+                    var completed = (from b in context.Student_Course_Log
+                                     where b.Course_Name == a && b.Completed == true
+                                     select b.Roll).Distinct().Count();
+                    var notCompleted = (from b in context.Student_Course_Log
+                                        where b.Course_Name == a && b.Completed == false
+                                        select b.Roll).Distinct().Count();
+                    listNotRequiredCourses.Add(new ListNotRequiredCourse { Name = a, Complelted = completed, NotComplelted = notCompleted });
+                }
+
+                if (!String.IsNullOrEmpty(SelectString))
+                {
+                    if(SelectString == "1")
+                    {
+                        listNotRequiredCourses = listNotRequiredCourses.Where(a => (a.Complelted > 0)).ToList();
+                    }
+                    if (SelectString == "2")
+                    {
+                        listNotRequiredCourses = listNotRequiredCourses.Where(a => (a.Complelted == 0)).ToList();
+                    }
+
+                }
+            }
+
+            List<SelectListItem> selectCompleted = new List<SelectListItem>();
+            selectCompleted.Add(new SelectListItem { Text = "--Select Completed--", Value = ""});
+            selectCompleted.Add(new SelectListItem { Text = "Completed", Value = "1" });
+            selectCompleted.Add(new SelectListItem { Text = "Not Completed", Value = "2" });
+
+            ViewBag.SelectString = selectCompleted;
+            lc.lc1 = listNotRequiredCourses;
+
+            ViewBag.TotalSearch = listNotRequiredCourses.Count();
+            //rp.Students = s;
+            return View("NotRequiredCourse", lc);
+        }
+
+
 
         private int Count(string subject, string campus)
         {
@@ -389,7 +442,7 @@ namespace MSS_DEMO.Controllers
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where subject == d.Subject_ID
+                         where subject == a.Subject_ID
                          select a.Roll).Distinct().Count();
             }
             else if (subject == "" && campus == "")
