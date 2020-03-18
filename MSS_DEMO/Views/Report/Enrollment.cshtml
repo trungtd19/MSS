@@ -6,11 +6,17 @@
     ViewBag.Title = "Enrollment";
 }
 <div>
-    <h4>
-        @Html.ActionLink("Sumary reports", "Index")
-        @Html.ActionLink("No Enrollment", "Enrollment")
-        @Html.ActionLink("Member Report", "Member")
-    </h4>
+    <div>
+        <div>
+            <h4>
+                @Html.ActionLink("Sumary reports", "Index")&nbsp;&nbsp;
+                @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
+                @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
+                @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
+            </h4>
+        </div>
+    </div>
+    <br />
     <div class="panel panel-default">
         <div class="panel-body" style="padding-top: initial;">
 
@@ -55,37 +61,40 @@
 <div>
     @if (Model.ls1.Count > 0)
     {
-    <table class="table table-bordered">
-        <tr>
-            <th>STT</th>
-            <th>Email</th>
-            <th>Roll</th>
-            <th>Full_Name</th>
-            <th>Campus</th>
-            <th>Subject</th>
-        </tr>
-        @{ int a = 1;}
-        @foreach (var t in Model.ls1)
-        {
+        <h4>Total of the records: @ViewBag.TotalSearch</h4>
+        <table class="table table-bordered">
             <tr>
-                <th>@(a++)</th>
-                <th>@Html.DisplayFor(m => t.Email)</th>
-                <th>@Html.DisplayFor(m => t.Roll)</th>
-                <th>@Html.DisplayFor(m => t.Full_Name)</th>
-                <th>@Html.DisplayFor(m => t.Campus)</th>
-                <th>
-                    @foreach (var d in t.ListSubject)
-                    {
-                        @Html.DisplayFor(m => d)
-                        <br />
-                    }
-                </th>
+                <th>STT</th>
+                <th>Email</th>
+                <th>Roll</th>
+                <th>Full_Name</th>
+                <th>Campus</th>
+                <th>Subject</th>
             </tr>
-        }
-    </table>
+            @{ int a = 1;}
+            @foreach (var t in Model.ls1)
+            {
+                <tr>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Email)</th>
+                    <th>@Html.DisplayFor(m => t.Roll)</th>
+                    <th>@Html.DisplayFor(m => t.Full_Name)</th>
+                    <th>@Html.DisplayFor(m => t.Campus)</th>
+                    <th>
+                        @foreach (var d in t.ListSubject)
+                        {
+                            @Html.DisplayFor(m => d)
+                            <br />
+                        }
+                    </th>
+                </tr>
+            }
+        </table>
+
     }
 </div>
 }
+
 <br />
 
 

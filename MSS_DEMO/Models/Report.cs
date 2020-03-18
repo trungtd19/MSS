@@ -31,4 +31,12 @@ namespace MSS_DEMO.Models
         public virtual Campu Campuss { get; set; }
         public List<ListStudent> ls1 { get; set; }
     }
+
+    public class ListNotRequiredCourse
+    {
+        public string Name { get; set; }
+        public int Complelted { get; set; }
+        public int NotComplelted { get; set; }
+        public List<ListNotRequiredCourse> lc1 { get; set; }
+    }
 }
