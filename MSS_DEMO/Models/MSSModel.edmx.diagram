@@ -4,22 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d6f3e4a5b6f747708cb9ba29db804614" Name="Diagram1">
-        <EntityTypeShape EntityType="MSSModel.Campu" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Certificate" Width="1.5" PointX="5.25" PointY="19.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Class" Width="1.5" PointX="3" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Class_Student" Width="1.5" PointX="8.25" PointY="15.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Course" Width="1.5" PointX="3.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Course_Deadline" Width="1.5" PointX="6" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Mentor" Width="1.5" PointX="0.75" PointY="16.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Role" Width="1.5" PointX="3.75" PointY="30.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Semester" Width="1.5" PointX="0.75" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Specification" Width="1.5" PointX="1.5" PointY="5.625" IsExpanded="true" />
+      <Diagram DiagramId="630f962f107f45f087ddfa8a3b48ec42" Name="Diagram1">
+        <EntityTypeShape EntityType="MSSModel.Campu" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Certificate" Width="1.5" PointX="5.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Class" Width="1.5" PointX="3" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Class_Student" Width="1.5" PointX="8.25" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Course" Width="1.5" PointX="3.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Course_Deadline" Width="1.5" PointX="6" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Mentor" Width="1.5" PointX="0.75" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Role" Width="1.5" PointX="3.75" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Semester" Width="1.5" PointX="0.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Specification" Width="1.5" PointX="1.5" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.Student" Width="1.5" PointX="3" PointY="19.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.Student_Course_Log" Width="1.5" PointX="8.25" PointY="18.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Student_Specification_Log" Width="1.5" PointX="5.25" PointY="23.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Subject" Width="1.5" PointX="1.5" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MSSModel.Subject_Student" Width="1.5" PointX="5.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Student_Specification_Log" Width="1.5" PointX="5.25" PointY="23.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Subject" Width="1.5" PointX="1.5" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MSSModel.Subject_Student" Width="1.5" PointX="5.25" PointY="16" IsExpanded="true" />
         <EntityTypeShape EntityType="MSSModel.User_Role" Width="1.5" PointX="6" PointY="29.75" IsExpanded="true" />
         <AssociationConnector Association="MSSModel.FK_Class_Campus1" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Certificate_Course" ManuallyRouted="false" />
@@ -40,6 +40,8 @@
         <AssociationConnector Association="MSSModel.FK_Student_Course_Log_Student" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Student_Specification_Log_Student" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Subject_Student_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Student_Course_Log_User_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="MSSModel.FK_Student_Specification_Log_User_Role" ManuallyRouted="false" />
         <AssociationConnector Association="MSSModel.FK_Subject_Student_Subject" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

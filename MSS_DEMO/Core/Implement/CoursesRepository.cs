@@ -16,6 +16,9 @@ namespace MSS_DEMO.Core.Components
         public List<Cours_Spec> GetPageList()
         {
             List<Cours_Spec> cour = new List<Cours_Spec>();
+            int coursesCount = 1;
+            int growRow = 1;
+            int growRowNo = 1;
             using (MSSEntities db = new MSSEntities())
             {
                 cour = (from cou in db.Courses
@@ -23,9 +26,28 @@ namespace MSS_DEMO.Core.Components
                         from ed in empSpec.DefaultIfEmpty()
                         select new Cours_Spec { Course_ID = cou.Course_ID, Course_Name = cou.Course_Name, Specification_ID = cou.Specification_ID, Specification_Name = ed.Specification_Name == null ? "Not Map" : ed.Specification_Name }).ToList();
                 cour = (from o in cour
-                        orderby o.Course_ID descending
+                        orderby o.Specification_ID descending
                         select o)
-                          .ToList();
+                        .ToList();
+               cour[0].groupRow = growRow;
+               cour[0].groupRowNo = growRowNo;
+               while (coursesCount < cour.Count())
+                {
+                    if (cour[coursesCount - 1].Specification_ID == cour[coursesCount].Specification_ID)
+                    {
+                        cour[coursesCount].groupRow = growRow;
+                        growRowNo++;
+                        cour[coursesCount].groupRowNo = growRowNo;
+                    }
+                    else
+                    {
+                        growRow++;
+                        growRowNo = 1;
+                        cour[coursesCount].groupRow = growRow;
+                        cour[coursesCount].groupRowNo = growRowNo;
+                    }
+                    coursesCount++;
+                }
                 return cour;
             }
 
@@ -56,6 +78,8 @@ namespace MSS_DEMO.Core.Components
     public class Cours_Spec : Course
     {
         public string Specification_Name { get; set; }
+        public int groupRow { get; set; } 
+        public int groupRowNo { get; set; }
 
     }
 }
