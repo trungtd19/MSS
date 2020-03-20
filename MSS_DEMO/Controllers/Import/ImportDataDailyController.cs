@@ -7,6 +7,7 @@ using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Repository;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Common;
+using System.Linq;
 
 namespace MSS_DEMO.Controllers
 {
@@ -75,7 +76,8 @@ namespace MSS_DEMO.Controllers
                                 if (postedFile.FileName.Contains("usage-report"))
                                 {
                                     string[] headers = sreader.ReadLine().Split(',');
-                                    var listIdCourses = unitOfWork.Courses.GetListID();
+                                    var listIdCourses = unitOfWork.Courses.GetListID();     
+                                    var listCoureseName = unitOfWork.Courses.GetAll();
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
@@ -83,7 +85,7 @@ namespace MSS_DEMO.Controllers
                                         {
                                             continue;
                                         }
-                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport, listIdCourses));
+                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName));
                                     }
                                 }
                                 else

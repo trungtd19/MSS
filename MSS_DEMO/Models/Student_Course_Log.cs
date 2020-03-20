@@ -33,8 +33,10 @@ namespace MSS_DEMO.Models
         public string Email { get; set; }
         public string Campus { get; set; }
         public string Subject_ID { get; set; }
+        public string Course_Name { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }
+        public virtual User_Role User_Role { get; set; }
     }
 }

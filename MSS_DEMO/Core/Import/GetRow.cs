@@ -70,37 +70,68 @@ namespace MSS_DEMO.Core.Import
                 Date_Import = _dateImport,
             };
         }
-        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs)
-        {    
+        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course> course_Spec_Subs)
+        {
+            Student_Course_Log log = new Student_Course_Log();
             DateTime _dateImport = DateTime.Parse(dateImport);
             int Cour_ID_CSV = -1;
             foreach (var listID in course_Spec_Subs)
             {
-                Cour_ID_CSV = listID.Subject_ID == row[2].ToString().Split('-')[0] ? listID.Course_ID : -1;
+                string courseName = listID.Course_Name.ToLower().Trim();
+                string csvCourseName = row[3].ToString().ToLower().Trim();
+                Cour_ID_CSV = courseName.Equals(csvCourseName) ? listID.Course_ID : -1;
                 if (Cour_ID_CSV != -1) break;
             }
-            Student_Course_Log log1 = new Student_Course_Log
+            if (Cour_ID_CSV != -1)
             {
-                Email = row[1].ToString(),
-                Roll = row[1].ToString().Split('@')[0],
-                Course_ID = Cour_ID_CSV,
-                Subject_ID = row[2].ToString().Split('-')[0],
-                Campus = row[2].ToString().Split('-')[1],
-                Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
-                Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
-                Last_Course_Activity_Time = row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970"),
-                Overall_Progress = Double.Parse(row[10].ToString()),
-                Estimated = Double.Parse(row[11].ToString()),
-                Completed = Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False")),
-                Status = Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")),
-                Program_Slug = row[14].ToString(),
-                Program_Name = row[15].ToString(),
-                Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString()) : DateTime.Parse("01/01/1970"),
-                Course_Grade = Double.Parse(row[18].ToString()),
-                User_ID = userID,
-                Date_Import = _dateImport,
-            };
-            return log1;
+                log = new Student_Course_Log
+                {
+                    Email = row[1].ToString(),
+                    Roll = row[1].ToString().Split('@')[0],
+                    Course_ID = Cour_ID_CSV,
+                    Course_Name = row[3].ToString(),
+                    Subject_ID = row[2].ToString().Split('-')[0],
+                    Campus = row[2].ToString().Split('-')[1],
+                    Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
+                    Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
+                    Last_Course_Activity_Time = row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970"),
+                    Overall_Progress = Double.Parse(row[10].ToString()),
+                    Estimated = Double.Parse(row[11].ToString()),
+                    Completed = Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Status = Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Program_Slug = row[14].ToString(),
+                    Program_Name = row[15].ToString(),
+                    Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString()) : DateTime.Parse("01/01/1970"),
+                    Course_Grade = Double.Parse(row[18].ToString()),
+                    User_ID = userID,
+                    Date_Import = _dateImport,
+                };
+            }
+            else
+            {
+                log = new Student_Course_Log
+                {
+                    Email = row[1].ToString(),
+                    Roll = row[1].ToString().Split('@')[0],
+                    Course_Name = row[3].ToString(),
+                    Subject_ID = row[2].ToString().Split('-')[0],
+                    Campus = row[2].ToString().Split('-')[1],
+                    Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
+                    Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
+                    Last_Course_Activity_Time = row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970"),
+                    Overall_Progress = Double.Parse(row[10].ToString()),
+                    Estimated = Double.Parse(row[11].ToString()),
+                    Completed = Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Status = Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Program_Slug = row[14].ToString(),
+                    Program_Name = row[15].ToString(),
+                    Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString()) : DateTime.Parse("01/01/1970"),
+                    Course_Grade = Double.Parse(row[18].ToString()),
+                    User_ID = userID,
+                    Date_Import = _dateImport,
+                };
+            } 
+            return log;
         }
     }
 }

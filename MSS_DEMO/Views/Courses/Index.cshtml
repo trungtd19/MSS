@@ -10,11 +10,11 @@
 <div class="form-group">
     @using (Html.BeginForm("Index", "Courses", FormMethod.Get))
     {
-    <div class="col-md-2" style="width: 11.666667%;">
-        Courses name:
-    </div>
-        <div class="col-md-2" >
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control"})
+        <div class="col-md-2" style="width: 11.666667%;">
+            Courses name:
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
             @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-1">
@@ -31,28 +31,32 @@
 @if (Model.PageCount != 0)
 {
     <label>Total of the records: @ViewBag.Count</label>
-    <table class="table table-bordered table-striped">
-        <tr>
-
-            <th>
-                Course Name
-            </th>
-            <th>
-                Specification Name
-            </th>
-        </tr>
-
+    <table class="table table-bordered">
+        <thead style="background: #f5f5f5;">
+            <tr>
+                <th></th>
+                <th>
+                    Specification Name
+                </th>
+                <th>
+                    Course Name
+                </th>
+            </tr>
+        </thead>
         @foreach (var item in Model)
         {
             //var specName = item.Specification_ID.ToString() == "" ? "Not Map" : item.Specification_Name;
-         <tr>
-        <td>
-            @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Specification_Name)
-        </td>
-         </tr>
+            <tr>
+                <td hidden><input type="text" class="groupRow" value="@item.groupRow"/></td>
+                <td>@Html.DisplayFor(modelItem => item.groupRowNo)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Specification_Name)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Course_Name, "Details", new { id = item.Course_ID })
+                </td>
+
+            </tr>
         }
 
     </table>
@@ -63,3 +67,17 @@
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
      new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))
+<script>
+    $(document).ready(function () {
+        $(".table tbody .groupRow").each(function (id, item) {
+            var groupRow = $(this).parents("tr:first").find("input[type=text]").val();
+            if (groupRow % 2 == 0) {
+                $(item).parents("tr:first").find("td").css({
+                    'background': 'yellow'
+                });
+            }    
+        });
+        $(".table").change(function () { });
+    });
+
+</script>
