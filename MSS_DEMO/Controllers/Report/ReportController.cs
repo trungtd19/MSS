@@ -394,10 +394,10 @@ namespace MSS_DEMO.Controllers
                 foreach (var a in NotRequired)
                 {
                     var completed = (from b in context.Student_Course_Log
-                                     where b.Course_Name == a && b.Completed == true
+                                     where b.Course_Name == a && b.Completed == true && b.Course_ID == null
                                      select b.Roll).Distinct().Count();
                     var notCompleted = (from b in context.Student_Course_Log
-                                        where b.Course_Name == a && b.Completed == false
+                                        where b.Course_Name == a && b.Completed == false && b.Course_ID == null
                                         select b.Roll).Distinct().Count();
                     listNotRequiredCourses.Add(new ListNotRequiredCourse { Name = a, Complelted = completed, NotComplelted = notCompleted });
                 }
