@@ -187,6 +187,7 @@
     <Compile Include="Common\CommonConstants.cs" />
     <Compile Include="Common\UserLogin.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Certificates\CertificatesController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\SetUp\Course_DeadlineController.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Models\Certificate.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CertificateViewModel.cs" />
     <Compile Include="Models\Class.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -286,6 +288,9 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Subject_Student.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User_Role.cs">
@@ -411,6 +416,13 @@
     <Content Include="Views\Course_Deadline\Details.cshtml" />
     <Content Include="Views\Course_Deadline\Edit.cshtml" />
     <Content Include="Views\Course_Deadline\Index.cshtml" />
+    <Content Include="Views\Course_Deadline\Create.cshtml" />
+    <Content Include="Views\Course_Deadline\Delete.cshtml" />
+    <Content Include="Views\Course_Deadline\Details.cshtml" />
+    <Content Include="Views\Course_Deadline\Edit.cshtml" />
+    <Content Include="Views\Course_Deadline\Index.cshtml" />
+    <Content Include="Views\Report\NotRequiredCourse.cshtml" />
+    <Content Include="Views\Certificates\Index.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
