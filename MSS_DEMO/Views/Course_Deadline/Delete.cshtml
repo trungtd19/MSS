@@ -36,8 +36,9 @@
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
+    <span style="color:red;">@ViewBag.mess</span>
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

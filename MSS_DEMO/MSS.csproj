@@ -290,9 +290,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -422,13 +419,6 @@
     <Content Include="Views\Course_Deadline\Edit.cshtml" />
     <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
-    <EntityDeploy Include="Models\MSSModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\MSSModel.edmx.diagram">
-      <DependentUpon>MSSModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Views\Course_Deadline\Create.cshtml" />
     <Content Include="Views\Course_Deadline\Delete.cshtml" />
     <Content Include="Views\Course_Deadline\Details.cshtml" />
@@ -438,6 +428,13 @@
     <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
     <Content Include="Views\Students\DeleteListSubject.cshtml" />
     <Content Include="Views\Certificates\Index.cshtml" />
+    <EntityDeploy Include="Models\MSSModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\MSSModel.edmx.diagram">
+      <DependentUpon>MSSModel.edmx</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

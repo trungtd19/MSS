@@ -43,6 +43,14 @@ namespace MSS_DEMO.Controllers.SetUp
                 {
                     List = List.Where(s => s.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
                 }
+                if (List.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
             }
             List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
             model.lstSemester = semester;
@@ -120,9 +128,13 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var subject = unitOfWork.DeadLine.GetById(id);
-            unitOfWork.DeadLine.Delete(subject);
-            unitOfWork.Save();
+            var deadline = unitOfWork.DeadLine.GetById(id);
+            unitOfWork.DeadLine.Delete(deadline);
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this deadline!";
+                return View(deadline);
+            }
             return RedirectToAction("Index");
         }
 

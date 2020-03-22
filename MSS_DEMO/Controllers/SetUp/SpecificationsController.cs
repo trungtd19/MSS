@@ -41,6 +41,14 @@ namespace MSS_DEMO.Controllers.SetUp
                 {
                     List = List.Where(s => s.Specification_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
+                if (List.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
             }
             ViewBag.Count = List.Count();
             int pageSize = 30;
@@ -111,7 +119,11 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             var specification = unitOfWork.Specifications.GetById(id);
             unitOfWork.Specifications.Delete(specification);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this specification!";
+                return View(specification);
+            }
             return RedirectToAction("Index");
         }
         public void SelectSubjectID()

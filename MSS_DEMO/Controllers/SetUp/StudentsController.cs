@@ -45,6 +45,14 @@ namespace MSS_DEMO.Controllers.SetUp
                     var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
                     students = students.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
                 }
+                if (students.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
             }           
             List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
             List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
@@ -89,13 +97,22 @@ namespace MSS_DEMO.Controllers.SetUp
                 _sub.Add(sem);
             }
             ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
+            List<Campu> cam = unitOfWork.Campus.GetAll();
+            List<Campu> _cam = new List<Campu>();
+            _cam.Add(new Campu { Campus_ID = "None", Campus_Name = "--- Choose Campus ---" });
+            foreach (var c in cam)
+            {
+                _cam.Add(c);
+            }
+            ViewBag.Campus_ID = new SelectList(_cam, "Campus_ID", "Campus_Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Student student, string Subject_ID)
+        public ActionResult Create(Student student, string Subject_ID, string Campus_ID)
         {
+            student.Campus = Campus_ID;
             Subject_Student list = new Subject_Student();
             list = new Subject_Student
             {
@@ -166,16 +183,20 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult DeleteConfirmed(string id)
         {
             var student = unitOfWork.Students.GetById(id);
-            //var subject = unitOfWork.SubjectStudent.GetAll();
-            //foreach (var _subject in subject)
-            //{
-            //    if (_subject.Roll == id)
-            //    {
-            //        unitOfWork.SubjectStudent.Delete(_subject);
-            //    }
-            //}
-            unitOfWork.Students.Delete(student);         
-            unitOfWork.Save();
+            var subject = unitOfWork.SubjectStudent.GetAll();
+            foreach (var _subject in subject)
+            {
+                if (_subject.Roll == id)
+                {
+                    unitOfWork.SubjectStudent.Delete(_subject);
+                }
+            }
+            unitOfWork.Students.Delete(student);
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this student!";
+                return View(student);                 
+            }
             return RedirectToAction("Index");
         }
         public void Export_Student_CSV()

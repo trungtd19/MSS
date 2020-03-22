@@ -34,6 +34,14 @@ namespace MSS_DEMO.Controllers
                 {
                     List = List.Where(s => s.Subject_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
+                if (List.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
             }
             int pageSize = 30;
             int pageNumber = (page ?? 1);
@@ -96,7 +104,11 @@ namespace MSS_DEMO.Controllers
         {
             var subject = unitOfWork.Subject.GetById(id);
             unitOfWork.Subject.Delete(subject);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this subject!";
+                return View(subject);
+            }
             return RedirectToAction("Index");
         }
     }

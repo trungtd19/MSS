@@ -5,6 +5,7 @@
 }
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Report", "Report", "Home") > Specialization Report</span>
+<hr/>
 @{
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;

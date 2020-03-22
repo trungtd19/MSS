@@ -76,7 +76,11 @@ namespace MSS_DEMO.Controllers
         {
             var semester = unitOfWork.Semesters.GetById(id);
             unitOfWork.Semesters.Delete(semester);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this semester!";
+                return View(semester);
+            }
             return RedirectToAction("Index");
         }
     }

@@ -22,7 +22,7 @@
           <Property Name="Link" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="Date_Submit" Type="datetime" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Course_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Course_ID" Type="int" />
           <Property Name="Specification_ID" Type="int" />
         </EntityType>
         <EntityType Name="Class">
@@ -575,7 +575,7 @@
           <Property Name="Link" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Date_Submit" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Course_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Course_ID" Type="Int32" />
           <Property Name="Specification_ID" Type="Int32" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Certificate_Course" FromRole="Certificate" ToRole="Course" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Certificate_Specification" FromRole="Certificate" ToRole="Specification" />
