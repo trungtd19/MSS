@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MSS_DEMO.Models.Semester>
+﻿@model IEnumerable<MSS_DEMO.Core.Components._Semester>
 
 @{
     ViewBag.Title = "Semester";
@@ -37,10 +37,10 @@
         @Html.DisplayFor(modelItem => item.Semester_Name)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.Start_Date)
+        @Html.DisplayFor(modelItem => item.dateStart)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.End_Date)
+        @Html.DisplayFor(modelItem => item.dateEnd)
     </td>
 </tr>
     }

@@ -44,20 +44,32 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = LogList.Where(s => s.Date_Import == model.Date_Import).ToList();
                 }
-                if (model.completedCourse)
+                if (model.completedCourse != null)
                 {
-                    LogList = LogList.Where(s => s.Completed == true).ToList();
+                    LogList = model.completedCourse =="Yes" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == false).ToList();
                 }
-                if (model.compulsoryCourse)
+                if (model.compulsoryCourse != null)
                 {
-                    LogList = LogList.Where(s => s.Course_ID != null).ToList();
+                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Course_ID != null).ToList() : LogList = LogList.Where(s => s.Course_ID == null).ToList();
                 }
                 if (!String.IsNullOrEmpty(model.Subject_Name))
                 {
                     var sub = unitOfWork.Subject.GetAll().Where(x => x.Subject_Name == model.Subject_Name).Select(y => y.Subject_ID).FirstOrDefault();
                     LogList = LogList.Where(s => s.Subject_ID == sub).ToList();
                 }
-            }           
+                if (LogList.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
+            }
+            List<string> completedCour = new List<string>() { "Yes","No"};
+            List<string> compulsoryCour = new List<string>() { "Yes","No" };
+            model.completedCour = completedCour;
+            model.compulsoryCour = compulsoryCour;
             ViewBag.Count = LogList.Count();
             int pageSize = 30;
             int pageNumber = (page ?? 1);

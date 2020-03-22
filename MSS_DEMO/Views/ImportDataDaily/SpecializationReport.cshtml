@@ -15,9 +15,9 @@
 <br />
 <span>
     @Html.ActionLink("Home", "Index", "Home") >
-    @Html.ActionLink("Usage Report", "Index", "Student_Course_Log") >
     @Html.ActionLink("Report", "Report", "Home") >
-    Import Usage Report
+    @Html.ActionLink("Usage Report", "Index", "Student_Course_Log") >
+    Import Specialization Report
 </span>
 <hr />
 <h4>Import Data</h4>
@@ -67,7 +67,7 @@
                 fileData.append("dateImport", dateImport);
                 fileData.append("UserID", UserID);
                 $.ajax({
-                    url: '/ImportDataDaily/UploadFiles',
+                    url: '/ImportDataDaily/UploadFilesSpecialization',
                     type: "POST",
                     contentType: false,
                     processData: false,

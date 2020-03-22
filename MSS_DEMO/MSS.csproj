@@ -355,7 +355,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\ImportDataDaily\Index.cshtml" />
+    <Content Include="Views\ImportDataDaily\UsageReport.cshtml" />
     <Content Include="Views\ImportStudent\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\SetupBeginSemester\Index.cshtml" />
@@ -424,6 +424,8 @@
     <Content Include="Views\Course_Deadline\Edit.cshtml" />
     <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
+    <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
+    <Content Include="Views\Students\DeleteListSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

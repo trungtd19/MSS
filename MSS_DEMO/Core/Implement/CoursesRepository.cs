@@ -58,7 +58,7 @@ namespace MSS_DEMO.Core.Components
             return GetPageList().Where(s => s.Course_ID == id).FirstOrDefault();
         }
 
-        public List<Course_Spec_Sub> GetListID()
+        public List<Course_Spec_Sub> GetList()
         {
             List<Course_Spec_Sub> cour = new List<Course_Spec_Sub>();
             using (MSSEntities db = new MSSEntities())
@@ -66,7 +66,7 @@ namespace MSS_DEMO.Core.Components
                 cour = (from cou in db.Courses
                        join sp in db.Specifications on cou.Specification_ID equals sp.Specification_ID
                        join su in db.Subjects on sp.Subject_ID equals su.Subject_ID
-                       select new Course_Spec_Sub { Course_ID = cou.Course_ID, Subject_ID = su.Subject_ID }).ToList();
+                       select new Course_Spec_Sub { Course_ID = cou.Course_ID, Subject_ID = su.Subject_ID, Course_Name = cou.Course_Name}).ToList();
                 return cour;
             }
         }

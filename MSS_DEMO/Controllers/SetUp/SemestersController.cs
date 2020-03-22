@@ -20,7 +20,7 @@ namespace MSS_DEMO.Controllers
         }
         public ActionResult Index()
         {
-            return View(unitOfWork.Semesters.GetAll());
+            return View(unitOfWork.Semesters.toList());
         }
 
         public ActionResult Details(string id)

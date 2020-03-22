@@ -9,7 +9,10 @@
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
+    SelectList listCompleted = new SelectList((IList<string>)Model.listCompleted);
+    SelectList listCompulsory = new SelectList((IList<string>)Model.listCompulsory);
 }
+@Html.ActionLink("Import Usage Report", "SpecializationReport", "ImportDataDaily")
 @using (Html.BeginForm("DeleteAll", "Student_Specification_Log"))
 {
     <p>
@@ -39,6 +42,13 @@
                                         @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
                                     </div>
                                 </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Compulsory</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("compulsorySpec", listCompulsory, "--- All ---", new { @name = "compulsorySpec", @class = "form-control select" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -52,13 +62,9 @@
                             </div>
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">Completed</label>
-                                    <div class="col-md-3 col-xs-12">
-                                        @Html.CheckBox("completedCourse", false)
-                                    </div>
-                                    <label class="col-md-2 control-label">Completed</label>
-                                    <div class="col-md-3 col-xs-12">
-                                        @Html.CheckBox("compulsoryCourse", false)
+                                    <label class="col-md-3 control-label">Completed</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("completedSpec", listCompleted, "--- All ---", new { @name = "completedSpec", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
@@ -71,8 +77,8 @@
             </div>
         </div>
     </div>
-
 }
+<span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageList.PageCount != 0)
 {
     <label>Total of the records: @ViewBag.Count</label>
@@ -172,7 +178,7 @@
                 }
             </tbody>
         </table>
-    </div>   
+    </div>
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
@@ -181,8 +187,8 @@
      page,
      Email = Model.Email,
      Date_Import = Model.Date_Import,
-     compulsoryCourse = Model.compulsoryCourse,
-     completedCourse = Model.completedCourse,
+     compulsorySpec = Model.compulsorySpec,
+     completedSpec = Model.completedSpec,
      Subject_Name = Model.Subject_Name,
      searchCheck = "true"
  }))

@@ -214,5 +214,23 @@ namespace MSS_DEMO.Controllers.SetUp
             else
                 return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult DeleteListSubject(string Subject_ID)
+        {
+            string mess = "";
+            if (!string.IsNullOrEmpty(Subject_ID))
+            {
+                mess = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID);
+            }
+            List<Subject> sub = unitOfWork.Subject.GetAll();
+            List<Subject> _sub = new List<Subject>();
+            _sub.Add(new Subject { Subject_ID = "", Subject_Name = "--- Choose Subject ---" });
+            foreach (var sem in sub)
+            {
+                _sub.Add(sem);
+            }
+            ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
+            ViewBag.mess = mess;
+            return View(unitOfWork.SubjectStudent.GetAll());
+        }
     }
 }
