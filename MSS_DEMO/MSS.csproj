@@ -422,7 +422,6 @@
     <Content Include="Views\Course_Deadline\Edit.cshtml" />
     <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
-    <Content Include="Views\Certificates\Index.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -438,6 +437,7 @@
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
     <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
     <Content Include="Views\Students\DeleteListSubject.cshtml" />
+    <Content Include="Views\Certificates\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
