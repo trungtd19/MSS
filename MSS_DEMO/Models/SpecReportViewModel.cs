@@ -16,5 +16,7 @@ namespace MSS_DEMO.Models
         public IList<string> listCompleted;
         public IList<string> listCompulsory;
         public string Subject_Name { get; set; }
+        public IList<string> lstCampus;
+
     }
 }

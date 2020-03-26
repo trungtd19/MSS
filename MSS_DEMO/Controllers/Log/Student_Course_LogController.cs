@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using MSS_DEMO.Common;
+using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using PagedList;
@@ -25,6 +27,8 @@ namespace MSS_DEMO.Controllers.Log
             string SearchString = model.Email;
             model.searchCheck = searchCheck;
             List<string> listSubjiect = unitOfWork.Subject.GetAll().Select(o => o.Subject_Name).ToList();
+            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
+            model.lstCampus = campus;
             model.listSubject = listSubjiect;
             if (searchCheck == null)
             {
@@ -57,6 +61,11 @@ namespace MSS_DEMO.Controllers.Log
                     var sub = unitOfWork.Subject.GetAll().Where(x => x.Subject_Name == model.Subject_Name).Select(y => y.Subject_ID).FirstOrDefault();
                     LogList = LogList.Where(s => s.Subject_ID == sub).ToList();
                 }
+                if (!String.IsNullOrEmpty(model.Campus))
+                {
+                    var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
+                    LogList = LogList.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
+                }
                 if (LogList.Count == 0)
                 {
                     ViewBag.Nodata = "Not found data";
@@ -81,6 +90,48 @@ namespace MSS_DEMO.Controllers.Log
             MSSEntities db = new MSSEntities();
             db.Database.ExecuteSqlCommand("Delete from Student_Course_Log");
             return RedirectToAction("Index");
+        }
+        public void Export_Usage()
+        {
+            CSVConvert csv = new CSVConvert();
+            var sb = new StringBuilder();
+            IEnumerable<Student_Course_Log> query = unitOfWork.CoursesLog.GetAll();
+            var list = query.ToList();
+            Type type = typeof(Student);
+            var props = type.GetProperties();
+            sb.Append(string.Join(",", "Email", "Subject ID", "Campus","Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
+                "Completed", "Status", "Program Slug", "Program Name", "Completion Time", "Course Grade", "Date Import"));
+            sb.Append(Environment.NewLine);
+            foreach (var item in list)
+            {
+                sb.Append(string.Join(",",
+                    csv.AddCSVQuotes(item.Email),
+                    csv.AddCSVQuotes(item.Subject_ID),
+                    csv.AddCSVQuotes(item.Campus),
+                    csv.AddCSVQuotes(item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : item.Course_Enrollment_Time.ToString()),
+                    csv.AddCSVQuotes(item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : item.Course_Start_Time.ToString()),
+                    csv.AddCSVQuotes(item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : item.Last_Course_Activity_Time.ToString()),
+                    csv.AddCSVQuotes(item.Overall_Progress.ToString()),
+                    csv.AddCSVQuotes(item.Estimated.ToString()),
+                    csv.AddCSVQuotes(item.Completed.ToString()),
+                    csv.AddCSVQuotes(item.Status.ToString()),
+                    csv.AddCSVQuotes(item.Program_Slug),
+                    csv.AddCSVQuotes(item.Program_Name),
+                    csv.AddCSVQuotes(item.Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Completion_Time.ToString()),
+                    csv.AddCSVQuotes(item.Course_Grade.ToString()),
+                    csv.AddCSVQuotes(item.Date_Import.ToString())
+                    ));
+                sb.Append(Environment.NewLine);
+            }
+            var response = System.Web.HttpContext.Current.Response;
+            response.BufferOutput = true;
+            response.Clear();
+            response.ClearHeaders();
+            response.ContentEncoding = Encoding.Unicode;
+            response.AddHeader("content-disposition", "attachment;filename=Usage-Report.CSV ");
+            response.ContentType = "text/plain";
+            response.Write(sb.ToString());
+            response.End();
         }
     }
 }

@@ -81,30 +81,7 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public ActionResult Create()
         {
-            List<Semester> semester = unitOfWork.Semesters.GetAll();
-            List<Semester> _semester = new List<Semester>();
-            _semester.Add(new Semester { Semester_ID = "None", Semester_Name = "--- Choose Semester ---" });
-            foreach (var sem in semester)
-            {
-                _semester.Add(sem);
-            }
-            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
-            List<Subject> sub = unitOfWork.Subject.GetAll();
-            List<Subject> _sub = new List<Subject>();
-            _sub.Add(new Subject { Subject_ID = "None", Subject_Name = "--- Choose Subject ---" });
-            foreach (var sem in sub)
-            {
-                _sub.Add(sem);
-            }
-            ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
-            List<Campu> cam = unitOfWork.Campus.GetAll();
-            List<Campu> _cam = new List<Campu>();
-            _cam.Add(new Campu { Campus_ID = "None", Campus_Name = "--- Choose Campus ---" });
-            foreach (var c in cam)
-            {
-                _cam.Add(c);
-            }
-            ViewBag.Campus_ID = new SelectList(_cam, "Campus_ID", "Campus_Name");
+            GetListSelect();
             return View();
         }
 
@@ -112,6 +89,7 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Create(Student student, string Subject_ID, string Campus_ID)
         {
+            GetListSelect();
             student.Campus = Campus_ID;
             Subject_Student list = new Subject_Student();
             list = new Subject_Student
@@ -126,6 +104,11 @@ namespace MSS_DEMO.Controllers.SetUp
                     if (unitOfWork.Students.IsExtisStudent(student.Roll)
                         && unitOfWork.Subject.IsExitsSubject(Subject_ID))
                     {
+                        if (unitOfWork.SubjectStudent.IsExitsSubjectStudent(student.Roll, Subject_ID))
+                        {
+                            ViewBag.Error = "Student  " + student.Roll + " has registered for subject " + Subject_ID;
+                            return View();
+                        }
                         unitOfWork.SubjectStudent.Insert(list);
                         // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                     }
@@ -148,14 +131,24 @@ namespace MSS_DEMO.Controllers.SetUp
 
         public ActionResult Edit(string id)
         {
+
+            List<Campu> cam = unitOfWork.Campus.GetAll();
+            List<Campu> _cam = new List<Campu>();
+            _cam.Add(new Campu { Campus_ID = "", Campus_Name = "--- Choose Campus ---" });
+            foreach (var c in cam)
+            {
+                _cam.Add(c);
+            }
+            ViewBag.Campus_ID = new SelectList(_cam, "Campus_ID", "Campus_Name");
             var student = unitOfWork.Students.GetById(id);
             return View(student);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Student student)
+        public ActionResult Edit(Student student, string Campus_ID)
         {
+            student.Campus = Campus_ID;
             if (ModelState.IsValid)
             {
                 unitOfWork.Students.Update(student);
@@ -252,6 +245,33 @@ namespace MSS_DEMO.Controllers.SetUp
             ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
             ViewBag.mess = mess;
             return View(unitOfWork.SubjectStudent.GetAll());
+        }
+        public void GetListSelect()
+        {
+            List<Semester> semester = unitOfWork.Semesters.GetAll();
+            List<Semester> _semester = new List<Semester>();
+            _semester.Add(new Semester { Semester_ID = "", Semester_Name = "--- Choose Semester ---" });
+            foreach (var sem in semester)
+            {
+                _semester.Add(sem);
+            }
+            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
+            List<Subject> sub = unitOfWork.Subject.GetAll();
+            List<Subject> _sub = new List<Subject>();
+            _sub.Add(new Subject { Subject_ID = "", Subject_Name = "--- Choose Subject ---" });
+            foreach (var sem in sub)
+            {
+                _sub.Add(sem);
+            }
+            ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
+            List<Campu> cam = unitOfWork.Campus.GetAll();
+            List<Campu> _cam = new List<Campu>();
+            _cam.Add(new Campu { Campus_ID = "", Campus_Name = "--- Choose Campus ---" });
+            foreach (var c in cam)
+            {
+                _cam.Add(c);
+            }
+            ViewBag.Campus_ID = new SelectList(_cam, "Campus_ID", "Campus_Name");
         }
     }
 }

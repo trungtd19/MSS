@@ -50,5 +50,11 @@ namespace MSS_DEMO.Core.Implement
             }
             return message;
         }
+        public bool IsExitsSubjectStudent(string roll, string subject_id)
+        {
+            var subStudent = context.Subject_Student.Where(o => o.Roll == roll && o.Subject_ID == subject_id).FirstOrDefault();
+            if (subStudent != null) return true;
+            return false;
+        }
     }
 }

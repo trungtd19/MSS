@@ -16,5 +16,7 @@ namespace MSS_DEMO.Models
         public IList<string> completedCour;
         public IList<string> compulsoryCour;
         public IList<string> listSubject;
+        public IList<string> lstCampus;
+
     }
 }
