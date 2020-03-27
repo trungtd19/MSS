@@ -14,7 +14,7 @@ namespace MSS_DEMO.Controllers.SetUp
 {
     public class SpecificationsController : Controller
     {
-        private const string NONE = "--- None ---";
+        private const string NONE = "";
         private const string NOTMAP = "Not Map";
         private IUnitOfWork unitOfWork;
         public SpecificationsController(IUnitOfWork _unitOfWork)
@@ -76,7 +76,11 @@ namespace MSS_DEMO.Controllers.SetUp
             if (ModelState.IsValid)
             {
                 unitOfWork.Specifications.Insert(specification);
-                unitOfWork.Save();
+                if (!unitOfWork.Save())
+                {
+                    ViewBag.Error = "Can't create new specification with "+ specification.Subject_ID;
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
 

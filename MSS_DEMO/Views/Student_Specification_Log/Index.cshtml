@@ -15,20 +15,14 @@
     SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
 }
 <div class="form-group">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.ActionLink("Import Specialization Report", "SpecializationReport", "ImportDataDaily")
     </div>
-    <div class="col-md-2">
-        @Html.ActionLink("Export Specification Report", "Export_Usage", "Student_Specification_Log")
+    <div class="col-md-3">
+        @Html.ActionLink("Export Specification Report", "Export_Specification", "Student_Specification_Log")
     </div>
 </div>
-
-@using (Html.BeginForm("DeleteAll", "Student_Specification_Log"))
-{
-    <p>
-        <input type="submit" value="Clear All Data" hidden />
-    </p>
-}
+<br/>
 @using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
 {
     <div class="row">

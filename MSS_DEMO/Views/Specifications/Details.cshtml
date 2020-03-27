@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Semester</h4>
+    <h4>Specifications</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -38,6 +38,20 @@
 
         <dd>
             @Html.DisplayFor(model => model.Is_Real_Specification)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayTextFor(model => model.Description)
         </dd>
     </dl>
 </div>

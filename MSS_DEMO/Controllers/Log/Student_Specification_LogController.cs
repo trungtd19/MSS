@@ -87,12 +87,6 @@ namespace MSS_DEMO.Controllers.Log
             return View(model);
 
         }
-        public ActionResult DeleteAll()
-        {
-            MSSEntities db = new MSSEntities();
-            db.Database.ExecuteSqlCommand("Delete from Student_Specification_Log");
-            return RedirectToAction("Index");
-        }
         public void Export_Specification()
         {
             CSVConvert csv = new CSVConvert();

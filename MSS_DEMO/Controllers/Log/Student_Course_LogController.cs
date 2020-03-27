@@ -85,12 +85,6 @@ namespace MSS_DEMO.Controllers.Log
             model.PageList = LogList.ToList().ToPagedList(pageNumber, pageSize);
             return View(model);
         }
-        public ActionResult DeleteAll()
-        {
-            MSSEntities db = new MSSEntities();
-            db.Database.ExecuteSqlCommand("Delete from Student_Course_Log");
-            return RedirectToAction("Index");
-        }
         public void Export_Usage()
         {
             CSVConvert csv = new CSVConvert();

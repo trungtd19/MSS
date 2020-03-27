@@ -3,7 +3,13 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+    <style>
+        textarea {
+            max-width: 1200px;
+            width: 800px;
+            height: 200px;
+        }
+    </style>
 <h2>Edit</h2>
 
 @using (Html.BeginForm())
@@ -19,14 +25,14 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Specification_Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Specification_Name, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
+            @Html.EditorFor(model => model.Specification_Name, new { htmlAttributes = new { @class = "form-control", @required = "true" } })
             <label style="color:red" id="checkName" hidden> This field is a required </label>
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Subject_ID, "Subject_ID", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control", @required ="true" })
+            @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
             <label style="color:red" id="checkSubject" hidden> This field is a required </label>
         </div>
     </div>
@@ -34,6 +40,20 @@
         @Html.LabelFor(model => model.Is_Real_Specification, "Real Specification", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.CheckBoxFor(model => model.Is_Real_Specification)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Url, "Link Coursera", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @required = "true", @style = "max-width: 800px;, width:800px;" } })
+            <label style="color:red" id="checkUrl" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Description, new { @required = "true" })
+            <label style="color:red" id="checkDes" hidden> This field is a required </label>
         </div>
     </div>
     <div class="form-group">

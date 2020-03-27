@@ -19,16 +19,10 @@
         @Html.ActionLink("Import Usage Report", "UsageReport", "ImportDataDaily")
     </div>
     <div class="col-md-2">
-        @Html.ActionLink("Export Usage Report", "Export_Specification", "Student_Course_Log")
+        @Html.ActionLink("Export Usage Report", "Export_Usage", "Student_Course_Log")
     </div> 
 </div>
 <br/>
-    @using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
-    {
-        <p>
-            <input type="submit" value="Clear All Data" hidden />
-        </p>
-    }
     @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
     {
         <div class="row">
