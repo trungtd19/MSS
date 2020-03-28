@@ -17,74 +17,57 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Roll, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Roll, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Roll, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
                 <label style="color:red"  id="checkRoll" hidden> This field is a required </label>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Full_Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
                 <label style="color:red"  id="checkName" hidden> This field is a required </label>
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
                 <label style="color:red" id="checkEmail" hidden> This field is a required </label>
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Campus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Campus</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Campus, new { htmlAttributes = new { @class = "form-control" } })
-                <label style="color:red"  id="checkCampus" hidden> This field is a required </label>
+                @Html.DropDownList("Campus_ID", null, htmlAttributes: new { @class = "form-control" , @required ="true"})
+                <label style="color:red" id="checkCampus" hidden> This field is a required </label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Semester</label>
             <div class="col-md-10">
-                @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control", @required ="true" })
                 <label style="color:red"  id="checkSemester" hidden> This field is a required </label>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Subject</label>
             <div class="col-md-10">
-                @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control", @required ="true" })
                 <label style="color:red"  id="checkSubject" hidden> This field is a required </label>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="btn" value="Create" class="btn btn-default" />
+                <input id="btn" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
+<span style="color:red;">@ViewBag.Error</span>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
 <script>
-    $("#btn").click(function () {
-        var checkRoll = $("#checkRoll");
-        if ($("#Roll").val() != "" && $("#Email").val() != "" && $("#Full_Name").val() != ""
-        && $("#Campus").val() != "" && $("#Semester_ID").val() != "None" && $("#Subject_ID").val() != "None") {
-            $("#btn").attr("type", "submit");
-        }
-        else {
-            if ($("#Roll").val() == "") {
-                checkRoll.removeAttr("hidden")
-            }
-            else checkRoll.prop("hidden",true)
-            if ($("#Email").val() == "") $("#checkEmail").removeAttr("hidden");  else $("#checkEmail").prop("hidden",true)
-            if ($("#Full_Name").val() == "") $("#checkName").removeAttr("hidden");  else $("#checkName").prop("hidden",true)
-            if ($("#Campus").val() == "") $("#checkCampus").removeAttr("hidden");  else $("#checkCampus").prop("hidden",true)
-            if ($("#Semester_ID").val() == "None") $("#checkSemester").removeAttr("hidden");  else $("#checkSemester").prop("hidden",true)
-            if ($("#Subject_ID").val() == "None") $("#checkSubject").removeAttr("hidden");  else $("#checkSubject").prop("hidden",true)
-        }
-    });
         $("#Roll").focusout(function () {
             var roll = $("#Roll").val();
             var formData = new FormData();
@@ -109,11 +92,11 @@
                                 if (confirm) {
                                     $("#Email").prop("disabled", true)
                                     $("#Full_Name").prop("disabled", true)
-                                    $("#Campus").prop("disabled", true)
+                                    $("#Campus_ID").prop("disabled", true)
                                     $("#Semester_ID").prop("disabled", true)
                                     $("#Email").val(" ")
                                     $("#Full_Name").val(" ")
-                                    $("#Campus").val(" ")
+                                    $("#Campus_ID").val(" ")
                                     $("#Semester_ID").val(" ")
                                 } else {
                                     $("#Roll").val("")

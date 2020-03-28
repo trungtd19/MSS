@@ -70,7 +70,7 @@ namespace MSS_DEMO.Core.Import
                 Date_Import = _dateImport,
             };
         }
-        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course> course_Spec_Subs)
+        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs)
         {
             Student_Course_Log log = new Student_Course_Log();
             DateTime _dateImport = DateTime.Parse(dateImport);
@@ -79,7 +79,16 @@ namespace MSS_DEMO.Core.Import
             {
                 string courseName = listID.Course_Name.ToLower().Trim();
                 string csvCourseName = row[3].ToString().ToLower().Trim();
-                Cour_ID_CSV = courseName.Equals(csvCourseName) ? listID.Course_ID : -1;
+                string SubID = row[2].ToString().Split('-')[0];
+               
+                if (courseName.Equals(csvCourseName) && SubID == listID.Subject_ID)
+                {
+                    Cour_ID_CSV = listID.Course_ID;
+                }
+                else
+                {
+                    Cour_ID_CSV = -1;
+                }
                 if (Cour_ID_CSV != -1) break;
             }
             if (Cour_ID_CSV != -1)

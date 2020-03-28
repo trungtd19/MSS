@@ -20,7 +20,7 @@ namespace MSS_DEMO.Controllers
         }
         public ActionResult Index()
         {
-            return View(unitOfWork.Semesters.GetAll());
+            return View(unitOfWork.Semesters.toList());
         }
 
         public ActionResult Details(string id)
@@ -76,7 +76,11 @@ namespace MSS_DEMO.Controllers
         {
             var semester = unitOfWork.Semesters.GetById(id);
             unitOfWork.Semesters.Delete(semester);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this semester!";
+                return View(semester);
+            }
             return RedirectToAction("Index");
         }
     }

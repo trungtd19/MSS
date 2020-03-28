@@ -42,6 +42,14 @@ namespace MSS_DEMO.Controllers.SetUp
                 {
                     LogList = LogList.Where(s => s.Course_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
+                if (LogList.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
             }
             ViewBag.Count = LogList.Count();
             int pageSize = 30;
@@ -139,7 +147,11 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             var course = unitOfWork.Courses.GetById(id);
             unitOfWork.Courses.Delete(course);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this course!";
+                return View(course);
+            }
             return RedirectToAction("Index");
         }
       

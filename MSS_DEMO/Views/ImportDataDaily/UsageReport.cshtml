@@ -15,8 +15,8 @@
 <br />
 <span>
     @Html.ActionLink("Home", "Index", "Home") >
-    @Html.ActionLink("Usage Report", "Index", "Student_Course_Log") >
     @Html.ActionLink("Report", "Report", "Home") >
+    @Html.ActionLink("Usage Report", "Index", "Student_Course_Log") >
     Import Usage Report
 </span>
 <hr />
@@ -26,7 +26,7 @@
     <div class="tab-content">
         <div class="tab-pane active">
             <div class="form-group">
-                <div class="col-md-2"><label>Enter date import</label></div>
+                <div class="col-md-2"><label>Imported date</label></div>
                 <div class="col-md-2"><input type="date" id="dateImport" name="dateImport" class="form-control" /></div>
                 <div class="col-md-6"></div>
             </div>
@@ -67,14 +67,14 @@
                 fileData.append("dateImport", dateImport);
                 fileData.append("UserID", UserID);
                 $.ajax({
-                    url: '/ImportDataDaily/UploadFiles',
+                    url: '/ImportDataDaily/UploadFilesUsage',
                     type: "POST",
                     contentType: false,
                     processData: false,
                     dataType: 'json',
                     data: fileData,
                     success: function (data) {
-                        if (data.message == "Import successfull!") {
+                        if (data.message.includes("successfull")) {
                             sweetAlert("Successfull!", data.message, "success");
                         }
                         else

@@ -16,7 +16,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Semester_ID, "Semester_ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" , @required = "required" })
                 @Html.ValidationMessageFor(model => model.Semester_ID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Course_ID, "Course_ID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Course_ID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("Course_ID", null, htmlAttributes: new { @class = "form-control", @required = "required" })
                 @Html.ValidationMessageFor(model => model.Course_ID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @type = "date", @class = "form-control" } })
+                @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @type = "date", @class = "form-control", @required = "required"} })
                 @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -49,10 +49,9 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 <script>
-
     $(document).ready(function () {
         if ($("#check").val() == "true") {
-            sweetAlert("Add fail", "Course deadlines already exist this term!", "error");
+            sweetAlert("Add fail", "Course deadlines already exist this semester!", "error");
         }
     });
 </script>  

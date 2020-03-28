@@ -11,8 +11,12 @@ namespace MSS_DEMO.Models
         public IPagedList<Student_Specification_Log> PageList;
         public string searchCheck { get; set; }
         public IList<string> listSubject;
-        public bool completedCourse { get; set; }
-        public bool compulsoryCourse { get; set; }
+        public string completedSpec { get; set; }
+        public string compulsorySpec { get; set; }
+        public IList<string> listCompleted;
+        public IList<string> listCompulsory;
         public string Subject_Name { get; set; }
+        public IList<string> lstCampus;
+
     }
 }

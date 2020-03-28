@@ -18,7 +18,7 @@ namespace MSS_DEMO.Models
         public string Link { get; set; }
         public System.DateTime Date_Submit { get; set; }
         public string Roll { get; set; }
-        public string Course_ID { get; set; }
+        public Nullable<int> Course_ID { get; set; }
         public Nullable<int> Specification_ID { get; set; }
     
         public virtual Course Course { get; set; }

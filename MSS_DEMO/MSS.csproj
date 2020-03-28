@@ -290,9 +290,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -360,7 +357,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\ImportDataDaily\Index.cshtml" />
+    <Content Include="Views\ImportDataDaily\UsageReport.cshtml" />
     <Content Include="Views\ImportStudent\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\SetupBeginSemester\Index.cshtml" />

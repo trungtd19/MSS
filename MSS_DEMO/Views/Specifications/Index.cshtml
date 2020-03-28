@@ -27,16 +27,17 @@
 </div>
 <br />
 <br />
+<span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageCount != 0)
 {
     <label>Total of the records: @ViewBag.Count</label>
     <table class="table table-bordered table-striped">
         <tr>
             <th>
-                Specification Name
+                Subject ID
             </th>
             <th>
-                Subject ID
+                Specification Name
             </th>
             <th>
                 Description
@@ -53,23 +54,23 @@
         {
             var check = item.Is_Real_Specification == true ? "Yes" : "No";
             var subjectID = item.Subject_ID == null ? "Not Map" : item.Subject_ID;
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Specification_Name, "Details", new { id = item.Specification_ID })
-                </td>
-                <td>
-                    @subjectID
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @check
-                </td>
-                <td>
-                    <a href="@item.Url">@item.Url</a>
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @subjectID
+        </td>
+        <td>
+            @Html.ActionLink(item.Specification_Name, "Details", new { id = item.Specification_ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @check
+        </td>
+        <td>
+            <a href="@item.Url">@item.Url</a>
+        </td>
+    </tr>
         }
 
     </table>

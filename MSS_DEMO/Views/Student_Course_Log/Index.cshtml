@@ -10,133 +10,155 @@
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
     SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
+    SelectList listCompleted = new SelectList((IList<string>)Model.completedCour);
+    SelectList listCompulsory = new SelectList((IList<string>)Model.compulsoryCour);
+    SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
 }
-@Html.ActionLink("Import Usage Report", "Index", "ImportDataDaily")
-
-@using (Html.BeginForm("DeleteAll", "Student_Course_Log"))
-{
-    <p>
-        <input type="submit" value="Clear All Data" hidden />
-    </p>
-}
-@using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
-{
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.ActionLink("Import Usage Report", "UsageReport", "ImportDataDaily")
+    </div>
+    <div class="col-md-2">
+        @Html.ActionLink("Export Usage Report", "Export_Usage", "Student_Course_Log")
+    </div> 
+</div>
+<br/>
+    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Email</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
-                                        @Html.Hidden("searchCheck", "true")
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Email</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+                                            @Html.Hidden("searchCheck", "true")
+                                        </div>
                                     </div>
-                                </div>
-                                <br />
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Date import</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
+                                    <br />
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Date import</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Compulsory</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.DropDownList("compulsoryCourse", listCompulsory, "--- All ---", new { @name = "compulsoryCourse", @class = "form-control select" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
+                            <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Subject</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Subject</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">Completed</label>
-                                    <div class="col-md-3 col-xs-12">
-                                        @Html.CheckBox("completedCourse", false)
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Completed</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.DropDownList("completedCourse", listCompleted, "--- All ---", new { @name = "completedCourse", @class = "form-control select" })
+                                        </div>
                                     </div>
-                                    <label class="col-md-2 control-label">Completed</label>
-                                    <div class="col-md-3 col-xs-12">
-                                        @Html.CheckBox("compulsoryCourse", false)
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Campus</label>
+                                        <div class="col-md-9 col-xs-12">
+                                            @Html.DropDownList("Campus", listCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-center">
-                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
+                    <div class="panel-footer text-center">
+                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-@if (Model.PageList.PageCount != 0)
-{
-    <label>Total of the records: @ViewBag.Count</label>
-    <div class="table-responsive text-nowrap">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Subject ID
-                    </th>
-                    <th>
-                        Enrollment Time
-                    </th>
-                    <th>
-                        Start Time
-                    </th>
-                    <th>
-                        Last ActivityTime
-                    </th>
-                    <th>
-                        Overall Progress
-                    </th>
-                    <th>
-                        Estimated
-                    </th>
-                    <th>
-                        Completed
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Program Slug
-                    </th>
-                    <th>
-                        Program Name
-                    </th>
-                    <th>
-                        Completion Time
-                    </th>
-                    <th>
-                        Course Grade
-                    </th>
-                    <th>
-                        Date Import
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.PageList)
-                {
-                    var complete = item.Completed == true ? "Yes" : "No";
-                    var status = item.Status == true ? "Yes" : "No";
+    }
+    <span style="color: red;">@ViewBag.Nodata</span>
+    @if (Model.PageList.PageCount != 0)
+    {
+        <label>Total of the records: @ViewBag.Count</label>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Subject ID
+                        </th>
+                        <th>
+                            Campus
+                        </th>
+                        <th>
+                            Enrollment Time
+                        </th>
+                        <th>
+                            Start Time
+                        </th>
+                        <th>
+                            Last ActivityTime
+                        </th>
+                        <th>
+                            Overall Progress
+                        </th>
+                        <th>
+                            Estimated
+                        </th>
+                        <th>
+                            Completed
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Program Slug
+                        </th>
+                        <th>
+                            Program Name
+                        </th>
+                        <th>
+                            Completion Time
+                        </th>
+                        <th>
+                            Course Grade
+                        </th>
+                        <th>
+                            Date Import
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PageList)
+                    {
+                        var complete = item.Completed == true ? "Yes" : "No";
+                        var status = item.Status == true ? "Yes" : "No";
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campus)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
@@ -175,20 +197,21 @@
                             @Html.DisplayFor(modelItem => item.Date_Import)
                         </td>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <label>Page </label> @pagenumber <label> of </label> @pagecount
-}
-@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
- new
- {
-     page,
-     Email = Model.Email,
-     Date_Import = Model.Date_Import,
-     compulsoryCourse = Model.compulsoryCourse,
-     completedCourse = Model.completedCourse,
-     Subject_Name = Model.Subject_Name,
-     searchCheck = "true"
- }))
+                    }
+                </tbody>
+            </table>
+        </div>
+        <label>Page </label> @pagenumber <label> of </label> @pagecount
+    }
+    @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+     new
+     {
+         page,
+         Email = Model.Email,
+         Date_Import = Model.Date_Import,
+         compulsoryCourse = Model.compulsoryCourse,
+         completedCourse = Model.completedCourse,
+         Subject_Name = Model.Subject_Name,
+         Campus = Model.Campus,
+         searchCheck = "true"
+     }))

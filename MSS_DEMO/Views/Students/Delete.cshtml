@@ -24,9 +24,17 @@
         <dd>
             @Html.DisplayFor(model => model.Full_Name)
         </dd>
-    </dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
 
-    @using (Html.BeginForm()) {
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+    <span style="color:red;">@ViewBag.mess</span>
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

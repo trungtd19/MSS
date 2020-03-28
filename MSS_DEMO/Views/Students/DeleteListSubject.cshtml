@@ -1,0 +1,38 @@
+﻿@model IEnumerable<MSS_DEMO.Models.Subject_Student>
+
+@{
+    ViewBag.Title = "DeleteListSubject";
+}
+
+<h2>DeleteListSubject</h2>
+@using (Html.BeginForm("DeleteListSubject", "Students", FormMethod.Get))
+{
+    @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control" })
+    <br />
+    <button class="btn btn-success" type="submit">Delete</button>
+}
+<br />
+<span style="color:red;">@ViewBag.mess</span>
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Student.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subject.Subject_Name)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject.Subject_Name)
+                </td>
+            </tr>
+        }
+
+    </table>*@

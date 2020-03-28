@@ -14,7 +14,7 @@ namespace MSS_DEMO.Controllers.SetUp
 {
     public class SpecificationsController : Controller
     {
-        private const string NONE = "--- None ---";
+        private const string NONE = "";
         private const string NOTMAP = "Not Map";
         private IUnitOfWork unitOfWork;
         public SpecificationsController(IUnitOfWork _unitOfWork)
@@ -40,6 +40,14 @@ namespace MSS_DEMO.Controllers.SetUp
                 if (!String.IsNullOrEmpty(SearchString))
                 {
                     List = List.Where(s => s.Specification_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+                if (List.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
                 }
             }
             ViewBag.Count = List.Count();
@@ -68,7 +76,11 @@ namespace MSS_DEMO.Controllers.SetUp
             if (ModelState.IsValid)
             {
                 unitOfWork.Specifications.Insert(specification);
-                unitOfWork.Save();
+                if (!unitOfWork.Save())
+                {
+                    ViewBag.Error = "Can't create new specification with "+ specification.Subject_ID;
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
 
@@ -111,7 +123,11 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             var specification = unitOfWork.Specifications.GetById(id);
             unitOfWork.Specifications.Delete(specification);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this specification!";
+                return View(specification);
+            }
             return RedirectToAction("Index");
         }
         public void SelectSubjectID()

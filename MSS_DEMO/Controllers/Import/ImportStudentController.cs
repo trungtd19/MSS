@@ -38,6 +38,8 @@ namespace MSS_DEMO.Controllers
         [HttpPost]
         public ActionResult Import()
         {
+            int countFail = 0;
+            int countSuccess = 0;
             string messageImport = "";
             CSVConvert csv = new CSVConvert();
             try
@@ -64,27 +66,41 @@ namespace MSS_DEMO.Controllers
                                     List<string> rows = csv.RegexRow(sreader);
                                     //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID)
                                     //    || 
-                                    if (unitOfWork.Subject.CheckExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
+                                    if (unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
                                     {
-                                        if (unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows, semester).Roll)
+                                        if (unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester).Roll)
                                             && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
                                         {
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));
-                                           // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
+                                            // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
+                                            countSuccess++;
                                         }
                                         else
-                                        if (!unitOfWork.Students.CheckExitsStudent(getRow.GetStudent(rows, semester).Roll))
+                                        if (!unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester).Roll))
                                         {
                                             unitOfWork.Students.Insert(getRow.GetStudent(rows, semester));
-                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));                                  
+                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));
                                             //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
+                                            countSuccess++;
                                         }
-                                    }                       
+                                        else
+                                        {
+                                            countFail++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        countFail++;
+                                    }
                                 }
                             }
                             if (unitOfWork.Save())
                             {
-                                messageImport = "Import successfull!";
+                                if (countSuccess != 0)
+                                {
+                                    messageImport = countFail != 0 ? "Import success" + countSuccess + " students and fail " + countFail + " students!" : "Import success " + countSuccess + " students!";
+                                }
+                                else messageImport = "Import fail " + countFail + " students";
                             }
                             else
                             {
