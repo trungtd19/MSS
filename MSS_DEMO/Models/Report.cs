@@ -12,7 +12,7 @@ namespace MSS_DEMO.Models
         public string Type { get; set; }
         public double Total { get; set; }
         public double Study { get; set; }
-
+        public DateTime Date { get; set; }
         public List<double> Cmp { get; set; }
         public List<Report> rp1 { get; set; }
         public List<Report> rp2 { get; set; }
@@ -30,6 +30,7 @@ namespace MSS_DEMO.Models
         public List<string> ListSubject { get; set; }
         public virtual Campu Campuss { get; set; }
         public List<ListStudent> ls1 { get; set; }
+        public string Note { get; set; }
     }
 
     public class ListNotRequiredCourse
@@ -38,5 +39,15 @@ namespace MSS_DEMO.Models
         public int Complelted { get; set; }
         public int NotComplelted { get; set; }
         public List<ListNotRequiredCourse> lc1 { get; set; }
+    }
+
+    public class InfoStudent
+    {
+        public string Course_Name { get; set; }
+        public DateTime Course_Enrollment_Time { get; set; }
+        public DateTime Last_Course_Activity_Time { get; set; }
+        public double Overall_Progress { get; set; }
+        public bool Completed { get; set; }
+        public List<InfoStudent> InforList { get; set; }
     }
 }

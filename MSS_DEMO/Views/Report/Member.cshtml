@@ -1,5 +1,5 @@
 ﻿
-@model MSS_DEMO.Models.ListStudent
+@model MSS_DEMO.Models.InfoStudent
 
 
 @{
@@ -8,10 +8,11 @@
 <div>
     <div>
         <h4>
-            @Html.ActionLink("Sumary reports", "Index")&nbsp;&nbsp;
+            @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
             @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
+            @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
         </h4>
     </div>
     <br />
@@ -20,36 +21,18 @@
 
             @using (Html.BeginForm("Member", "Report", FormMethod.Get))
             {
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Search by Roll Number</label>
-                    </div>
-                    <div class="col-lg-3">
-                        @Html.TextBox("SearchString")
-                        @Html.Hidden("searchCheck", "true")
-                    </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by Roll Number</label>
                 </div>
-                <br /><br />
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Search by Subject </label>
-                    </div>
-                    <div class="col-md-3">
-                        @Html.DropDownList("SelectString3", null, htmlAttributes: new { @class = "form-control" })
-                    </div>
+                <div class="col-lg-3">
+                    @Html.TextBox("SearchString")
+                    @Html.Hidden("searchCheck", "true")
                 </div>
-                <br /><br />
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Search by Campus </label>
-                    </div>
-                    <div class="col-md-3">
-                        @Html.DropDownList("SelectString2", null, htmlAttributes: new { @class = "form-control" })
-                    </div>
-                    <div class="col-md-6">
-                        <input class="btn btn-default" type="submit" value="Search" />
-                    </div>
+                <div class="col-md-6">
+                    <input class="btn btn-default" type="submit" value="Search" />
                 </div>
+            </div>
             }
         </div>
     </div>
@@ -57,35 +40,36 @@
 @if (Model != null)
 {
 <div>
-    @if (Model.ls1.Count > 0)
+    @if (Model.InforList.Count > 0)
     {
         <h4>Total of the records: @ViewBag.TotalSearch</h4>
         <table class="table table-bordered table-striped">
             <tr>
                 <th>STT</th>
-                <th>Email</th>
-                <th>Roll</th>
-                <th>Full_Name</th>
-                <th>Campus</th>
-                <th>Subject</th>
+                <th>Course Name</th>
+                <th>Enrolled</th>
+                <th>Last Active</th>
+                <th>Progress</th>
+                <th>Status</th>
             </tr>
             @{ int a = 1;}
-            @foreach (var t in Model.ls1)
+            @foreach (var t in Model.InforList)
             {
-                <tr>
-                    <th>@(a++)</th>
-                    <th>@Html.DisplayFor(m => t.Email)</th>
-                    <th>@Html.DisplayFor(m => t.Roll)</th>
-                    <th>@Html.DisplayFor(m => t.Full_Name)</th>
-                    <th>@Html.DisplayFor(m => t.Campus)</th>
-                    <th>
-                        @foreach (var d in t.ListSubject)
-                        {
-                            @Html.DisplayFor(m => d)
-                            <br />
-                        }
-                    </th>
-                </tr>
+            <tr>
+                <th>@(a++)</th>
+                <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
+                <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
+                <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
+                @if (t.Completed)
+                {
+                    <th><span style="color:green;">Completed</span></th>
+                }
+                else
+                {
+                    <th><span style="color:red;">Incomplete</span></th>
+                }
+            </tr>
             }
         </table>
     }

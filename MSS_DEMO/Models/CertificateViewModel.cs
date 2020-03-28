@@ -13,5 +13,7 @@ namespace MSS_DEMO.Models
         public int SpecID { get; set; }
         public string Roll { get; set; }
         public List<CertificateViewModel> certificatesModel { get; set; }
+        public string SubjectName { get; set; }
+        public DateTime Date_Submit { get; set; }
     }
 }

@@ -24,8 +24,8 @@ namespace MSS_DEMO.Controllers.Certificates
                                   select a.Roll).FirstOrDefault();
 
                 var courseList = (from a in context.Student_Course_Log
-                                  where a.Roll == rollNumber && a.Completed == true
-                                  select a.Course_ID).ToList();
+                                  where a.Roll == rollNumber && a.Course_ID != null
+                                  select a.Course_ID).Distinct().ToList();
 
 
                 foreach (var t in courseList)
@@ -36,7 +36,11 @@ namespace MSS_DEMO.Controllers.Certificates
                     var link = (from a in context.Certificates
                                 where a.Course_ID == t && a.Roll == rollNumber
                                 select a.Link).FirstOrDefault();
-                    courseNameList.Add(new CertificateViewModel { CourseName = courseName, Link = link });
+                    var subjectName = (from a in context.Courses
+                                       join b in context.Specifications on a.Specification_ID equals b.Specification_ID
+                                       where a.Course_ID == t
+                                       select b.Specification_Name).FirstOrDefault();
+                    courseNameList.Add(new CertificateViewModel {SubjectName = subjectName, CourseName = courseName, Link = link });
                 }
             }
 
@@ -57,8 +61,8 @@ namespace MSS_DEMO.Controllers.Certificates
                                   select a.Roll).FirstOrDefault();
 
                 var courseList = (from a in context.Student_Course_Log
-                                  where a.Roll == rollNumber && a.Completed == true
-                                  select a.Course_ID).ToList();
+                                  where a.Roll == rollNumber && a.Course_ID != null
+                                  select a.Course_ID).Distinct().ToList();
 
 
                 foreach (var t in courseList)

@@ -1,0 +1,69 @@
+﻿@model MSS_DEMO.Models.CertificateViewModel
+@{
+    ViewBag.Title = "CertificateReport";
+}
+<div>
+    <h4>
+        @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
+        @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
+        @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
+        @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
+        @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
+    </h4>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body" style="padding-top: initial;">
+        @using (Html.BeginForm("CertificateReport", "Report", FormMethod.Get))
+        {
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by Roll Number</label>
+                </div>
+                <div class="col-lg-3">
+                    @Html.TextBox("SearchString")
+                    @Html.Hidden("searchCheck", "true")
+                </div>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by Subject </label>
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <input class="btn btn-default" type="submit" value="Search" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@if (Model.certificatesModel != null)
+{
+    if (Model.certificatesModel.Count > 0)
+    {
+        <h4>Total of the records: @ViewBag.TotalSearch</h4>
+        <table class="table table-bordered">
+            <tr>
+                <th>Roll</th>
+                <th>Subject Name</th>
+                <th>Course Name</th>
+                <th>Link</th>
+                <th>Date Submit</th>
+            </tr>
+            @for (var i = 0; i < Model.certificatesModel.Count; i++)
+            {
+                <tr>
+                    <th>@Model.certificatesModel[i].Roll</th>
+                    <th>@Model.certificatesModel[i].SubjectName</th>
+                    <th>@Model.certificatesModel[i].CourseName</th>
+                    <th>@Model.certificatesModel[i].Link</th>
+                    <th>@Model.certificatesModel[i].Date_Submit</th>
+                </tr>
+            }
+        </table>
+    }
+
+}
+

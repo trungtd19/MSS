@@ -2,7 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    ViewBag.Title = "Summary Report";
 }
 
 <!DOCTYPE html>
@@ -15,14 +15,31 @@
 <body>
     <div>
         <h4>
-            @Html.ActionLink("Sumary reports", "Index")&nbsp;&nbsp;
+            @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
             @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
+            @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
         </h4>
     </div>
-    <br />
+    @using (Html.BeginForm("Index", "Report", FormMethod.Post))
+    {
+    <div>
+        @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
+        @Html.Hidden("searchCheck", "true")
+    </div>
+    <div>
+        Enter now week number
+        @Html.TextBox("weekNumber", "", htmlAttributes: new { @class = "form-control", @type = "number" })
+        <input class="btn btn-default" type="submit" value="Search" />
+    </div>
 
+    }
+
+
+
+
+    <br />
     @if (Model != null)
     {
         <div>

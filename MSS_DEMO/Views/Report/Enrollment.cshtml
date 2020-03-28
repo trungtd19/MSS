@@ -9,10 +9,11 @@
     <div>
         <div>
             <h4>
-                @Html.ActionLink("Sumary reports", "Index")&nbsp;&nbsp;
+                @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
                 @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
                 @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
                 @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
+                @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
             </h4>
         </div>
     </div>
@@ -70,6 +71,7 @@
                 <th>Full_Name</th>
                 <th>Campus</th>
                 <th>Subject</th>
+                <th>Note</th>
             </tr>
             @{ int a = 1;}
             @foreach (var t in Model.ls1)
@@ -87,6 +89,7 @@
                             <br />
                         }
                     </th>
+                    <th>@Html.DisplayFor(m => t.Note)</th>
                 </tr>
             }
         </table>
