@@ -428,6 +428,8 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
     <Content Include="Views\Report\CertificateReport.cshtml" />
+    <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
+    <Content Include="Views\Students\DeleteListSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
