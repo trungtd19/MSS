@@ -18,9 +18,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -45,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ASPSnippets.GoogleAPI">
+      <HintPath>D:\Bin\ASPSnippets.GoogleAPI.dll</HintPath>
+    </Reference>
     <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
       <Private>True</Private>
@@ -304,6 +308,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\HoldOn.css" />
+    <Content Include="Content\Scripts\Google.js" />
     <Content Include="Content\Scripts\HoldOn.js" />
     <Content Include="favicon.ico" />
     <Content Include="Content\materialize.min.css" />
@@ -415,6 +420,9 @@
     <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
     <Content Include="Views\Certificates\Index.cshtml" />
+    <Content Include="Views\Report\CertificateReport.cshtml" />
+    <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
+    <Content Include="Views\Students\DeleteListSubject.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -422,9 +430,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\CertificateReport.cshtml" />
-    <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
-    <Content Include="Views\Students\DeleteListSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
@@ -442,6 +447,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="D:\Bin\ASPSnippets.GoogleAPI.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

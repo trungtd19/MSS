@@ -10,6 +10,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script src="~/Content/Scripts/Google.js"></script>
     <script src="/Content/Scripts/HoldOn.js"></script>
     @{
         var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
@@ -18,6 +19,7 @@
         .form-group {
             padding: 2px;
         }
+
         .form-control {
             height: 29px;
         }
@@ -50,6 +52,7 @@
                 </ul>
                     <ul class="nav navbar-nav navbar-right">                     
                         <li>@Html.ActionLink("Logout", "Logout", "Login")</li>
+                        @*<li><a href="~/Login/Login" onclick="signOut();">signout</a></li>*@
                     </ul>
                 }
 
