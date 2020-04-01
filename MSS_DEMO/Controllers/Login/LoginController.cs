@@ -1,14 +1,8 @@
 ﻿using MSS_DEMO.Common;
 using MSS_DEMO.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using ASPSnippets.GoogleAPI;
-using System.Web.Script.Serialization;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace MSS_DEMO.Controllers.Login
 {
@@ -65,8 +59,16 @@ namespace MSS_DEMO.Controllers.Login
         [HttpPost]
         public ActionResult LoginWithGoogle()
         {
-            string xy = Request["Mail"];          
-            var user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
+            string xy = Request["Mail"];
+            User_Role user = null;
+            try
+            {
+                user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
+            }
+            catch (Exception ex)
+            {
+
+            }
             if(user != null)
             {
                 var role = user.Role_ID;
@@ -75,7 +77,7 @@ namespace MSS_DEMO.Controllers.Login
                 UserSession.UserName = xy;
                 Session.Add(CommonConstants.ROLE_Session, role);
                 Session.Add(CommonConstants.User_Session, UserSession);
-                return RedirectToAction("Index", "Home");
+                return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
             }
             else
             {

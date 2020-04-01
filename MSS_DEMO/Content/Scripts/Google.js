@@ -13,6 +13,9 @@
         contentType: false,
         processData: false,
         success: function (data) {  
+            if (data.message == "true") {
+                window.location.href = "/Home/Index"
+            }
         }
     }).done(function () {
     });
@@ -22,6 +25,5 @@ function signOut() {
     auth2.signOut().then(function () {
         document.getElementById('profileinfo').innerHTML = "";
     })
-    window.location.href = '@Url.Action("Logout", "Login")'
-   
+    window.location.href = '@Url.Action("Logout", "Login")'   
 }
