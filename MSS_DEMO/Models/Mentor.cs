@@ -20,7 +20,7 @@ namespace MSS_DEMO.Models
             this.Classes = new HashSet<Class>();
         }
     
-        public string Mentor_ID { get; set; }
+        public int Mentor_ID { get; set; }
         public string Login { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
