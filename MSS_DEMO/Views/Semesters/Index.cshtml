@@ -10,26 +10,31 @@
 <p>
     @Html.ActionLink("Add New", "Create")
 </p>
+@{ 
+    int stt = 1;
+}
 <table class="table table-bordered table-striped">
     <tr>
+        <th>No</th>
         <th>
-            @Html.DisplayNameFor(model => model.Semester_ID)
+            Semester ID
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Semester_Name)
+            Semester Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Start_Date)
+            Start Date 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.End_Date)
+            End Date 
         </th>
 
     </tr>
 
     @foreach (var item in Model)
-    {
+    {       
 <tr>
+    <td>@(stt++)</td>
     <td>
         @Html.ActionLink(item.Semester_ID, "Details", new { id = item.Semester_ID })
     </td>

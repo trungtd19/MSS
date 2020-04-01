@@ -30,9 +30,13 @@
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageCount != 0)
 {
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+     int stt = 1 + (pagenumber -1) * Model.PageSize;
     <label>Total of the records: @ViewBag.Count</label>
     <table class="table table-bordered table-striped">
         <tr>
+            <th style="width:50px;">No</th>
             <th>
                 Subject ID
             </th>
@@ -55,6 +59,7 @@
             var check = item.Is_Real_Specification == true ? "Yes" : "No";
             var subjectID = item.Subject_ID == null ? "Not Map" : item.Subject_ID;
     <tr>
+        <td>@(stt++)</td>
         <td>
             @subjectID
         </td>
@@ -73,9 +78,7 @@
     </tr>
         }
 
-    </table>
-    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
-    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    </table>   
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 

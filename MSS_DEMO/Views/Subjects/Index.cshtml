@@ -30,9 +30,13 @@
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageCount != 0)
 {
+    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
+    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+     int stt = 1 + (pagenumber -1) * Model.PageSize;
     <label>Total of the records: @ViewBag.Count</label>
     <table class="table table-bordered table-striped">
         <tr>
+            <th style="width:50px;">No</th>
             <th>
                 Subject ID
             </th>
@@ -44,6 +48,7 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@(stt++)</td>
                 <td>
                     @Html.ActionLink(item.Subject_ID, "Details", new { id = item.Subject_ID })
                 </td>
@@ -56,8 +61,7 @@
 
     </table>
 
-    var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
-    var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
+    
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 

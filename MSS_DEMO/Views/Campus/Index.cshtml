@@ -7,12 +7,15 @@
 <span>@Html.ActionLink("Home", "Index", "Home") > Campus</span>
 <hr/>
 <h5>Campus</h5>
-
+@{ 
+    int stt = 1;
+}
 <p>
     @Html.ActionLink("Add New", "Create")
 </p>
 <table class="table table-bordered table-striped">
     <tr>
+        <th>No</th>
         <th>
             Campus ID
         </th>
@@ -30,6 +33,7 @@
     @foreach (var item in Model)
     {
 <tr>
+    <td>@(stt++)</td>
     <td>
         @Html.ActionLink(item.Campus_ID, "Details", new { id = item.Campus_ID })
     </td>

@@ -10,12 +10,15 @@
     <h4>Course_Deadline</h4>
     <hr />
     <dl class="dl-horizontal">
+        @{ 
+            string date = Convert.ToDateTime(Model.Deadline).ToString("dd/MM/yyyy");
+        }
         <dt>
             @Html.DisplayNameFor(model => model.Deadline)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Deadline)
+           @date
         </dd>
 
         <dt>
