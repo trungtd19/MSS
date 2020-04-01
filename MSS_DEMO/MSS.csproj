@@ -413,11 +413,6 @@
     <Content Include="Views\Course_Deadline\Details.cshtml" />
     <Content Include="Views\Course_Deadline\Edit.cshtml" />
     <Content Include="Views\Course_Deadline\Index.cshtml" />
-    <Content Include="Views\Course_Deadline\Create.cshtml" />
-    <Content Include="Views\Course_Deadline\Delete.cshtml" />
-    <Content Include="Views\Course_Deadline\Details.cshtml" />
-    <Content Include="Views\Course_Deadline\Edit.cshtml" />
-    <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
     <Content Include="Views\Certificates\Index.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">

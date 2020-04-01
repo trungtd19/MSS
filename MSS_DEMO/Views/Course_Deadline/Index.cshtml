@@ -13,26 +13,26 @@
 <div class="form-group">
     @using (Html.BeginForm("Index", "Course_Deadline", FormMethod.Get))
     {
-        <div class="col-md-2" style="width: 11.666667%;">
-            Courses name:
-        </div>
-        <div class="col-md-2">
-            @Html.TextBox("Courses_Name", Model.Courses_Name, new { @class = "form-control" })
-            @Html.Hidden("searchCheck", "true")
-        </div>
-        <div class="col-md-2" style="width: 11.666667%;">
-            Semester :
-        </div>
-        <div class="col-md-2">
-            @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
-        </div>
-        <div class="col-md-1">
-            <input class="btn btn-default" type="submit" value="Search" />
-        </div>
-        <div class="col-md-1">
-            @Html.ActionLink("Add New", "Create")
-        </div>
-        <div class="col-md-5"></div>
+    <div class="col-md-2" style="width: 11.666667%;">
+        Courses name:
+    </div>
+    <div class="col-md-2">
+        @Html.TextBox("Courses_Name", Model.Courses_Name, new { @class = "form-control" })
+        @Html.Hidden("searchCheck", "true")
+    </div>
+    <div class="col-md-2" style="width: 11.666667%;">
+        Semester :
+    </div>
+    <div class="col-md-2">
+        @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
+    </div>
+    <div class="col-md-1">
+        <input class="btn btn-default" type="submit" value="Search" />
+    </div>
+    <div class="col-md-1">
+        @Html.ActionLink("Add New", "Create")
+    </div>
+    <div class="col-md-5"></div>
     }
 </div>
 <br />
@@ -40,9 +40,14 @@
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageList.PageCount > 0)
 {
-    <label>Total of the records: @ViewBag.Count</label>
-    <table class="table table-bordered table-striped">
+<label>Total of the records: @ViewBag.Count</label>
+<table class="table table-bordered">
+    <thead style="background: #f5f5f5;">
         <tr>
+            <th></th>
+            <th>
+                Subject ID
+            </th>
             <th>
                 Course Name
             </th>
@@ -53,15 +58,18 @@
                 Semester Name
             </th>
         </tr>
-
-        @foreach (var item in Model.PageList)
+    </thead>
+    @foreach (var item in Model.PageList)
         {
     <tr>
+        <td hidden><input type="text" class="groupRow" value="@item.groupRow" /></td>
+        <td>@Html.DisplayFor(modelItem => item.groupRowNo)</td>
+        <td>@Html.DisplayFor(modelItem => item.Subject_ID)</td>
         <td>
             @Html.ActionLink(item.Courses_Name, "Details", new { id = item.Course_Deadline_ID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Deadline)
+            @Html.DisplayFor(modelItem => item.deadlineString)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Semester_Name)
@@ -69,12 +77,24 @@
     </tr>
         }
 
-    </table>
+</table>
 
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
-    <label>Page </label> @pagenumber <label> of </label> @pagecount
+<label>Page </label>  @pagenumber  <label> of </label>  @pagecount
 }
 
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
    new { page, Semester_ID = Model.Semester_ID, searchCheck = "true" }))
+<script>
+    $(document).ready(function () {
+        $(".table tbody .groupRow").each(function (id, item) {
+            var groupRow = $(this).parents("tr:first").find("input[type=text]").val();
+            if (groupRow % 2 == 0) {
+                $(item).parents("tr:first").find("td").css({
+                    'background': '#a9c6e2'
+                });
+            }
+        });
+    });
+</script>

@@ -9,6 +9,8 @@
 @{
     SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
     SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
+     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
 }
 <div class="form-group">
     <div class="col-md-2">
@@ -75,10 +77,11 @@
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageList.PageCount > 0)
 {
+     int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
     <label>Total of the records: @ViewBag.Count</label>
     <table class="table table-bordered table-striped">
         <tr>
-
+            <th style="width:50px;">No</th>
             <th>
                 Student ID
             </th>
@@ -99,6 +102,7 @@
         @foreach (var item in Model.PageList)
         {
     <tr>
+        <td>@(stt++)</td>
         <td>
             @Html.ActionLink(item.Roll, "Details", new { id = item.Roll })
         </td>
@@ -118,8 +122,7 @@
         }
 
     </table>
-    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
-    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
+   
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
