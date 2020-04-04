@@ -48,6 +48,7 @@ namespace MSS_DEMO.Models
         public DateTime Last_Course_Activity_Time { get; set; }
         public double Overall_Progress { get; set; }
         public bool Completed { get; set; }
+        public double Estimated { get; set; }
         public List<InfoStudent> InforList { get; set; }
     }
 }

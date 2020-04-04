@@ -22,16 +22,27 @@
             @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
         </h4>
     </div>
+    <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <h2>
+            <label style="color: green;">Summary reports</label>
+        </h2>
+    </div>
     @using (Html.BeginForm("Index", "Report", FormMethod.Post))
     {
     <div>
-        @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
-        @Html.Hidden("searchCheck", "true")
+        <label>
+            Imported date @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+            Semester @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+            Week: @ViewBag.Week
+            @Html.Hidden("searchCheck", "true")
+        </label>
     </div>
     <div>
-        Enter now week number
-        @Html.TextBox("weekNumber", "", htmlAttributes: new { @class = "form-control", @type = "number" })
-        <input class="btn btn-default" type="submit" value="Search" />
+        <label>
+            Week off @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", style = "width:50px" })
+        </label>
+        <input class="btn btn-default" type="submit" value="Display" />
+        <a>@Html.ActionLink("Export", "PrintViewToPdf", "Report")</a>
     </div>
 
     }

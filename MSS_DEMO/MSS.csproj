@@ -86,6 +86,9 @@
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -320,6 +323,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.min.js" />
@@ -342,6 +346,7 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
       <LastGenOutput>MSSModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -420,6 +425,9 @@
     <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Report\NotRequiredCourse.cshtml" />
     <Content Include="Views\Certificates\Index.cshtml" />
+    <Content Include="Views\Report\CertificateReport.cshtml" />
+    <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
+    <Content Include="Views\Students\DeleteListSubject.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -427,9 +435,7 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\CertificateReport.cshtml" />
-    <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
-    <Content Include="Views\Students\DeleteListSubject.cshtml" />
+    <Content Include="libman.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
