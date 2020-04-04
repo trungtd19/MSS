@@ -41,7 +41,7 @@
                                     </div>
                                     <br />
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">Date import</label>
+                                        <label class="col-md-3 control-label">Imported date</label>
                                         <div class="col-md-9 col-xs-12">
                                             @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
                                         </div>
@@ -93,11 +93,13 @@
     <span style="color: red;">@ViewBag.Nodata</span>
     @if (Model.PageList.PageCount != 0)
     {
+        int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
         <label>Total of the records: @ViewBag.Count</label>
         <div class="table-responsive text-nowrap">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>
                             Email
                         </th>
@@ -141,7 +143,7 @@
                             Course Grade
                         </th>
                         <th>
-                            Date Import
+                            Imported Date
                         </th>
                     </tr>
                 </thead>
@@ -150,7 +152,9 @@
                     {
                         var complete = item.Completed == true ? "Yes" : "No";
                         var status = item.Status == true ? "Yes" : "No";
+                        string date = Convert.ToDateTime(item.Date_Import).ToString("MM/dd/yyyy");
                     <tr>
+                        <td>@(stt++)</td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
                         </td>
@@ -194,7 +198,7 @@
                             @Html.DisplayFor(modelItem => item.Course_Grade)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Date_Import)
+                            @date
                         </td>
                     </tr>
                     }

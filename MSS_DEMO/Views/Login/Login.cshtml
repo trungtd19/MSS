@@ -10,18 +10,22 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <meta name="google-signin-client_id" content="1069005412125-7a4a3760pfvmrimg2guhs1ocguo8ne94.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="~/Content/Scripts/Google.js"></script>
     <title>Create</title>
 </head>
 <body>
 
-    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
-    {
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" });
-        <label>User name:</label> <input type="text" name="UserName" required="true" /><br />
-        <label>Pass Word:</label> <input type="password" name="PassWord" required="true" />
-        <button type="submit">Login</button>
+    @*@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" });
+            <label>User name:</label> <input type="text" name="UserName" required="true" /><br />
+            <label>Pass Word:</label> <input type="password" name="PassWord" required="true" />
+            <button type="submit">Login</button>
 
-    }
+        }*@
+    <div class="g-signin2" onclick="" data-onsuccess="onSignIn" data-theme="dark"></div>
 
 </body>
 </html>

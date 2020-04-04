@@ -24,7 +24,7 @@ namespace MSS_DEMO.Models
         public string University { get; set; }
         public Nullable<System.DateTime> Class_Start_Time { get; set; }
         public string Enrollment_Source { get; set; }
-        public string Mentor_ID { get; set; }
+        public Nullable<int> Mentor_ID { get; set; }
         public string Semester_ID { get; set; }
         public string Campus_ID { get; set; }
     

@@ -18,9 +18,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -307,6 +308,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\HoldOn.css" />
+    <Content Include="Content\Scripts\Google.js" />
     <Content Include="Content\Scripts\HoldOn.js" />
     <Content Include="favicon.ico" />
     <Content Include="Content\materialize.min.css" />
@@ -413,11 +415,6 @@
     <Content Include="Views\Shared\401.cshtml" />
     <Content Include="Views\Home\Report.cshtml" />
     <Content Include="Views\Login\Logout.cshtml" />
-    <Content Include="Views\Course_Deadline\Create.cshtml" />
-    <Content Include="Views\Course_Deadline\Delete.cshtml" />
-    <Content Include="Views\Course_Deadline\Details.cshtml" />
-    <Content Include="Views\Course_Deadline\Edit.cshtml" />
-    <Content Include="Views\Course_Deadline\Index.cshtml" />
     <Content Include="Views\Course_Deadline\Create.cshtml" />
     <Content Include="Views\Course_Deadline\Delete.cshtml" />
     <Content Include="Views\Course_Deadline\Details.cshtml" />
