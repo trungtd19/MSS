@@ -199,6 +199,7 @@
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\ClassStudentRepository.cs" />
     <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
+    <Compile Include="Core\Implement\MentorRepository.cs" />
     <Compile Include="Core\Implement\StudentCoursesLogRepository.cs" />
     <Compile Include="Core\Implement\StudentSpecificationLogRepository.cs" />
     <Compile Include="Core\Implement\SubjectStudentRepository.cs" />
@@ -433,6 +434,8 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
     <Content Include="libman.json" />
+    <Content Include="Views\Student_Course_Log\Mentor_Usage_Report.cshtml" />
+    <Content Include="Views\Student_Course_Log\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
