@@ -24,6 +24,7 @@ namespace MSS_DEMO.Repository
         private SubjectStudentRepository SubjectStudentRepository;
         private ClassRepository ClassRepository;
         private CoursesDeadlineRepository CoursesDeadlineRepository;
+        private MentorRepository MentorRepository;
         public StudentRepository Students
         {
             get
@@ -114,6 +115,13 @@ namespace MSS_DEMO.Repository
             get
             {
                 return ClassRepository ?? (ClassRepository = new ClassRepository(context));
+            }
+        }
+        public MentorRepository Mentor
+        {
+            get
+            {
+                return MentorRepository ?? (MentorRepository = new MentorRepository(context));
             }
         }
         public bool Save()

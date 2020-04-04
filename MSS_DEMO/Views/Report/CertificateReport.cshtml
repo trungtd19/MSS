@@ -43,6 +43,11 @@
 {
     if (Model.certificatesModel.Count > 0)
     {
+        <div style="margin-left: auto; margin-right: auto; text-align: center;">
+            <h2>
+                <label style="color: green;">Certificate Report</label>
+            </h2>
+        </div>
         <h4>Total of the records: @ViewBag.TotalSearch</h4>
         <table class="table table-bordered">
             <tr>
@@ -51,6 +56,7 @@
                 <th>Course Name</th>
                 <th>Link</th>
                 <th>Date Submit</th>
+                <th></th>
             </tr>
             @for (var i = 0; i < Model.certificatesModel.Count; i++)
             {
@@ -60,6 +66,9 @@
                     <th>@Model.certificatesModel[i].CourseName</th>
                     <th>@Model.certificatesModel[i].Link</th>
                     <th>@Model.certificatesModel[i].Date_Submit</th>
+                    <th>
+                        <button onclick="window.open('@Model.certificatesModel[i].Link')">View</button>
+                    </th>
                 </tr>
             }
         </table>

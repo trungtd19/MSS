@@ -21,27 +21,33 @@
 
             @using (Html.BeginForm("Member", "Report", FormMethod.Get))
             {
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Roll Number</label>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Roll Number</label>
+                    </div>
+                    <div class="col-lg-3">
+                        @Html.TextBox("SearchString")
+                        @Html.Hidden("searchCheck", "true")
+                    </div>
+                    <div class="col-md-6">
+                        <input class="btn btn-default" type="submit" value="Search" />
+                    </div>
                 </div>
-                <div class="col-lg-3">
-                    @Html.TextBox("SearchString")
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-6">
-                    <input class="btn btn-default" type="submit" value="Search" />
-                </div>
-            </div>
             }
         </div>
     </div>
 </div>
+
 @if (Model != null)
 {
 <div>
     @if (Model.InforList.Count > 0)
     {
+        <div style="margin-left: auto; margin-right: auto; text-align: center;">
+            <h2>
+                <label style="color: green;">Member Report</label>
+            </h2>
+        </div>
         <h4>Total of the records: @ViewBag.TotalSearch</h4>
         <table class="table table-bordered table-striped">
             <tr>
@@ -50,26 +56,28 @@
                 <th>Enrolled</th>
                 <th>Last Active</th>
                 <th>Progress</th>
+                <th>Estimated learning hour</th>
                 <th>Status</th>
             </tr>
             @{ int a = 1;}
             @foreach (var t in Model.InforList)
             {
-            <tr>
-                <th>@(a++)</th>
-                <th>@Html.DisplayFor(m => t.Course_Name)</th>
-                <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
-                <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
-                <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
-                @if (t.Completed)
-                {
-                    <th><span style="color:green;">Completed</span></th>
-                }
-                else
-                {
-                    <th><span style="color:red;">Incomplete</span></th>
-                }
-            </tr>
+                <tr>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                    <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
+                    <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
+                    <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
+                    <th>@Html.DisplayFor(m => t.Estimated)</th>
+                    @if (t.Completed)
+                    {
+                        <th><span style="color:green;">Completed</span></th>
+                    }
+                    else
+                    {
+                        <th><span style="color:red;">Incomplete</span></th>
+                    }
+                </tr>
             }
         </table>
     }
