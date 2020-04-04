@@ -12,7 +12,7 @@
         dataType: 'json',
         contentType: false,
         processData: false,
-        success: function (data) {  
+        success: function (data) {
             if (data.message == "true") {
                 window.location.href = "/Home/Index"
             }
@@ -20,10 +20,32 @@
     }).done(function () {
     });
 }
+
+
+    function onLoad() {
+     gapi.load('auth2', function () {
+      gapi.auth2.init();
+        });
+}
+
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         document.getElementById('profileinfo').innerHTML = "";
-    })
-    window.location.href = '@Url.Action("Logout", "Login")'   
+       $.ajax({
+            url: 'Logout/Login',
+            type: 'POST',
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+            }
+        }).done(function () {
+        });
+    });
 }
+    
+        
+
+
+        
