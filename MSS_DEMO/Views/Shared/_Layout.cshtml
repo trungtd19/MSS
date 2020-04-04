@@ -10,8 +10,12 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <meta name="google-signin-client_id" content="1069005412125-7a4a3760pfvmrimg2guhs1ocguo8ne94.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    @*?onload=onLoad*@
     <script src="~/Content/Scripts/Google.js"></script>
     <script src="/Content/Scripts/HoldOn.js"></script>
+
     @{
         var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
     }
@@ -23,6 +27,7 @@
         .form-control {
             height: 29px;
         }
+
         table, th, td {
             border: 1px solid black;
         }
@@ -47,14 +52,15 @@
                 </ul>
                 @if (session != null)
                 {
-                <ul class="nav navbar-nav navbar-right">                 
-                    <li>@Html.ActionLink("Welcome :" +@session.UserName,"Index", "Home")</li>
-                </ul>
-                    <ul class="nav navbar-nav navbar-right">                     
-                        <li>@Html.ActionLink("Logout", "Logout", "Login")</li>
-                        @*<li><a href="~/Login/Login" onclick="signOut();">signout</a></li>*@
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Welcome :" + @session.UserName, "Index", "Home")</li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">                        
+                        <li><a href="~/Login/Logout" onclick="signOut();">Logout</a></li>
+
                     </ul>
                 }
+              
 
 
 
