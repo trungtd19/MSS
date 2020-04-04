@@ -127,5 +127,16 @@ namespace MSS_DEMO.Controllers.Log
             response.Write(sb.ToString());
             response.End();
         }
+        public ActionResult Mentor_Usage_Report()
+        {
+            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
+            var list = unitOfWork.Mentor.getList(userMentor.UserName);
+            return View(list);
+        }
+        public ActionResult Detail(string id)
+        {
+            var list = unitOfWork.Mentor.getReport(id);
+            return View(list);
+        }
     }
 }

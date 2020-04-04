@@ -6,7 +6,7 @@
     var formData = new FormData();
     formData.append("Mail", Mail);
     $.ajax({
-        url: 'LoginWithGoogle/Login',
+        url: '/Login/LoginWithGoogle',
         type: 'POST',
         data: formData,
         dataType: 'json',

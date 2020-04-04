@@ -24,6 +24,7 @@ namespace MSS_DEMO.Repository
         SubjectStudentRepository SubjectStudent { get; }
         ClassRepository Classes { get; }
         CoursesDeadlineRepository DeadLine { get; }
+        MentorRepository Mentor { get; }
         bool Save();
     }
 }

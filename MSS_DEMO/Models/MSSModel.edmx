@@ -33,7 +33,7 @@
           <Property Name="University" Type="varchar" MaxLength="50" />
           <Property Name="Class_Start_Time" Type="datetime" />
           <Property Name="Enrollment_Source" Type="nchar" MaxLength="10" />
-          <Property Name="Mentor_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Mentor_ID" Type="int" />
           <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
           <Property Name="Campus_ID" Type="varchar" MaxLength="50" />
         </EntityType>
@@ -66,7 +66,7 @@
           <Key>
             <PropertyRef Name="Mentor_ID" />
           </Key>
-          <Property Name="Mentor_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mentor_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="100" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Name" Type="varchar" MaxLength="100" />
@@ -589,7 +589,7 @@
           <Property Name="University" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Class_Start_Time" Type="DateTime" Precision="3" />
           <Property Name="Enrollment_Source" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Mentor_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mentor_ID" Type="Int32" />
           <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Campus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Campu" Relationship="Self.FK_Class_Campus1" FromRole="Class" ToRole="Campus" />
@@ -634,7 +634,7 @@
           <Key>
             <PropertyRef Name="Mentor_ID" />
           </Key>
-          <Property Name="Mentor_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mentor_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Login" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
