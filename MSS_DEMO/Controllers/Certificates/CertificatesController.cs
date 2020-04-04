@@ -8,6 +8,7 @@ using MSS_DEMO.Common;
 
 namespace MSS_DEMO.Controllers.Certificates
 {
+    [CheckCredential(Role_ID = "5")]
     public class CertificatesController : Controller
     {
         // GET: Certificate

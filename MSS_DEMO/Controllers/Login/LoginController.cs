@@ -53,23 +53,33 @@ namespace MSS_DEMO.Controllers.Login
         //    {
         //        ModelState.AddModelError("", "Login Fail");
         //    }
-        //        return View("Login");
+        //    return View("Login");
 
-        //    }      
+        //}
         [HttpPost]
         public ActionResult LoginWithGoogle()
         {
+                    
             string xy = Request["Mail"];
             User_Role user = null;
-            try
-            {
+           
                 user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
-            }
-            catch (Exception ex)
-            {
 
+            if (user == null)
+            {
+                var role = 0;
+                var UserSession = new UserLogin();
+                UserSession.UserID = 0;
+                UserSession.UserName = xy;
+                Session.Add(CommonConstants.ROLE_Session, role);
+                Session.Add(CommonConstants.User_Session, UserSession);
+                return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
             }
-            if(user != null)
+            else if (user.isActive == false)
+            {
+                ModelState.AddModelError("", " Account is locked ");
+            }
+            if (user != null)
             {
                 var role = user.Role_ID;
                 var UserSession = new UserLogin();

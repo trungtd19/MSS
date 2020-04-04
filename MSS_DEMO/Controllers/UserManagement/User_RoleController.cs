@@ -71,10 +71,18 @@ namespace MSS_DEMO.Controllers.UserManagement
         {
             if (ModelState.IsValid)
             {
-                user_Role.Login = user_Role.Login + "@fpt.edu.vn";
-                db.User_Role.Add(user_Role);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if(db.User_Role.SingleOrDefault(x => x.Login.Equals(user_Role.Login + "@fpt.edu.vn"))!= null)
+                {
+                    ModelState.AddModelError("", "user is exist ");
+                }
+                else
+                {
+                    user_Role.Login = user_Role.Login + "@fpt.edu.vn";
+                    db.User_Role.Add(user_Role);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+               
             }
 
             ViewBag.Role_ID = new SelectList(db.Roles, "Role_ID", "Role_Name", user_Role.Role_ID);

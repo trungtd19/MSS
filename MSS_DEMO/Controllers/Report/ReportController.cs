@@ -14,11 +14,10 @@ using System.Globalization;
 
 namespace MSS_DEMO.Controllers
 {
-    [CheckCredential(Role_ID = "3")]
     public class ReportController : Controller
     {
         // GET: Report
-
+        [CheckCredential(Role_ID = "2")]
         public ActionResult Index(Report rp, string SelectString, string searchCheck, string weekNumber)
         {
             List<Report> reportStudent = new List<Report>();

@@ -9,18 +9,34 @@ namespace MSS_DEMO.Common
     public class CheckCredentialAttribute :AuthorizeAttribute
     {
         public string Role_ID { set; get; }
-
+        UserLogin session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             List<string> admin = new List<string> {"1"};
-            List<string> Hana = new List<string> { "3" };
-            List<string> Mentor = new List<string> {"3" };
-            List<string> Acad = new List<string> { "1","2","3","4" };
-
-            var session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
-            if(session == null)
+            List<string> Hana = new List<string> { "3","2" };
+            List<string> Mentor = new List<string> {"2" };
+            List<string> Acad = new List<string> { "1","2","3","4","5" };
+            List<string> Student = new List<string> { "5" };
+            string checkStudent;
+           
+            string[] temp = session.UserName.Split('@');
+            checkStudent = temp[0].Substring(temp[0].Length - 5);
+           
+          
+            if (session == null)
             {
                 return false;
+            }
+            if (IsNumber(checkStudent))
+            {
+                if (Student.Contains(this.Role_ID))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             int role = (int)HttpContext.Current.Session[CommonConstants.ROLE_Session];
             if(role ==1)
@@ -74,9 +90,18 @@ namespace MSS_DEMO.Common
 
 
         }
-
+        public bool IsNumber(string pValue)
+        {
+            foreach (Char c in pValue)
+            {
+                if (!Char.IsDigit(c))
+                    return false;
+            }
+            return true;
+        }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
+           
             filterContext.Result = new ViewResult
             {
                 ViewName = "~/Views/Shared/401.cshtml"

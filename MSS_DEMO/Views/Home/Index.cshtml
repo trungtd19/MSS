@@ -24,12 +24,23 @@
         <hr />
 
     }
-}
-@{
-    if (Role == 4 || Role == 1)
+    else if (Role == 1)
     {
         <h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
     }
+    else if (Role == 3)
+    {
+        <h5>@Html.ActionLink("Student Report", "Index", "Report")</h5>
+    }
+    else if (Role == 2)
+    {
+        <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
+    }
+    else
+    {
+        <h5>@Html.ActionLink("Certificates", "Index", "Certificates")</h5>
+    }
 }
+
 
 
