@@ -7,7 +7,8 @@
     var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
 }
 @{
-    var Role = (int)HttpContext.Current.Session[CommonConstants.ROLE_Session];
+    var RoleSession = (RoleLogin)HttpContext.Current.Session[CommonConstants.ROLE_Session];
+    int Role = RoleSession.Role;
 }
 <br />
 @{

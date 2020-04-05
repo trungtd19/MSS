@@ -15,11 +15,11 @@ using Rotativa;
 
 namespace MSS_DEMO.Controllers
 {
-    //[CheckCredential(Role_ID = "3")]
+    [CheckCredential(Role_ID = "3")]
     public class ReportController : Controller
     {
-        // GET: Report
-        [CheckCredential(Role_ID = "2")]
+       
+        // GET: Report       
         public ActionResult Index(Report rp, string SelectDatetime, string searchCheck, string weekNumber, string SelectSemester)
         {
             List<Report> reportStudent = new List<Report>();
@@ -556,9 +556,9 @@ namespace MSS_DEMO.Controllers
 
             return View("CertificateReport", cv);
         }
-
+        
         public ActionResult PrintViewToPdf()
-        {
+        {           
             var report = new ActionAsPdf("Index");
             return report;
         }

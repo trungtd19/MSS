@@ -67,11 +67,12 @@ namespace MSS_DEMO.Controllers.Login
 
             if (user == null)
             {
-                var role = 0;
+                var RoleSession = new RoleLogin();
+                RoleSession.Role = 0;
                 var UserSession = new UserLogin();
                 UserSession.UserID = 0;
                 UserSession.UserName = xy;
-                Session.Add(CommonConstants.ROLE_Session, role);
+                Session.Add(CommonConstants.ROLE_Session, RoleSession);
                 Session.Add(CommonConstants.User_Session, UserSession);
                 return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
             }
@@ -81,11 +82,12 @@ namespace MSS_DEMO.Controllers.Login
             }
             if (user != null)
             {
-                var role = user.Role_ID;
+                var RoleSession = new RoleLogin();
+                RoleSession.Role = user.Role_ID;
                 var UserSession = new UserLogin();
                 UserSession.UserID = user.User_ID;
                 UserSession.UserName = xy;
-                Session.Add(CommonConstants.ROLE_Session, role);
+                Session.Add(CommonConstants.ROLE_Session, RoleSession);
                 Session.Add(CommonConstants.User_Session, UserSession);
                 return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
             }

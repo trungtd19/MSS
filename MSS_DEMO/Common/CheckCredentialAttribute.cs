@@ -10,6 +10,7 @@ namespace MSS_DEMO.Common
     {
         public string Role_ID { set; get; }
         UserLogin session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
+        RoleLogin role = (RoleLogin)HttpContext.Current.Session[CommonConstants.ROLE_Session];
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             List<string> admin = new List<string> {"1"};
@@ -17,6 +18,7 @@ namespace MSS_DEMO.Common
             List<string> Mentor = new List<string> {"2" };
             List<string> Acad = new List<string> { "1","2","3","4","5" };
             List<string> Student = new List<string> { "5" };
+            
             string checkStudent;
            
             string[] temp = session.UserName.Split('@');
@@ -37,9 +39,8 @@ namespace MSS_DEMO.Common
                 {
                     return false;
                 }
-            }
-            int role = (int)HttpContext.Current.Session[CommonConstants.ROLE_Session];
-            if(role ==1)
+            }          
+            if(role.Role ==1)
             {
                 if (admin.Contains(this.Role_ID))
                 {
@@ -50,7 +51,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-           else if (role == 3)
+           else if (role.Role == 3)
             {
                 if (Mentor.Contains(this.Role_ID))
                 {
@@ -61,7 +62,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-            else if (role == 4)
+            else if (role.Role == 4)
             {
                 if (Acad.Contains(this.Role_ID))
                 {
@@ -72,7 +73,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-            else if (role == 2)
+            else if (role.Role == 2)
             {
                 if (Hana.Contains(this.Role_ID))
                 {
