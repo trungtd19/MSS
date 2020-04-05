@@ -91,7 +91,7 @@ namespace MSS_DEMO.Controllers.Login
             }
             else
             {
-                return View();
+                return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
             }
                 
             

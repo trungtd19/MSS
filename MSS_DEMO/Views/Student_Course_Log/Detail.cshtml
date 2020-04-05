@@ -2,103 +2,107 @@
 @{
     ViewBag.Title = "Detail";
 }
-<br/>
+<br />
+<span>
+    @Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Usage Report", "Mentor", "Student_Course_Log")
+    > Detail Class
+</span>
+<br />
 <br />
 @{
     int stt = 1;
 }
-    <div class="table-responsive text-nowrap">
-        <table class="table table-bordered table-striped">
-            <thead>
+<div class="table-responsive text-nowrap">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Enrollment Time
+                </th>
+                <th>
+                    Start Time
+                </th>
+                <th>
+                    Last ActivityTime
+                </th>
+                <th>
+                    Overall Progress
+                </th>
+                <th>
+                    Estimated
+                </th>
+                <th>
+                    Completed
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Program Slug
+                </th>
+                <th>
+                    Program Name
+                </th>
+                <th>
+                    Completion Time
+                </th>
+                <th>
+                    Course Grade
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var complete = item.Completed == true ? "Yes" : "No";
+                var status = item.Status == true ? "Yes" : "No";
+                var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
+                string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
+                string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                 <tr>
-                    <th>No</th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Enrollment Time
-                    </th>
-                    <th>
-                        Start Time
-                    </th>
-                    <th>
-                        Last ActivityTime
-                    </th>
-                    <th>
-                        Overall Progress
-                    </th>
-                    <th>
-                        Estimated
-                    </th>
-                    <th>
-                        Completed
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Program Slug
-                    </th>
-                    <th>
-                        Program Name
-                    </th>
-                    <th>
-                        Completion Time
-                    </th>
-                    <th>
-                        Course Grade
-                    </th>
+                    <td>@(stt++)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Course_Enrollment_Time
+                    </td>
+                    <td>
+                        @Course_Enrollment_Time
+                    </td>
+                    <td>
+                        @Last_Course_Activity_Time
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Overall_Progress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estimated)
+                    </td>
+                    <td>
+                        @complete
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Slug)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Program_Name)
+                    </td>
+                    <td>
+                        @completeTime
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course_Grade)
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    var complete = item.Completed == true ? "Yes" : "No";
-                    var status = item.Status == true ? "Yes" : "No";
-                    var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("MM/dd/yyyy");
-                    string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("MM/dd/yyyy");
-                    string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("MM/dd/yyyy");
-                    string Overall_Progress = Convert.ToDateTime(item.Overall_Progress).ToString("MM/dd/yyyy");
-                    <tr>
-                        <td>@(stt++)</td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Course_Enrollment_Time
-                        </td>
-                        <td>
-                            @Course_Enrollment_Time
-                        </td>
-                        <td>
-                            @Last_Course_Activity_Time
-                        </td>
-                        <td>
-                            @Overall_Progress
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estimated)
-                        </td>
-                        <td>
-                            @complete
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Name)
-                        </td>
-                        <td>
-                            @completeTime
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Grade)
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+</div>

@@ -16,6 +16,11 @@
             if (data.message == "true") {
                 window.location.href = "/Home/Index"
             }
+            if (data.message == "false") {
+                signOut();
+                sweetAlert("Error!","Login fail!", "error");
+            }
+
         }
     }).done(function () {
     });

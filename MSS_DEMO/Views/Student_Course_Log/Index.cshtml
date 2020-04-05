@@ -152,7 +152,10 @@
                     {
                         var complete = item.Completed == true ? "Yes" : "No";
                         var status = item.Status == true ? "Yes" : "No";
-                        string date = Convert.ToDateTime(item.Date_Import).ToString("MM/dd/yyyy");
+                        string date = Convert.ToDateTime(item.Date_Import).ToString("dd/MM/yyyy");
+                        var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
+                        string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
+                        string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                     <tr>
                         <td>@(stt++)</td>
                         <td>
@@ -165,13 +168,13 @@
                             @Html.DisplayFor(modelItem => item.Campus)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Course_Enrollment_Time)
+                            @Course_Enrollment_Time
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Course_Start_Time)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Last_Course_Activity_Time)
+                            @Last_Course_Activity_Time
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Overall_Progress)
@@ -192,7 +195,7 @@
                             @Html.DisplayFor(modelItem => item.Program_Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Completion_Time)
+                            @completeTime
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Course_Grade)
