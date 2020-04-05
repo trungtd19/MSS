@@ -434,8 +434,10 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
     <Content Include="libman.json" />
-    <Content Include="Views\Student_Course_Log\Mentor_Usage_Report.cshtml" />
+    <Content Include="Views\Student_Course_Log\Mentor.cshtml" />
     <Content Include="Views\Student_Course_Log\Detail.cshtml" />
+    <Content Include="Views\Student_Specification_Log\Mentor.cshtml" />
+    <Content Include="Views\Student_Specification_Log\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

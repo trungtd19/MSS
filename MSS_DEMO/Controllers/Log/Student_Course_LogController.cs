@@ -13,7 +13,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers.Log
 {
-    [CheckCredential(Role_ID = "3")]
+    
     public class Student_Course_LogController : Controller
     {
         private IUnitOfWork unitOfWork;
@@ -21,6 +21,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
+        [CheckCredential(Role_ID = "3")]
         public ActionResult Index(CoursesReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
@@ -127,10 +128,10 @@ namespace MSS_DEMO.Controllers.Log
             response.Write(sb.ToString());
             response.End();
         }
-        public ActionResult Mentor_Usage_Report()
+        public ActionResult Mentor()
         {
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var list = unitOfWork.Mentor.getList(userMentor.UserName);
+            var list = unitOfWork.Mentor.getListCourses(userMentor.UserName);
             return View(list);
         }
         public ActionResult Detail(string id)
