@@ -136,6 +136,8 @@ namespace MSS_DEMO.Controllers.Log
         }
         public ActionResult Detail(string id)
         {
+            ViewBag.Course_Name = unitOfWork.Courses.GetById(int.Parse(id.Split('^')[0])).Course_Name;
+            ViewBag.Class = id.Split('^')[1];
             var list = unitOfWork.Mentor.getReport(id);
             return View(list);
         }

@@ -82,7 +82,7 @@ namespace MSS_DEMO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Subject_ID,Subject_Name")] Subject subject)
+        public ActionResult Edit([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
         {
             if (ModelState.IsValid)
             {

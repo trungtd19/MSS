@@ -136,6 +136,8 @@ namespace MSS_DEMO.Controllers.Log
         }
         public ActionResult Detail(string id)
         {
+            ViewBag.Spec_Name = unitOfWork.Specifications.GetById(int.Parse(id.Split('^')[0])).Specification_Name;
+            ViewBag.Class = id.Split('^')[1];
             var list = unitOfWork.Mentor.getReportSpec(id);
             return View(list);
         }

@@ -189,6 +189,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\CheckCredentialAttribute.cs" />
     <Compile Include="Common\CommonConstants.cs" />
+    <Compile Include="Common\RoleLogin.cs" />
     <Compile Include="Common\UserLogin.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Certificates\CertificatesController.cs" />
@@ -426,6 +427,11 @@
     <Content Include="Views\Report\CertificateReport.cshtml" />
     <Content Include="Views\ImportDataDaily\SpecializationReport.cshtml" />
     <Content Include="Views\Students\DeleteListSubject.cshtml" />
+    <Content Include="libman.json" />
+    <Content Include="Views\Student_Course_Log\Mentor.cshtml" />
+    <Content Include="Views\Student_Course_Log\Detail.cshtml" />
+    <Content Include="Views\Student_Specification_Log\Mentor.cshtml" />
+    <Content Include="Views\Student_Specification_Log\Detail.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -433,11 +439,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="libman.json" />
-    <Content Include="Views\Student_Course_Log\Mentor.cshtml" />
-    <Content Include="Views\Student_Course_Log\Detail.cshtml" />
-    <Content Include="Views\Student_Specification_Log\Mentor.cshtml" />
-    <Content Include="Views\Student_Specification_Log\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

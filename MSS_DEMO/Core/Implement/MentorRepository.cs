@@ -81,8 +81,11 @@ namespace MSS_DEMO.Core.Implement
                         where ((b.Course_ID == Courses_ID) && (e.Class_ID == Class_ID))
                         select a)
                         .ToList();
-            var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-            list = list.Where(o => o.Date_Import == maxDate).ToList();
+            if (list.Count() > 0)
+            {
+                var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+                list = list.Where(o => o.Date_Import == maxDate).ToList();
+            }            
             return list;
         }
         public List<Student_Specification_Log> getReportSpec(string SpecID_ClassID)
@@ -97,8 +100,11 @@ namespace MSS_DEMO.Core.Implement
                         where ((b.Specification_ID == SpecID) && (e.Class_ID == Class_ID))
                         select a)
                         .ToList();
-            var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-            list = list.Where(o => o.Date_Import == maxDate).ToList();
+            if (list.Count() > 0)
+            {
+                var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+                list = list.Where(o => o.Date_Import == maxDate).ToList();
+            }
             return list;
         }
     }
