@@ -32,7 +32,7 @@ namespace MSS_DEMO.Controllers
 
             var listSemes = (from a in context.Semesters
                              select a).ToList();
-            var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            var orderedListSemes = listSemes.OrderBy(x => x.Start_Date).ToList();
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -133,6 +133,7 @@ namespace MSS_DEMO.Controllers
 
             }
             var TotalStudent = (from a in context.Students
+                                where a.Semester_ID == SelectSemester
                                 select a.Roll).Count();
             List<double> temp = new List<double>();
             temp.Add(Campus("", "", SelectSemester));
