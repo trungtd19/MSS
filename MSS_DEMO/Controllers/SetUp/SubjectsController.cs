@@ -30,7 +30,7 @@ namespace MSS_DEMO.Controllers
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 List = unitOfWork.Subject.GetPageList();
-                if (!String.IsNullOrEmpty(SearchString))
+                if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     List = List.Where(s => s.Subject_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }

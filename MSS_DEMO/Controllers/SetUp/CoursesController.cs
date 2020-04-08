@@ -38,7 +38,7 @@ namespace MSS_DEMO.Controllers.SetUp
             if (!String.IsNullOrEmpty(searchCheck))
             {
                LogList = unitOfWork.Courses.GetPageList();
-                if (!String.IsNullOrEmpty(SearchString))
+                if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     LogList = LogList.Where(s => s.Course_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
@@ -74,7 +74,15 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Course_Name,Specification_ID")] Course course, string Specification_Name)
         {
+            SelectSpecID();
+            specList();
+            listSemester();
             if (Specification_Name != "-1" ) course.Specification_ID = int.Parse(Specification_Name);
+            if (unitOfWork.Courses.IsExitsCourse(course.Specification_ID , course.Course_Name))
+            {
+                ViewBag.Message = "This course exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {             
                 unitOfWork.Courses.Insert(course);
@@ -100,7 +108,15 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Course_ID,Course_Name,Specification_ID")]  Course course, string Specification_Name)
         {
+            SelectSpecID();
+            specList();
+            listSemester();
             course.Specification_ID = int.Parse(Specification_Name);
+            if (unitOfWork.Courses.IsExitsCourse(course.Specification_ID, course.Course_Name))
+            {
+                ViewBag.Message = "This course exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {              
                 unitOfWork.Courses.Update(course);

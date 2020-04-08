@@ -35,11 +35,11 @@ namespace MSS_DEMO.Controllers.SetUp
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                if (!String.IsNullOrEmpty(SearchString))
+                if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     List = List.Where(s => s.Courses_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Semester_ID))
+                if (!String.IsNullOrWhiteSpace(model.Semester_ID))
                 {
                     List = List.Where(s => s.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
                 }

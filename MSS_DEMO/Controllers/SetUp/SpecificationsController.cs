@@ -37,7 +37,7 @@ namespace MSS_DEMO.Controllers.SetUp
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 List = unitOfWork.Specifications.GetPageList();
-                if (!String.IsNullOrEmpty(SearchString))
+                if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     List = List.Where(s => s.Specification_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
@@ -72,7 +72,13 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Create(Specification specification)
         {
+            SelectSubjectID();
             if (specification.Subject_ID == NONE) specification.Subject_ID = null;
+            if (unitOfWork.Specifications.IsExitsSpec(specification.Specification_Name))
+            {
+                ViewBag.Error = "This specification exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.Specifications.Insert(specification);
@@ -100,7 +106,13 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Specification specification)
         {
+            SelectSubjectID();
             if (specification.Subject_ID == NONE) specification.Subject_ID = null;
+            if (unitOfWork.Specifications.IsExitsSpec(specification.Specification_Name))
+            {
+                ViewBag.Message = "This specification exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.Specifications.Update(specification);

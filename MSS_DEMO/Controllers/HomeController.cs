@@ -12,8 +12,8 @@ namespace MSS_DEMO.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            MSSWSSoapClient soap = new MSSWSSoapClient();
-            ViewBag.DemoSoap = soap.HelloWorld();
+            //MSSWSSoapClient soap = new MSSWSSoapClient();
+            //ViewBag.DemoSoap = soap.HelloWorld();
             return View();
         }
         public ActionResult Report()

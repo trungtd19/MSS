@@ -32,15 +32,15 @@ namespace MSS_DEMO.Controllers.SetUp
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                if (!String.IsNullOrEmpty(SearchString))
+                if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     students = students.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Semester_ID))
+                if (!String.IsNullOrWhiteSpace(model.Semester_ID))
                 {
                    students = students.Where(s => s.Semester.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Campus))
+                if (!String.IsNullOrWhiteSpace(model.Campus))
                 {
                     var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
                     students = students.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();

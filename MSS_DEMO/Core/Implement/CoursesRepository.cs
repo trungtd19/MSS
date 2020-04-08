@@ -70,6 +70,18 @@ namespace MSS_DEMO.Core.Components
                 return cour;
             }
         }
+        public bool IsExitsCourse(int? spec_ID, string course_Name)
+        {
+            bool check = true;
+            Course student = context.Courses.Where(x => x.Specification_ID == spec_ID && x.Course_Name == course_Name).FirstOrDefault();
+            if (student != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
     }
     public class Course_Spec_Sub : Course
     {

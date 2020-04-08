@@ -41,11 +41,11 @@ namespace MSS_DEMO.Controllers.Log
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {              
-                if (!String.IsNullOrEmpty(SearchString))
+                if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     LogList = LogList.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Date_Import.ToString()))
+                if (!String.IsNullOrWhiteSpace(model.Date_Import.ToString()))
                 {
                     LogList = LogList.Where(s => s.Date_Import == model.Date_Import).ToList();
                 }
@@ -57,12 +57,12 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = model.compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Specification_ID != null).ToList() : LogList = LogList.Where(s => s.Specification_ID == null).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Subject_Name))
+                if (!String.IsNullOrWhiteSpace(model.Subject_Name))
                 {
                     var sub = unitOfWork.Subject.GetAll().Where(x => x.Subject_Name == model.Subject_Name).Select(y => y.Subject_ID).FirstOrDefault();
                     LogList = LogList.Where(s => s.Subject_ID == sub).ToList();
                 }
-                if (!String.IsNullOrEmpty(model.Campus))
+                if (!String.IsNullOrWhiteSpace(model.Campus))
                 {
                     var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
                     LogList = LogList.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();

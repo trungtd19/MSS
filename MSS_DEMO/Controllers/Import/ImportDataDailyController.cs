@@ -49,7 +49,7 @@ namespace MSS_DEMO.Controllers
                     try
                     {
                         string fileExtension = Path.GetExtension(postedFile.FileName);
-                        if (fileExtension != ".csv")
+                        if (fileExtension.ToLower() != ".csv")
                         {
                             messageImport = "Please select the excel file with .csv extension";
                             return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
@@ -121,7 +121,7 @@ namespace MSS_DEMO.Controllers
                     try
                     {
                         string fileExtension = Path.GetExtension(postedFile.FileName);
-                        if (fileExtension != ".csv")
+                        if (fileExtension.ToLower() != ".csv")
                         {
                             messageImport = "Please select the excel file with .csv extension";
                             return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);

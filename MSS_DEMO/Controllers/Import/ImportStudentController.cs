@@ -51,7 +51,7 @@ namespace MSS_DEMO.Controllers
                     try
                     {
                         string fileExtension = Path.GetExtension(postedFile.FileName);
-                        if (fileExtension != ".csv")
+                        if (fileExtension.ToLower() != ".csv")
                         {
                             messageImport = "Please select the csv file with .csv extension";
                             return Json(new { message = messageImport });
@@ -134,13 +134,13 @@ namespace MSS_DEMO.Controllers
             var sb = new StringBuilder(); 
             Type type = typeof(Student);
             var props = type.GetProperties();
-            sb.Append(string.Join(",", "No", "Full Name","Email", "External Id","Subject"));
+            sb.Append(string.Join(",", "No", "Full Name","Email", "External Id","Campus","Subject"));
             sb.Append(Environment.NewLine);
-            sb.Append(string.Join(",", "SE0001", "Full Name SE0001", "FullnameSE0001@fpt.edu.vn", "HRM201c-HN-SE0001", "HRM201c"));
+            sb.Append(string.Join(",", "SE0001", "Full Name SE0001", "FullnameSE0001@fpt.edu.vn", "HRM201c-HN-SE0001","SG","HRM201c"));
             sb.Append(Environment.NewLine);
-            sb.Append(string.Join(",", "SE0002", "Full Name SE0002", "FullnameSE0002@fpt.edu.vn", "SSL201c-SG-SE0002", "SSL201c"));
+            sb.Append(string.Join(",", "SE0002", "Full Name SE0002", "FullnameSE0002@fpt.edu.vn", "SSL201c-SG-SE0002","HN", "SSL201c"));
             sb.Append(Environment.NewLine);
-            sb.Append(string.Join(",", "SE0003", "Full Name SE0003", "FullnameSE0003@fpt.edu.vn", "PMG201c-DN-SE0003", "PMG201c"));
+            sb.Append(string.Join(",", "SE0003", "Full Name SE0003", "FullnameSE0003@fpt.edu.vn", "PMG201c-DN-SE0003","DN", "PMG201c"));
             sb.Append(Environment.NewLine);
             var response = System.Web.HttpContext.Current.Response;
             response.BufferOutput = true;

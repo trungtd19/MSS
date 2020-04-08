@@ -38,5 +38,18 @@ namespace MSS_DEMO.Core.Components
                 return spec;
             }
         }
+        public bool IsExitsSpec(string spec_Name)
+        {
+            bool check = true;
+            Specification student = context.Specifications.Where(x => x.Specification_Name == spec_Name).FirstOrDefault();
+            if (student != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
+
     }
 }
