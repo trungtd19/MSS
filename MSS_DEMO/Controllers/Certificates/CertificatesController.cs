@@ -24,26 +24,44 @@ namespace MSS_DEMO.Controllers.Certificates
                                   where a.Email == session.UserName
                                   select a.Roll).FirstOrDefault();
 
-                var courseList = (from a in context.Student_Course_Log
-                                  where a.Roll == rollNumber && a.Course_ID != null
-                                  select a.Course_ID).Distinct().ToList();
+                var courseList = (from a in context.Students
+                                  join b in context.Subject_Student on a.Roll equals b.Roll
+                                  join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                                  join d in context.Specifications on c.Subject_ID equals d.Subject_ID
+                                  join e in context.Courses on d.Specification_ID equals e.Specification_ID
+                                  where a.Roll == rollNumber && c.Subject_Active == true
+                                  select e).Distinct().ToList();
 
 
                 foreach (var t in courseList)
                 {
                     var courseName = (from a in context.Courses
-                                      where a.Course_ID == t
+                                      where a.Course_ID == t.Course_ID
                                       select a.Course_Name).FirstOrDefault();
                     var link = (from a in context.Certificates
-                                where a.Course_ID == t && a.Roll == rollNumber
+                                where a.Course_ID == t.Course_ID && a.Roll == rollNumber
                                 select a.Link).FirstOrDefault();
                     var subjectName = (from a in context.Courses
                                        join b in context.Specifications on a.Specification_ID equals b.Specification_ID
-                                       where a.Course_ID == t
+                                       where a.Course_ID == t.Course_ID
                                        select b.Specification_Name).FirstOrDefault();
                     courseNameList.Add(new CertificateViewModel {SubjectName = subjectName, CourseName = courseName, Link = link });
                 }
+                var specList = (from a in context.Students
+                                join b in context.Subject_Student on a.Roll equals b.Roll
+                                join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                                join d in context.Specifications on c.Subject_ID equals d.Subject_ID
+                                where a.Roll == rollNumber && c.Subject_Active == true && d.Is_Real_Specification == true
+                                select d).ToList();
+                foreach(var t in specList)
+                {
+                    var link = (from a in context.Certificates
+                                where a.Course_ID == 0 && a.Roll == rollNumber
+                                select a.Link).FirstOrDefault();
+                    courseNameList.Add(new CertificateViewModel { SubjectName = t.Specification_Name, CourseName = t.Specification_Name, Link = link });
+                }
             }
+
 
             CerModel.certificatesModel = courseNameList;
             return View("Index", CerModel);
@@ -61,23 +79,44 @@ namespace MSS_DEMO.Controllers.Certificates
                                   where a.Email == session.UserName
                                   select a.Roll).FirstOrDefault();
 
-                var courseList = (from a in context.Student_Course_Log
-                                  where a.Roll == rollNumber && a.Course_ID != null
-                                  select a.Course_ID).Distinct().ToList();
+                var courseList = (from a in context.Students
+                                  join b in context.Subject_Student on a.Roll equals b.Roll
+                                  join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                                  join d in context.Specifications on c.Subject_ID equals d.Subject_ID
+                                  join e in context.Courses on d.Specification_ID equals e.Specification_ID
+                                  where a.Roll == rollNumber && c.Subject_Active == true
+                                  select e).Distinct().ToList();
+                var semester = (from a in context.Semesters
+                                where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
+                                select a.Semester_ID).FirstOrDefault();
 
 
                 foreach (var t in courseList)
                 {
                     var courseName = (from a in context.Courses
-                                      where a.Course_ID == t
+                                      where a.Course_ID == t.Course_ID
                                       select a.Course_Name).FirstOrDefault();
                     var link = (from a in context.Certificates
-                                where a.Course_ID == t && a.Roll == rollNumber
+                                where a.Course_ID == t.Course_ID && a.Roll == rollNumber
                                 select a.Link).FirstOrDefault();
                     var specId = (from a in context.Courses
-                                  where a.Course_ID == t
+                                  where a.Course_ID == t.Course_ID
                                   select a.Specification_ID).FirstOrDefault();
-                    courseNameList.Add(new CertificateViewModel { CourseName = courseName, Link = link, CourseId = (int)t, SpecID = (int)specId,Roll = rollNumber });
+
+                    courseNameList.Add(new CertificateViewModel { CourseName = courseName, Link = link, CourseId = (int)t.Course_ID, SpecID = (int)specId,Roll = rollNumber, SemesterId = semester });
+                }
+                var specList = (from a in context.Students
+                                join b in context.Subject_Student on a.Roll equals b.Roll
+                                join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                                join d in context.Specifications on c.Subject_ID equals d.Subject_ID
+                                where a.Roll == rollNumber && c.Subject_Active == true && d.Is_Real_Specification == true
+                                select d).ToList();
+                foreach (var t in specList)
+                {
+                    var link = (from a in context.Certificates
+                                where a.Course_ID == 0 && a.Roll == rollNumber
+                                select a.Link).FirstOrDefault();
+                    courseNameList.Add(new CertificateViewModel { SubjectName = t.Specification_Name,CourseId = 0, CourseName = t.Specification_Name, Link = link,Roll = rollNumber, SemesterId = semester,SpecID = t.Specification_ID });
                 }
             }
             CerModel.certificatesModel = courseNameList;
@@ -89,7 +128,8 @@ namespace MSS_DEMO.Controllers.Certificates
                     {
                         int courseId = CerModel.certificatesModel[i].CourseId;
                         string roll = CerModel.certificatesModel[i].Roll;
-                        var Exists = context.Certificates.Any(x => x.Course_ID == courseId && x.Roll == roll);
+                        string semester = CerModel.certificatesModel[i].SemesterId;
+                        var Exists = context.Certificates.Any(x => x.Course_ID == courseId && x.Roll == roll && x.Semester_ID == semester);
                         if (Exists)
                         {
                             var update = context.Certificates.FirstOrDefault(x => x.Course_ID == courseId && x.Roll == roll);
@@ -97,7 +137,7 @@ namespace MSS_DEMO.Controllers.Certificates
                         }
                         else
                         {
-                            context.Certificates.Add(new Certificate { Link = CourseN[i], Date_Submit = DateTime.Now, Roll = CerModel.certificatesModel[i].Roll, Course_ID = CerModel.certificatesModel[i].CourseId, Specification_ID = CerModel.certificatesModel[i].SpecID });
+                            context.Certificates.Add(new Certificate { Link = CourseN[i], Date_Submit = DateTime.Now, Roll = CerModel.certificatesModel[i].Roll, Course_ID = CerModel.certificatesModel[i].CourseId, Specification_ID = CerModel.certificatesModel[i].SpecID, Semester_ID = CerModel.certificatesModel[i].SemesterId });
                         }
                        
                     }

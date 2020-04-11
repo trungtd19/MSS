@@ -2,6 +2,30 @@
 @{
     ViewBag.Title = "CertificateReport";
 }
+<script src="~/Content/FileSaver.js"></script>
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+        //exportTable.find('th').last().remove();
+        exportTable.find('button').each(function (index, elem) { $(elem).remove(); });
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+
+        var fileName = "CertificateReport" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
 <div>
     <h4>
         @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
@@ -32,9 +56,19 @@
                 <div class="col-md-3">
                     @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
                 </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label">Semester</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                </div>
                 <div class="col-md-6">
                     <input class="btn btn-default" type="submit" value="Search" />
                 </div>
+
             </div>
         }
     </div>
@@ -48,8 +82,8 @@
                 <label style="color: green;">Certificate Report</label>
             </h2>
         </div>
-        <h4>Total of the records: @ViewBag.TotalSearch</h4>
-        <table class="table table-bordered">
+        <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        <table class="table table-bordered" id="dataTable">
             <tr>
                 <th>Roll</th>
                 <th>Subject Name</th>
@@ -72,6 +106,10 @@
                 </tr>
             }
         </table>
+    }
+    else
+    {
+        <h4 style="margin-left: auto; margin-right: auto; text-align: center;">No data found</h4>
     }
 
 }

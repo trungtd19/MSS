@@ -5,6 +5,28 @@
 @{
     ViewBag.Title = "Member";
 }
+<script src="~/Content/FileSaver.js"></script>
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+        var fileName = "MemberReport" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
 <div>
     <div>
         <h4>
@@ -29,9 +51,19 @@
                         @Html.TextBox("SearchString")
                         @Html.Hidden("searchCheck", "true")
                     </div>
+                </div>
+                <br /><br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label">Semester</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                    </div>
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
                     </div>
+
                 </div>
             }
         </div>
@@ -40,48 +72,52 @@
 
 @if (Model != null)
 {
-<div>
-    @if (Model.InforList.Count > 0)
-    {
-        <div style="margin-left: auto; margin-right: auto; text-align: center;">
-            <h2>
-                <label style="color: green;">Member Report</label>
-            </h2>
-        </div>
-        <h4>Total of the records: @ViewBag.TotalSearch</h4>
-        <table class="table table-bordered table-striped">
-            <tr>
-                <th>STT</th>
-                <th>Course Name</th>
-                <th>Enrolled</th>
-                <th>Last Active</th>
-                <th>Progress</th>
-                <th>Estimated learning hour</th>
-                <th>Status</th>
-            </tr>
-            @{ int a = 1;}
-            @foreach (var t in Model.InforList)
-            {
+    <div>
+        @if (Model.InforList.Count > 0)
+        {
+            <div style="margin-left: auto; margin-right: auto; text-align: center;">
+                <h2>
+                    <label style="color: green;">Member Report</label>
+                </h2>
+            </div>
+            <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+            <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
-                    <th>@(a++)</th>
-                    <th>@Html.DisplayFor(m => t.Course_Name)</th>
-                    <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
-                    <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
-                    <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
-                    <th>@Html.DisplayFor(m => t.Estimated)</th>
-                    @if (t.Completed)
-                    {
-                        <th><span style="color:green;">Completed</span></th>
-                    }
-                    else
-                    {
-                        <th><span style="color:red;">Incomplete</span></th>
-                    }
+                    <th>STT</th>
+                    <th>Course Name</th>
+                    <th>Enrolled</th>
+                    <th>Last Active</th>
+                    <th>Progress</th>
+                    <th>Estimated learning hour</th>
+                    <th>Status</th>
                 </tr>
-            }
-        </table>
-    }
-</div>
+                @{ int a = 1;}
+                @foreach (var t in Model.InforList)
+                {
+                    <tr>
+                        <th>@(a++)</th>
+                        <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                        <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
+                        <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
+                        <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
+                        <th>@Html.DisplayFor(m => t.Estimated)</th>
+                        @if (t.Completed)
+                        {
+                            <th><span style="color:green;">Completed</span></th>
+                        }
+                        else
+                        {
+                            <th><span style="color:red;">Incomplete</span></th>
+                        }
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">No data found</h4>
+        }
+    </div>
 }
 <br />
 

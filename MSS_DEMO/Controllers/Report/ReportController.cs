@@ -45,7 +45,10 @@ namespace MSS_DEMO.Controllers
 
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
-                SelectSemester = orderedListSemes[0].Semester_ID;
+                //SelectSemester = orderedListSemes[0].Semester_ID;
+                SelectSemester = (from a in context.Semesters
+                                  where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
+                                  select a.Semester_ID).FirstOrDefault();
             }
 
             var starDate = (from a in context.Semesters
@@ -217,12 +220,27 @@ namespace MSS_DEMO.Controllers
             return View(rp);
         }
 
-        public ActionResult Enrollment(ListStudent ls,string searchString, string searchCheck, string selectString2, string selectString3)
+        public ActionResult Enrollment(ListStudent ls,string searchString, string searchCheck, string SelectCampus, string SelectSubject, string SelectSemester)
         {
             var context = new MSSEntities();
             List<string> NoEnrollment = new List<string>();
             List<ListStudent> s = new List<ListStudent>();
             List<string> NotRequiredCourse = new List<string>();
+
+            List<SelectListItem> selectSemes = new List<SelectListItem>();
+
+            var listSemes = (from a in context.Semesters
+                             select a).ToList();
+            var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            foreach (var a in orderedListSemes)
+            {
+                selectSemes.Add(new SelectListItem
+                {
+                    Text = a.Semester_Name,
+                    Value = a.Semester_ID
+                });
+            }
+            ViewBag.SelectSemester = selectSemes;
 
             var CourseStudent = (from a in context.Student_Course_Log
                                  select new
@@ -292,7 +310,7 @@ namespace MSS_DEMO.Controllers
                 foreach (var b in NoEnrollment)
                 {
                     List<ListStudent> infoStudent = (from c in context.Students
-                                                     where c.Roll == b
+                                                     where c.Roll == b && c.Semester_ID == SelectSemester
                                                      select new
                                                      {
                                                          Email = c.Email,
@@ -309,7 +327,7 @@ namespace MSS_DEMO.Controllers
                     List<string> subjectStudent =   (from c in context.Students
                                                      join d in context.Subject_Student on c.Roll equals d.Roll
                                                      join e in context.Subjects on d.Subject_ID equals e.Subject_ID
-                                                     where c.Roll == b
+                                                     where c.Roll == b && c.Semester_ID == SelectSemester
                                                      select e.Subject_Name).ToList();
 
                                 
@@ -322,7 +340,7 @@ namespace MSS_DEMO.Controllers
                 foreach (var b in NotRequiredCourse)
                 {
                     List<ListStudent> infoStudent = (from c in context.Students
-                                                     where c.Roll == b
+                                                     where c.Roll == b && c.Semester_ID == SelectSemester
                                                      select new
                                                      {
                                                          Email = c.Email,
@@ -339,7 +357,7 @@ namespace MSS_DEMO.Controllers
                     List<string> subjectStudent = (from c in context.Students
                                                    join d in context.Subject_Student on c.Roll equals d.Roll
                                                    join e in context.Subjects on d.Subject_ID equals e.Subject_ID
-                                                   where c.Roll == b
+                                                   where c.Roll == b && c.Semester_ID == SelectSemester
                                                    select e.Subject_Name).ToList();
 
 
@@ -354,13 +372,13 @@ namespace MSS_DEMO.Controllers
                 {
                     s = s.Where(a => a.Roll.Contains(searchString)).ToList();        
                 }
-                if (!String.IsNullOrEmpty(selectString2))
+                if (!String.IsNullOrEmpty(SelectCampus))
                 {
-                    s = s.Where(a => a.Campus.Contains(selectString2)).ToList();
+                    s = s.Where(a => a.Campus.Contains(SelectCampus)).ToList();
                 }
-                if (!String.IsNullOrEmpty(selectString3))
+                if (!String.IsNullOrEmpty(SelectSubject))
                 {
-                    s = s.Where(a => a.ListSubject.Contains(selectString3)).ToList();
+                    s = s.Where(a => a.ListSubject.Contains(SelectSubject)).ToList();
                 }
             }
 
@@ -397,8 +415,8 @@ namespace MSS_DEMO.Controllers
                     Value = a
                 });
             }
-            ViewBag.SelectString3 = selectSj;
-            ViewBag.SelectString2 = selectCp;
+            ViewBag.SelectSubject = selectSj;
+            ViewBag.SelectCampus = selectCp;
             ls.ls1 = s;
 
             ViewBag.TotalSearch = s.Count();
@@ -406,15 +424,31 @@ namespace MSS_DEMO.Controllers
             return View("Enrollment", ls);
         }
 
-        public ActionResult Member(InfoStudent Info, string searchString, string searchCheck)
+        public ActionResult Member(InfoStudent Info, string searchString, string searchCheck, string SelectSemester)
         {
             var context = new MSSEntities();
             List<InfoStudent> infoOfStudent = new List<InfoStudent>();
             //List<InfoStudent> distinctList = new List<InfoStudent>();
+
+            List<SelectListItem> selectSemes = new List<SelectListItem>();
+
+            var listSemes = (from a in context.Semesters
+                             select a).ToList();
+            var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            foreach (var a in orderedListSemes)
+            {
+                selectSemes.Add(new SelectListItem
+                {
+                    Text = a.Semester_Name,
+                    Value = a.Semester_ID
+                });
+            }
+            ViewBag.SelectSemester = selectSemes;
+
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 infoOfStudent = (from a in context.Student_Course_Log
-                                 where a.Roll == searchString
+                                 where a.Roll == searchString && a.Semester_ID == SelectSemester
                                  select new
                                  {
                                      Course_Name = a.Course_Name,
@@ -439,26 +473,39 @@ namespace MSS_DEMO.Controllers
             return View("Member", Info);
         }
 
-        public ActionResult NotRequiredCourse(ListNotRequiredCourse lc, string SelectString, string searchCheck)
+        public ActionResult NotRequiredCourse(ListNotRequiredCourse lc, string SelectString, string searchCheck, string SelectSemester)
         {
             var context = new MSSEntities();
             List<ListNotRequiredCourse> listNotRequiredCourses = new List<ListNotRequiredCourse>();
 
             var NotRequired = (from a in context.Student_Course_Log
-                               where a.Course_ID == null
+                               where a.Course_ID == null && a.Semester_ID == SelectSemester
                                select a.Course_Name).Distinct().ToList();
 
-           
+            List<SelectListItem> selectSemes = new List<SelectListItem>();
+
+            var listSemes = (from a in context.Semesters
+                             select a).ToList();
+            var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            foreach (var a in orderedListSemes)
+            {
+                selectSemes.Add(new SelectListItem
+                {
+                    Text = a.Semester_Name,
+                    Value = a.Semester_ID
+                });
+            }
+            ViewBag.SelectSemester = selectSemes;
 
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 foreach (var a in NotRequired)
                 {
                     var completed = (from b in context.Student_Course_Log
-                                     where b.Course_Name == a && b.Completed == true && b.Course_ID == null
+                                     where b.Course_Name == a && b.Completed == true && b.Course_ID == null && b.Semester_ID == SelectSemester
                                      select b.Roll).Distinct().Count();
                     var notCompleted = (from b in context.Student_Course_Log
-                                        where b.Course_Name == a && b.Completed == false && b.Course_ID == null
+                                        where b.Course_Name == a && b.Completed == false && b.Course_ID == null && b.Semester_ID == SelectSemester
                                         select b.Roll).Distinct().Count();
                     listNotRequiredCourses.Add(new ListNotRequiredCourse { Name = a, Complelted = completed, NotComplelted = notCompleted });
                 }
@@ -490,16 +537,32 @@ namespace MSS_DEMO.Controllers
             return View("NotRequiredCourse", lc);
         }
 
-        public ActionResult CertificateReport(CertificateViewModel cv, string searchCheck,string SearchString, string SelectString)
+        public ActionResult CertificateReport(CertificateViewModel cv, string searchCheck,string SearchString, string SelectString, string SelectSemester)
         {
             var context = new MSSEntities();
             var rollList = (from a in context.Certificates
                             select a.Roll).Distinct().ToList();
             List<CertificateViewModel> certificate = new List<CertificateViewModel>();
 
+            List<SelectListItem> selectSemes = new List<SelectListItem>();
+
+            var listSemes = (from a in context.Semesters
+                             select a).ToList();
+            var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            foreach (var a in orderedListSemes)
+            {
+                selectSemes.Add(new SelectListItem
+                {
+                    Text = a.Semester_Name,
+                    Value = a.Semester_ID
+                });
+            }
+            ViewBag.SelectSemester = selectSemes;
+
             if (!String.IsNullOrEmpty(searchCheck))
             {
                  certificate = (from a in context.Certificates
+                                where a.Semester_ID == SelectSemester
                                    select new
                                    {
                                        Link = a.Link,
@@ -563,7 +626,6 @@ namespace MSS_DEMO.Controllers
             var report = new ActionAsPdf("Index");
             return report;
         }
-
 
         private int Count(string subject, string campus, string dateImport)
         {

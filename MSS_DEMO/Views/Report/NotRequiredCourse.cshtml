@@ -5,6 +5,32 @@
 @{
     ViewBag.Title = "NotRequiredCourse";
 }
+
+<script src="~/Content/FileSaver.js"></script>
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+        //exportTable.find('th').last().remove();
+        //exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
+        //exportTable.find('a').each(function (index, elem) { $(elem).remove(); });
+
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+        var fileName = "NotRequiredCourseReport" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
 <div>
     <div>
         <h4>
@@ -21,53 +47,66 @@
 
             @using (Html.BeginForm("NotRequiredCourse", "Report", FormMethod.Get))
             {
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Search by Completed </label>
-                    </div>
-                    <div class="col-md-3">
-                        @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.Hidden("searchCheck", "true")
-                    </div>
-                    <div class="col-md-6">
-                        <input class="btn btn-default" type="submit" value="Search" />
-                    </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by Completed </label>
                 </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.Hidden("searchCheck", "true")
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label">Semester</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                </div>
+                <div class="col-md-6">
+                    <input class="btn btn-default" type="submit" value="Search" />
+                </div>
+
+            </div>
             }
         </div>
     </div>
 </div>
 @if (Model != null)
 {
-<div>
-    @if (Model.lc1.Count > 0)
-    {
-        <div style="margin-left: auto; margin-right: auto; text-align: center;">
-            <h2>
-                <label style="color: green;">Not Required Course Report</label>
-            </h2>
-        </div>
-        <h4>Total of the records: @ViewBag.TotalSearch</h4>
-        <table class="table table-bordered table-striped">
-            <tr>
-                <th>STT</th>
-                <th>Course Name</th>
-                <th>Number Student Completed</th>
-                <th>Number Student Not Completed</th>
-            </tr>
-            @{ int a = 1;}
-            @foreach (var t in Model.lc1)
-            {
+    <div>
+        @if (Model.lc1.Count > 0)
+        {
+            <div style="margin-left: auto; margin-right: auto; text-align: center;">
+                <h2>
+                    <label style="color: green;">Not Required Course Report</label>
+                </h2>
+            </div>
+            <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+            <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
-                    <th>@(a++)</th>
-                    <th>@Html.DisplayFor(m => t.Name)</th>
-                    <th>@Html.DisplayFor(m => t.Complelted)</th>
-                    <th>@Html.DisplayFor(m => t.NotComplelted)</th>
+                    <th>STT</th>
+                    <th>Course Name</th>
+                    <th>Number Student Completed</th>
+                    <th>Number Student Not Completed</th>
                 </tr>
-            }
-        </table>
-    }
-</div>
+                @{ int a = 1;}
+                @foreach (var t in Model.lc1)
+                {
+                    <tr>
+                        <th>@(a++)</th>
+                        <th>@Html.DisplayFor(m => t.Name)</th>
+                        <th>@Html.DisplayFor(m => t.Complelted)</th>
+                        <th>@Html.DisplayFor(m => t.NotComplelted)</th>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">No data found</h4>
+        }
+    </div>
 }
 <br />
-
