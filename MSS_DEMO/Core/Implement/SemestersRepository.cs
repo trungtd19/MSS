@@ -41,6 +41,28 @@ namespace MSS_DEMO.Core.Components
             string date = Convert.ToDateTime(dateTime).ToString("dd/MM/yyyy");
             return date;
         }
+        public string checkDateOfSemester(string dateImport)
+        {
+            DateTime _dateImport = DateTime.Parse(dateImport);     
+            var semester = context.Semesters.Where(sem => sem.Start_Date < _dateImport && sem.End_Date > _dateImport).FirstOrDefault();
+            if (semester == null)
+            {
+                throw new Exception("Imported date error!");
+            }
+            return semester.Semester_ID;
+        }
+        public bool IsExitsSemester(string semID, string semName)
+        {
+            bool check = true;
+            Semester sem = context.Semesters.Where(x => x.Semester_ID == semID || x.Semester_Name == semName).FirstOrDefault();
+            if (sem != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
     }
     public class _Semester : Semester
     {

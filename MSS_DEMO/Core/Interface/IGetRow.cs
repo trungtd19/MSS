@@ -12,8 +12,8 @@ namespace MSS_DEMO.Core.Interface
     {
         Student GetStudent(List<string> row, string semester);
         Class_Student GetClassStudent(List<string> row);
-        Subject_Student GetSubjectStudent(List<string> row);
-        Student_Specification_Log GetStudentSpec(List<string> row, int userID, string dateImport, List<Specification> listIdSubject);
-        Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs);
+        Subject_Student GetSubjectStudent(List<string> row, string semester);
+        Student_Specification_Log GetStudentSpec(List<string> row, int userID, string dateImport, List<Specification> listIdSubject, string semesterID);
+        Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID);
     }
 }

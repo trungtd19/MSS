@@ -61,14 +61,15 @@ namespace MSS_DEMO.Controllers
                             {
                                     string[] headers = sreader.ReadLine().Split(','); 
                                     var listCoureseName = unitOfWork.Courses.GetList();
+                                    string semesterID = unitOfWork.Semesters.checkDateOfSemester(_dateImport);
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0]))
+                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0], semesterID))
                                         {
                                             continue;
                                         }
-                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName));
+                                        unitOfWork.CoursesLog.Insert(getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName, semesterID));
                                     countLog++;
                                     }
                             }
@@ -133,14 +134,15 @@ namespace MSS_DEMO.Controllers
                             {
                                     string[] headers = sreader.ReadLine().Split(',');
                                     var listIdSubject = unitOfWork.Specifications.GetAll();
+                                    string semesterID = unitOfWork.Semesters.checkDateOfSemester(_dateImport);
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0]))
+                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0], semesterID))
                                         {
                                             continue;
                                         }
-                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows, userID, _dateImport, listIdSubject));
+                                        unitOfWork.SpecificationsLog.Insert(getRow.GetStudentSpec(rows, userID, _dateImport, listIdSubject, semesterID));
                                     countLog++;
                                     }                                                           
                             }

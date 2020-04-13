@@ -16,21 +16,24 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Course_ID)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Course_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Course_Name, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
-            <label style="color:red" id="checkName" hidden> This field is a required </label>
-        </div>
-    </div>
+
 
     <div class="form-group">
         <label class="control-label col-md-2">Specification_Name</label>
         <div class="col-md-10">
-            @Html.DropDownList("Specification_Name", null, htmlAttributes: new { @class = "form-control", @required ="true" })
+            @Html.DropDownList("Specification_Name", null, htmlAttributes: new { @class = "form-control", @required = "true" })
             <label style="color:red" id="checkSpec" hidden> This field is a required </label>
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Course_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Course_Name, new { htmlAttributes = new { @class = "form-control", @required = "true", @style = "max-width: 800px;, width:800px;" } })
+            <label style="color:red" id="checkName" hidden> This field is a required </label>
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input id="btn" type="submit" value="Save" class="btn btn-default" />

@@ -20,81 +20,82 @@
     </div>
     <div class="col-md-2">
         @Html.ActionLink("Export Usage Report", "Export_Usage", "Student_Course_Log")
-    </div> 
+    </div>
 </div>
-<br/>
-    @using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
-    {
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-6">
+<br />
+@using (Html.BeginForm("Index", "Student_Course_Log", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <div class="form-group">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Email</label>
-                                        <div class="col-md-9 col-xs-12">
-                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
-                                            @Html.Hidden("searchCheck", "true")
-                                        </div>
+                                    <label class="col-md-3 control-label">Email</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+                                        @Html.Hidden("searchCheck", "true")
                                     </div>
-                                    <br />
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Imported date</label>
-                                        <div class="col-md-9 col-xs-12">
-                                            @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
-                                        </div>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Imported date</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
                                     </div>
-                                    <br />
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Compulsory</label>
-                                        <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("compulsoryCourse", listCompulsory, "--- All ---", new { @name = "compulsoryCourse", @class = "form-control select" })
-                                        </div>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Compulsory</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("compulsoryCourse", listCompulsory, "--- All ---", new { @name = "compulsoryCourse", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <div class="form-group">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Subject</label>
-                                        <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
-                                        </div>
+                                    <label class="col-md-3 control-label">Subject</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="form-group">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Completed</label>
-                                        <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("completedCourse", listCompleted, "--- All ---", new { @name = "completedCourse", @class = "form-control select" })
-                                        </div>
+                                    <label class="col-md-3 control-label">Completed</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("completedCourse", listCompleted, "--- All ---", new { @name = "completedCourse", @class = "form-control select" })
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="form-group">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Campus</label>
-                                        <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Campus", listCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
-                                        </div>
+                                    <label class="col-md-3 control-label">Campus</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("Campus", listCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer text-center">
-                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
-                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <button class="btn btn-success" type="submit"><i class="fa fa-search"></i>Search</button>
                 </div>
             </div>
         </div>
-    }
-    <span style="color: red;">@ViewBag.Nodata</span>
-    @if (Model.PageList.PageCount != 0)
-    {
-        int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
-        <label>Total of the records: @ViewBag.Count</label>
+    </div>
+}
+<span style="color: red;">@ViewBag.Nodata</span>
+@if (Model.PageList.PageCount != 0)
+{
+    int stt = 1 + (pagenumber - 1) * Model.PageList.PageSize;
+    <label>Total of the records: @ViewBag.Count</label>
+    <div style="overflow-x: auto;" class="drag">
         <div class="table-responsive text-nowrap">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -105,6 +106,9 @@
                         </th>
                         <th>
                             Subject ID
+                        </th>
+                        <th>
+                            Course Name
                         </th>
                         <th>
                             Campus
@@ -156,69 +160,92 @@
                         var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
                         string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
-                    <tr>
-                        <td>@(stt++)</td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Subject_ID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Campus)
-                        </td>
-                        <td>
-                            @Course_Enrollment_Time
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Start_Time)
-                        </td>
-                        <td>
-                            @Last_Course_Activity_Time
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Overall_Progress)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estimated)
-                        </td>
-                        <td>
-                            @complete
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Name)
-                        </td>
-                        <td>
-                            @completeTime
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Grade)
-                        </td>
-                        <td>
-                            @date
-                        </td>
-                    </tr>
+                        string Course_Start_Time = Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
+                        <tr>
+                            <td>@(stt++)</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Subject_ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Course_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Campus)
+                            </td>
+                            <td>
+                                @Course_Enrollment_Time
+                            </td>
+                            <td>
+                                @Course_Start_Time
+                            </td>
+                            <td>
+                                @Last_Course_Activity_Time
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Overall_Progress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Estimated)
+                            </td>
+                            <td>
+                                @complete
+                            </td>
+                            <td>
+                                @status
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Program_Slug)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Program_Name)
+                            </td>
+                            <td>
+                                @completeTime
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Course_Grade)
+                            </td>
+                            <td>
+                                @date
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
         </div>
+        </div>
         <label>Page </label> @pagenumber <label> of </label> @pagecount
-    }
-    @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
-     new
-     {
-         page,
-         Email = Model.Email,
-         Date_Import = Model.Date_Import,
-         compulsoryCourse = Model.compulsoryCourse,
-         completedCourse = Model.completedCourse,
-         Subject_Name = Model.Subject_Name,
-         Campus = Model.Campus,
-         searchCheck = "true"
-     }))
+        }
+        @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+         new
+         {
+             page,
+             Email = Model.Email,
+             Date_Import = Model.Date_Import,
+             compulsoryCourse = Model.compulsoryCourse,
+             completedCourse = Model.completedCourse,
+             Subject_Name = Model.Subject_Name,
+             Campus = Model.Campus,
+             searchCheck = "true"
+         }))
+<script>
+     var mx = 0;
+
+        $(".drag").on({
+            mousemove: function (e) {
+                var mx2 = e.pageX - this.offsetLeft;
+                if (mx) this.scrollLeft = this.sx + mx - mx2;
+            },
+            mousedown: function (e) {
+                this.sx = this.scrollLeft;
+                mx = e.pageX - this.offsetLeft;
+            }
+        });
+
+        $(document).on("mouseup", function () {
+            mx = 0;
+        });
+</script>

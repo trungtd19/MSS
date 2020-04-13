@@ -66,20 +66,20 @@ namespace MSS_DEMO.Controllers
                                     List<string> rows = csv.RegexRow(sreader);
                                     //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID)
                                     //    || 
-                                    if (unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
+                                    if (unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows, semester).Subject_ID))
                                     {
-                                        if (unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester).Roll)
-                                            && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows).Subject_ID))
+                                        if (unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester).Roll, semester)
+                                            && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows, semester).Subject_ID))
                                         {
-                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));
+                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows, semester));
                                             // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                             countSuccess++;
                                         }
                                         else
-                                        if (!unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester).Roll))
+                                        if (!unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester).Roll, semester))
                                         {
                                             unitOfWork.Students.Insert(getRow.GetStudent(rows, semester));
-                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows));
+                                            unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows, semester));
                                             //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                             countSuccess++;
                                         }

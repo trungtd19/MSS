@@ -16,6 +16,10 @@ namespace MSS_DEMO.Core.Implement
         public List<Cour_dealine> GetPageList()
         {
             List<Cour_dealine> cour = new List<Cour_dealine>();
+            if (context.Course_Deadline.Count() == 0)
+            {
+                return cour;
+            }
             int coursesCount = 1;
             int growRow = 1;
             int growRowNo = 1;

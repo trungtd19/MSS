@@ -101,10 +101,11 @@
 
         @foreach (var item in Model.PageList)
         {
+            var id = item.Roll + "^" +item.Semester.Semester_ID;
     <tr>
         <td>@(stt++)</td>
         <td>
-            @Html.ActionLink(item.Roll, "Details", new { id = item.Roll })
+            @Html.ActionLink(item.Roll, "Details", new { id = id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Full_Name)

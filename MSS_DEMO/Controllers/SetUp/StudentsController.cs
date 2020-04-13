@@ -68,15 +68,9 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public ActionResult Details(string id)
         {
-            StringBuilder sb = new StringBuilder();
-            var subject = unitOfWork.SubjectStudent.GetAll().Where(s => s.Roll == id).ToList();
-            foreach (var _subject in subject)
-            {
-                sb.Append(" - " + _subject.Subject_ID);
-            }
-            sb.Remove(0, 2);
-            ViewBag.Subject = sb;
-            var student = unitOfWork.Students.GetById(id);
+       
+            ViewBag.Subject = unitOfWork.SubjectStudent.getListSubject(id);
+            var student = unitOfWork.Students.getByRollAndSemester(id);
             return View(student);
         }
         public ActionResult Create()
@@ -95,25 +89,26 @@ namespace MSS_DEMO.Controllers.SetUp
             list = new Subject_Student
             {
                 Subject_ID = Subject_ID,
-                Roll = student.Roll
+                Roll = student.Roll,
+                Semester_ID = student.Semester_ID
             };
             if (ModelState.IsValid)
             {
                 if (unitOfWork.Subject.CheckExitsSubject(Subject_ID))
                 {
-                    if (unitOfWork.Students.IsExtisStudent(student.Roll)
+                    if (unitOfWork.Students.IsExtisStudent(student.Roll, student.Semester_ID)
                         && unitOfWork.Subject.IsExitsSubject(Subject_ID))
                     {
                         if (unitOfWork.SubjectStudent.IsExitsSubjectStudent(student.Roll, Subject_ID))
                         {
                             ViewBag.Error = "Student  " + student.Roll + " has registered for subject " + Subject_ID;
-                            return View();
+                            return View(new Student());
                         }
                         unitOfWork.SubjectStudent.Insert(list);
                         // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                     }
                     else
-                    if (!unitOfWork.Students.CheckExitsStudent(student.Roll))
+                    if (!unitOfWork.Students.IsExtisStudent(student.Roll, student.Semester_ID))
                     {
                         unitOfWork.Students.Insert(student);
                         unitOfWork.SubjectStudent.Insert(list);
@@ -140,7 +135,7 @@ namespace MSS_DEMO.Controllers.SetUp
                 _cam.Add(c);
             }
             ViewBag.Campus_ID = new SelectList(_cam, "Campus_ID", "Campus_Name");
-            var student = unitOfWork.Students.GetById(id);
+            var student = unitOfWork.Students.getByRollAndSemester(id);
             return View(student);
         }
 
@@ -167,7 +162,7 @@ namespace MSS_DEMO.Controllers.SetUp
             //}
             //sb.Remove(0, 2);
             //ViewBag.Subject = sb;
-            var student = unitOfWork.Students.GetById(id);
+            var student = unitOfWork.Students.getByRollAndSemester(id);
             return View(student);
         }
 
@@ -175,11 +170,11 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            var student = unitOfWork.Students.GetById(id);
+            var student = unitOfWork.Students.getByRollAndSemester(id);
             var subject = unitOfWork.SubjectStudent.GetAll();
             foreach (var _subject in subject)
             {
-                if (_subject.Roll == id)
+                if ((_subject.Roll == student.Roll) && (_subject.Semester_ID == student.Semester_ID))
                 {
                     unitOfWork.SubjectStudent.Delete(_subject);
                 }
@@ -221,30 +216,43 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult GetID()
         {
             string roll = Request["roll"];
-            if (unitOfWork.Students.IsExtisStudent(roll))
+            string semesterID = Request["semesterID"]; 
+            if (unitOfWork.Students.IsExtisStudent(roll, semesterID))
             {
                 return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
             }
             else
                 return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DeleteListSubject(string Subject_ID)
+        public ActionResult DeleteListSubject(string Subject_ID, string Semester_ID)
         {
-            string mess = "";
-            if (!string.IsNullOrEmpty(Subject_ID))
+            string message = "";
+            if (!string.IsNullOrEmpty(Subject_ID) && !string.IsNullOrEmpty(Subject_ID))
             {
-                mess = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID);
+                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID);
+            }
+            else
+            {
+                message = "Chooese Subject and Semester please!";
             }
             List<Subject> sub = unitOfWork.Subject.GetAll();
             List<Subject> _sub = new List<Subject>();
             _sub.Add(new Subject { Subject_ID = "", Subject_Name = "--- Choose Subject ---" });
-            foreach (var sem in sub)
+            foreach (var s in sub)
             {
-                _sub.Add(sem);
+                _sub.Add(s);
             }
+            List<Semester> semester = unitOfWork.Semesters.GetAll();
+            List<Semester> _semester = new List<Semester>();
+            _semester.Add(new Semester { Semester_ID = "", Semester_Name = "--- Choose Semester ---" });
+            foreach (var sem in semester)
+            {
+                _semester.Add(sem);
+            }
+            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
             ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
-            ViewBag.mess = mess;
-            return View(unitOfWork.SubjectStudent.GetAll());
+            ViewBag.mess = message;
+            return View();
         }
         public void GetListSelect()
         {

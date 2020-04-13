@@ -17,6 +17,7 @@ namespace MSS_DEMO.Models
         public int ID { get; set; }
         public string Subject_ID { get; set; }
         public string Roll { get; set; }
+        public string Semester_ID { get; set; }
     
         public virtual Student Student { get; set; }
         public virtual Subject Subject { get; set; }

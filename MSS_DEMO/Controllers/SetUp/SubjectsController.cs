@@ -61,8 +61,13 @@ namespace MSS_DEMO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Subject_ID,Subject_Name")] Subject subject)
+        public ActionResult Create([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
         {
+            if (unitOfWork.Subject.IsExitsSubject(subject.Subject_ID))
+            {
+                ViewBag.Error = "This subject exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.Subject.Insert(subject);
@@ -84,6 +89,11 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
         {
+            if (unitOfWork.Subject.IsExitsSubject(subject.Subject_ID))
+            {
+                ViewBag.Error = "This subject exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.Subject.Update(subject);

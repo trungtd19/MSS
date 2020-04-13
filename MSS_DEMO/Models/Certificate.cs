@@ -20,6 +20,7 @@ namespace MSS_DEMO.Models
         public string Roll { get; set; }
         public Nullable<int> Course_ID { get; set; }
         public Nullable<int> Specification_ID { get; set; }
+        public string Semester_ID { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Specification Specification { get; set; }

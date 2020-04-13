@@ -10,58 +10,58 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Student</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Roll, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Roll, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
-                <label style="color:red"  id="checkRoll" hidden> This field is a required </label>
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Full_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
-                <label style="color:red"  id="checkName" hidden> This field is a required </label>
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" , @required ="true"} })
-                <label style="color:red" id="checkEmail" hidden> This field is a required </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Campus</label>
-            <div class="col-md-10">
-                @Html.DropDownList("Campus_ID", null, htmlAttributes: new { @class = "form-control" , @required ="true"})
-                <label style="color:red" id="checkCampus" hidden> This field is a required </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Semester</label>
-            <div class="col-md-10">
-                @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control", @required ="true" })
-                <label style="color:red"  id="checkSemester" hidden> This field is a required </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Subject</label>
-            <div class="col-md-10">
-                @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control", @required ="true" })
-                <label style="color:red"  id="checkSubject" hidden> This field is a required </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="btn" type="submit" value="Create" class="btn btn-default" />
-            </div>
+<div class="form-horizontal">
+    <h4>Student</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <label class="control-label col-md-2">Semester</label>
+        <div class="col-md-10">
+            @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
+            <label style="color:red" id="checkSemester" hidden> This field is a required </label>
         </div>
     </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Roll, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Roll, new { htmlAttributes = new { @class = "form-control", @required = "true" } })
+            <label style="color:red" id="checkRoll" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Full_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control", @required = "true" } })
+            <label style="color:red" id="checkName" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @required = "true" } })
+            <label style="color:red" id="checkEmail" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Campus</label>
+        <div class="col-md-10">
+            @Html.DropDownList("Campus_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
+            <label style="color:red" id="checkCampus" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Subject</label>
+        <div class="col-md-10">
+            @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
+            <label style="color:red" id="checkSubject" hidden> This field is a required </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="btn" type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 <span style="color:red;">@ViewBag.Error</span>
 <div>
@@ -70,8 +70,10 @@
 <script>
         $("#Roll").focusout(function () {
             var roll = $("#Roll").val();
+            var semester = $("#Semester_ID").val();
             var formData = new FormData();
             formData.append("roll", roll);
+            formData.append("semesterID", semester);
             $.ajax({
                 url: '@Url.Action("GetID","Students")',
                 type: 'POST',
@@ -93,11 +95,9 @@
                                     $("#Email").prop("disabled", true)
                                     $("#Full_Name").prop("disabled", true)
                                     $("#Campus_ID").prop("disabled", true)
-                                    $("#Semester_ID").prop("disabled", true)
                                     $("#Email").val(" ")
                                     $("#Full_Name").val(" ")
                                     $("#Campus_ID").val(" ")
-                                    $("#Semester_ID").val(" ")
                                 } else {
                                     $("#Roll").val("")
                                 }
@@ -107,7 +107,6 @@
                          $("#Email").removeAttr("disabled")
                          $("#Full_Name").removeAttr("disabled")
                          $("#Campus").removeAttr("disabled")
-                         $("#Semester_ID").removeAttr("disabled")
                     }
                  }
                  }).done(function () {

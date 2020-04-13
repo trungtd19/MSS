@@ -40,6 +40,10 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Campus_ID,Campus_Name,Address,Contact_Point")] Campu campu)
         {
+            if (unitOfWork.Campus.IsExitsCampus(campu.Campus_ID, campu.Campus_Name)){
+                ViewBag.Error = "This campus exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.Campus.Insert(campu);
@@ -60,6 +64,11 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Campus_ID,Campus_Name,Address,Contact_Point")] Campu campu)
         {
+            if (unitOfWork.Campus.IsExitsCampus(campu.Campus_ID, campu.Campus_Name))
+            {
+                ViewBag.Error = "This campus exits!";
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 unitOfWork.Campus.Update(campu);
@@ -89,7 +98,11 @@ namespace MSS_DEMO.Controllers
         {
             var campu = unitOfWork.Campus.GetById(id);
             unitOfWork.Campus.Delete(campu);
-            unitOfWork.Save();
+            if (!unitOfWork.Save())
+            {
+                ViewBag.mess = "Can't delete this campus!";
+                return View(campu);
+            }
             return RedirectToAction("Index");
         }
     }

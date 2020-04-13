@@ -16,6 +16,10 @@ namespace MSS_DEMO.Core.Components
         public List<Cours_Spec> GetPageList()
         {
             List<Cours_Spec> cour = new List<Cours_Spec>();
+            if (context.Courses.Count() == 0)
+            {
+                return cour;
+            }
             int coursesCount = 1;
             int growRow = 1;
             int growRowNo = 1;

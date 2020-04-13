@@ -39,16 +39,26 @@
             @Html.DisplayFor(model => model.Campus)
         </dd>
         <dt>
-            Subject: 
+            Subject
         </dt>
 
         <dd>
             @ViewBag.Subject
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Semester_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semester_ID)
+        </dd>
     </dl>
 </div>
+@{ 
+    var id = Model.Roll + "^" + Model.Semester.Semester_ID;
+}
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Roll }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.Roll }) |
+    @Html.ActionLink("Edit", "Edit", new { id = id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

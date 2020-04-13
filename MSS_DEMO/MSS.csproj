@@ -431,7 +431,6 @@
     <Content Include="Views\Report\Enrollment.cshtml" />
     <Content Include="Views\Report\Member.cshtml" />
     <Content Include="Views\Login\Logout.cshtml" />
-    <Content Include="Views\Courses\EditDeadline.cshtml" />
     <Content Include="Views\Shared\401.cshtml" />
     <Content Include="Views\Home\Report.cshtml" />
     <Content Include="Views\Login\Logout.cshtml" />

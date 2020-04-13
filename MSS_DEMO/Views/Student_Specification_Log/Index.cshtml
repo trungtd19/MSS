@@ -5,7 +5,7 @@
 }
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Report", "Report", "Home") > Specialization Report</span>
-<hr/>
+<hr />
 @{
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
@@ -22,7 +22,7 @@
         @Html.ActionLink("Export Specification Report", "Export_Specification", "Student_Specification_Log")
     </div>
 </div>
-<br/>
+<br />
 @using (Html.BeginForm("Index", "Student_Specification_Log", FormMethod.Get))
 {
     <div class="row">
@@ -93,132 +93,152 @@
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageList.PageCount != 0)
 {
-     int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
+    int stt = 1 + (pagenumber - 1) * Model.PageList.PageSize;
     <label>Total of the records: @ViewBag.Count</label>
-    <div class="table-responsive text-nowrap">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        No
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Subject ID
-                    </th>
-                    <th>
-                        Campus
-                    </th>
-                    <th>
-                        Specialization
-                    </th>
-                    <th>
-                        Slug
-                    </th>
-                    <th>
-                        University
-                    </th>
-                    <th>
-                        Enrollment Time
-                    </th>
-                    <th>
-                        Last Activity Time
-                    </th>
-                    <th>
-                        Completed
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Program Slug
-                    </th>
-                    <th>
-                        Program Name
-                    </th>
-                    <th>
-                        Completion Time
-                    </th>
-                    <th>
-                        Imported Date
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
+    <div style="overflow-x: auto;" class="drag">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Subject ID
+                        </th>
+                        <th>
+                            Campus
+                        </th>
+                        <th>
+                            Specialization
+                        </th>
+                        <th>
+                            Slug
+                        </th>
+                        <th>
+                            University
+                        </th>
+                        <th>
+                            Enrollment Time
+                        </th>
+                        <th>
+                            Last Activity Time
+                        </th>
+                        <th>
+                            Completed
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Program Slug
+                        </th>
+                        <th>
+                            Program Name
+                        </th>
+                        <th>
+                            Completion Time
+                        </th>
+                        <th>
+                            Imported Date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                @foreach (var item in Model.PageList)
-                {
+                    @foreach (var item in Model.PageList)
+                    {
 
-                    var complete = item.Completed == true ? "Yes" : "No";
-                    var status = item.Status == true ? "Yes" : "No";
-                    string date = Convert.ToDateTime(item.Date_Import).ToString("dd/MM/yyyy");
-                    var completeTime = item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Completion_Time.ToString();
-                    string Specialization_Enrollment_Time = Convert.ToDateTime(item.Specialization_Enrollment_Time).ToString("dd/MM/yyyy");
-                    string Last_Specialization_Activity_Time = Convert.ToDateTime(item.Last_Specialization_Activity_Time).ToString("dd/MM/yyyy");
-                <tr>
-                    <td>
-                       @(stt++)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Subject_ID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Campus)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Specialization_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.University)
-                    </td>
-                    <td>
-                        @Specialization_Enrollment_Time
-                    </td>
-                    <td>
-                        @Last_Specialization_Activity_Time
-                    </td>
-                    <td>
-                        @complete
-                    </td>
-                    <td>
-                        @status
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Name)
-                    </td>
-                    <td>
-                        @completeTime
-                    </td>
-                    <td>
-                        @date
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <label>Page </label> @pagenumber <label> of </label> @pagecount
-}
-@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
- new
- {
-     page,
-     Email = Model.Email,
-     Date_Import = Model.Date_Import,
-     compulsorySpec = Model.compulsorySpec,
-     completedSpec = Model.completedSpec,
-     Subject_Name = Model.Subject_Name,
-     Campus = Model.Campus,
-     searchCheck = "true"
- }))
+                        var complete = item.Completed == true ? "Yes" : "No";
+                        var status = item.Status == true ? "Yes" : "No";
+                        string date = Convert.ToDateTime(item.Date_Import).ToString("dd/MM/yyyy");
+                        var completeTime = item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Completion_Time.ToString();
+                        string Specialization_Enrollment_Time = Convert.ToDateTime(item.Specialization_Enrollment_Time).ToString("dd/MM/yyyy");
+                        string Last_Specialization_Activity_Time = Convert.ToDateTime(item.Last_Specialization_Activity_Time).ToString("dd/MM/yyyy");
+                        <tr>
+                            <td>
+                                @(stt++)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Subject_ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Campus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Specialization)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Specialization_Slug)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.University)
+                            </td>
+                            <td>
+                                @Specialization_Enrollment_Time
+                            </td>
+                            <td>
+                                @Last_Specialization_Activity_Time
+                            </td>
+                            <td>
+                                @complete
+                            </td>
+                            <td>
+                                @status
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Program_Slug)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Program_Name)
+                            </td>
+                            <td>
+                                @completeTime
+                            </td>
+                            <td>
+                                @date
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <label>Page </label> @pagenumber <label> of </label> @pagecount
+        }
+        @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+         new
+         {
+             page,
+             Email = Model.Email,
+             Date_Import = Model.Date_Import,
+             compulsorySpec = Model.compulsorySpec,
+             completedSpec = Model.completedSpec,
+             Subject_Name = Model.Subject_Name,
+             Campus = Model.Campus,
+             searchCheck = "true"
+         }))
+<script>
+     var mx = 0;
+
+        $(".drag").on({
+            mousemove: function (e) {
+                var mx2 = e.pageX - this.offsetLeft;
+                if (mx) this.scrollLeft = this.sx + mx - mx2;
+            },
+            mousedown: function (e) {
+                this.sx = this.scrollLeft;
+                mx = e.pageX - this.offsetLeft;
+            }
+        });
+
+        $(document).on("mouseup", function () {
+            mx = 0;
+        });
+</script>

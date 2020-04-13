@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static MSS_DEMO.Core.Implement.StudentCoursesLogRepository;
 
 namespace MSS_DEMO.Models
 {

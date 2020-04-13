@@ -31,16 +31,17 @@ namespace MSS_DEMO.Core.Import
             };
 
         }
-        public Subject_Student GetSubjectStudent(List<string> row)
+        public Subject_Student GetSubjectStudent(List<string> row, string semester)
         {
             return new Subject_Student
             {
                 Roll = row[0].ToString(),
                 Subject_ID = row[3].ToString().Split('-')[0],
+                Semester_ID = semester
             };
 
         }
-        public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> listIdSubjects)
+        public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> listIdSubjects, string semesterID)
         {
             DateTime _dateImport = DateTime.Parse(dateImport);
             var Spec_ID_CSV = -1;
@@ -68,9 +69,10 @@ namespace MSS_DEMO.Core.Import
                 Specialization_Completion_Time = row[13].ToString() != "" ? DateTime.Parse(row[13].ToString()) : DateTime.Parse("01/01/1970"),
                 User_ID = userID,
                 Date_Import = _dateImport,
+                Semester_ID = semesterID
             };
         }
-        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs)
+        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
         {
             Student_Course_Log log = new Student_Course_Log();
             DateTime _dateImport = DateTime.Parse(dateImport);
@@ -114,6 +116,7 @@ namespace MSS_DEMO.Core.Import
                     Course_Grade = Double.Parse(row[18].ToString()),
                     User_ID = userID,
                     Date_Import = _dateImport,
+                    Semester_ID = semesterID
                 };
             }
             else
@@ -138,6 +141,7 @@ namespace MSS_DEMO.Core.Import
                     Course_Grade = Double.Parse(row[18].ToString()),
                     User_ID = userID,
                     Date_Import = _dateImport,
+                    Semester_ID = semesterID
                 };
             } 
             return log;
