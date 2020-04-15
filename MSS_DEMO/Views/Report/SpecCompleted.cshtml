@@ -1,9 +1,7 @@
-﻿
-@model MSS_DEMO.Models.InfoStudent
-
+﻿@model MSS_DEMO.Models.ListStudent
 
 @{
-    ViewBag.Title = "Member";
+    ViewBag.Title = "SpecCompleted";
 }
 <script src="~/Content/FileSaver.js"></script>
 <script>
@@ -20,7 +18,7 @@
 
         tab_text = tab_text + exportTable.html();
         tab_text = tab_text + '</table></body></html>';
-        var fileName = "MemberReport" + '.xls';
+        var fileName = "SpecCompletedReport" + '.xls';
 
         //Save the file
         var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
@@ -43,7 +41,7 @@
     <div class="panel panel-default">
         <div class="panel-body" style="padding-top: initial;">
 
-            @using (Html.BeginForm("Member", "Report", FormMethod.Get))
+            @using (Html.BeginForm("SpecCompleted", "Report", FormMethod.Get))
             {
                 <div class="form-group">
                     <div class="col-md-2">
@@ -71,55 +69,41 @@
         </div>
     </div>
 </div>
-
 @if (Model != null)
 {
-    <div>
-        @if (Model.InforList.Count > 0)
-        {
-            <div style="margin-left: auto; margin-right: auto; text-align: center;">
-                <h2>
-                    <label style="color: green;">Member Report</label>
-                </h2>
-            </div>
-            <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
-            <table class="table table-bordered table-striped" id="dataTable">
+<div>
+    @if (Model.ls1.Count > 0)
+    {
+        <div style="margin-left: auto; margin-right: auto; text-align: center;">
+            <h2>
+                <label style="color: green;">Specification Completed Report</label>
+            </h2>
+        </div>
+        <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        <table class="table table-bordered table-striped" id="dataTable">
+            <tr>
+                <th>STT</th>
+                <th>Roll</th>
+                <th>Specification</th>
+                <th>Campus</th>
+            </tr>
+            @{ int a = 1;}
+            @foreach (var t in Model.ls1)
+            {
                 <tr>
-                    <th>STT</th>
-                    <th>Course Name</th>
-                    <th>Enrolled</th>
-                    <th>Last Active</th>
-                    <th>Progress</th>
-                    <th>Estimated learning hour</th>
-                    <th>Status</th>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Roll)</th>
+                    <th>@Html.DisplayFor(m => t.Subject)</th>
+                    <th>@Html.DisplayFor(m => t.Campus)</th>
                 </tr>
-                @{ int a = 1;}
-                @foreach (var t in Model.InforList)
-                {
-                    <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Course_Name)</th>
-                        <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
-                        <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
-                        <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
-                        <th>@Html.DisplayFor(m => t.Estimated)</th>
-                        @if (t.Completed)
-                        {
-                            <th><span style="color:green;">Completed</span></th>
-                        }
-                        else
-                        {
-                            <th><span style="color:red;">Incomplete</span></th>
-                        }
-                    </tr>
-                }
-            </table>
-        }
-        else
-        {
-            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">No data found</h4>
-        }
-    </div>
+            }
+
+        </table>
+    }
+    else
+    {
+        <h4 style="margin-left: auto; margin-right: auto; text-align: center;">No data found</h4>
+    }
+</div>
 }
-<br />
 

@@ -456,6 +456,8 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Report\SpecCompleted.cshtml" />
+    <Content Include="Views\Report\Bonus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
