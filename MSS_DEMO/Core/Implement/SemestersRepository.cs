@@ -63,6 +63,18 @@ namespace MSS_DEMO.Core.Components
                 check = false;
             return check;
         }
+        public bool IsExitsSemesterEdit(string semID, string semName)
+        {
+            bool check = true;
+            Semester sem = context.Semesters.Where(x => x.Semester_ID == semID && x.Semester_Name == semName).FirstOrDefault();
+            if (sem != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
     }
     public class _Semester : Semester
     {

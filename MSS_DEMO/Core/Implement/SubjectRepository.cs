@@ -53,6 +53,18 @@ namespace MSS_DEMO.Core.Implement
                 check = true;
             return check;
         }
+        public bool IsExitsSubjectName(string id)
+        {
+            bool check = true;
+            Subject subject = context.Subjects.Where(x => x.Subject_Name == id).FirstOrDefault();
+            if (subject != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
     }
 
 }

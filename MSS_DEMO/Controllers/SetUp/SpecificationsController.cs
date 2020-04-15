@@ -90,7 +90,7 @@ namespace MSS_DEMO.Controllers.SetUp
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll(), "Subject_ID", "Subject_ID", specification.Subject_ID);
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll().Where(o => o.Subject_Active == true).ToList(), "Subject_ID", "Subject_ID", specification.Subject_ID);
             return View(specification);
         }
 
@@ -119,7 +119,7 @@ namespace MSS_DEMO.Controllers.SetUp
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll(), "Subject_ID", "Subject_ID", specification.Subject_ID);
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll().Where(o => o.Subject_Active == true).ToList(), "Subject_ID", "Subject_ID", specification.Subject_ID);
             return View(specification);
         }
 
@@ -149,7 +149,7 @@ namespace MSS_DEMO.Controllers.SetUp
             _subject.Add(new Subject { Subject_ID = NONE , Subject_Name = NONE});
             foreach (var sub in subject)
             {
-                _subject.Add(sub);
+                if (sub.Subject_Active == true) _subject.Add(sub);
             }
             ViewBag.Subject_ID = new SelectList(_subject, "Subject_ID", "Subject_ID");
         }

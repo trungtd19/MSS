@@ -64,7 +64,7 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Campus_ID,Campus_Name,Address,Contact_Point")] Campu campu)
         {
-            if (unitOfWork.Campus.IsExitsCampus(campu.Campus_ID, campu.Campus_Name))
+            if (unitOfWork.Campus.IsExitsCampusEdit(campu.Campus_ID, campu.Campus_Name))
             {
                 ViewBag.Error = "This campus exits!";
                 return View();

@@ -59,12 +59,7 @@ namespace MSS_DEMO.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Semester_ID,Semester_Name,Start_Date,End_Date")] Semester semester)
-        {
-            if (unitOfWork.Semesters.IsExitsSemester(semester.Semester_ID, semester.Semester_Name))
-            {
-                ViewBag.Error = "This semester exits!";
-                return View();
-            }
+        { 
             if (ModelState.IsValid)
             {
                 unitOfWork.Semesters.Update(semester);

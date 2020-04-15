@@ -89,7 +89,7 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
         {
-            if (unitOfWork.Subject.IsExitsSubject(subject.Subject_ID))
+            if (unitOfWork.Subject.IsExitsSubjectName(subject.Subject_Name))
             {
                 ViewBag.Error = "This subject exits!";
                 return View();
