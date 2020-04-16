@@ -53,7 +53,7 @@ namespace MSS_DEMO.Core.Import
             return new Student_Specification_Log
             {
                 Email = row[1].ToString(),
-                Roll = row[1].ToString().Split('@')[0],
+                Roll = row[2].ToString().Split('-')[2],
                 Subject_ID = row[2].ToString().Split('-')[0],
                 Specification_ID = Spec_ID_CSV,
                 Campus = row[2].ToString().Split('-')[1],
@@ -98,7 +98,7 @@ namespace MSS_DEMO.Core.Import
                 log = new Student_Course_Log
                 {
                     Email = row[1].ToString(),
-                    Roll = row[1].ToString().Split('@')[0],
+                    Roll = row[2].ToString().Split('-')[2],
                     Course_ID = Cour_ID_CSV,
                     Course_Name = row[3].ToString(),
                     Subject_ID = row[2].ToString().Split('-')[0],
@@ -124,7 +124,7 @@ namespace MSS_DEMO.Core.Import
                 log = new Student_Course_Log
                 {
                     Email = row[1].ToString(),
-                    Roll = row[1].ToString().Split('@')[0],
+                    Roll = row[2].ToString().Split('-')[2],
                     Course_Name = row[3].ToString(),
                     Subject_ID = row[2].ToString().Split('-')[0],
                     Campus = row[2].ToString().Split('-')[1],
