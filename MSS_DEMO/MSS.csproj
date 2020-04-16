@@ -212,6 +212,7 @@
     <Compile Include="Core\Implement\SubjectStudentRepository.cs" />
     <Compile Include="Core\Implement\UserRepository.cs" />
     <Compile Include="Core\Import\CSVConvert.cs" />
+    <Compile Include="Core\Import\CsvExport.cs" />
     <Compile Include="IoC\UnityDI.cs" />
     <Compile Include="Controllers\Log\Student_Course_LogController.cs" />
     <Compile Include="Controllers\Log\Student_Specification_LogController.cs" />

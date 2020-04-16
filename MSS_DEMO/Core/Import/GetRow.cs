@@ -10,14 +10,14 @@ namespace MSS_DEMO.Core.Import
 {
     public class GetRow : IGetRow
     {
-        public Student GetStudent(List<string> row,string semester)
+        public Student GetStudent(List<string> row,string semester, string campus)
         {
             return new Student
             {
                 Email = row[2].ToString(),
                 Roll = row[0].ToString(),
                 Full_Name = row[1].ToString(),
-                Campus = row[3].ToString().Split('-')[1],
+                Campus = campus,
                 Semester_ID = semester
             };
 
@@ -36,7 +36,7 @@ namespace MSS_DEMO.Core.Import
             return new Subject_Student
             {
                 Roll = row[0].ToString(),
-                Subject_ID = row[3].ToString().Split('-')[0],
+                Subject_ID = row[3].ToString(),
                 Semester_ID = semester
             };
 

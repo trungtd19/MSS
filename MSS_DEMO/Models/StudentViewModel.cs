@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MSS_DEMO.Models
 {
@@ -10,7 +11,7 @@ namespace MSS_DEMO.Models
     {
         public IPagedList<Student> PageList;
         public string searchCheck { get; set; }
-        public IList<string> lstSemester;
-        public IList<string> lstCampus;
+        public IList<SelectListItem> lstSemester;
+        public IList<SelectListItem> lstCampus;
     }
 }
