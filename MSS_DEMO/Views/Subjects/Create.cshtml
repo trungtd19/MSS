@@ -30,9 +30,9 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.Subject_Active, "Subject_Active", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Subject_Active, "Subject_Active", htmlAttributes: new { @class = "control-label col-md-2"  })
         <div class="col-md-10">
-            @Html.CheckBoxFor(model => model.Subject_Active)
+            @Html.CheckBoxFor(model => model.Subject_Active, htmlAttributes: new { @checked = true })
         </div>
     </div>
     <div class="form-group">

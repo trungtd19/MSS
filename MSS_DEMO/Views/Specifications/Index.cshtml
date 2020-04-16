@@ -33,7 +33,7 @@
     var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
     var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
      int stt = 1 + (pagenumber -1) * Model.PageSize;
-    <label>Total of the records: @ViewBag.Count</label>
+<label>Showing @ViewBag.Count results</label>
     <table class="table table-bordered table-striped">
         <tr>
             <th style="width:50px;">No</th>

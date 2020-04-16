@@ -78,7 +78,7 @@
 @if (Model.PageList.PageCount > 0)
 {
      int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
-    <label>Total of the records: @ViewBag.Count</label>
+    <label>Showing @ViewBag.Count results</label>
     <table class="table table-bordered table-striped">
         <tr>
             <th style="width:50px;">No</th>
