@@ -26,15 +26,23 @@
 <div class="form-group">
     <label class="col-md-2 control-label"> File student template: </label>
     <div class="col-md-3 col-xs-12">
-        @Html.ActionLink("Download", "Export_Student_CSV", "ImportStudent")
+        @Html.ActionLink("Download", "Export", "ImportStudent")
     </div>
     <div class="col-md-12"></div>
 </div>
-<br/>
+<br />
 <div class="form-group">
     <label class="col-md-2 control-label">Semester: </label>
     <div class="col-md-3 col-xs-12">
         @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+    <div class="col-md-12"></div>
+</div>
+<br />
+<div class="form-group">
+    <label class="col-md-2 control-label">Campus: </label>
+    <div class="col-md-3 col-xs-12">
+        @Html.DropDownList("Campus_ID", null, htmlAttributes: new { @class = "form-control" })
     </div>
     <div class="col-md-12"></div>
 </div>
@@ -67,12 +75,17 @@
             if (selectSemester == "None") {
                   sweetAlert("Lỗi!","Choose semester please!", "error");
             }
+            if ($("#Campus_ID").val() == "None") {
+                sweetAlert("Lỗi!","Choose campus please!", "error");
+            }
             else {
             var semester = $("#Semester_ID").val();
+             var campus = $("#Campus_ID").val();
             var formData = new FormData();
             var file = document.getElementById("postedFile").files[0];
             formData.append("FileUpload", file);
-            formData.append("Semester", semester);
+                formData.append("Semester", semester);
+                formData.append("Campus", campus);
             HoldOn.open({
                     message: 'Please wait...',
                     theme: "sk-circle"
@@ -94,6 +107,6 @@
                  }).done(function () {
                      HoldOn.close();
                 });
-            }         
+            }
         });
 </script>

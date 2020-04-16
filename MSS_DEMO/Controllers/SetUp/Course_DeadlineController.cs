@@ -45,7 +45,7 @@ namespace MSS_DEMO.Controllers.SetUp
                 }
                 if (List.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {
