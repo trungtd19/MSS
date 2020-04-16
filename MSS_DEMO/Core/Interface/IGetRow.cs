@@ -10,7 +10,7 @@ namespace MSS_DEMO.Core.Interface
 {
     public interface IGetRow
     {
-        Student GetStudent(List<string> row, string semester);
+        Student GetStudent(List<string> row, string semester, string campus);
         Class_Student GetClassStudent(List<string> row);
         Subject_Student GetSubjectStudent(List<string> row, string semester);
         Student_Specification_Log GetStudentSpec(List<string> row, int userID, string dateImport, List<Specification> listIdSubject, string semesterID);

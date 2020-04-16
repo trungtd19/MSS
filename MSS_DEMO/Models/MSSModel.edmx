@@ -24,17 +24,19 @@
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Course_ID" Type="int" />
           <Property Name="Specification_ID" Type="int" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="Class_ID" />
+            <PropertyRef Name="Semester_ID" />
           </Key>
           <Property Name="Class_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="University" Type="varchar" MaxLength="50" />
           <Property Name="Class_Start_Time" Type="datetime" />
           <Property Name="Enrollment_Source" Type="nchar" MaxLength="10" />
           <Property Name="Mentor_ID" Type="int" />
-          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Campus_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Class_Student">
@@ -44,6 +46,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Class_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
@@ -102,12 +105,13 @@
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="Roll" />
+            <PropertyRef Name="Semester_ID" />
           </Key>
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Full_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Campus" Type="nvarchar" MaxLength="150" />
-          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Student_Course_Log">
           <Key>
@@ -133,6 +137,7 @@
           <Property Name="Campus" Type="nvarchar" MaxLength="150" />
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
           <Property Name="Course_Name" Type="varchar" MaxLength="250" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Student_Specification_Log">
           <Key>
@@ -156,6 +161,7 @@
           <Property Name="User_ID" Type="int" />
           <Property Name="Email" Type="nvarchar" MaxLength="150" />
           <Property Name="Specification_ID" Type="int" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -172,6 +178,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="User_Role">
           <Key>
@@ -208,14 +215,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Certificate_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Certificate">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -244,7 +253,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Class_Semester">
-          <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
           <End Role="Class" Type="Self.Class" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Semester">
@@ -255,27 +264,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Class_Student_Class">
-          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+        <Association Name="FK_Class_Student_Class1">
+          <End Role="Class" Type="Self.Class" Multiplicity="0..1" />
           <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Class">
               <PropertyRef Name="Class_ID" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Class_Student">
               <PropertyRef Name="Class_ID" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Class_Student_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Class_Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -345,9 +358,11 @@
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Student_Course_Log">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -364,7 +379,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_Semester">
-          <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Semester">
@@ -393,9 +408,11 @@
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Student_Specification_Log">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -412,14 +429,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Subject_Student_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Subject_Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -488,7 +507,7 @@
             <End Role="Semester" EntitySet="Semester" />
             <End Role="Class" EntitySet="Class" />
           </AssociationSet>
-          <AssociationSet Name="FK_Class_Student_Class" Association="Self.FK_Class_Student_Class">
+          <AssociationSet Name="FK_Class_Student_Class1" Association="Self.FK_Class_Student_Class1">
             <End Role="Class" EntitySet="Class" />
             <End Role="Class_Student" EntitySet="Class_Student" />
           </AssociationSet>
@@ -578,6 +597,7 @@
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Course_ID" Type="Int32" />
           <Property Name="Specification_ID" Type="Int32" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Certificate_Course" FromRole="Certificate" ToRole="Course" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Certificate_Specification" FromRole="Certificate" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Certificate_Student" FromRole="Certificate" ToRole="Student" />
@@ -585,18 +605,19 @@
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="Class_ID" />
+            <PropertyRef Name="Semester_ID" />
           </Key>
           <Property Name="Class_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="University" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Class_Start_Time" Type="DateTime" Precision="3" />
           <Property Name="Enrollment_Source" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Mentor_ID" Type="Int32" />
-          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Campus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Campu" Relationship="Self.FK_Class_Campus1" FromRole="Class" ToRole="Campus" />
           <NavigationProperty Name="Mentor" Relationship="Self.FK_Class_Mentor" FromRole="Class" ToRole="Mentor" />
           <NavigationProperty Name="Semester" Relationship="Self.FK_Class_Semester" FromRole="Class" ToRole="Semester" />
-          <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Class" FromRole="Class" ToRole="Class_Student" />
+          <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Class1" FromRole="Class" ToRole="Class_Student" />
         </EntityType>
         <EntityType Name="Class_Student">
           <Key>
@@ -605,7 +626,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Class_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Class" Relationship="Self.FK_Class_Student_Class" FromRole="Class_Student" ToRole="Class" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Class_Student_Class1" FromRole="Class_Student" ToRole="Class" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Class_Student_Student" FromRole="Class_Student" ToRole="Student" />
         </EntityType>
         <EntityType Name="Course">
@@ -680,12 +702,13 @@
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="Roll" />
+            <PropertyRef Name="Semester_ID" />
           </Key>
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Full_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Certificates" Relationship="Self.FK_Certificate_Student" FromRole="Student" ToRole="Certificate" />
           <NavigationProperty Name="Class_Student" Relationship="Self.FK_Class_Student_Student" FromRole="Student" ToRole="Class_Student" />
           <NavigationProperty Name="Semester" Relationship="Self.FK_Student_Semester" FromRole="Student" ToRole="Semester" />
@@ -717,6 +740,7 @@
           <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Course_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Student_Course_Log" ToRole="Course" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student_Course_Log" ToRole="Student" />
           <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="Student_Course_Log" ToRole="User_Role" />
@@ -743,6 +767,7 @@
           <Property Name="User_ID" Type="Int32" />
           <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Specification_ID" Type="Int32" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
           <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="Student_Specification_Log" ToRole="User_Role" />
@@ -764,6 +789,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Student_Student" FromRole="Subject_Student" ToRole="Student" />
           <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Student_Subject" FromRole="Subject_Student" ToRole="Subject" />
         </EntityType>
@@ -817,14 +843,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Certificate_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Certificate" Type="Self.Certificate" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Certificate">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -841,7 +869,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Class_Semester">
-          <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
           <End Role="Class" Type="Self.Class" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Semester">
@@ -852,27 +880,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Class_Student_Class">
-          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+        <Association Name="FK_Class_Student_Class1">
+          <End Role="Class" Type="Self.Class" Multiplicity="0..1" />
           <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Class">
               <PropertyRef Name="Class_ID" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Class_Student">
               <PropertyRef Name="Class_ID" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Class_Student_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Class_Student" Type="Self.Class_Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Class_Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -937,7 +969,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_Semester">
-          <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Semester">
@@ -978,9 +1010,11 @@
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Student_Course_Log">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -990,21 +1024,25 @@
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Student_Specification_Log">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Subject_Student_Student">
-          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <End Role="Subject_Student" Type="Self.Subject_Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Principal>
             <Dependent Role="Subject_Student">
               <PropertyRef Name="Roll" />
+              <PropertyRef Name="Semester_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1085,7 +1123,7 @@
             <End Role="Semester" EntitySet="Semesters" />
             <End Role="Class" EntitySet="Classes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Class_Student_Class" Association="Self.FK_Class_Student_Class">
+          <AssociationSet Name="FK_Class_Student_Class1" Association="Self.FK_Class_Student_Class1">
             <End Role="Class" EntitySet="Classes" />
             <End Role="Class_Student" EntitySet="Class_Student" />
           </AssociationSet>
@@ -1175,6 +1213,7 @@
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
                 <ScalarProperty Name="Course_ID" ColumnName="Course_ID" />
                 <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+                <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1197,6 +1236,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
                 <ScalarProperty Name="Class_ID" ColumnName="Class_ID" />
+                <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1294,6 +1334,7 @@
                 <ScalarProperty Name="Campus" ColumnName="Campus" />
                 <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
                 <ScalarProperty Name="Course_Name" ColumnName="Course_Name" />
+                <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1318,6 +1359,7 @@
                 <ScalarProperty Name="User_ID" ColumnName="User_ID" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Specification_ID" ColumnName="Specification_ID" />
+                <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1336,6 +1378,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

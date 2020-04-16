@@ -21,15 +21,52 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        [CheckCredential(Role_ID = "3")]
+        [CheckCredential(Role_ID = "4")]
         public ActionResult Index(CoursesReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
             string SearchString = model.Email;
             model.searchCheck = searchCheck;
-            List<string> listSubjiect = unitOfWork.Subject.GetAll().Select(o => o.Subject_Name).ToList();
-            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
-            model.lstCampus = campus;
+            List<SelectListItem> listSubjiect = new List<SelectListItem>();
+            var subject = unitOfWork.Subject.GetAll();
+            foreach (var sub in subject)
+            {
+                listSubjiect.Add(new SelectListItem
+                {
+                    Text = sub.Subject_Name,
+                    Value = sub.Subject_ID
+                });
+            }
+            List<SelectListItem> campusList = new List<SelectListItem>();
+            var campus = unitOfWork.Campus.GetAll();
+            foreach (var cam in campus)
+            {
+                campusList.Add(new SelectListItem
+                {
+                    Text = cam.Campus_Name,
+                    Value = cam.Campus_ID
+                });
+            }
+            List<SelectListItem> semesterList = new List<SelectListItem>();
+            var semester = unitOfWork.Semesters.GetAll();
+            foreach (var sem in semester)
+            {
+                semesterList.Add(new SelectListItem
+                {
+                    Text = sem.Semester_Name,
+                    Value = sem.Semester_ID
+                });
+            }
+            var listDate = unitOfWork.CoursesLog.GetAll().Select(o => o.Date_Import).Distinct();
+            List<string> date = new List<string>();
+            foreach (var _date in listDate)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            date  = date.Distinct().ToList();
+            model.importedDate = date;
+            model.lstSemester = semesterList;
+            model.lstCampus = campusList;
             model.listSubject = listSubjiect;
             if (searchCheck == null)
             {
@@ -45,9 +82,10 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = LogList.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrWhiteSpace(model.Date_Import.ToString()))
+                if (!String.IsNullOrWhiteSpace(model.ImportedDate))
                 {
-                    LogList = LogList.Where(s => s.Date_Import == model.Date_Import).ToList();
+                    DateTime dt = DateTime.ParseExact(model.ImportedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    LogList = LogList.Where(s => s.Date_Import == dt).ToList();
                 }
                 if (model.completedCourse != null)
                 {
@@ -57,19 +95,21 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Course_ID != null).ToList() : LogList = LogList.Where(s => s.Course_ID == null).ToList();
                 }
-                if (!String.IsNullOrWhiteSpace(model.Subject_Name))
-                {
-                    var sub = unitOfWork.Subject.GetAll().Where(x => x.Subject_Name == model.Subject_Name).Select(y => y.Subject_ID).FirstOrDefault();
-                    LogList = LogList.Where(s => s.Subject_ID == sub).ToList();
+                if (!String.IsNullOrWhiteSpace(model.Subject_ID))
+                {                  
+                    LogList = LogList.Where(s => s.Subject_ID == model.Subject_ID).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
                 {
-                    var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
-                    LogList = LogList.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
+                    LogList = LogList.Where(s => s.Campus == model.Campus).ToList();
+                }
+                if (!String.IsNullOrWhiteSpace(model.Semester_ID))
+                {
+                    LogList = LogList.Where(s => s.Semester_ID == model.Semester_ID).ToList();
                 }
                 if (LogList.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {
@@ -77,24 +117,78 @@ namespace MSS_DEMO.Controllers.Log
                 }
             }
             List<string> completedCour = new List<string>() { "Yes","No"};
-            List<string> compulsoryCour = new List<string>() { "Yes","No" };
+            List<string> compulsoryCour = new List<string>() { "Yes","No" };           
             model.completedCour = completedCour;
             model.compulsoryCour = compulsoryCour;
-            ViewBag.Count = LogList.Count();
+            ViewBag.CountRoll = LogList.Select(o => o.Roll).Distinct().Count();
+            ViewBag.CountLog = LogList.Count();
             int pageSize = 30;
             int pageNumber = (page ?? 1);
             model.PageList = LogList.ToList().ToPagedList(pageNumber, pageSize);
             return View(model);
         }
-        public void Export_Usage()
+        public ActionResult Mentor()
         {
+            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
+            var list = unitOfWork.Mentor.getListCourses(userMentor.UserName);
+            return View(list);
+        }
+        public ActionResult Detail(string id)
+        {
+            ViewBag.Course_Name = unitOfWork.Courses.GetById(int.Parse(id.Split('^')[0])).Course_Name;
+            ViewBag.Class = id.Split('^')[1];
+            var list = unitOfWork.Mentor.getReport(id);
+            return View(list);
+        }
+        [HttpGet]
+        public void Export(string check)
+        {
+
+            string searchCheck = check.Split('^')[0];
+            string Campus = check.Split('^')[1];
+            string Semester_ID = check.Split('^')[2];
+            string Subject_ID = check.Split('^')[3];
+            string completedSpec = check.Split('^')[4];
+            string compulsorySpec = check.Split('^')[5];
+            string ImportedDate = check.Split('^')[6];
+            string Email = check.Split('^')[7];
+            var LogList = unitOfWork.CoursesLog.GetPageList();
+            if (searchCheck != "1")
+            {
+                if (Email != "8")
+                {
+                    LogList = LogList.Where(s => s.Email.ToUpper().Contains(Email.ToUpper())).ToList();
+                }
+                if (ImportedDate != "7")
+                {
+                    DateTime dt = DateTime.ParseExact(ImportedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    LogList = LogList.Where(s => s.Date_Import == dt).ToList();
+                }
+                if (completedSpec != "5")
+                {
+                    LogList = completedSpec == "Yes" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == false).ToList();
+                }
+                if (compulsorySpec != "6")
+                {
+                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Course_ID != null).ToList() : LogList = LogList.Where(s => s.Course_ID == null).ToList();
+                }
+                if (Subject_ID != "4")
+                {
+                    LogList = LogList.Where(s => s.Subject_ID == Subject_ID.Trim()).ToList();
+                }
+                if (Campus != "2")
+                {
+                    LogList = LogList.Where(s => s.Campus == Campus.Trim()).ToList();
+                }
+                if (Semester_ID != "3")
+                {
+                    LogList = LogList.Where(s => s.Semester_ID == Semester_ID.Trim()).ToList();
+                }
+            }
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
-            IEnumerable<Student_Course_Log> query = unitOfWork.CoursesLog.GetAll();
-            var list = query.ToList();
-            Type type = typeof(Student);
-            var props = type.GetProperties();
-            sb.Append(string.Join(",", "Email", "Subject ID", "Campus","Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
+            var list = LogList.ToList();
+            sb.Append(string.Join(",", "Email", "Subject ID", "Campus", "Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
                 "Completed", "Status", "Program Slug", "Program Name", "Completion Time", "Course Grade", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
@@ -127,19 +221,6 @@ namespace MSS_DEMO.Controllers.Log
             response.ContentType = "text/plain";
             response.Write(sb.ToString());
             response.End();
-        }
-        public ActionResult Mentor()
-        {
-            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var list = unitOfWork.Mentor.getListCourses(userMentor.UserName);
-            return View(list);
-        }
-        public ActionResult Detail(string id)
-        {
-            ViewBag.Course_Name = unitOfWork.Courses.GetById(int.Parse(id.Split('^')[0])).Course_Name;
-            ViewBag.Class = id.Split('^')[1];
-            var list = unitOfWork.Mentor.getReport(id);
-            return View(list);
         }
     }
 }

@@ -14,8 +14,9 @@ namespace MSS_DEMO.Core.Implement
            : base(context)
         {
         }
-        public string DeleteListSubject(string Subject_ID, string SemesterID)
+        public string DeleteListSubject(string Subject_ID, string SemesterID, string CampusID)
         {
+            int countDelete = 0;
             string message = "";
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {            
@@ -36,17 +37,29 @@ namespace MSS_DEMO.Core.Implement
                         if (list.Where(x => x.Roll == ls && x.Semester_ID == SemesterID).FirstOrDefault() == null)
                         {
                             var stu = context.Students.Find(ls, SemesterID);
-                            context.Students.Remove(stu);
+                            if (stu.Campus == CampusID)
+                            {
+                                context.Students.Remove(stu);
+                                countDelete++;
+                            }               
                         }
                         else continue;
                     }
                     context.SaveChanges();
-                    dbContextTransaction.Commit();
-                    message = "Delete succesfull!";
+                    if (countDelete == 0)
+                    {
+                        message = "Delete fail";
+                        dbContextTransaction.Rollback();
+                    }
+                    else
+                    {
+                        dbContextTransaction.Commit();
+                        message =  "Delete success " + countDelete + " students";
+                    }                 
                 }
                 catch (Exception ex)
                 {
-                    message = "Can't delete subjects";
+                    message = "Can't delete students";
                     dbContextTransaction.Rollback();
                 }
             }

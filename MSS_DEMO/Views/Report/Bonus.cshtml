@@ -1,0 +1,107 @@
+﻿@model MSS_DEMO.Models.ListStudent
+@{
+    ViewBag.Title = "Bonus";
+}
+<script src="~/Content/FileSaver.js"></script>
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+        var fileName = "BonusReport" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
+<div>
+    <div>
+        <h4>
+            @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
+            @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
+            @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
+            @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
+            @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
+            @Html.ActionLink("SpecCompleted", "SpecCompleted")&nbsp;&nbsp;
+            @Html.ActionLink("BonusReport", "Bonus")&nbsp;&nbsp;
+        </h4>
+    </div>
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding-top: initial;">
+
+            @using (Html.BeginForm("Bonus", "Report", FormMethod.Get))
+            {
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Roll Number</label>
+                    </div>
+                    <div class="col-lg-3">
+                        @Html.TextBox("SearchString")
+                        @Html.Hidden("searchCheck", "true")
+                    </div>
+                </div>
+                <br /><br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label">Semester</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                    </div>
+                    <div class="col-md-6">
+                        <input class="btn btn-default" type="submit" value="Search" />
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    <div>
+        @if (Model.ls1.Count > 0)
+        {
+            <div style="margin-left: auto; margin-right: auto; text-align: center;">
+                <h2>
+                    <label style="color: green;">Bonus Report</label>
+                </h2>
+            </div>
+            <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+            <table class="table table-bordered table-striped" id="dataTable">
+                <tr>
+                    <th>STT</th>
+                    <th>Roll</th>
+                    <th>Campus</th>
+                    <th>Bonus</th>
+                </tr>
+                @{ int a = 1;}
+                @foreach (var t in Model.ls1)
+                {
+                    <tr>
+                        <th>@(a++)</th>
+                        <th>@Html.DisplayFor(m => t.Roll)</th>
+                        <th>@Html.DisplayFor(m => t.Campus)</th>
+                        <th>@Html.DisplayFor(m => t.PBonus)</th>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">No data found</h4>
+        }
+    </div>
+}

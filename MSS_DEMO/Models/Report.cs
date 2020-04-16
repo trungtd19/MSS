@@ -27,6 +27,7 @@ namespace MSS_DEMO.Models
         public string Campus { get; set; }
         public string Subject { get; set; }
         public string Semester_ID { get; set; }
+        public double PBonus { get; set; }
         public List<string> ListSubject { get; set; }
         public virtual Campu Campuss { get; set; }
         public List<ListStudent> ls1 { get; set; }

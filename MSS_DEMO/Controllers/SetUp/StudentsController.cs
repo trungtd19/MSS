@@ -38,12 +38,11 @@ namespace MSS_DEMO.Controllers.SetUp
                 }
                 if (!String.IsNullOrWhiteSpace(model.Semester_ID))
                 {
-                   students = students.Where(s => s.Semester.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
+                   students = students.Where(s => s.Semester_ID.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
-                {
-                    var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
-                    students = students.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
+                {                   
+                    students = students.Where(s => s.Campus.ToUpper().Contains(model.Campus)).ToList();
                 }
                 if (students.Count == 0)
                 {
@@ -53,11 +52,29 @@ namespace MSS_DEMO.Controllers.SetUp
                 {
                     ViewBag.Nodata = "";
                 }
-            }           
-            List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
-            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
-            model.lstSemester = semester;
-            model.lstCampus = campus;
+            }
+            List<SelectListItem> semesterList = new List<SelectListItem>();
+            var semester = unitOfWork.Semesters.GetAll();
+            foreach (var sem in semester)
+            {
+                semesterList.Add(new SelectListItem
+                {
+                    Text = sem.Semester_Name,
+                    Value = sem.Semester_ID
+                });
+            }
+            List<SelectListItem> campusList = new List<SelectListItem>();
+            var campus = unitOfWork.Campus.GetAll();
+            foreach (var cam in campus)
+            {
+                campusList.Add(new SelectListItem
+                {
+                    Text = cam.Campus_Name,
+                    Value = cam.Campus_ID
+                });
+            }
+            model.lstSemester = semesterList;
+            model.lstCampus = campusList;
             model.searchCheck = searchCheck;
             int pageSize = 30;
             int pageNumber = (page ?? 1);
@@ -224,34 +241,23 @@ namespace MSS_DEMO.Controllers.SetUp
             else
                 return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DeleteListSubject(string Subject_ID, string Semester_ID)
+        public ActionResult DeleteListSubject(string Subject_ID, string Semester_ID, string Campus_ID)
         {
             string message = "";
             if (!string.IsNullOrEmpty(Subject_ID) && !string.IsNullOrEmpty(Subject_ID))
             {
-                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID);
+                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID,Campus_ID);
+            }
+            GetListSelect();
+            ViewBag.mess = "";
+            if (!string.IsNullOrEmpty(message) && message.Contains("success"))
+            {
+                ViewBag.success = message;
             }
             else
             {
-                message = "Chooese Subject and Semester please!";
+                ViewBag.mess = message;
             }
-            List<Subject> sub = unitOfWork.Subject.GetAll();
-            List<Subject> _sub = new List<Subject>();
-            _sub.Add(new Subject { Subject_ID = "", Subject_Name = "--- Choose Subject ---" });
-            foreach (var s in sub)
-            {
-                _sub.Add(s);
-            }
-            List<Semester> semester = unitOfWork.Semesters.GetAll();
-            List<Semester> _semester = new List<Semester>();
-            _semester.Add(new Semester { Semester_ID = "", Semester_Name = "--- Choose Semester ---" });
-            foreach (var sem in semester)
-            {
-                _semester.Add(sem);
-            }
-            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
-            ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
-            ViewBag.mess = message;
             return View();
         }
         public void GetListSelect()
