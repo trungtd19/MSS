@@ -9,17 +9,17 @@
 @{
     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
-    SelectList listSubject = new SelectList((IList<string>)Model.listSubject);
+
     SelectList listCompleted = new SelectList((IList<string>)Model.completedCour);
     SelectList listCompulsory = new SelectList((IList<string>)Model.compulsoryCour);
-    SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
+    SelectList importedDate = new SelectList((IList<string>)Model.importedDate);
 }
 <div class="form-group">
     <div class="col-md-2">
         @Html.ActionLink("Import Usage Report", "UsageReport", "ImportDataDaily")
     </div>
     <div class="col-md-2">
-        @Html.ActionLink("Export Usage Report", "Export_Usage", "Student_Course_Log")
+
     </div>
 </div>
 <br />
@@ -41,9 +41,9 @@
                                 </div>
                                 <br />
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Imported date</label>
+                                    <label class="col-md-3 control-label">Reported date</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.TextBox("Date_Import", Model.Date_Import, new { @class = "form-control", @type = "date" })
+                                        @Html.DropDownList("ImportedDate", importedDate, new { @name = "compulsoryCourse", @class = "form-control select" })
                                     </div>
                                 </div>
                                 <br />
@@ -53,6 +53,13 @@
                                         @Html.DropDownList("compulsoryCourse", listCompulsory, "--- All ---", new { @name = "compulsoryCourse", @class = "form-control select" })
                                     </div>
                                 </div>
+                                <br />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Semester</label>
+                                    <div class="col-md-9 col-xs-12">
+                                        @Html.DropDownList("Semester_ID", Model.lstSemester, new { @name = "compulsoryCourse", @class = "form-control select" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -60,7 +67,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Subject</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Subject_Name", listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
+                                        @Html.DropDownList("Subject_ID", Model.listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +83,7 @@
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Campus</label>
                                     <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Campus", listCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
+                                        @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +101,7 @@
 @if (Model.PageList.PageCount != 0)
 {
     int stt = 1 + (pagenumber - 1) * Model.PageList.PageSize;
-<label>Showing  @ViewBag.Count results</label>
+    <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label> <a href="" id="Export">Export</a>
     <div style="overflow-x: auto;" class="drag">
         <div class="table-responsive text-nowrap">
             <table class="table table-bordered table-striped">
@@ -216,36 +223,66 @@
                 </tbody>
             </table>
         </div>
-        </div>
-        <label>Page </label> @pagenumber <label> of </label> @pagecount
-        }
-        @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
-         new
-         {
-             page,
-             Email = Model.Email,
-             Date_Import = Model.Date_Import,
-             compulsoryCourse = Model.compulsoryCourse,
-             completedCourse = Model.completedCourse,
-             Subject_Name = Model.Subject_Name,
-             Campus = Model.Campus,
-             searchCheck = "true"
-         }))
+    </div>
+    <label>Page </label> @pagenumber <label> of </label> @pagecount
+}
+@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+ new
+ {
+     page,
+     Email = Model.Email,
+     ImportedDate = Model.ImportedDate,
+     compulsoryCourse = Model.compulsoryCourse,
+     completedCourse = Model.completedCourse,
+     Subject_ID = Model.Subject_ID,
+     Semester_ID = Model.Semester_ID,
+     Campus = Model.Campus,
+     searchCheck = "true"
+ }))
 <script>
-     var mx = 0;
 
-        $(".drag").on({
-            mousemove: function (e) {
-                var mx2 = e.pageX - this.offsetLeft;
-                if (mx) this.scrollLeft = this.sx + mx - mx2;
-            },
-            mousedown: function (e) {
-                this.sx = this.scrollLeft;
-                mx = e.pageX - this.offsetLeft;
-            }
-        });
+     $(function () {
+        $("#Export").click(function () {
+        var searchCheck = $("#searchCheck").val() || "1";
+        var Campus = $("#Campus").val() || "2";
+        var Semester_ID = $("#Semester_ID").val() || "3";
+        var Subject_ID = $("#Subject_ID").val() || "4";
+        var completedSpec = $("#completedSpec").val() || "5";
+        var compulsorySpec = $("#compulsorySpec").val() || "6";
+        var ImportedDate = $("#ImportedDate").val() || "7";
+        var Email = $("#Email").val() || "8";
+        var list = searchCheck + "^" +Campus + "^"+ Semester_ID  + "^"+ Subject_ID +  "^" +completedSpec + "^"+ compulsorySpec  + "^"+ ImportedDate +"^"+ Email;
+            $.ajax(
+                {
+                    url: '@Url.Action("Export", "Student_Course_Log")',
+                    contentType: 'application/json; charset=utf-8',
+                    datatype: 'json',
+                    data: { check : list},
+                    type: "GET",
+                    success: function (data) {
+                    window.location.href = "@Url.RouteUrl(new
+                    { Controller = "Student_Course_Log", Action = "Export" })/?check=" + list;
+              
+                }
+            });
 
-        $(document).on("mouseup", function () {
-            mx = 0;
         });
+    });
+
+    var mx = 0;
+
+    $(".drag").on({
+        mousemove: function (e) {
+            var mx2 = e.pageX - this.offsetLeft;
+            if (mx) this.scrollLeft = this.sx + mx - mx2;
+        },
+        mousedown: function (e) {
+            this.sx = this.scrollLeft;
+            mx = e.pageX - this.offsetLeft;
+        }
+    });
+
+    $(document).on("mouseup", function () {
+        mx = 0;
+    });
 </script>

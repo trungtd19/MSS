@@ -3,18 +3,46 @@
 @{
     ViewBag.Title = "DeleteListSubject";
 }
-
-<h2>DeleteListSubject</h2>
+<br />
+<span>
+    @Html.ActionLink("Home", "Index", "Home") >
+    @Html.ActionLink("Setup the beginning of the semester", "Index", "SetupBeginSemester") >
+    @Html.ActionLink("Student", "Index", "Students") >
+    Delete list student
+</span>
+<hr />
+<br/>
 @using (Html.BeginForm("DeleteListSubject", "Students", FormMethod.Get))
 {
-    @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
+    <div class="form-group">
+        <label class="col-md-2 control-label">Campus: </label>
+        <div class="col-md-3 col-xs-12">
+            @Html.DropDownList("Campus_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
+        </div>
+        <div class="col-md-12"></div>
+    </div>
     <br />
-    @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control" })
+    <div class="form-group">
+        <label class="col-md-2 control-label">Semester: </label>
+        <div class="col-md-3 col-xs-12">
+            @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
+        </div>
+        <div class="col-md-12"></div>
+    </div>
+    <br />
+    <div class="form-group">
+        <label class="col-md-2 control-label">Subject: </label>
+        <div class="col-md-3 col-xs-12">
+            @Html.DropDownList("Subject_ID", null, htmlAttributes: new { @class = "form-control", @required = "true" })
+        </div>
+        <div class="col-md-12"></div>
+    </div>
     <br />
     <button class="btn btn-success" type="submit">Delete</button>
 }
 <br />
 <span style="color:red;">@ViewBag.mess</span>
+<span style="color:green;">@ViewBag.success</span>
 @*<table class="table">
         <tr>
             <th>
