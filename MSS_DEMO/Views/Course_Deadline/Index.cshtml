@@ -12,27 +12,32 @@
 <hr />
 <div class="form-group">
     @using (Html.BeginForm("Index", "Course_Deadline", FormMethod.Get))
-    {
-    <div class="col-md-2" style="width: 11.666667%;">
-        Courses name:
-    </div>
-    <div class="col-md-2">
-        @Html.TextBox("Courses_Name", Model.Courses_Name, new { @class = "form-control" })
-        @Html.Hidden("searchCheck", "true")
-    </div>
-    <div class="col-md-2" style="width: 11.666667%;">
-        Semester :
-    </div>
-    <div class="col-md-2">
-        @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
-    </div>
-    <div class="col-md-1">
-        <input class="btn btn-default" type="submit" value="Search" />
-    </div>
-    <div class="col-md-1">
-        @Html.ActionLink("Add New", "Create")
-    </div>
-    <div class="col-md-5"></div>
+    {   
+        <div class="col-md-1">
+            @Html.ActionLink("Add New", "Create")
+        </div><br /><br />       
+        <div class="col-md-2" style="width: 11.666667%;">
+            Course name:
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("Courses_Name", Model.Courses_Name, new { @class = "form-control", @style = "max-width: 800px; width:800px;" })
+            @Html.Hidden("searchCheck", "true")                     
+        </div>
+        <br />
+        <br />
+        <div class="col-md-2" style="width: 11.666667%;">
+            Semester :
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
+        </div>
+        <br />
+        <br />
+        <div class="col-md-1">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+
+        <div class="col-md-5"></div>
     }
 </div>
 <br />
