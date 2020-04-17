@@ -38,26 +38,43 @@ namespace MSS_DEMO.Controllers.SetUp
                 }
                 if (!String.IsNullOrWhiteSpace(model.Semester_ID))
                 {
-                   students = students.Where(s => s.Semester.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
+                   students = students.Where(s => s.Semester_ID.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
-                {
-                    var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
-                    students = students.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
+                {                   
+                    students = students.Where(s => s.Campus.ToUpper().Contains(model.Campus)).ToList();
                 }
                 if (students.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {
                     ViewBag.Nodata = "";
                 }
-            }           
-            List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
-            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
-            model.lstSemester = semester;
-            model.lstCampus = campus;
+            }
+            List<SelectListItem> semesterList = new List<SelectListItem>();
+            var semester = unitOfWork.Semesters.GetAll();
+            foreach (var sem in semester)
+            {
+                semesterList.Add(new SelectListItem
+                {
+                    Text = sem.Semester_Name,
+                    Value = sem.Semester_ID
+                });
+            }
+            List<SelectListItem> campusList = new List<SelectListItem>();
+            var campus = unitOfWork.Campus.GetAll();
+            foreach (var cam in campus)
+            {
+                campusList.Add(new SelectListItem
+                {
+                    Text = cam.Campus_Name,
+                    Value = cam.Campus_ID
+                });
+            }
+            model.lstSemester = semesterList;
+            model.lstCampus = campusList;
             model.searchCheck = searchCheck;
             int pageSize = 30;
             int pageNumber = (page ?? 1);

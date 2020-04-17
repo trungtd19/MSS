@@ -69,7 +69,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (LogList.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {
