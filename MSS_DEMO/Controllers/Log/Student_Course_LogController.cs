@@ -57,7 +57,7 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.CoursesLog.GetAll().Select(o => o.Date_Import).Distinct();
+            var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
             List<string> date = new List<string>();
             foreach (var _date in listDate)
             {
@@ -188,15 +188,19 @@ namespace MSS_DEMO.Controllers.Log
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             var list = LogList.ToList();
-            sb.Append(string.Join(",", "Email", "Subject ID", "Campus", "Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
-                "Completed", "Status", "Program Slug", "Program Name", "Completion Time", "Course Grade", "Date Import"));
+            sb.Append(string.Join(",","Name", "Email", "Subject ID", "Campus", "Course Name", "Course Slug","University" ,"Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
+                "Completed", "Status", "Program Slug", "Program Name", "Enrollment Source", "Completion Time", "Course Grade", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
             {
                 sb.Append(string.Join(",",
+                    csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Subject_ID),
                     csv.AddCSVQuotes(item.Campus),
+                    csv.AddCSVQuotes(item.Course_Name),
+                    csv.AddCSVQuotes(item.Course_Slug),
+                    csv.AddCSVQuotes(item.University),
                     csv.AddCSVQuotes(item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : item.Course_Enrollment_Time.ToString()),
                     csv.AddCSVQuotes(item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : item.Course_Start_Time.ToString()),
                     csv.AddCSVQuotes(item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : item.Last_Course_Activity_Time.ToString()),
@@ -206,6 +210,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Status.ToString()),
                     csv.AddCSVQuotes(item.Program_Slug),
                     csv.AddCSVQuotes(item.Program_Name),
+                    csv.AddCSVQuotes(item.Enrollment_Sourse),
                     csv.AddCSVQuotes(item.Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Completion_Time.ToString()),
                     csv.AddCSVQuotes(item.Course_Grade.ToString()),
                     csv.AddCSVQuotes(item.Date_Import.ToString())

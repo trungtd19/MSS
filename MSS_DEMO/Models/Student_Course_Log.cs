@@ -35,6 +35,11 @@ namespace MSS_DEMO.Models
         public string Subject_ID { get; set; }
         public string Course_Name { get; set; }
         public string Semester_ID { get; set; }
+        public string Name { get; set; }
+        public string External_ID { get; set; }
+        public string Course_Slug { get; set; }
+        public string University { get; set; }
+        public string Enrollment_Sourse { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }

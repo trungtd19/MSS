@@ -109,6 +109,9 @@
                     <tr>
                         <th>No</th>
                         <th>
+                            Name
+                        </th>
+                        <th>
                             Email
                         </th>
                         <th>
@@ -118,7 +121,13 @@
                             Course Name
                         </th>
                         <th>
+                            Course Slug
+                        </th>
+                        <th>
                             Campus
+                        </th>
+                        <th>
+                            University
                         </th>
                         <th>
                             Enrollment Time
@@ -148,6 +157,9 @@
                             Program Name
                         </th>
                         <th>
+                            Enrollment Sourse
+                        </th>
+                        <th>
                             Completion Time
                         </th>
                         <th>
@@ -168,57 +180,69 @@
                         string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                         string Course_Start_Time = Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
-                        <tr>
-                            <td>@(stt++)</td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Subject_ID)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Course_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Campus)
-                            </td>
-                            <td>
-                                @Course_Enrollment_Time
-                            </td>
-                            <td>
-                                @Course_Start_Time
-                            </td>
-                            <td>
-                                @Last_Course_Activity_Time
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Overall_Progress)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Estimated)
-                            </td>
-                            <td>
-                                @complete
-                            </td>
-                            <td>
-                                @status
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Program_Slug)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Program_Name)
-                            </td>
-                            <td>
-                                @completeTime
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Course_Grade)
-                            </td>
-                            <td>
-                                @date
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@(stt++)</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University)
+                        </td>
+                        <td>
+                            @Course_Enrollment_Time
+                        </td>
+                        <td>
+                            @Course_Start_Time
+                        </td>
+                        <td>
+                            @Last_Course_Activity_Time
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overall_Progress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estimated)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Enrollment_Sourse)
+                        </td>
+                        <td>
+                            @completeTime
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Grade)
+                        </td>
+                        <td>
+                            @date
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

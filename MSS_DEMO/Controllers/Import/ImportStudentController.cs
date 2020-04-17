@@ -84,6 +84,7 @@ namespace MSS_DEMO.Controllers
                                     return Json(new { message = messageImport });
                                 }
                                 int startRow = 1;
+                                List<string> listAddRoll = new List<string>();
                                 while (!sreader.EndOfStream)
                                 {
                                     startRow++;
@@ -92,23 +93,26 @@ namespace MSS_DEMO.Controllers
                                     {
                                         messageImport = "Row "+ startRow+": Email invalid";
                                         return Json(new { message = messageImport });
-                                    }
+                                    }       
                                     //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID)
                                     //    || 
                                     if (unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows, semester).Subject_ID))
-                                    {
-                                        if (unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester, campus).Roll, semester)
+                                    {                       
+                                        var countAdd = listAddRoll.Where(o => o.Contains(getRow.GetStudent(rows, semester, campus).Roll)).ToList().Count();
+                                        if ((unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester, campus).Roll, semester)
                                             && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows, semester).Subject_ID))
+                                            || (countAdd > 0))
                                         {
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows, semester));
                                             // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                             countSuccess++;
                                         }
                                         else
-                                        if (!unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester, campus).Roll, semester))
+                                        if (!unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester, campus).Roll, semester) && countAdd == 0)
                                         {
                                             unitOfWork.Students.Insert(getRow.GetStudent(rows, semester, campus));
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows, semester));
+                                            listAddRoll.Add(getRow.GetStudent(rows, semester, campus).Roll);
                                             //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                             countSuccess++;
                                         }

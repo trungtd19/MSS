@@ -37,5 +37,17 @@ namespace MSS_DEMO.Core.Components
                 check = false;
             return check;
         }
+        public bool IsExitsCampusID(string campusID)
+        {
+            bool check = true;
+            Campu cam = context.Campus.Where(x => x.Campus_ID == campusID).FirstOrDefault();
+            if (cam != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
     }
 }
