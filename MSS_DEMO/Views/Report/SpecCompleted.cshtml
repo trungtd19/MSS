@@ -33,7 +33,7 @@
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
             @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
             @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
-            @Html.ActionLink("SpecCompleted", "SpecCompleted")&nbsp;&nbsp;
+            <u>@Html.ActionLink("SpecCompleted", "SpecCompleted", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
             @Html.ActionLink("BonusReport", "Bonus")&nbsp;&nbsp;
         </h4>
     </div>
@@ -69,16 +69,17 @@
         </div>
     </div>
 </div>
+<div style="margin-left: auto; margin-right: auto; text-align: center;">
+    <h2>
+        <label style="color: green;">Specification Completed Report</label>
+    </h2>
+</div>
 @if (Model != null)
 {
 <div>
     @if (Model.ls1.Count > 0)
     {
-        <div style="margin-left: auto; margin-right: auto; text-align: center;">
-            <h2>
-                <label style="color: green;">Specification Completed Report</label>
-            </h2>
-        </div>
+        
         <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
         <table class="table table-bordered table-striped" id="dataTable">
             <tr>

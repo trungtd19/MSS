@@ -32,7 +32,7 @@
         <h4>
             @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
-            @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
+            <u>@Html.ActionLink("Member Report", "Member", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
             @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
             @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
             @Html.ActionLink("SpecCompleted", "SpecCompleted")&nbsp;&nbsp;
@@ -71,17 +71,17 @@
         </div>
     </div>
 </div>
-
+<div style="margin-left: auto; margin-right: auto; text-align: center;">
+    <h2>
+        <label style="color: green;">Member Report</label>
+    </h2>
+</div>
 @if (Model != null)
 {
     <div>
         @if (Model.InforList.Count > 0)
         {
-            <div style="margin-left: auto; margin-right: auto; text-align: center;">
-                <h2>
-                    <label style="color: green;">Member Report</label>
-                </h2>
-            </div>
+
             <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
             <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
