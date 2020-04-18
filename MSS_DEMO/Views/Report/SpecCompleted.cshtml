@@ -31,10 +31,10 @@
             @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
-            @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
-            @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
-            <u>@Html.ActionLink("SpecCompleted", "SpecCompleted", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
-            @Html.ActionLink("BonusReport", "Bonus")&nbsp;&nbsp;
+            @Html.ActionLink("Not Required Course", "NotRequiredCourse")&nbsp;&nbsp;
+            @Html.ActionLink("Certificate Report", "CertificateReport")&nbsp;&nbsp;
+            <u>@Html.ActionLink("Spec Completed", "SpecCompleted", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
+            @Html.ActionLink("Bonus Report", "Bonus")&nbsp;&nbsp;
         </h4>
     </div>
     <br />
@@ -60,6 +60,24 @@
                     <div class="col-md-3">
                         @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
                     </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Campus </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectCampus", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Reported date </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                    </div>
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
                     </div>
@@ -80,23 +98,25 @@
     @if (Model.ls1.Count > 0)
     {
         
-        <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        <h4>Total of the records: @ViewBag.TotalSearch/@ViewBag.TotalStudent (@ViewBag.Percent%) <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
         <table class="table table-bordered table-striped" id="dataTable">
             <tr>
                 <th>STT</th>
                 <th>Roll</th>
+                <th>EMail</th>
                 <th>Specification</th>
                 <th>Campus</th>
             </tr>
             @{ int a = 1;}
             @foreach (var t in Model.ls1)
             {
-                <tr>
-                    <th>@(a++)</th>
-                    <th>@Html.DisplayFor(m => t.Roll)</th>
-                    <th>@Html.DisplayFor(m => t.Subject)</th>
-                    <th>@Html.DisplayFor(m => t.Campus)</th>
-                </tr>
+            <tr>
+                <th>@(a++)</th>
+                <th>@Html.DisplayFor(m => t.Roll)</th>
+                <th>@Html.DisplayFor(m => t.Email)</th>
+                <th>@Html.DisplayFor(m => t.Subject)</th>
+                <th>@Html.DisplayFor(m => t.Campus)</th>
+            </tr>
             }
 
         </table>

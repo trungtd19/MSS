@@ -18,10 +18,10 @@
             <u>@Html.ActionLink("Summary reports", "Index", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
-            @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
-            @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
-            @Html.ActionLink("SpecCompleted", "SpecCompleted")&nbsp;&nbsp;
-            @Html.ActionLink("BonusReport", "Bonus")&nbsp;&nbsp;
+            @Html.ActionLink("Not Required Course", "NotRequiredCourse")&nbsp;&nbsp;
+            @Html.ActionLink("Certificate Report", "CertificateReport")&nbsp;&nbsp;
+            @Html.ActionLink("Spec Completed", "SpecCompleted")&nbsp;&nbsp;
+            @Html.ActionLink("Bonus Report", "Bonus")&nbsp;&nbsp;
         </h4>
     </div>
     <div style="margin-left: auto; margin-right: auto; text-align: center;">
@@ -31,21 +31,38 @@
     </div>
     @using (Html.BeginForm("Index", "Report", FormMethod.Post))
     {
-    <div>
-        <label>
-            Imported date @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
-            Semester @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
-            Week: @ViewBag.Week
-            @Html.Hidden("searchCheck", "true")
-        </label>
-    </div>
-    <div>
-        <label>
-            Week off @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", style = "width:50px" })
-        </label>
-        <input class="btn btn-default" type="submit" value="Display" />
-        <a>@Html.ActionLink("Export", "PrintViewToPdf", "Report")</a>
-    </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label"> Reported date </label>
+            </div>
+            <div class="col-md-1">
+                @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                @Html.Hidden("searchCheck", "true")
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label"> Semester  </label>
+            </div>
+            <div class="col-md-1">
+                @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label">  Week off  </label>
+            </div>
+            <div class="col-md-1">
+                @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })
+            </div>
+            <div class="col-md-6">
+                <input class="btn btn-default" type="submit" value="Display" />
+                <a>@Html.ActionLink("Export", "PrintViewToPdf", "Report")</a>
+            </div>
+        </div>
+
 
     }
 

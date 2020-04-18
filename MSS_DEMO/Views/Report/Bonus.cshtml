@@ -30,10 +30,10 @@
             @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
-            @Html.ActionLink("NotRequiredCourse", "NotRequiredCourse")&nbsp;&nbsp;
-            @Html.ActionLink("CertificateReport", "CertificateReport")&nbsp;&nbsp;
-            @Html.ActionLink("SpecCompleted", "SpecCompleted")&nbsp;&nbsp;
-            <u>@Html.ActionLink("BonusReport", "Bonus", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
+            @Html.ActionLink("Not Required Course", "NotRequiredCourse")&nbsp;&nbsp;
+            @Html.ActionLink("Certificate Report", "CertificateReport")&nbsp;&nbsp;
+            @Html.ActionLink("Spec Completed", "SpecCompleted")&nbsp;&nbsp;
+            <u>@Html.ActionLink("Bonus Report", "Bonus", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
         </h4>
     </div>
     <br />
@@ -58,6 +58,15 @@
                     </div>
                     <div class="col-md-3">
                         @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Reported date </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
                     </div>
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
