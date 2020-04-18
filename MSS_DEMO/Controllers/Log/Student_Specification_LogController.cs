@@ -57,7 +57,7 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.SpecificationsLog.GetAll().Select(o => o.Date_Import).Distinct();
+            var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
             List<string> date = new List<string>();
             foreach (var _date in listDate)
             {
@@ -137,12 +137,13 @@ namespace MSS_DEMO.Controllers.Log
             var list = query.ToList();
             Type type = typeof(Student);
             var props = type.GetProperties();
-            sb.Append(string.Join(",", "Email", "Subject ID", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
-                "Completed", "Status", "Program Slug", "Program Name", "Completion Time",  "Date Import"));
+            sb.Append(string.Join(",","Name" ,"Email", "Subject ID", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
+                "Completed", "Status", "Program Slug", "Program Name", "Enrollment Sourse", "Completion Time",  "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
             {
                 sb.Append(string.Join(",",
+                    csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Subject_ID),
                     csv.AddCSVQuotes(item.Campus),
@@ -155,6 +156,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Status.ToString()),
                     csv.AddCSVQuotes(item.Program_Slug),
                     csv.AddCSVQuotes(item.Program_Name),
+                    csv.AddCSVQuotes(item.Enrollment_Sourse),
                     csv.AddCSVQuotes(item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Completion_Time.ToString()),
                     csv.AddCSVQuotes(item.Date_Import.ToString())
                     ));
