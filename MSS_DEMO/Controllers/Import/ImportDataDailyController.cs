@@ -65,7 +65,17 @@ namespace MSS_DEMO.Controllers
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0], semesterID))
+                                        if (!unitOfWork.Subject.IsExitsSubject(rows[2].ToString().Split('-')[0]))
+                                        {
+                                            countFail++;
+                                            continue;
+                                        }
+                                        if (!unitOfWork.Campus.IsExitsCampusID(rows[2].ToString().Split('-')[1]))
+                                        {
+                                            countFail++;
+                                            continue;
+                                        }
+                                        if (!unitOfWork.Students.IsExtisStudent(rows[2].ToString().Split('-')[2], semesterID))
                                         {
                                             continue;
                                         }
@@ -138,7 +148,17 @@ namespace MSS_DEMO.Controllers
                                     while (!sreader.EndOfStream)
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        if (!unitOfWork.Students.IsExtisStudent(rows[1].ToString().Split('@')[0], semesterID))
+                                        if (!unitOfWork.Subject.IsExitsSubject(rows[2].ToString().Split('-')[0]))
+                                        {
+                                            countFail++;
+                                            continue;
+                                        }
+                                        if (!unitOfWork.Campus.IsExitsCampusID(rows[2].ToString().Split('-')[1]))
+                                        {
+                                            countFail++;
+                                            continue;
+                                        }
+                                        if (!unitOfWork.Students.IsExtisStudent(rows[2].ToString().Split('-')[2], semesterID))
                                         {
                                             continue;
                                         }

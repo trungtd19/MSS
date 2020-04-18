@@ -69,7 +69,9 @@ namespace MSS_DEMO.Core.Import
                 Specialization_Completion_Time = row[13].ToString() != "" ? DateTime.Parse(row[13].ToString()) : DateTime.Parse("01/01/1970"),
                 User_ID = userID,
                 Date_Import = _dateImport,
-                Semester_ID = semesterID
+                Semester_ID = semesterID,
+                Name = row[0].ToString(),
+                Enrollment_Sourse = row[12].ToString(),
             };
         }
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
@@ -116,7 +118,11 @@ namespace MSS_DEMO.Core.Import
                     Course_Grade = Double.Parse(row[18].ToString()),
                     User_ID = userID,
                     Date_Import = _dateImport,
-                    Semester_ID = semesterID
+                    Semester_ID = semesterID,
+                    Name = row[0].ToString(),
+                    University = row[6].ToString(),
+                    Course_Slug = row[5].ToString(),
+                    Enrollment_Sourse = row[16].ToString()
                 };
             }
             else
@@ -141,7 +147,11 @@ namespace MSS_DEMO.Core.Import
                     Course_Grade = Double.Parse(row[18].ToString()),
                     User_ID = userID,
                     Date_Import = _dateImport,
-                    Semester_ID = semesterID
+                    Semester_ID = semesterID,
+                    Name = row[0].ToString(),
+                    University = row[6].ToString(),
+                    Course_Slug = row[5].ToString(),
+                    Enrollment_Sourse = row[16].ToString()
                 };
             } 
             return log;

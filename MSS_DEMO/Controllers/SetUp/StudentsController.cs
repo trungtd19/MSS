@@ -224,34 +224,23 @@ namespace MSS_DEMO.Controllers.SetUp
             else
                 return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DeleteListSubject(string Subject_ID, string Semester_ID)
+        public ActionResult DeleteListSubject(string Subject_ID, string Semester_ID, string Campus_ID)
         {
             string message = "";
             if (!string.IsNullOrEmpty(Subject_ID) && !string.IsNullOrEmpty(Subject_ID))
             {
-                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID);
+                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID,Campus_ID);
+            }
+            GetListSelect();
+            ViewBag.mess = "";
+            if (!string.IsNullOrEmpty(message) && message.Contains("success"))
+            {
+                ViewBag.success = message;
             }
             else
             {
-                message = "Chooese Subject and Semester please!";
+                ViewBag.mess = message;
             }
-            List<Subject> sub = unitOfWork.Subject.GetAll();
-            List<Subject> _sub = new List<Subject>();
-            _sub.Add(new Subject { Subject_ID = "", Subject_Name = "--- Choose Subject ---" });
-            foreach (var s in sub)
-            {
-                _sub.Add(s);
-            }
-            List<Semester> semester = unitOfWork.Semesters.GetAll();
-            List<Semester> _semester = new List<Semester>();
-            _semester.Add(new Semester { Semester_ID = "", Semester_Name = "--- Choose Semester ---" });
-            foreach (var sem in semester)
-            {
-                _semester.Add(sem);
-            }
-            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
-            ViewBag.Subject_ID = new SelectList(_sub, "Subject_ID", "Subject_Name");
-            ViewBag.mess = message;
             return View();
         }
         public void GetListSelect()

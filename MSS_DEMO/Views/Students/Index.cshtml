@@ -20,7 +20,7 @@
         @Html.ActionLink("Export Student", "Export_Student_CSV", "Students")
     </div>
     <div class="col-md-2">
-        @Html.ActionLink("Delete List Subject", "DeleteListSubject", "Students")
+        @Html.ActionLink("Delete List Student", "DeleteListSubject", "Students")
     </div>
     <div class="col-md-2">@Html.ActionLink("Add New", "Create")</div>
     <br />
@@ -78,7 +78,8 @@
 @if (Model.PageList.PageCount > 0)
 {
      int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
-    <label>Showing @ViewBag.Count results</label>
+<label>Showing  @ViewBag.Count results</label>
+
     <table class="table table-bordered table-striped">
         <tr>
             <th style="width:50px;">No</th>

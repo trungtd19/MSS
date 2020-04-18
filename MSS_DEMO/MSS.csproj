@@ -449,6 +449,8 @@
     <Content Include="Views\Student_Course_Log\Detail.cshtml" />
     <Content Include="Views\Student_Specification_Log\Mentor.cshtml" />
     <Content Include="Views\Student_Specification_Log\Detail.cshtml" />
+    <Content Include="Views\Report\SpecCompleted.cshtml" />
+    <Content Include="Views\Report\Bonus.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
