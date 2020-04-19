@@ -10,14 +10,13 @@
     height:200px;
 }
 </style>
-<h2>Create</h2>
+<h2>Create Specification</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Specification</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
