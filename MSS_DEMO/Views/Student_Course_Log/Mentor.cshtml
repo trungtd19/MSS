@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MSS_DEMO.Core.Implement.Courses_Class_Mentor>
+﻿@model IEnumerable<MSS_DEMO.Core.Implement.MentorObject>
 
 @{
     ViewBag.Title = "Usage Report";
@@ -6,7 +6,7 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > Usage Report</span>
 <br />
-
+<br />
 @{
     int stt = 1;
 }
@@ -17,7 +17,7 @@
             Subject ID
         </th>
         <th>
-            Course Name
+            Subject Name
         </th>
         <th>
             Class
@@ -35,10 +35,10 @@
         @Html.DisplayFor(modelItem => item.Subject_ID)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.Course_Name)
+        @Html.DisplayFor(modelItem => item.Subject_Name)
     </td>
     <td>
-        @Html.ActionLink(item.Class_ID, "Detail", new { id = item.CoursesID_ClassID })
+        @Html.ActionLink(item.Class_ID, "Detail", new { id = item.id })
     </td>
 </tr>
     }

@@ -316,7 +316,10 @@
     <None Include="Connected Services\ServiceReference\MSSWS.disco" />
     <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\ServiceReference\configuration.svcinfo" />
-    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.HelloWorldResponse.datasource">
+    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.GetClassResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.GetMentorResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\ServiceReference\Reference.svcmap">
