@@ -32,44 +32,30 @@
     @using (Html.BeginForm("Index", "Report", FormMethod.Post))
     {
         <div class="form-group">
-            <div class="col-md-2">
-                <label class="control-label"> Reported date </label>
-            </div>
-            <div class="col-md-1">
-                @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+            <div style="margin-left:auto;">
+                <label class="control-label"> Reported date: </label>
+                <label>@Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
                 @Html.Hidden("searchCheck", "true")
             </div>
         </div>
-        <br />
         <div class="form-group">
-            <div class="col-md-2">
-                <label class="control-label"> Semester  </label>
-            </div>
-            <div class="col-md-1">
-                @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+            <div style="margin-left:auto;">
+                <label class="control-label"> Semester:  </label>
+                <label> @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
             </div>
         </div>
-        <br />
         <div class="form-group">
-            <div class="col-md-2">
-                <label class="control-label">  Week off  </label>
-            </div>
-            <div class="col-md-1">
-                @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })
-            </div>
-            <div class="col-md-6">
-                <input class="btn btn-default" type="submit" value="Display" />
-                <a>@Html.ActionLink("Export", "PrintViewToPdf", "Report")</a>
+            <div style="margin-left:auto;">
+                <label class="control-label">  Week off:  </label>
+                <label> @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })</label>
+                <label style="margin-left:100px;"><input class="btn btn-default" type="submit" value="Display" /></label>
+                <label>@Html.ActionLink("Export", "PrintViewToPdf", "Report")</label>
             </div>
         </div>
 
 
     }
 
-
-
-
-    <br />
     @if (Model != null)
     {
         <div>
