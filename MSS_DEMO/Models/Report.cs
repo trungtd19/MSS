@@ -27,6 +27,7 @@ namespace MSS_DEMO.Models
         public string Campus { get; set; }
         public string Subject { get; set; }
         public string Semester_ID { get; set; }
+        public double PBonus { get; set; }
         public List<string> ListSubject { get; set; }
         public virtual Campu Campuss { get; set; }
         public List<ListStudent> ls1 { get; set; }
@@ -49,6 +50,7 @@ namespace MSS_DEMO.Models
         public double Overall_Progress { get; set; }
         public bool Completed { get; set; }
         public double Estimated { get; set; }
+        public DateTime Completion_Time { get; set; }
         public List<InfoStudent> InforList { get; set; }
     }
 }
