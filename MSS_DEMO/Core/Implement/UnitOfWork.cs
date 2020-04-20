@@ -20,11 +20,8 @@ namespace MSS_DEMO.Repository
         private StudentCoursesLogRepository CoursesLogRepository;
         private UserRepository UserRepository;
         private SemestersRepository SemestersRepository;
-        private ClassStudentRepository ClassStudentRepository;
         private SubjectStudentRepository SubjectStudentRepository;
-        private ClassRepository ClassRepository;
         private CoursesDeadlineRepository CoursesDeadlineRepository;
-        private MentorRepository MentorRepository;
         public StudentRepository Students
         {
             get
@@ -95,13 +92,7 @@ namespace MSS_DEMO.Repository
                 return SemestersRepository ?? (SemestersRepository = new SemestersRepository(context));
             }
         }
-        public ClassStudentRepository ClassStudent
-        {
-            get
-            {
-                return ClassStudentRepository ?? (ClassStudentRepository = new ClassStudentRepository(context));
-            }
-        }
+
         public SubjectStudentRepository SubjectStudent
         {
             get
@@ -110,20 +101,6 @@ namespace MSS_DEMO.Repository
             }
         }
 
-        public ClassRepository Classes
-        {
-            get
-            {
-                return ClassRepository ?? (ClassRepository = new ClassRepository(context));
-            }
-        }
-        public MentorRepository Mentor
-        {
-            get
-            {
-                return MentorRepository ?? (MentorRepository = new MentorRepository(context));
-            }
-        }
         public bool Save()
         {
             bool returnValue = true;

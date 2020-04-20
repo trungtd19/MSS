@@ -12,14 +12,15 @@ namespace MSS_DEMO.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Class_Student
+    public partial class Mentor_Log
     {
-        public int ID { get; set; }
+        public int Mentor_Log_ID { get; set; }
         public string Roll { get; set; }
-        public string Class_ID { get; set; }
+        public string Subject_ID { get; set; }
         public string Semester_ID { get; set; }
+        public string Note { get; set; }
     
-        public virtual Class Class { get; set; }
         public virtual Student Student { get; set; }
+        public virtual Subject Subject { get; set; }
     }
 }

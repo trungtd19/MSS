@@ -63,7 +63,7 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
         {
-            if (unitOfWork.Subject.IsExitsSubject(subject.Subject_ID))
+            if (unitOfWork.Subject.IsExitsSubjectIDAndName(subject.Subject_ID, subject.Subject_Name))
             {
                 ViewBag.Error = "This subject exits!";
                 return View();
@@ -88,19 +88,22 @@ namespace MSS_DEMO.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
-        {
-            if (unitOfWork.Subject.IsExitsSubjectName(subject.Subject_Name))
+        {    
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    unitOfWork.Subject.Update(subject);
+                    unitOfWork.Subject.Save(subject.Subject_Name);
+                    return RedirectToAction("Index");
+                }
+            }
+            catch
             {
                 ViewBag.Error = "This subject exits!";
-                return View();
+                return View(subject);
             }
-            if (ModelState.IsValid)
-            {
-                unitOfWork.Subject.Update(subject);
-                unitOfWork.Save();
-                return RedirectToAction("Index");
-            }
-            return View(subject);
+            return View(new Subject());
         }
         public ActionResult Delete(string id)
         {

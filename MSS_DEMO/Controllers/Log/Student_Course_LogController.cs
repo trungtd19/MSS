@@ -131,13 +131,13 @@ namespace MSS_DEMO.Controllers.Log
         public ActionResult Mentor()
         {
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];           
-            return View(unitOfWork.Mentor.getListSubjectClass(userMentor.UserName));
+            return View(unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName));
         }
         public ActionResult Detail(string id)
         {
 
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var listSubjectClass = unitOfWork.Mentor.getListSubjectClass(userMentor.UserName);
+            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName);
             MSSWSSoapClient soap = new MSSWSSoapClient();
             string jsonDataClass = "";
             List<string> listRoll = new List<string>();
@@ -235,7 +235,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Status.ToString()),
                     csv.AddCSVQuotes(item.Program_Slug),
                     csv.AddCSVQuotes(item.Program_Name),
-                    csv.AddCSVQuotes(item.Enrollment_Sourse),
+                    csv.AddCSVQuotes(item.Enrollment_Source),
                     csv.AddCSVQuotes(item.Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Completion_Time.ToString()),
                     csv.AddCSVQuotes(item.Course_Grade.ToString()),
                     csv.AddCSVQuotes(item.Date_Import.ToString())

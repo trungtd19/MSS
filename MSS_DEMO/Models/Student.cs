@@ -18,7 +18,7 @@ namespace MSS_DEMO.Models
         public Student()
         {
             this.Certificates = new HashSet<Certificate>();
-            this.Class_Student = new HashSet<Class_Student>();
+            this.Mentor_Log = new HashSet<Mentor_Log>();
             this.Student_Course_Log = new HashSet<Student_Course_Log>();
             this.Student_Specification_Log = new HashSet<Student_Specification_Log>();
             this.Subject_Student = new HashSet<Subject_Student>();
@@ -27,13 +27,14 @@ namespace MSS_DEMO.Models
         public string Email { get; set; }
         public string Roll { get; set; }
         public string Full_Name { get; set; }
-        public string Campus { get; set; }
+        public string Campus_ID { get; set; }
         public string Semester_ID { get; set; }
     
+        public virtual Campu Campu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Certificate> Certificates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Class_Student> Class_Student { get; set; }
+        public virtual ICollection<Mentor_Log> Mentor_Log { get; set; }
         public virtual Semester Semester { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student_Course_Log> Student_Course_Log { get; set; }

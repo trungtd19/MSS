@@ -37,7 +37,7 @@ namespace MSS_DEMO.Core.Implement
                         if (list.Where(x => x.Roll == ls && x.Semester_ID == SemesterID).FirstOrDefault() == null)
                         {
                             var stu = context.Students.Find(ls, SemesterID);
-                            if (stu.Campus == CampusID)
+                            if (stu.Campus_ID == CampusID)
                             {
                                 context.Students.Remove(stu);
                                 countDelete++;

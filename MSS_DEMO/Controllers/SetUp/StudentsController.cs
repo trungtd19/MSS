@@ -16,7 +16,7 @@ namespace MSS_DEMO.Controllers.SetUp
         private IUnitOfWork unitOfWork;
         public StudentsController(IUnitOfWork _unitOfWork)
         {
-            this.unitOfWork = _unitOfWork;           
+            this.unitOfWork = _unitOfWork;
         }
         public ActionResult Index(StudentViewModel model, int? page, string searchCheck, string Semester_ID)
         {
@@ -25,7 +25,7 @@ namespace MSS_DEMO.Controllers.SetUp
             if (searchCheck != null)
             {
                 students = unitOfWork.Students.GetPageList();
-            }          
+            }
             else
             {
                 page = 1;
@@ -38,12 +38,11 @@ namespace MSS_DEMO.Controllers.SetUp
                 }
                 if (!String.IsNullOrWhiteSpace(model.Semester_ID))
                 {
-                   students = students.Where(s => s.Semester.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
+                    students = students.Where(s => s.Semester_ID.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
                 }
-                if (!String.IsNullOrWhiteSpace(model.Campus))
+                if (!String.IsNullOrWhiteSpace(model.Campus_ID))
                 {
-                    var cp = unitOfWork.Campus.GetAll().Where(cmp => cmp.Campus_Name == model.Campus).Select(cmp => cmp.Campus_ID).FirstOrDefault();
-                    students = students.Where(s => s.Campus.ToUpper().Contains(cp)).ToList();
+                    students = students.Where(s => s.Campus_ID.ToUpper().Contains(model.Campus_ID)).ToList();
                 }
                 if (students.Count == 0)
                 {
@@ -53,11 +52,29 @@ namespace MSS_DEMO.Controllers.SetUp
                 {
                     ViewBag.Nodata = "";
                 }
-            }           
-            List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
-            List<string> campus = unitOfWork.Campus.GetAll().Select(o => o.Campus_Name).ToList();
-            model.lstSemester = semester;
-            model.lstCampus = campus;
+            }
+            List<SelectListItem> semesterList = new List<SelectListItem>();
+            var semester = unitOfWork.Semesters.GetAll();
+            foreach (var sem in semester)
+            {
+                semesterList.Add(new SelectListItem
+                {
+                    Text = sem.Semester_Name,
+                    Value = sem.Semester_ID
+                });
+            }
+            List<SelectListItem> campusList = new List<SelectListItem>();
+            var campus = unitOfWork.Campus.GetAll();
+            foreach (var cam in campus)
+            {
+                campusList.Add(new SelectListItem
+                {
+                    Text = cam.Campus_Name,
+                    Value = cam.Campus_ID
+                });
+            }
+            model.lstSemester = semesterList;
+            model.lstCampus = campusList;
             model.searchCheck = searchCheck;
             int pageSize = 30;
             int pageNumber = (page ?? 1);
@@ -68,7 +85,7 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public ActionResult Details(string id)
         {
-       
+
             ViewBag.Subject = unitOfWork.SubjectStudent.getListSubject(id);
             var student = unitOfWork.Students.getByRollAndSemester(id);
             return View(student);
@@ -84,7 +101,7 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult Create(Student student, string Subject_ID, string Campus_ID)
         {
             GetListSelect();
-            student.Campus = Campus_ID;
+            student.Campus_ID = Campus_ID;
             Subject_Student list = new Subject_Student();
             list = new Subject_Student
             {
@@ -105,17 +122,14 @@ namespace MSS_DEMO.Controllers.SetUp
                             return View(new Student());
                         }
                         unitOfWork.SubjectStudent.Insert(list);
-                        // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                     }
                     else
                     if (!unitOfWork.Students.IsExtisStudent(student.Roll, student.Semester_ID))
                     {
                         unitOfWork.Students.Insert(student);
                         unitOfWork.SubjectStudent.Insert(list);
-                        //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                     }
                 }
-                //unitOfWork.Students.Insert(student);
                 unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -143,7 +157,7 @@ namespace MSS_DEMO.Controllers.SetUp
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Student student, string Campus_ID)
         {
-            student.Campus = Campus_ID;
+            student.Campus_ID = Campus_ID;
             if (ModelState.IsValid)
             {
                 unitOfWork.Students.Update(student);
@@ -183,7 +197,7 @@ namespace MSS_DEMO.Controllers.SetUp
             if (!unitOfWork.Save())
             {
                 ViewBag.mess = "Can't delete this student!";
-                return View(student);                 
+                return View(student);
             }
             return RedirectToAction("Index");
         }
@@ -200,7 +214,7 @@ namespace MSS_DEMO.Controllers.SetUp
             foreach (var item in list)
             {
                 sb.Append(string.Join(",", csv.AddCSVQuotes(item.Roll), csv.AddCSVQuotes(item.Email)));
-                sb.Append(Environment.NewLine);            
+                sb.Append(Environment.NewLine);
             }
             var response = System.Web.HttpContext.Current.Response;
             response.BufferOutput = true;
@@ -216,7 +230,7 @@ namespace MSS_DEMO.Controllers.SetUp
         public ActionResult GetID()
         {
             string roll = Request["roll"];
-            string semesterID = Request["semesterID"]; 
+            string semesterID = Request["semesterID"];
             if (unitOfWork.Students.IsExtisStudent(roll, semesterID))
             {
                 return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
@@ -229,7 +243,7 @@ namespace MSS_DEMO.Controllers.SetUp
             string message = "";
             if (!string.IsNullOrEmpty(Subject_ID) && !string.IsNullOrEmpty(Subject_ID))
             {
-                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID,Campus_ID);
+                message = unitOfWork.SubjectStudent.DeleteListSubject(Subject_ID, Semester_ID, Campus_ID);
             }
             GetListSelect();
             ViewBag.mess = "";

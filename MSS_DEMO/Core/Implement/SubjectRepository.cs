@@ -65,6 +65,44 @@ namespace MSS_DEMO.Core.Implement
                 check = false;
             return check;
         }
+        public bool IsExitsSubjectIDAndName(string subID, string subName)
+        {
+            bool check = true;
+            Subject subject = context.Subjects.Where(x => x.Subject_ID.Trim() == subID.Trim() || x.Subject_Name.Trim() == subName.Trim()).FirstOrDefault();
+            if (subject != null)
+            {
+                check = true;
+            }
+            else
+                check = false;
+            return check;
+        }
+        public bool Save(string Subject_Name)
+        {
+            bool returnValue = true;
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    context.SaveChanges();
+                    var subject = context.Subjects.Where(x => x.Subject_Name.Trim() == Subject_Name.Trim()).ToList().Count();
+                    if (subject > 1)
+                    {
+                        returnValue = false;
+                        dbContextTransaction.Rollback();
+                        throw new Exception("Subject exited");
+                    }
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    returnValue = false;
+                    dbContextTransaction.Rollback();
+                }
+            }
+            return returnValue;
+        }
+
     }
 
 }
