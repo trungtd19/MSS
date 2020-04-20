@@ -51,6 +51,10 @@ namespace MSS_DEMO.Controllers
 
             DateTime date;
             ViewBag.SelectDatetime = Date(SelectSemester);
+            if (ViewBag.date != null)
+            {
+                ViewBag.SelectDatetime = ViewBag.date;
+            }
             date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
             if (SelectDatetime != null)
             {
@@ -164,13 +168,15 @@ namespace MSS_DEMO.Controllers
             {
                 weekN = Math.Floor(timeSpan.TotalDays / 7);
             }
-            ViewBag.Week = weekN;
+            //ViewBag.Week = weekN;
             int weekOff = 0;
             if (!String.IsNullOrEmpty(weekNumber))
             {
                 weekOff = Int32.Parse(weekNumber);
             }
-
+            ViewBag.weekNumber = weekOff;
+            ViewBag.date = date;
+            ViewBag.semester = SelectSemester;
             var weekTotal = weekN - weekOff;
             if (weekTotal > 0)
             {
@@ -303,7 +309,7 @@ namespace MSS_DEMO.Controllers
                                                          Email = c.Email,
                                                          Roll = c.Roll,
                                                          Full_Name = c.Full_Name,
-                                                         Campus = c.Campus
+                                                         Campus = c.Campus_ID
                                                      }).ToList().Select(p => new ListStudent
                                                      {
                                                          Email = p.Email,
@@ -333,7 +339,7 @@ namespace MSS_DEMO.Controllers
                                                          Email = c.Email,
                                                          Roll = c.Roll,
                                                          Full_Name = c.Full_Name,
-                                                         Campus = c.Campus
+                                                         Campus = c.Campus_ID
                                                      }).ToList().Select(p => new ListStudent
                                                      {
                                                          Email = p.Email,
@@ -635,8 +641,9 @@ namespace MSS_DEMO.Controllers
         }
         
         public ActionResult PrintViewToPdf(string SelectDatetime, string searchCheck, string weekNumber, string SelectSemester)
-        {           
-            var report = new ActionAsPdf("Index", new {SelectDatetime = SelectDatetime, weekNumber = weekNumber, SelectSemester = SelectSemester });
+        {
+            var rpN = new Report();
+            var report = new ActionAsPdf("Index", new { rpN, weekNumber, searchCheck, SelectDatetime, SelectSemester });
             return report;
         }
 
@@ -737,7 +744,7 @@ namespace MSS_DEMO.Controllers
 
                         if (countOfCourse == completed)
                         {
-                            ListStudentCompleted.Add(new ListStudent { Roll = t, Campus = info.Campus, Subject = u.Subject_Name, Semester_ID = info.Semester_ID,Email = info.Email });
+                            ListStudentCompleted.Add(new ListStudent { Roll = t, Campus = info.Campus_ID, Subject = u.Subject_Name, Semester_ID = info.Semester_ID,Email = info.Email });
                         }
                     }
                 }
@@ -820,7 +827,7 @@ namespace MSS_DEMO.Controllers
                     var countBonus = ListCompleted.Where(m => m.Roll == t).Count();
                     var campus = (from a in context.Students
                                   where a.Roll == t && a.Semester_ID == SelectSemester
-                                  select a.Campus).FirstOrDefault();
+                                  select a.Campus_ID).FirstOrDefault();
                     double bonus = 0;
                     bonus = countBonus * 0.25;
                     if (bonus > 1)
@@ -911,7 +918,7 @@ namespace MSS_DEMO.Controllers
                 student = (from a in context.Subjects
                                join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
                                join c in context.Students on b.Roll equals c.Roll
-                               where c.Campus == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
+                               where c.Campus_ID == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
                                select c.Roll).Count();
             }
             else if(subjectId == "" && campus == "")
@@ -927,7 +934,7 @@ namespace MSS_DEMO.Controllers
                 student = (from a in context.Subjects
                                join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
                                join c in context.Students on b.Roll equals c.Roll
-                               where subjectId == a.Subject_ID && c.Campus == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
+                               where subjectId == a.Subject_ID && c.Campus_ID == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
                            select c.Roll).Count();
             }
             
