@@ -53,7 +53,7 @@
                 @if (session != null)
                 {
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Welcome :" + @session.UserName, "Index", "Home")</li>
+                        <li>@Html.ActionLink("Welcome:" + " "+ @session.UserName, "Index", "Home")</li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">                        
                         <li><a href="~/Login/Logout" onclick="signOut();">Logout</a></li>

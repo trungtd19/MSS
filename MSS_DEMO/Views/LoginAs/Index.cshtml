@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<h2> Login AS: </h2>
+<hr />
+<div class="form-group">
+    @using (Html.BeginForm("Index", "LoginAs", FormMethod.Post))
+    {
+        <div class="col-md-2" style="width: 11.666667%;">
+            Login:
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+            @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-1">
+            <input class="btn btn-default" type="submit" value="Search" />
+        </div>
+        <div class="col-md-5"></div>
+    }
+    <br />
+    <br />
+    <span style="color: red;">@ViewBag.Nodata</span>
+</div>
+

@@ -23,10 +23,13 @@
         <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
         <hr />
         <h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
+
     }
     else if (Role == 1)
     {
         <h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
+        <hr />
+        <h5>@Html.ActionLink("Login AS", "Index", "LoginAs")</h5>
     }
     else if (Role == 3)
     {
