@@ -63,7 +63,7 @@
     </div>
 </div>
 }
-<span style="color:red;">@ViewBag.Error</span>
+<span id="Error" style="color:red;">@ViewBag.Error</span>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
@@ -111,5 +111,14 @@
                  }
                  }).done(function () {
              });
+        });
+    $(function () {
+        if ($("#Error").text() != "")
+        {
+             $("#Roll").val(" ")
+             $("#Email").val(" ")
+             $("#Full_Name").val(" ")
+             $("#Campus_ID").val(" ")
+         }   
         });
 </script>
