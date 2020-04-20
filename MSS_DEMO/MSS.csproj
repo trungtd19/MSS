@@ -200,6 +200,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Certificates\CertificatesController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
+    <Compile Include="Controllers\Log\CleanSystemController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\SetUp\Course_DeadlineController.cs" />
     <Compile Include="Controllers\SetUp\UserController.cs" />
@@ -453,6 +454,9 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\CleanSystem\UsageReport.cshtml" />
+    <Content Include="Views\CleanSystem\SpecificationReport.cshtml" />
+    <Content Include="Views\CleanSystem\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
