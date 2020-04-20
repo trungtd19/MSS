@@ -119,7 +119,7 @@ namespace MSS_DEMO.Controllers.SetUp
                         if (unitOfWork.SubjectStudent.IsExitsSubjectStudent(student.Roll, Subject_ID))
                         {
                             ViewBag.Error = "Student  " + student.Roll + " has registered for subject " + Subject_ID;
-                            return View(new Student());
+                            return View(student);
                         }
                         unitOfWork.SubjectStudent.Insert(list);
                     }
@@ -283,6 +283,84 @@ namespace MSS_DEMO.Controllers.SetUp
                 _cam.Add(c);
             }
             ViewBag.Campus_ID = new SelectList(_cam, "Campus_ID", "Campus_Name");
+        }
+
+        [HttpGet]
+        public ActionResult Export(string check)
+        {
+
+            string searchCheck = check.Split('^')[0];
+            string Email = check.Split('^')[1];
+            string Semester_ID = check.Split('^')[2];
+            string Campus_ID = check.Split('^')[3];
+  
+            var students = unitOfWork.Students.GetAll();
+
+            if (searchCheck != "1")
+            {
+                if (Email != "2")
+                {
+                    students = students.Where(s => s.Email.ToUpper().Contains(Email.Trim().ToUpper())).ToList();
+                }
+                if (Semester_ID != "3")
+                {
+                    students = students.Where(s => s.Semester_ID.Trim() == Semester_ID.Trim()).ToList();
+                }
+                if (Campus_ID != "4")
+                {
+                    students = students.Where(s => s.Campus_ID.Trim() == Campus_ID.Trim()).ToList();
+                }      
+            }
+            var myExport = new CSVExport();
+
+            foreach (var student in students)
+            {
+                myExport.AddRow();
+                myExport["Roll Number"] = student.Roll;
+                myExport["Full Name"] = student.Full_Name;
+                myExport["Email"] = student.Email;
+            }
+
+            return File(myExport.ExportToBytes(), "text/csv", "Student.csv");
+        }
+        [HttpGet]
+        public ActionResult ExportCoursera(string check)
+        {
+
+            string searchCheck = check.Split('^')[0];
+            string Email = check.Split('^')[1];
+            string Semester_ID = check.Split('^')[2];
+            string Campus_ID = check.Split('^')[3];
+
+            var students = unitOfWork.Students.GetAll();
+
+            if (searchCheck != "1")
+            {
+                if (Email != "2")
+                {
+                    students = students.Where(s => s.Email.ToUpper().Contains(Email.Trim().ToUpper())).ToList();
+                }
+                if (Semester_ID != "3")
+                {
+                    students = students.Where(s => s.Semester_ID.Trim() == Semester_ID.Trim()).ToList();
+                }
+                if (Campus_ID != "4")
+                {
+                    students = students.Where(s => s.Campus_ID.Trim() == Campus_ID.Trim()).ToList();
+                }
+            }
+            var myExport = new CSVExport();
+
+            foreach (var student in students)
+            {
+                myExport.AddRow();
+                myExport["Full Name"] = student.Full_Name;
+                myExport["Email"] = student.Email;
+                var subject = unitOfWork.SubjectStudent.getListSubject(student.Roll + "^" + student.Semester_ID).ToString();
+                myExport["External ID"] = subject +"@" + student.Campus_ID + "-" + student.Roll;
+            }
+
+            return File(myExport.ExportToBytes(), "text/csv", "Coursera-Invitation.csv");
         }
     }
 }

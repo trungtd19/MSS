@@ -79,9 +79,9 @@ namespace MSS_DEMO.Core.Implement
             var subject = context.Subject_Student.Where(s => s.Roll == Roll && s.Semester_ID == SemesterID).Select(s => s.Subject_ID).ToList();
             foreach (var _subject in subject)
             {
-                sb.Append(" - " + _subject);
+                sb.Append("-" + _subject);
             }
-            sb.Remove(0, 2);
+            if (!string.IsNullOrEmpty(sb.ToString())) sb.Remove(0, 2);
             return sb;
         }
         public Student getByRollAndSemester(string id)

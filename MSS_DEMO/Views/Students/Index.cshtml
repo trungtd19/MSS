@@ -7,17 +7,13 @@
 <span>@Html.ActionLink("Home", "Index", "Home")>@Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Student</span>
 <hr />
 @{
-    SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
-    SelectList listCampus = new SelectList((IList<string>)Model.lstCampus);
-     var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
+
+    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
     var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
 }
 <div class="form-group">
     <div class="col-md-2">
         <a href="ImportStudent/Index">Import Student</a>
-    </div>
-    <div class="col-md-2">
-        @Html.ActionLink("Export Student", "Export_Student_CSV", "Students")
     </div>
     <div class="col-md-2">
         @Html.ActionLink("Delete List Student", "DeleteListSubject", "Students")
@@ -40,14 +36,14 @@
                                         <label class="col-md-3 control-label">Email</label>
                                         <div class="col-md-9 col-xs-12">
                                             @Html.Hidden("searchCheck", "true")
-                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control"})
+                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Semester</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
+                                            @Html.DropDownList("Semester_ID", Model.lstSemester, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
                                         </div>
                                     </div>
                                 </div>
@@ -57,7 +53,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Campus</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Campus", listCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
+                                            @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
                                         </div>
                                     </div>
                                 </div>
@@ -77,9 +73,13 @@
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageList.PageCount > 0)
 {
-     int stt = 1 + (pagenumber -1) * Model.PageList.PageSize;
-<label>Showing  @ViewBag.Count results</label>
-
+    int stt = 1 + (pagenumber - 1) * Model.PageList.PageSize;
+    <label>Showing  @ViewBag.Count results&emsp;&emsp;</label>
+    <button id="Export" class="btn btn-success">Export</button>
+    <span>&emsp;&emsp;</span>
+    <button class="btn btn-success" id="ExportCoursera">Export Coursera Invitation</button>
+    <br />
+    <br />
     <table class="table table-bordered table-striped">
         <tr>
             <th style="width:50px;">No</th>
@@ -102,30 +102,80 @@
 
         @foreach (var item in Model.PageList)
         {
-            var id = item.Roll + "^" +item.Semester.Semester_ID;
-    <tr>
-        <td>@(stt++)</td>
-        <td>
-            @Html.ActionLink(item.Roll, "Details", new { id = id })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Full_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Campus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
-        </td>
-    </tr>
+            var id = item.Roll + "^" + item.Semester.Semester_ID;
+            <tr>
+                <td>@(stt++)</td>
+                <td>
+                    @Html.ActionLink(item.Roll, "Details", new { id = id })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Full_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Campus_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
+                </td>
+            </tr>
         }
 
     </table>
-   
+
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
 @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
-      new { page, Roll = Model.Roll, Semester_ID = Model.Semester_ID, Campus = Model.Campus, searchCheck = "true" }))
+      new { page, Email = Model.Email, Semester_ID = Model.Semester_ID, Campus_ID = Model.Campus_ID, searchCheck = "true" }))
+<script>
+        $(function () {
+        $("#Export").click(function () {
+        var searchCheck = $("#searchCheck").val() || "1";
+        var Email = $("#Email").val() || "2";
+        var Semester_ID = $("#Semester_ID").val() || "3";
+        var Campus_ID = $("#Campus_ID").val() || "4";
+
+            var list = searchCheck + "^" + Email + "^" + Semester_ID + "^" + Campus_ID;
+            $.ajax(
+                {
+                    url: '@Url.Action("Export", "Students")',
+                    contentType: 'application/json; charset=utf-8',
+                    datatype: 'json',
+                    data: { check : list},
+                    type: "GET",
+                    success: function (data) {
+                    window.location.href = "@Url.RouteUrl(new
+                    { Controller = "Students", Action = "Export" })/?check=" + list;
+
+                }
+            });
+
+        });
+        });
+        $(function () {
+        $("#ExportCoursera").click(function () {
+        var searchCheck = $("#searchCheck").val() || "1";
+        var Email = $("#Email").val() || "2";
+        var Semester_ID = $("#Semester_ID").val() || "3";
+        var Campus_ID = $("#Campus_ID").val() || "4";
+
+            var list = searchCheck + "^" + Email + "^" + Semester_ID + "^" + Campus_ID;
+            $.ajax(
+                {
+                    url: '@Url.Action("ExportCoursera", "Students")',
+                    contentType: 'application/json; charset=utf-8',
+                    datatype: 'json',
+                    data: { check : list},
+                    type: "GET",
+                    success: function (data) {
+                    window.location.href = "@Url.RouteUrl(new
+                    { Controller = "Students", Action = "ExportCoursera" })/?check=" + list;
+
+                }
+            });
+
+         });
+        });
+</script>
