@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="33bb3e60-bb86-4230-84bf-98120b1bd939" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d7f4e473-6fe5-4d76-9f87-758c22ee1ebd" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,8 +22,8 @@
     <MetadataSource Address="https://localhost:44375/MSSWS.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MSSWS.wsdl" MetadataType="Wsdl" ID="f471d35c-09d7-409b-b8d0-1fa258f08cee" SourceId="1" SourceUrl="https://localhost:44375/MSSWS.asmx?wsdl" />
-    <MetadataFile FileName="MSSWS.disco" MetadataType="Disco" ID="364a7595-d0fa-4162-95e9-be01a9478f4c" SourceId="1" SourceUrl="https://localhost:44375/MSSWS.asmx?disco" />
+    <MetadataFile FileName="MSSWS.wsdl" MetadataType="Wsdl" ID="3354d09e-193e-4166-814f-13eb85eb5cfb" SourceId="1" SourceUrl="https://localhost:44375/MSSWS.asmx?wsdl" />
+    <MetadataFile FileName="MSSWS.disco" MetadataType="Disco" ID="fd9f0f54-5b9f-4b3b-a609-f2ef988bc1b0" SourceId="1" SourceUrl="https://localhost:44375/MSSWS.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -9,6 +9,7 @@ using MSS_DEMO.Common;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
+using MSS_DEMO.ServiceReference;
 using PagedList;
 
 namespace MSS_DEMO.Controllers.Log
@@ -129,15 +130,39 @@ namespace MSS_DEMO.Controllers.Log
         }
         public ActionResult Mentor()
         {
-            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var list = unitOfWork.Mentor.getListCourses(userMentor.UserName);
-            return View(list);
+            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];           
+            return View(unitOfWork.Mentor.getListSubjectClass(userMentor.UserName));
         }
         public ActionResult Detail(string id)
         {
-            ViewBag.Course_Name = unitOfWork.Courses.GetById(int.Parse(id.Split('^')[0])).Course_Name;
-            ViewBag.Class = id.Split('^')[1];
-            var list = unitOfWork.Mentor.getReport(id);
+
+            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
+            var listSubjectClass = unitOfWork.Mentor.getListSubjectClass(userMentor.UserName);
+            MSSWSSoapClient soap = new MSSWSSoapClient();
+            string jsonDataClass = "";
+            List<string> listRoll = new List<string>();
+            List<Student_Course_Log> list = new List<Student_Course_Log>();
+            foreach (var subjectClass in listSubjectClass)
+            {
+                if (id == subjectClass.id)
+                {
+                    jsonDataClass = soap.GetClass(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
+                    listRoll = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(jsonDataClass);
+                    foreach (var roll in listRoll)
+                    {
+                        var student = unitOfWork.CoursesLog.GetAll().Where(o => o.Roll.Contains(roll.Trim()) && o.Subject_ID.Contains(subjectClass.Subject_ID.Trim())).FirstOrDefault();
+                        if (student != null)
+                        {
+                            list.Add(student);
+                        }
+                    }
+                    var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+                    list = list.Where(o => o.Date_Import == maxDate).ToList();
+                    ViewBag.Subject = subjectClass.Subject_Name;
+                    ViewBag.Class = subjectClass.Class_ID;
+                    break;
+                }
+            }       
             return View(list);
         }
         [HttpGet]

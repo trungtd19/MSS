@@ -8,102 +8,128 @@
     > Detail Class
 </span>
 <br />
-<h3>Course: @ViewBag.Course_Name - Class: @ViewBag.Class</h3>
+<h3>Subject: @ViewBag.Subject - Class: @ViewBag.Class</h3>
 <br />
 @{
     int stt = 1;
 }
-<div class="table-responsive text-nowrap">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Enrollment Time
-                </th>
-                <th>
-                    Start Time
-                </th>
-                <th>
-                    Last ActivityTime
-                </th>
-                <th>
-                    Overall Progress
-                </th>
-                <th>
-                    Estimated
-                </th>
-                <th>
-                    Completed
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Program Slug
-                </th>
-                <th>
-                    Program Name
-                </th>
-                <th>
-                    Completion Time
-                </th>
-                <th>
-                    Course Grade
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                var complete = item.Completed == true ? "Yes" : "No";
-                var status = item.Status == true ? "Yes" : "No";
-                var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
-                string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
-                string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+<div style="overflow-x: auto;" class="drag">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <td>@(stt++)</td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Course_Enrollment_Time
-                    </td>
-                    <td>
-                        @Course_Enrollment_Time
-                    </td>
-                    <td>
-                        @Last_Course_Activity_Time
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Overall_Progress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Estimated)
-                    </td>
-                    <td>
-                        @complete
-                    </td>
-                    <td>
-                        @status
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Slug)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Program_Name)
-                    </td>
-                    <td>
-                        @completeTime
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Course_Grade)
-                    </td>
+                    <th>No</th>
+                    <th>
+                        Email
+                    </th>
+                    <th style="min-width: 250px;">
+                        Course Name
+                    </th>
+                    <th>
+                        Enrollment Time
+                    </th>
+                    <th>
+                        Start Time
+                    </th>
+                    <th>
+                        Last ActivityTime
+                    </th>
+                    <th>
+                        Overall Progress
+                    </th>
+                    <th>
+                        Estimated
+                    </th>
+                    <th>
+                        Completed
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Completion Time
+                    </th>
+                    <th>
+                        Course Grade
+                    </th>
+                    <th>
+                        Note
+                        <span data-toggle="tooltip" title="Focusout for saving" style="color: red">(!)</span>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var complete = item.Completed == true ? "Yes" : "No";
+                    var status = item.Status == true ? "Yes" : "No";
+                    var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
+                    string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
+                    string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+                    <tr>
+                        <td>@(stt++)</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Name)
+                        </td>
+                        <td>
+                            @Course_Enrollment_Time
+                        </td>
+
+                        <td>
+                            @Course_Enrollment_Time
+                        </td>
+                        <td>
+                            @Last_Course_Activity_Time
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overall_Progress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estimated)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @completeTime
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Grade)
+                        </td>
+                        <td>
+                            <textarea></textarea>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+<script>
+    var mx = 0;
+
+    $(".drag").on({
+        mousemove: function (e) {
+            var mx2 = e.pageX - this.offsetLeft;
+            if (mx) this.scrollLeft = this.sx + mx - mx2;
+        },
+        mousedown: function (e) {
+            this.sx = this.scrollLeft;
+            mx = e.pageX - this.offsetLeft;
+        }
+    });
+
+    $(document).on("mouseup", function () {
+        mx = 0;
+    });
+
+    $(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>

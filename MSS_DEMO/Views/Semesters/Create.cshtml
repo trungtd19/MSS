@@ -3,57 +3,61 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
 <h2>Create</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Semester</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Semester_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Semester_ID, new { htmlAttributes = new { @class = "form-control", @required ="true" } })
-                <label style="color:red" id="checkID" hidden> This field is a required </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Semester_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Semester_Name, new { htmlAttributes = new { @class = "form-control", @required ="true" } })
-                <label style="color:red" id="checkName" hidden> This field is a required </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Start_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new { @type="date" , @class = "form-control datepicker" , @required ="true"} })
-                <label style="color:red" id="checkStart" hidden> This field is a required </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.End_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new { @type="date" , @class = "form-control datepicker", @required ="true" } })
-                <label style="color:red" id="checkEnd" hidden> This field is a required </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="btn" type="submit" value="Create" class="btn btn-default" />
-            </div>
+<div class="form-horizontal">
+    <h4>Semester</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Semester_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Semester_ID, new { htmlAttributes = new { @class = "form-control", @required = "true" } })
+            <label style="color:red" id="checkID" hidden> This field is a required </label>
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Semester_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Semester_Name, new { htmlAttributes = new { @class = "form-control", @required = "true" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Start_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Start_Date, new { htmlAttributes = new {autocomplete="off", @class = "form-control datepicker", @required = "true" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.End_Date, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.End_Date, new { htmlAttributes = new {@autocomplete="off", @class = "form-control datepicker", @required = "true" } })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="btn" type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 <span style="color:red;">@ViewBag.Error</span>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script>
+    $('.datepicker').datepicker({
+        autoclose: true, 
+        todayHighlight: true,
+        format: 'dd/mm/yyyy'
+    });
+</script>
