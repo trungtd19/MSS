@@ -17,6 +17,7 @@ namespace MSS_DEMO.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Subject()
         {
+            this.Mentor_Log = new HashSet<Mentor_Log>();
             this.Specifications = new HashSet<Specification>();
             this.Subject_Student = new HashSet<Subject_Student>();
         }
@@ -25,6 +26,8 @@ namespace MSS_DEMO.Models
         public string Subject_Name { get; set; }
         public bool Subject_Active { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mentor_Log> Mentor_Log { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Specification> Specifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

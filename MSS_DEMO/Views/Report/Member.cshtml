@@ -45,22 +45,28 @@
 
             @using (Html.BeginForm("Member", "Report", FormMethod.Get))
             {
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Search by Roll Number</label>
-                    </div>
-                    <div class="col-lg-3">
-                        @Html.TextBox("SearchString")
-                        @Html.Hidden("searchCheck", "true")
-                    </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Search by Roll:</label>
                 </div>
-                <br /><br />
+                <div class="col-lg-3">
+                    @Html.TextBox("SearchString")
+                    @Html.Hidden("searchCheck", "true")
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label">Semester:</label>
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                </div>
+            </div>
+                <br />
                 <div class="form-group">
                     <div class="col-md-2">
-                        <label class="control-label">Semester</label>
+                        <label class="control-label"> Reported date: </label>
                     </div>
                     <div class="col-md-3">
-                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                        @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
@@ -91,6 +97,7 @@
                     <th>Last Active</th>
                     <th>Progress</th>
                     <th>Estimated learning hour</th>
+                    <th>Completion Time</th>
                     <th>Status</th>
                 </tr>
                 @{ int a = 1;}
@@ -102,6 +109,7 @@
                         <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
                         <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
                         <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
+                        <th>@Html.DisplayFor(m => t.Completion_Time)</th>
                         <th>@Html.DisplayFor(m => t.Estimated)</th>
                         @if (t.Completed)
                         {

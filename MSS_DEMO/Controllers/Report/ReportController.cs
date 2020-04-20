@@ -27,7 +27,6 @@ namespace MSS_DEMO.Controllers
 
             var context = new MSSEntities();
 
-            List<SelectListItem> selectDate = new List<SelectListItem>();
             List<SelectListItem> selectSemes = new List<SelectListItem>();
 
             var listSemes = (from a in context.Semesters
@@ -45,55 +44,28 @@ namespace MSS_DEMO.Controllers
 
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
-                //SelectSemester = orderedListSemes[0].Semester_ID;
                 SelectSemester = (from a in context.Semesters
                                   where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
                                   select a.Semester_ID).FirstOrDefault();
             }
 
-            var starDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.Start_Date).FirstOrDefault();
-            var endDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.End_Date).FirstOrDefault();
-
-
-            var listDate = (from a in context.Student_Course_Log
-                            where (a.Date_Import <= endDate && a.Date_Import >= starDate)
-                            select a.Date_Import).Distinct().ToList();
-
-            var orderedListDate = listDate.OrderByDescending(x => x).ToList();
-            foreach (var a in orderedListDate)
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (SelectDatetime != null)
             {
-                selectDate.Add(new SelectListItem
-                {
-                    Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
-                    Value = a.ToString()
-                });
+                date = Convert.ToDateTime(SelectDatetime);
             }
-            ViewBag.SelectDatetime = selectDate;
 
-
-
-
-
-
-            if (String.IsNullOrEmpty(searchCheck) && listDate.Count > 0)
-            {
-                SelectDatetime = orderedListDate[0].ToString();
-            }
-            else if(orderedListDate.Count == 0)
-            {
-                SelectDatetime = null;
-            }
-            DateTime date = Convert.ToDateTime(SelectDatetime);
-            foreach (var sub in context.Subjects)
+            var listSub = (from a in context.Subjects
+                           where a.Subject_Active == true
+                           select a).ToList();
+            foreach (var sub in listSub)
             {
                 var Totall = (from a in context.Subjects
                               join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
                               join c in context.Students on b.Roll equals c.Roll
-                              where sub.Subject_ID == a.Subject_ID && c.Semester_ID == SelectSemester
+                              where sub.Subject_ID == a.Subject_ID && c.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester
                              select c.Roll).Count();
 
                 var Type = (from a in context.Specifications
@@ -123,13 +95,13 @@ namespace MSS_DEMO.Controllers
                 reportStudent.Add(new Report {Sub = sub.Subject_ID, Name = sub.Subject_Name, Type = ListType, Total = Totall, Cmp = count });
 
                 List<double> count2 = new List<double>();
-                if(SelectDatetime != null)
+                if(date != null)
                 {
-                    int Total = Count(sub.Subject_ID, "", SelectDatetime);
+                    int Total = Count(sub.Subject_ID, "", date);
 
                     foreach (var cp in context.Campus)
                     {
-                        count2.Add(Count(sub.Subject_ID, cp.Campus_ID, SelectDatetime));
+                        count2.Add(Count(sub.Subject_ID, cp.Campus_ID, date));
                     }
                     reportCourse.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total, Totall), Total = Total, Cmp = count2 });
                 }
@@ -146,16 +118,16 @@ namespace MSS_DEMO.Controllers
             }
             ViewBag.Count = temp;
             ViewBag.TotalStudent1 = TotalStudent;
-            int TotalStudent2 = Count("", "", SelectDatetime);
+            int TotalStudent2 = Count("", "", date);
             ViewBag.TotalStudent2 = TotalStudent2;
 
 
             List<double> temp2 = new List<double>();
             ViewBag.TotalPercent = percent(TotalStudent2, TotalStudent);
-            temp2.Add(Count("", "", SelectDatetime));
+            temp2.Add(Count("", "", date));
             foreach (var cp in context.Campus)
             {
-                temp2.Add(Count("", cp.Campus_ID, SelectDatetime));
+                temp2.Add(Count("", cp.Campus_ID, date));
             }
             ViewBag.Count2 = temp2;
 
@@ -163,28 +135,32 @@ namespace MSS_DEMO.Controllers
             //per.Add(percent(Count("", ""), Campus("", "")));
             foreach (var cp in context.Campus)
             {
-                per.Add(percent(Count("", cp.Campus_ID, SelectDatetime), Campus("", cp.Campus_ID, SelectSemester)));
+                per.Add(percent(Count("", cp.Campus_ID, date), Campus("", cp.Campus_ID, SelectSemester)));
             }
             ViewBag.Per = per;
 
             var studentComplete = (from a in context.Student_Course_Log
-                                   where a.Completed == true && a.Course_ID != null && a.Date_Import == date && (a.Date_Import <= endDate && a.Date_Import >= starDate)
+                                   where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
                                    select a.Roll).Distinct().Count();
             var courseComplete = (from a in context.Student_Course_Log
-                                  where a.Completed == true && a.Course_ID != null && a.Date_Import == date && (a.Date_Import <= endDate && a.Date_Import >= starDate)
+                                  where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
                                   select a.Course_ID).Count();
 
             ViewBag.studentComplete = studentComplete;
             ViewBag.courseComplete = courseComplete;
 
             var RollList = (from a in context.Students
+                            where a.Semester_ID == SelectSemester
                             select a.Roll).ToList();
             int CountStudent = 0;
             //DateTime nowDate = DateTime.Now;
+            var starDate = (from a in context.Semesters
+                            where a.Semester_ID == SelectSemester
+                            select a.Start_Date).FirstOrDefault();
             TimeSpan timeSpan = date - (DateTime)starDate;
             //var weekN = Math.Floor((double)(date.Day - starDate.Value.Day) / 7);
             double weekN = 0;
-            if (!String.IsNullOrEmpty(SelectDatetime))
+            if (date != DateTime.MinValue)
             {
                 weekN = Math.Floor(timeSpan.TotalDays / 7);
             }
@@ -201,7 +177,7 @@ namespace MSS_DEMO.Controllers
                 foreach (var t in RollList)
                 {
                     var Estimated = (from a in context.Student_Course_Log
-                                        where a.Roll == t && a.Course_ID != null && a.Date_Import == date && (a.Date_Import <= endDate && a.Date_Import >= starDate)
+                                        where a.Roll == t && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
                                         select a.Estimated).ToList();
                     var EstimatedTotal = Estimated.Sum();
                     if ((EstimatedTotal / weekTotal) < 5)
@@ -220,7 +196,7 @@ namespace MSS_DEMO.Controllers
             return View(rp);
         }
 
-        public ActionResult Enrollment(ListStudent ls,string searchString, string searchCheck, string SelectCampus, string SelectSubject, string SelectSemester)
+        public ActionResult Enrollment(ListStudent ls,string searchString, string searchCheck, string SelectCampus, string SelectSubject, string SelectSemester, string SelectDatetime)
         {
             var context = new MSSEntities();
             List<string> NoEnrollment = new List<string>();
@@ -242,70 +218,81 @@ namespace MSS_DEMO.Controllers
             }
             ViewBag.SelectSemester = selectSemes;
 
-            var CourseStudent = (from a in context.Student_Course_Log
-                                 select new
-                                 {
-                                     Roll = a.Roll
-                                 }).Distinct().ToList();
-            var Student = (from a in context.Students
-                           select new
-                           {
-                               Roll = a.Roll
-                           }).Distinct().ToList();
-
-            var listStudentEnrollment = (from a in context.Student_Course_Log
-                           where a.Course_ID != null
-                           select new
-                           {
-                               Roll = a.Roll
-                           }).Distinct().ToList();
-
-            foreach (var cs in Student)
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (SelectDatetime != null)
             {
-                int temp = 0;
-                foreach(var st in CourseStudent)
-                {
-                    if (cs.Roll.Equals(st.Roll))
-                    {
-                        temp = 0;
-                        break;
-                    }
-                    else
-                    {
-                        temp = 1;
-                    }
-                }
-                if(temp == 1)
-                {
-                    NoEnrollment.Add(cs.Roll);
-                }
-                
+                date = Convert.ToDateTime(SelectDatetime);
             }
 
-            foreach (var cs in CourseStudent)
-            {
-                int temp = 0;
-                foreach (var st in listStudentEnrollment)
-                {
-                    if (cs.Roll.Equals(st.Roll))
-                    {
-                        temp = 0;
-                        break;
-                    }
-                    else
-                    {
-                        temp = 1;
-                    }
-                }
-                if (temp == 1)
-                {
-                    NotRequiredCourse.Add(cs.Roll);
-                }
-
-            }
 
             if (!String.IsNullOrEmpty(searchCheck))
             {
+
+                var CourseStudent = (from a in context.Student_Course_Log
+                                     where a.Semester_ID == SelectSemester
+                                     select new
+                                     {
+                                         Roll = a.Roll
+                                     }).Distinct().ToList();
+                var Student = (from a in context.Students
+                               where a.Semester_ID == SelectSemester
+                               select new
+                               {
+                                   Roll = a.Roll
+                               }).Distinct().ToList();
+
+                var listStudentEnrollment = (from a in context.Student_Course_Log
+                                             where a.Course_ID != null && a.Semester_ID == SelectSemester
+                                             select new
+                                             {
+                                                 Roll = a.Roll
+                                             }).Distinct().ToList();
+
+                foreach (var cs in Student)
+                {
+                    int temp = 0;
+                    foreach (var st in CourseStudent)
+                    {
+                        if (cs.Roll.Equals(st.Roll))
+                        {
+                            temp = 0;
+                            break;
+                        }
+                        else
+                        {
+                            temp = 1;
+                        }
+                    }
+                    if (temp == 1)
+                    {
+                        NoEnrollment.Add(cs.Roll);
+                    }
+
+                }
+
+                foreach (var cs in CourseStudent)
+                {
+                    int temp = 0;
+                    foreach (var st in listStudentEnrollment)
+                    {
+                        if (cs.Roll.Equals(st.Roll))
+                        {
+                            temp = 0;
+                            break;
+                        }
+                        else
+                        {
+                            temp = 1;
+                        }
+                    }
+                    if (temp == 1)
+                    {
+                        NotRequiredCourse.Add(cs.Roll);
+                    }
+
+                }
                 int rowNo = 0;
                 foreach (var b in NoEnrollment)
                 {
@@ -327,7 +314,7 @@ namespace MSS_DEMO.Controllers
                     List<string> subjectStudent =   (from c in context.Students
                                                      join d in context.Subject_Student on c.Roll equals d.Roll
                                                      join e in context.Subjects on d.Subject_ID equals e.Subject_ID
-                                                     where c.Roll == b && c.Semester_ID == SelectSemester
+                                                     where c.Roll == b && c.Semester_ID == SelectSemester && d.Semester_ID == SelectSemester
                                                      select e.Subject_Name).ToList();
 
                                 
@@ -357,7 +344,7 @@ namespace MSS_DEMO.Controllers
                     List<string> subjectStudent = (from c in context.Students
                                                    join d in context.Subject_Student on c.Roll equals d.Roll
                                                    join e in context.Subjects on d.Subject_ID equals e.Subject_ID
-                                                   where c.Roll == b && c.Semester_ID == SelectSemester
+                                                   where c.Roll == b && c.Semester_ID == SelectSemester && d.Semester_ID == SelectSemester
                                                    select e.Subject_Name).ToList();
 
 
@@ -385,6 +372,7 @@ namespace MSS_DEMO.Controllers
             var listCampus = (from a in context.Campus
                               select a.Campus_ID).ToList();
             var listSubject = (from a in context.Subjects
+                               where a.Subject_Active == true
                                select a.Subject_Name).ToList();
             List<SelectListItem> selectCp = new List<SelectListItem>();
             List<SelectListItem> selectSj = new List<SelectListItem>();
@@ -424,7 +412,7 @@ namespace MSS_DEMO.Controllers
             return View("Enrollment", ls);
         }
 
-        public ActionResult Member(InfoStudent Info, string searchString, string searchCheck, string SelectSemester)
+        public ActionResult Member(InfoStudent Info, string searchString, string searchCheck, string SelectSemester, string SelectDatetime)
         {
             var context = new MSSEntities();
             List<InfoStudent> infoOfStudent = new List<InfoStudent>();
@@ -445,16 +433,25 @@ namespace MSS_DEMO.Controllers
             }
             ViewBag.SelectSemester = selectSemes;
 
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (SelectDatetime != null)
+            {
+                date = Convert.ToDateTime(SelectDatetime);
+            }
+
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 infoOfStudent = (from a in context.Student_Course_Log
-                                 where a.Roll == searchString && a.Semester_ID == SelectSemester
+                                 where a.Roll == searchString && a.Semester_ID == SelectSemester && a.Date_Import == date
                                  select new
                                  {
                                      Course_Name = a.Course_Name,
                                      Course_Enrollment_Time = a.Course_Enrollment_Time,
                                      Last_Course_Activity_Time = a.Last_Course_Activity_Time,
                                      Overall_Progress = a.Overall_Progress,
+                                     Completion_Time = a.Completion_Time,
                                      Estimated = a.Estimated,
                                      Completed = a.Completed
                                  }).ToList().Select(p => new InfoStudent
@@ -463,6 +460,7 @@ namespace MSS_DEMO.Controllers
                                      Course_Enrollment_Time = (DateTime)p.Course_Enrollment_Time,
                                      Last_Course_Activity_Time = (DateTime)p.Last_Course_Activity_Time,
                                      Overall_Progress = (double)p.Overall_Progress,
+                                     Completion_Time = (DateTime)p.Completion_Time,
                                      Estimated = (double)p.Estimated,
                                      Completed = (bool)p.Completed
                                  }).ToList();
@@ -500,43 +498,14 @@ namespace MSS_DEMO.Controllers
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
-                //SelectSemester = (from a in context.Semesters
-                //                  where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
-                //                  select a.Semester_ID).FirstOrDefault();
             }
-            List<SelectListItem> selectDate = new List<SelectListItem>();
-            var starDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.Start_Date).FirstOrDefault();
-            var endDate = (from a in context.Semesters
-                           where a.Semester_ID == SelectSemester
-                           select a.End_Date).FirstOrDefault();
 
-
-            var listDate = (from a in context.Student_Course_Log
-                            where (a.Date_Import <= endDate && a.Date_Import >= starDate)
-                            select a.Date_Import).Distinct().ToList();
-
-            var orderedListDate = listDate.OrderByDescending(x => x).ToList();
-            foreach (var a in orderedListDate)
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (SelectDatetime != null)
             {
-                selectDate.Add(new SelectListItem
-                {
-                    Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
-                    Value = a.ToString()
-                });
-            }
-            ViewBag.SelectDatetime = selectDate;
-            DateTime date = Convert.ToDateTime(SelectDatetime);
-
-
-            if (String.IsNullOrEmpty(searchCheck) && listDate.Count > 0)
-            {
-                SelectDatetime = orderedListDate[0].ToString();
-            }
-            else if (orderedListDate.Count == 0)
-            {
-                SelectDatetime = null;
+                date = Convert.ToDateTime(SelectDatetime);
             }
 
             if (!String.IsNullOrEmpty(searchCheck))
@@ -583,6 +552,7 @@ namespace MSS_DEMO.Controllers
         {
             var context = new MSSEntities();
             var rollList = (from a in context.Certificates
+                            where a.Semester_ID == SelectSemester
                             select a.Roll).Distinct().ToList();
             List<CertificateViewModel> certificate = new List<CertificateViewModel>();
 
@@ -638,6 +608,7 @@ namespace MSS_DEMO.Controllers
             }
                
             var listSubject = (from a in context.Subjects
+                               where a.Subject_Active == true
                                select a.Subject_Name).ToList();
             List<SelectListItem> selectSj = new List<SelectListItem>();
             selectSj.Add(new SelectListItem
@@ -663,9 +634,9 @@ namespace MSS_DEMO.Controllers
             return View("CertificateReport", cv);
         }
         
-        public ActionResult PrintViewToPdf()
+        public ActionResult PrintViewToPdf(string SelectDatetime, string searchCheck, string weekNumber, string SelectSemester)
         {           
-            var report = new ActionAsPdf("Index");
+            var report = new ActionAsPdf("Index", new {SelectDatetime = SelectDatetime, weekNumber = weekNumber, SelectSemester = SelectSemester });
             return report;
         }
 
@@ -709,53 +680,17 @@ namespace MSS_DEMO.Controllers
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
-                //SelectSemester = (from a in context.Semesters
-                //                  where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
-                //                  select a.Semester_ID).FirstOrDefault();
             }
-            List<SelectListItem> selectDate = new List<SelectListItem>();
-            var starDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.Start_Date).FirstOrDefault();
-            var endDate = (from a in context.Semesters
-                           where a.Semester_ID == SelectSemester
-                           select a.End_Date).FirstOrDefault();
-
-
-            var listDate = (from a in context.Student_Course_Log
-                            where (a.Date_Import <= endDate && a.Date_Import >= starDate)
-                            select a.Date_Import).Distinct().ToList();
-
-            var orderedListDate = listDate.OrderByDescending(x => x).ToList();
-            foreach (var a in orderedListDate)
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (SelectDatetime != null)
             {
-                selectDate.Add(new SelectListItem
-                {
-                    Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
-                    Value = a.ToString()
-                });
+                date = Convert.ToDateTime(SelectDatetime);
             }
-            ViewBag.SelectDatetime = selectDate;
-            DateTime date = Convert.ToDateTime(SelectDatetime);
-
-
-            if (String.IsNullOrEmpty(searchCheck) && listDate.Count > 0)
-            {
-                SelectDatetime = orderedListDate[0].ToString();
-            }
-            else if (orderedListDate.Count == 0)
-            {
-                SelectDatetime = null;
-            }
-
             List<ListStudent> ListStudentCompleted = new List<ListStudent>();
             List<Student_Specification_Log> specCompletedListSpec = new List<Student_Specification_Log>();
             List<string> studentList = new List<string>();
-
-            //var maxDate = (from a in context.Student_Course_Log
-            //               orderby a.Date_Import descending
-            //               where a.Date_Import <= endDate && a.Date_Import >= starDate 
-            //               select a.Date_Import).First();
 
             if (!String.IsNullOrEmpty(searchCheck))
             {
@@ -851,50 +786,19 @@ namespace MSS_DEMO.Controllers
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
-                //SelectSemester = (from a in context.Semesters
-                //                  where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
-                //                  select a.Semester_ID).FirstOrDefault();
-            }
-            List<SelectListItem> selectDate = new List<SelectListItem>();
-            var starDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.Start_Date).FirstOrDefault();
-            var endDate = (from a in context.Semesters
-                           where a.Semester_ID == SelectSemester
-                           select a.End_Date).FirstOrDefault();
-
-
-            var listDate = (from a in context.Student_Course_Log
-                            where (a.Date_Import <= endDate && a.Date_Import >= starDate)
-                            select a.Date_Import).Distinct().ToList();
-
-            var orderedListDate = listDate.OrderByDescending(x => x).ToList();
-            foreach (var a in orderedListDate)
-            {
-                selectDate.Add(new SelectListItem
-                {
-                    Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
-                    Value = a.ToString()
-                });
-            }
-            ViewBag.SelectDatetime = selectDate;
-            DateTime date = Convert.ToDateTime(SelectDatetime);
-
-
-            if (String.IsNullOrEmpty(searchCheck) && listDate.Count > 0)
-            {
-                SelectDatetime = orderedListDate[0].ToString();
-            }
-            else if (orderedListDate.Count == 0)
-            {
-                SelectDatetime = null;
             }
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if(SelectDatetime!= null)
             {
-                //var maxDate = (from a in context.Student_Course_Log
-                //               orderby a.Date_Import descending
-                //               select a.Date_Import).FirstOrDefault();
+                date = Convert.ToDateTime(SelectDatetime);
+            }
+
+
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
+            {
                 var listCourseCompleted = (from a in context.Student_Course_Log
                                            where a.Completed == true && a.Date_Import == date && a.Course_ID != null
                                            select a).ToList();
@@ -939,10 +843,10 @@ namespace MSS_DEMO.Controllers
             return View("Bonus", listS);
         }
 
-        private int Count(string subject, string campus, string dateImport)
+        private int Count(string subject, string campus, DateTime dateImport)
         {
             //double per;
-            DateTime date = Convert.ToDateTime(dateImport);
+            //DateTime date = Convert.ToDateTime(dateImport);
             int count = 0;
             var context = new MSSEntities();
             if (subject != "" && campus == "")
@@ -951,7 +855,7 @@ namespace MSS_DEMO.Controllers
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where subject == a.Subject_ID && a.Date_Import == date
+                         where subject == a.Subject_ID && a.Date_Import == dateImport
                          select a.Roll).Distinct().Count();
             }
             else if (subject == "" && campus == "")
@@ -960,7 +864,7 @@ namespace MSS_DEMO.Controllers
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where a.Date_Import == date
+                         where a.Date_Import == dateImport
                          select a.Roll).Distinct().Count();
             }
             else if(subject != "" && campus != "")
@@ -969,7 +873,7 @@ namespace MSS_DEMO.Controllers
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where  a.Campus == campus && a.Subject_ID == subject && a.Date_Import == date
+                         where  a.Campus == campus && a.Subject_ID == subject && a.Date_Import == dateImport
                          select a.Roll).Distinct().Count();
             }
             else if(subject == "" && campus != "")
@@ -978,7 +882,7 @@ namespace MSS_DEMO.Controllers
                          join b in context.Courses on a.Course_ID equals b.Course_ID
                          join c in context.Specifications on b.Specification_ID equals c.Specification_ID
                          join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where a.Campus == campus && a.Date_Import == date
+                         where a.Campus == campus && a.Date_Import == dateImport
                          select a.Roll).Distinct().Count();
             }
             return count;
@@ -1007,7 +911,7 @@ namespace MSS_DEMO.Controllers
                 student = (from a in context.Subjects
                                join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
                                join c in context.Students on b.Roll equals c.Roll
-                               where c.Campus == campus && c.Semester_ID == semester
+                               where c.Campus == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
                                select c.Roll).Count();
             }
             else if(subjectId == "" && campus == "")
@@ -1015,7 +919,7 @@ namespace MSS_DEMO.Controllers
                 student = (from a in context.Subjects
                            join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
                            join c in context.Students on b.Roll equals c.Roll
-                           where c.Semester_ID == semester
+                           where c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
                            select c.Roll).Count();
             }
             else
@@ -1023,11 +927,38 @@ namespace MSS_DEMO.Controllers
                 student = (from a in context.Subjects
                                join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
                                join c in context.Students on b.Roll equals c.Roll
-                               where subjectId == a.Subject_ID && c.Campus == campus && c.Semester_ID == semester
+                               where subjectId == a.Subject_ID && c.Campus == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
                            select c.Roll).Count();
             }
             
             return student;
+        }
+        private List<SelectListItem> Date(string SelectSemester)
+        {
+            var context = new MSSEntities();
+            List<SelectListItem> selectDate = new List<SelectListItem>();
+            var starDate = (from a in context.Semesters
+                            where a.Semester_ID == SelectSemester
+                            select a.Start_Date).FirstOrDefault();
+            var endDate = (from a in context.Semesters
+                           where a.Semester_ID == SelectSemester
+                           select a.End_Date).FirstOrDefault();
+
+
+            var listDate = (from a in context.Student_Course_Log
+                            where (a.Date_Import <= endDate && a.Date_Import >= starDate)
+                            select a.Date_Import).Distinct().ToList();
+
+            var orderedListDate = listDate.OrderByDescending(x => x).ToList();
+            foreach (var a in orderedListDate)
+            {
+                selectDate.Add(new SelectListItem
+                {
+                    Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
+                    Value = a.ToString()
+                });
+            }
+            return selectDate;
         }
     }
 }

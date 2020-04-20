@@ -128,64 +128,6 @@ namespace MSS_DEMO.Controllers.Log
             return View(model);
 
         }
-        public void Export_Specification(string Email)
-        {
-            var searchCheck = Request["searchCheck"];
-            CSVConvert csv = new CSVConvert();
-            var sb = new StringBuilder();
-            IEnumerable<Student_Specification_Log> query = unitOfWork.SpecificationsLog.GetAll();
-            var list = query.ToList();
-            Type type = typeof(Student);
-            var props = type.GetProperties();
-            sb.Append(string.Join(",","Name" ,"Email", "Subject ID", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
-                "Completed", "Status", "Program Slug", "Program Name", "Enrollment Sourse", "Completion Time",  "Date Import"));
-            sb.Append(Environment.NewLine);
-            foreach (var item in list)
-            {
-                sb.Append(string.Join(",",
-                    csv.AddCSVQuotes(item.Name),
-                    csv.AddCSVQuotes(item.Email),
-                    csv.AddCSVQuotes(item.Subject_ID),
-                    csv.AddCSVQuotes(item.Campus),
-                    csv.AddCSVQuotes(item.Specialization),
-                    csv.AddCSVQuotes(item.Specialization_Slug),
-                    csv.AddCSVQuotes(item.University),
-                    csv.AddCSVQuotes(item.Specialization_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Enrollment_Time.ToString()),
-                    csv.AddCSVQuotes(item.Last_Specialization_Activity_Time.ToString().Contains("1/1/1970") ? "" : item.Last_Specialization_Activity_Time.ToString()),
-                    csv.AddCSVQuotes(item.Completed.ToString()),
-                    csv.AddCSVQuotes(item.Status.ToString()),
-                    csv.AddCSVQuotes(item.Program_Slug),
-                    csv.AddCSVQuotes(item.Program_Name),
-                    csv.AddCSVQuotes(item.Enrollment_Sourse),
-                    csv.AddCSVQuotes(item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Completion_Time.ToString()),
-                    csv.AddCSVQuotes(item.Date_Import.ToString())
-                    ));
-                sb.Append(Environment.NewLine);
-            }
-            var response = System.Web.HttpContext.Current.Response;
-            response.BufferOutput = true;
-            response.Clear();
-            response.ClearHeaders();
-            response.ContentEncoding = Encoding.Unicode;
-            response.AddHeader("content-disposition", "attachment;filename=Specification-Report.CSV ");
-            response.ContentType = "text/plain";
-            response.Write(sb.ToString());
-            response.End();
-          
-        }
-        public ActionResult Mentor()
-        {
-            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var list = unitOfWork.Mentor.getListSpec(userMentor.UserName);
-            return View(list);
-        }
-        public ActionResult Detail(string id)
-        {
-            ViewBag.Spec_Name = unitOfWork.Specifications.GetById(int.Parse(id.Split('^')[0])).Specification_Name;
-            ViewBag.Class = id.Split('^')[1];
-            var list = unitOfWork.Mentor.getReportSpec(id);
-            return View(list);
-        }
         [HttpGet]
         public void Export(string check)
         {
@@ -234,12 +176,13 @@ namespace MSS_DEMO.Controllers.Log
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             var list = LogList.ToList();
-            sb.Append(string.Join(",", "Email", "Subject ID", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
-                "Completed", "Status", "Program Slug", "Program Name", "Completion Time", "Date Import"));
+            sb.Append(string.Join(",", "Name", "Email", "Subject ID", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
+                "Completed", "Status", "Program Slug", "Program Name", "Enrollment Sourse", "Completion Time", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
             {
                 sb.Append(string.Join(",",
+                    csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Subject_ID),
                     csv.AddCSVQuotes(item.Campus),
@@ -252,6 +195,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Status.ToString()),
                     csv.AddCSVQuotes(item.Program_Slug),
                     csv.AddCSVQuotes(item.Program_Name),
+                    csv.AddCSVQuotes(item.Enrollment_Source),
                     csv.AddCSVQuotes(item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Completion_Time.ToString()),
                     csv.AddCSVQuotes(item.Date_Import.ToString())
                     ));

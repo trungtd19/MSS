@@ -204,14 +204,13 @@
     <Compile Include="Controllers\SetUp\Course_DeadlineController.cs" />
     <Compile Include="Controllers\SetUp\UserController.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
-    <Compile Include="Core\Implement\ClassStudentRepository.cs" />
     <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
-    <Compile Include="Core\Implement\MentorRepository.cs" />
     <Compile Include="Core\Implement\StudentCoursesLogRepository.cs" />
     <Compile Include="Core\Implement\StudentSpecificationLogRepository.cs" />
     <Compile Include="Core\Implement\SubjectStudentRepository.cs" />
     <Compile Include="Core\Implement\UserRepository.cs" />
     <Compile Include="Core\Import\CSVConvert.cs" />
+    <Compile Include="Core\Import\CSVExport.cs" />
     <Compile Include="IoC\UnityDI.cs" />
     <Compile Include="Controllers\Log\Student_Course_LogController.cs" />
     <Compile Include="Controllers\Log\Student_Specification_LogController.cs" />
@@ -226,7 +225,6 @@
     <Compile Include="Controllers\SetUp\StudentsController.cs" />
     <Compile Include="Controllers\SetUp\SubjectsController.cs" />
     <Compile Include="Core\Implement\CampusRepository.cs" />
-    <Compile Include="Core\Implement\ClassRepository.cs" />
     <Compile Include="Core\Implement\CoursesRepository.cs" />
     <Compile Include="Core\Implement\SemestersRepository.cs" />
     <Compile Include="Core\Implement\SpecificationsRepository.cs" />
@@ -243,12 +241,6 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CertificateViewModel.cs" />
-    <Compile Include="Models\Class.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Class_Student.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Course.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -256,7 +248,7 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DeadlineCoursesViewModel.cs" />
-    <Compile Include="Models\Mentor.cs">
+    <Compile Include="Models\Mentor_Log.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MSSModel.Context.cs">
@@ -316,7 +308,10 @@
     <None Include="Connected Services\ServiceReference\MSSWS.disco" />
     <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\ServiceReference\configuration.svcinfo" />
-    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.HelloWorldResponse.datasource">
+    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.GetClassResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.GetMentorResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\ServiceReference\Reference.svcmap">

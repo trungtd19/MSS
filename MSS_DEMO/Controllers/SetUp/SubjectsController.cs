@@ -15,7 +15,7 @@ namespace MSS_DEMO.Controllers
         {
             this.unitOfWork = _unitOfWork;
         }
-        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter)
+        public ActionResult Index(int? page, string SearchString, string searchCheck, string currentFilter, bool checkActive = true, bool checkActivePage = true)
         {
             List<Subject> List = new List<Subject>();
             if (SearchString != null)
@@ -25,14 +25,20 @@ namespace MSS_DEMO.Controllers
             else
             {
                 SearchString = currentFilter;
+                checkActive = checkActivePage;
             }
             ViewBag.CurrentFilter = SearchString;
+            ViewBag.checkActivePage = checkActive;
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 List = unitOfWork.Subject.GetPageList();
                 if (!String.IsNullOrWhiteSpace(SearchString))
                 {
                     List = List.Where(s => s.Subject_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+                if (!checkActive)
+                {
+                    List = List.Where(s => s.Subject_Active == true).ToList();
                 }
                 if (List.Count == 0)
                 {
@@ -49,6 +55,7 @@ namespace MSS_DEMO.Controllers
             return View(List.ToList().ToPagedList(pageNumber, pageSize));
 
         }
+
         public ActionResult Details(string id)
         {
             var Subject = unitOfWork.Subject.GetById(id);
@@ -85,22 +92,26 @@ namespace MSS_DEMO.Controllers
             return View(subject);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
-        {
-            if (unitOfWork.Subject.IsExitsSubjectName(subject.Subject_Name))
+        {    
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    unitOfWork.Subject.Update(subject);
+                    unitOfWork.Subject.Save(subject.Subject_Name);
+                    return RedirectToAction("Index");
+                }
+            }
+            catch
             {
                 ViewBag.Error = "This subject exits!";
-                return View();
+                return View(subject);
             }
-            if (ModelState.IsValid)
-            {
-                unitOfWork.Subject.Update(subject);
-                unitOfWork.Save();
-                return RedirectToAction("Index");
-            }
-            return View(subject);
+            return View(new Subject());
         }
         public ActionResult Delete(string id)
         {

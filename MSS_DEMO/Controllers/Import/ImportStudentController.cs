@@ -32,6 +32,14 @@ namespace MSS_DEMO.Controllers
                 _semester.Add(sem);
             }
             ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
+            List<Campu> campus = unitOfWork.Campus.GetAll();
+            List<Campu> _campus = new List<Campu>();
+            _campus.Add(new Campu { Campus_ID = "None", Campus_Name = "--- Choose Campus ---" });
+            foreach (var cam in campus)
+            {
+                _campus.Add(cam);
+            }
+            ViewBag.Campus_ID = new SelectList(_campus, "Campus_ID", "Campus_Name");
             return View();
         }
 
@@ -46,6 +54,7 @@ namespace MSS_DEMO.Controllers
             {
                 HttpPostedFileBase postedFile = Request.Files[0];
                 string semester = Request["Semester"];
+                string campus = Request["Campus"];
                 if (postedFile != null)
                 {
                     try
@@ -78,32 +87,29 @@ namespace MSS_DEMO.Controllers
                                 List<string> listAddRoll = new List<string>();
                                 while (!sreader.EndOfStream)
                                 {
+                                    startRow++;
                                     List<string> rows = csv.RegexRow(sreader);
                                     if (!rows[2].Contains("@fpt.edu.vn"))
                                     {
-                                        messageImport = "Row "+ startRow+": Email invalid";
+                                        messageImport = "Row " + startRow + ": Email invalid";
                                         return Json(new { message = messageImport });
-                                    }       
-                                    //if (!unitOfWork.Classes.CheckExitsClass(getRow.GetClassStudent(rows).Class_ID)
-                                    //    || 
+                                    }
                                     if (unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows, semester).Subject_ID))
-                                    {                       
+                                    {
                                         var countAdd = listAddRoll.Where(o => o.Contains(getRow.GetStudent(rows, semester, campus).Roll)).ToList().Count();
                                         if ((unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester, campus).Roll, semester)
                                             && !unitOfWork.Subject.IsExitsSubject(getRow.GetSubjectStudent(rows, semester).Subject_ID))
                                             || (countAdd > 0))
                                         {
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows, semester));
-                                            // unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                             countSuccess++;
                                         }
                                         else
                                         if (!unitOfWork.Students.IsExtisStudent(getRow.GetStudent(rows, semester, campus).Roll, semester) && countAdd == 0)
                                         {
-                                            unitOfWork.Students.Insert(getRow.GetStudent(rows, semester));
+                                            unitOfWork.Students.Insert(getRow.GetStudent(rows, semester, campus));
                                             unitOfWork.SubjectStudent.Insert(getRow.GetSubjectStudent(rows, semester));
                                             listAddRoll.Add(getRow.GetStudent(rows, semester, campus).Roll);
-                                            //unitOfWork.ClassStudent.Insert(getRow.GetClassStudent(rows));
                                             countSuccess++;
                                         }
                                         else
@@ -113,7 +119,8 @@ namespace MSS_DEMO.Controllers
                                     }
                                     else
                                     {
-                                        countFail++;
+                                        messageImport = "Row " + startRow + ": Subject not exist";
+                                        return Json(new { message = messageImport });
                                     }
                                 }
                             }
@@ -121,7 +128,7 @@ namespace MSS_DEMO.Controllers
                             {
                                 if (countSuccess != 0)
                                 {
-                                    messageImport = countFail != 0 ? "Import success" + countSuccess + " students and fail " + countFail + " students!" : "Import success " + countSuccess + " students!";
+                                    messageImport = countFail != 0 ? "Import success " + countSuccess + " students and fail " + countFail + " students!" : "Import success " + countSuccess + " students!";
                                 }
                                 else messageImport = "Import fail " + countFail + " students";
                             }
@@ -152,28 +159,29 @@ namespace MSS_DEMO.Controllers
             }
             return Json(new { message = messageImport });
         }
-        public void Export_Student_CSV()
+        public ActionResult Export()
         {
-            var sb = new StringBuilder(); 
-            Type type = typeof(Student);
-            var props = type.GetProperties();
-            sb.Append(string.Join(",", "No", "Full Name","Email", "External Id","Campus","Subject"));
-            sb.Append(Environment.NewLine);
-            sb.Append(string.Join(",", "SE0001", "Full Name SE0001", "FullnameSE0001@fpt.edu.vn", "HRM201c-HN-SE0001","SG","HRM201c"));
-            sb.Append(Environment.NewLine);
-            sb.Append(string.Join(",", "SE0002", "Full Name SE0002", "FullnameSE0002@fpt.edu.vn", "SSL201c-SG-SE0002","HN", "SSL201c"));
-            sb.Append(Environment.NewLine);
-            sb.Append(string.Join(",", "SE0003", "Full Name SE0003", "FullnameSE0003@fpt.edu.vn", "PMG201c-DN-SE0003","DN", "PMG201c"));
-            sb.Append(Environment.NewLine);
-            var response = System.Web.HttpContext.Current.Response;
-            response.BufferOutput = true;
-            response.Clear();
-            response.ClearHeaders();
-            response.ContentEncoding = Encoding.Unicode;
-            response.AddHeader("content-disposition", "attachment;filename=StudentTemplate.CSV ");
-            response.ContentType = "text/plain";
-            response.Write(sb.ToString());
-            response.End();
+            var myExport = new CSVExport();
+
+            myExport.AddRow();
+            myExport["Roll Number"] = "SE0001";
+            myExport["Full Name"] = "Full name";
+            myExport["Email"] = "FullnameSE0001@fpt.edu.vn";
+            myExport["Subject"] = "PMG201c";
+
+            myExport.AddRow();
+            myExport["Roll Number"] = "SE0002";
+            myExport["Full Name"] = "Full name";
+            myExport["Email"] = "FullnameSE0002@fpt.edu.vn";
+            myExport["Subject"] = "PMG201c";
+
+            myExport.AddRow();
+            myExport["Roll Number"] = "SE0003";
+            myExport["Full Name"] = "Full name";
+            myExport["Email"] = "FullnameSE0003@fpt.edu.vn";
+            myExport["Subject"] = "PMG201c";
+
+            return File(myExport.ExportToBytes(), "text/csv", "StudentTemplate.csv");
         }
 
     }

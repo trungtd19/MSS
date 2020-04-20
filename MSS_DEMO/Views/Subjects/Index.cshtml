@@ -13,8 +13,17 @@
             Subject name:
         </div>
         <div class="col-md-2">
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control"})
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
             @Html.Hidden("searchCheck", "true")
+        </div>
+        <div class="col-md-2" style="width: 16%;">
+            Show subject inactivity:
+        </div>
+        <div class="col-md-1">
+            @{
+                bool check = ViewBag.checkActivePage;
+            }
+            @Html.CheckBox("checkActive", check)
         </div>
         <div class="col-md-1">
             <input class="btn btn-default" type="submit" value="Search" />
@@ -33,9 +42,7 @@
     var pagecount = Model.PageCount != 0 ? Model.PageCount : Model.PageCount;
     var pagenumber = Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber;
      int stt = 1 + (pagenumber -1) * Model.PageSize;
-
 <label>Showing @ViewBag.Count results</label>
-
     <table class="table table-bordered table-striped">
         <tr>
             <th style="width:50px;">No</th>
@@ -45,20 +52,26 @@
             <th>
                 Subject Name
             </th>
+            <th>
+                Active
+            </th>
         </tr>
 
         @foreach (var item in Model)
-        {
-            <tr>
-                <td>@(stt++)</td>
-                <td>
-                    @Html.ActionLink(item.Subject_ID, "Details", new { id = item.Subject_ID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Subject_Name)
-                </td>
+        { var active = item.Subject_Active == true ? "Yes" : "No";
+    <tr>
+        <td>@(stt++)</td>
+        <td>
+            @Html.ActionLink(item.Subject_ID, "Details", new { id = item.Subject_ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject_Name)
+        </td>
+        <td>
+           @active
+        </td>
 
-            </tr>
+    </tr>
         }
 
     </table>
@@ -68,4 +81,4 @@
 }
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
-   new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true" }))
+   new { page, currentFilter = ViewBag.CurrentFilter, searchCheck = "true", checkActivePage = ViewBag.checkActivePage }))

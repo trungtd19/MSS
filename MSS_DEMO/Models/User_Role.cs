@@ -25,7 +25,6 @@ namespace MSS_DEMO.Models
         public int Role_ID { get; set; }
         public string Login { get; set; }
         public bool isActive { get; set; }
-        public string Password { get; set; }
     
         public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -20,11 +20,8 @@ namespace MSS_DEMO.Repository
         StudentCoursesLogRepository CoursesLog { get; }
         UserRepository User { get; }
         SemestersRepository Semesters { get; }
-        ClassStudentRepository ClassStudent { get; }
         SubjectStudentRepository SubjectStudent { get; }
-        ClassRepository Classes { get; }
         CoursesDeadlineRepository DeadLine { get; }
-        MentorRepository Mentor { get; }
         bool Save();
     }
 }

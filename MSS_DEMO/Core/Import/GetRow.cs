@@ -10,27 +10,19 @@ namespace MSS_DEMO.Core.Import
 {
     public class GetRow : IGetRow
     {
-        public Student GetStudent(List<string> row,string semester)
+        public Student GetStudent(List<string> row,string semester, string campus)
         {
             return new Student
             {
                 Email = row[2].ToString(),
                 Roll = row[0].ToString(),
                 Full_Name = row[1].ToString(),
-                Campus = row[3].ToString().Split('-')[1],
+                Campus_ID = campus,
                 Semester_ID = semester
             };
 
         }
-        public Class_Student GetClassStudent(List<string> row)
-        {
-            return new Class_Student
-            {
-                Roll = row[1].ToString(),
-                Class_ID = row[2].ToString(),
-            };
 
-        }
         public Subject_Student GetSubjectStudent(List<string> row, string semester)
         {
             return new Subject_Student
@@ -71,7 +63,7 @@ namespace MSS_DEMO.Core.Import
                 Date_Import = _dateImport,
                 Semester_ID = semesterID,
                 Name = row[0].ToString(),
-                Enrollment_Sourse = row[12].ToString(),
+                Enrollment_Source = row[12].ToString(),
             };
         }
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
@@ -122,7 +114,7 @@ namespace MSS_DEMO.Core.Import
                     Name = row[0].ToString(),
                     University = row[6].ToString(),
                     Course_Slug = row[5].ToString(),
-                    Enrollment_Sourse = row[16].ToString()
+                    Enrollment_Source = row[16].ToString()
                 };
             }
             else
@@ -151,7 +143,7 @@ namespace MSS_DEMO.Core.Import
                     Name = row[0].ToString(),
                     University = row[6].ToString(),
                     Course_Slug = row[5].ToString(),
-                    Enrollment_Sourse = row[16].ToString()
+                    Enrollment_Source = row[16].ToString()
                 };
             } 
             return log;

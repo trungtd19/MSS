@@ -9,60 +9,49 @@
 //------------------------------------------------------------------------------
 
 namespace MSS_DEMO.ServiceReference {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfString", Namespace="http://tempuri.org/", ItemName="string")]
+    [System.SerializableAttribute()]
+    public class ArrayOfString : System.Collections.Generic.List<string> {
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.MSSWSSoap")]
     public interface MSSWSSoap {
         
-        // CODEGEN: Generating message contract since element name HelloWorldResult from namespace http://tempuri.org/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HelloWorld", ReplyAction="*")]
-        MSS_DEMO.ServiceReference.HelloWorldResponse HelloWorld(MSS_DEMO.ServiceReference.HelloWorldRequest request);
+        // CODEGEN: Generating message contract since element name userLogin from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetMentor", ReplyAction="*")]
+        MSS_DEMO.ServiceReference.GetMentorResponse GetMentor(MSS_DEMO.ServiceReference.GetMentorRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/HelloWorld", ReplyAction="*")]
-        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.HelloWorldResponse> HelloWorldAsync(MSS_DEMO.ServiceReference.HelloWorldRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetMentor", ReplyAction="*")]
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetMentorResponse> GetMentorAsync(MSS_DEMO.ServiceReference.GetMentorRequest request);
+        
+        // CODEGEN: Generating message contract since element name userLogin from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetClass", ReplyAction="*")]
+        MSS_DEMO.ServiceReference.GetClassResponse GetClass(MSS_DEMO.ServiceReference.GetClassRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetClass", ReplyAction="*")]
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetClassResponse> GetClassAsync(MSS_DEMO.ServiceReference.GetClassRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class HelloWorldRequest {
+    public partial class GetMentorRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HelloWorld", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.ServiceReference.HelloWorldRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMentor", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.GetMentorRequestBody Body;
         
-        public HelloWorldRequest() {
+        public GetMentorRequest() {
         }
         
-        public HelloWorldRequest(MSS_DEMO.ServiceReference.HelloWorldRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute()]
-    public partial class HelloWorldRequestBody {
-        
-        public HelloWorldRequestBody() {
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class HelloWorldResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HelloWorldResponse", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.ServiceReference.HelloWorldResponseBody Body;
-        
-        public HelloWorldResponse() {
-        }
-        
-        public HelloWorldResponse(MSS_DEMO.ServiceReference.HelloWorldResponseBody Body) {
+        public GetMentorRequest(MSS_DEMO.ServiceReference.GetMentorRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -71,16 +60,130 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class HelloWorldResponseBody {
+    public partial class GetMentorRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string HelloWorldResult;
+        public string userLogin;
         
-        public HelloWorldResponseBody() {
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public MSS_DEMO.ServiceReference.ArrayOfString listCourse;
+        
+        public GetMentorRequestBody() {
         }
         
-        public HelloWorldResponseBody(string HelloWorldResult) {
-            this.HelloWorldResult = HelloWorldResult;
+        public GetMentorRequestBody(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listCourse) {
+            this.userLogin = userLogin;
+            this.listCourse = listCourse;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetMentorResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMentorResponse", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.GetMentorResponseBody Body;
+        
+        public GetMentorResponse() {
+        }
+        
+        public GetMentorResponse(MSS_DEMO.ServiceReference.GetMentorResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetMentorResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string GetMentorResult;
+        
+        public GetMentorResponseBody() {
+        }
+        
+        public GetMentorResponseBody(string GetMentorResult) {
+            this.GetMentorResult = GetMentorResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetClassRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetClass", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.GetClassRequestBody Body;
+        
+        public GetClassRequest() {
+        }
+        
+        public GetClassRequest(MSS_DEMO.ServiceReference.GetClassRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetClassRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string userLogin;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string classID;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string courseName;
+        
+        public GetClassRequestBody() {
+        }
+        
+        public GetClassRequestBody(string userLogin, string classID, string courseName) {
+            this.userLogin = userLogin;
+            this.classID = classID;
+            this.courseName = courseName;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetClassResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetClassResponse", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.GetClassResponseBody Body;
+        
+        public GetClassResponse() {
+        }
+        
+        public GetClassResponse(MSS_DEMO.ServiceReference.GetClassResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetClassResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string GetClassResult;
+        
+        public GetClassResponseBody() {
+        }
+        
+        public GetClassResponseBody(string GetClassResult) {
+            this.GetClassResult = GetClassResult;
         }
     }
     
@@ -112,26 +215,59 @@ namespace MSS_DEMO.ServiceReference {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MSS_DEMO.ServiceReference.HelloWorldResponse MSS_DEMO.ServiceReference.MSSWSSoap.HelloWorld(MSS_DEMO.ServiceReference.HelloWorldRequest request) {
-            return base.Channel.HelloWorld(request);
+        MSS_DEMO.ServiceReference.GetMentorResponse MSS_DEMO.ServiceReference.MSSWSSoap.GetMentor(MSS_DEMO.ServiceReference.GetMentorRequest request) {
+            return base.Channel.GetMentor(request);
         }
         
-        public string HelloWorld() {
-            MSS_DEMO.ServiceReference.HelloWorldRequest inValue = new MSS_DEMO.ServiceReference.HelloWorldRequest();
-            inValue.Body = new MSS_DEMO.ServiceReference.HelloWorldRequestBody();
-            MSS_DEMO.ServiceReference.HelloWorldResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).HelloWorld(inValue);
-            return retVal.Body.HelloWorldResult;
+        public string GetMentor(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listCourse) {
+            MSS_DEMO.ServiceReference.GetMentorRequest inValue = new MSS_DEMO.ServiceReference.GetMentorRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.GetMentorRequestBody();
+            inValue.Body.userLogin = userLogin;
+            inValue.Body.listCourse = listCourse;
+            MSS_DEMO.ServiceReference.GetMentorResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetMentor(inValue);
+            return retVal.Body.GetMentorResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.HelloWorldResponse> MSS_DEMO.ServiceReference.MSSWSSoap.HelloWorldAsync(MSS_DEMO.ServiceReference.HelloWorldRequest request) {
-            return base.Channel.HelloWorldAsync(request);
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetMentorResponse> MSS_DEMO.ServiceReference.MSSWSSoap.GetMentorAsync(MSS_DEMO.ServiceReference.GetMentorRequest request) {
+            return base.Channel.GetMentorAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.HelloWorldResponse> HelloWorldAsync() {
-            MSS_DEMO.ServiceReference.HelloWorldRequest inValue = new MSS_DEMO.ServiceReference.HelloWorldRequest();
-            inValue.Body = new MSS_DEMO.ServiceReference.HelloWorldRequestBody();
-            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).HelloWorldAsync(inValue);
+        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetMentorResponse> GetMentorAsync(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listCourse) {
+            MSS_DEMO.ServiceReference.GetMentorRequest inValue = new MSS_DEMO.ServiceReference.GetMentorRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.GetMentorRequestBody();
+            inValue.Body.userLogin = userLogin;
+            inValue.Body.listCourse = listCourse;
+            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetMentorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        MSS_DEMO.ServiceReference.GetClassResponse MSS_DEMO.ServiceReference.MSSWSSoap.GetClass(MSS_DEMO.ServiceReference.GetClassRequest request) {
+            return base.Channel.GetClass(request);
+        }
+        
+        public string GetClass(string userLogin, string classID, string courseName) {
+            MSS_DEMO.ServiceReference.GetClassRequest inValue = new MSS_DEMO.ServiceReference.GetClassRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.GetClassRequestBody();
+            inValue.Body.userLogin = userLogin;
+            inValue.Body.classID = classID;
+            inValue.Body.courseName = courseName;
+            MSS_DEMO.ServiceReference.GetClassResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetClass(inValue);
+            return retVal.Body.GetClassResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetClassResponse> MSS_DEMO.ServiceReference.MSSWSSoap.GetClassAsync(MSS_DEMO.ServiceReference.GetClassRequest request) {
+            return base.Channel.GetClassAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetClassResponse> GetClassAsync(string userLogin, string classID, string courseName) {
+            MSS_DEMO.ServiceReference.GetClassRequest inValue = new MSS_DEMO.ServiceReference.GetClassRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.GetClassRequestBody();
+            inValue.Body.userLogin = userLogin;
+            inValue.Body.classID = classID;
+            inValue.Body.courseName = courseName;
+            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetClassAsync(inValue);
         }
     }
 }

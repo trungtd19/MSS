@@ -34,8 +34,7 @@ namespace MSS_DEMO.Models
         public Nullable<int> Specification_ID { get; set; }
         public string Semester_ID { get; set; }
         public string Name { get; set; }
-        public string External_ID { get; set; }
-        public string Enrollment_Sourse { get; set; }
+        public string Enrollment_Source { get; set; }
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }
