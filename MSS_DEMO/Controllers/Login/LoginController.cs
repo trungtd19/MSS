@@ -59,9 +59,14 @@ namespace MSS_DEMO.Controllers.Login
         [HttpPost]
         public ActionResult LoginWithGoogle()
         {
-                    
-            string xy = Request["Mail"];
             User_Role user = null;
+            string xy = Request["Mail"];
+            string[] temp = xy.Split('@');
+            string checkmail = temp[1];
+            if(!checkmail.Equals("fpt.edu.vn"))
+            {                
+                return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
+            }
            
                 user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
 

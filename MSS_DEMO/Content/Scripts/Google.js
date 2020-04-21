@@ -26,7 +26,6 @@
     });
 }
 
-
     function onLoad() {
      gapi.load('auth2', function () {
       gapi.auth2.init();
@@ -49,6 +48,11 @@ function signOut() {
         });
     });
 }
+
+ function revokeAllScopes () {
+    auth2.disconnect();
+}
+
     
         
 

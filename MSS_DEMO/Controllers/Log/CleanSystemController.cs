@@ -1,4 +1,5 @@
-﻿using MSS_DEMO.Models;
+﻿using MSS_DEMO.Common;
+using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MSS_DEMO.Controllers.Log
 {
+    [CheckCredential(Role_ID = "1")]
     public class CleanSystemController : Controller
     {
         private IUnitOfWork unitOfWork;
