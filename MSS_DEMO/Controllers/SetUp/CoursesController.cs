@@ -1,4 +1,4 @@
-﻿ using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -126,30 +126,7 @@ namespace MSS_DEMO.Controllers.SetUp
             ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
             return View(course);
         }
-        public ActionResult EditDeadline(int id)
-        {
-            Course course = unitOfWork.Courses.GetById(id);
-            SelectSpecID();
-            listSemester();
-            specList();
-            return View(course);
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditDeadline([Bind(Include = "Course_ID,Course_Name")] Course course, string Semester_ID, string deadline)
-        {
-            DateTime _deadline = DateTime.Parse(deadline);
-            if (ModelState.IsValid)
-            {
-                Course_Deadline deadlines = new Course_Deadline { Course_ID = course.Course_ID, Semester_ID = Semester_ID, Deadline = _deadline };
-                unitOfWork.DeadLine.Insert(deadlines);
-                unitOfWork.Save();
-                return RedirectToAction("Index");
-            }
-            ViewBag.Specification_ID = new SelectList(unitOfWork.Specifications.GetAll(), "Specification_ID", "Specification_ID", course.Specification_ID);
-            return View(course);
-        }
         public ActionResult Delete(int id)
         {
 

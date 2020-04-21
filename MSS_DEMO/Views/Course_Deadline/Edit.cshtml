@@ -2,36 +2,44 @@
 
 @{
     ViewBag.Title = "Edit";
+    string date = Convert.ToDateTime(Model.Deadline).ToString("dd/MM/yyyy");
 }
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
 <h2>Edit  Course Deadline</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @type = "date", @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    @Html.HiddenFor(model => model.Semester_ID)
-    @Html.HiddenFor(model => model.Course_Deadline_ID)
-    @Html.HiddenFor(model => model.Course_ID)
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input name="Deadline" id="Deadline" class="form-control datepicker" required autocomplete="off" value="@date" />
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.Semester_ID)
+        @Html.HiddenFor(model => model.Course_Deadline_ID)
+        @Html.HiddenFor(model => model.Course_ID)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-</div>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<script>
+    $('.datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd/mm/yyyy'
+    });
+</script>

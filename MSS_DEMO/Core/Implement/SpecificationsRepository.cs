@@ -50,6 +50,31 @@ namespace MSS_DEMO.Core.Components
                 check = false;
             return check;
         }
+        public bool Save(string Specification_Name)
+        {
+            bool returnValue = true;
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    context.SaveChanges();
+                    var spec = context.Specifications.Where(x => x.Specification_Name.Trim() == Specification_Name.Trim()).ToList().Count();
+                    if (spec > 1)
+                    {
+                        returnValue = false;
+                        dbContextTransaction.Rollback();
+                        throw new Exception("Specifications exited");
+                    }
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    returnValue = false;
+                    dbContextTransaction.Rollback();
+                }
+            }
+            return returnValue;
+        }
 
     }
 }

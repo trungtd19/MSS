@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -77,8 +78,10 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Semester_ID,Course_ID,Deadline,Course_Deadline_ID")] Course_Deadline course_Deadline)
+        public ActionResult Create([Bind(Include = "Semester_ID,Course_ID,Course_Deadline_ID")] Course_Deadline course_Deadline, string Deadline)
         {
+            Deadline = DateTime.ParseExact(Deadline, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            course_Deadline.Deadline = DateTime.Parse(Deadline);
             ViewBag.CheckExits = "";
             ViewBag.Course_ID = new SelectList(unitOfWork.Courses.GetAll(), "Course_ID", "Course_Name");
             ViewBag.Semester_ID = new SelectList(unitOfWork.Semesters.GetAll(), "Semester_ID", "Semester_Name");
@@ -91,7 +94,8 @@ namespace MSS_DEMO.Controllers.SetUp
             {
                 unitOfWork.DeadLine.Insert(course_Deadline);
                 unitOfWork.Save();
-                return RedirectToAction("Index");
+                ViewBag.success = "Add successfull";
+                return View();
             }        
             return View(course_Deadline);
         }
@@ -106,8 +110,10 @@ namespace MSS_DEMO.Controllers.SetUp
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Semester_ID,Course_ID,Deadline,Course_Deadline_ID")] Course_Deadline course_Deadline)
+        public ActionResult Edit([Bind(Include = "Semester_ID,Course_ID,Course_Deadline_ID")] Course_Deadline course_Deadline, string Deadline)
         {
+            Deadline = DateTime.ParseExact(Deadline, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            course_Deadline.Deadline = DateTime.Parse(Deadline);
             if (ModelState.IsValid)
             {
                 unitOfWork.DeadLine.Update(course_Deadline);

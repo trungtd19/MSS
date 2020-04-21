@@ -63,8 +63,12 @@ namespace MSS_DEMO.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Semester_ID,Semester_Name,Start_Date,End_Date")] Semester semester)
-        { 
+        public ActionResult Edit([Bind(Include = "Semester_ID,Semester_Name")] Semester semester, string Start_Date, string End_Date)
+        {
+            Start_Date = DateTime.ParseExact(Start_Date, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            End_Date = DateTime.ParseExact(End_Date, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            semester.Start_Date = DateTime.Parse(Start_Date);
+            semester.End_Date = DateTime.Parse(End_Date);
             if (ModelState.IsValid)
             {
                 unitOfWork.Semesters.Update(semester);

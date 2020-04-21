@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "UsageReport";
+    SelectList importedDate = new SelectList((IList<string>)ViewBag.ImportedDate);
+}
+
+<h2>Usage Report</h2>
+@using (Html.BeginForm("UsageReport", "CleanSystem", FormMethod.Get))
+{
+    @Html.Hidden("checkDelete", "true");
+    <div class="form-group">
+        <label class="col-md-2 control-label">Semester: </label>
+        <div class="col-md-3 col-xs-12">
+            @Html.DropDownList("Semester_ID", null,"--- Choose semester ---", htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-12"></div>
+    </div>
+    <br />
+    <div class="form-group">
+        <label class="col-md-2 control-label">Reported date: </label>
+        <div class="col-md-3 col-xs-12">
+            @Html.DropDownList("ImportedDate", importedDate,"--- Choose reported date ---" ,htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-12"></div>
+    </div>
+    <br />
+    <br />
+    <button class="btn btn-success" type="submit">Delete</button>
+}
+<br />
+<span style="color:red;">@ViewBag.error</span>
+<span style="color:green;">@ViewBag.success</span>
