@@ -19,7 +19,6 @@ namespace MSS_DEMO.Core.Implement
             using (MSSEntities db = new MSSEntities())
             {
                 cour = (from o in db.Subjects
-                        where o.Subject_Active == true
                         orderby o.Subject_ID descending
                         select o)
                        .ToList();

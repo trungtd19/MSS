@@ -2,6 +2,7 @@
 using MSS_DEMO.Repository;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -43,7 +44,8 @@ namespace MSS_DEMO.Core.Components
         }
         public string checkDateOfSemester(string dateImport)
         {
-            DateTime _dateImport = DateTime.Parse(dateImport);     
+            dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            DateTime _dateImport = DateTime.Parse(dateImport);
             var semester = context.Semesters.Where(sem => sem.Start_Date < _dateImport && sem.End_Date > _dateImport).FirstOrDefault();
             if (semester == null)
             {
