@@ -108,16 +108,24 @@ namespace MSS_DEMO.Controllers.SetUp
         {
             SelectSubjectID();
             if (specification.Subject_ID == NONE) specification.Subject_ID = null;
-            if (unitOfWork.Specifications.IsExitsSpec(specification.Specification_Name))
+            try
             {
-                ViewBag.Message = "This specification exits!";
-                return View();
+                if (ModelState.IsValid)
+                {
+
+                    unitOfWork.Specifications.Update(specification);
+                    if (!unitOfWork.Specifications.Save(specification.Specification_Name))
+                    {
+                        ViewBag.Message = "Can't create new specification with " + specification.Subject_ID;
+                        return View(specification);
+                    }
+                    return RedirectToAction("Index");
+                }
             }
-            if (ModelState.IsValid)
+            catch
             {
-                unitOfWork.Specifications.Update(specification);
-                unitOfWork.Save();
-                return RedirectToAction("Index");
+                ViewBag.Message = "Specification existed";
+                return View(specification);
             }
             ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll().Where(o => o.Subject_Active == true).ToList(), "Subject_ID", "Subject_ID", specification.Subject_ID);
             return View(specification);

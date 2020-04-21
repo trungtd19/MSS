@@ -6,6 +6,8 @@
     var session = (UserLogin)Session[MSS_DEMO.Common.CommonConstants.User_Session];
     var user = session.UserID;
 }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
 @Html.Hidden("UserID", user)
 <style>
     .form-control {
@@ -27,7 +29,7 @@
         <div class="tab-pane active">
             <div class="form-group">
                 <div class="col-md-2"><label>Imported date</label></div>
-                <div class="col-md-2"><input type="date" id="dateImport" name="dateImport" class="form-control" /></div>
+                <div class="col-md-2"><input type="text" id="dateImport" name="dateImport" class="form-control datepicker" autocomplete="off" /></div>
                 <div class="col-md-6"></div>
             </div>
             <br />
@@ -74,7 +76,7 @@
                     dataType: 'json',
                     data: fileData,
                     success: function (data) {
-                         if (data.message.includes("success")) {
+                        if (data.message.includes("success")) {
                             sweetAlert("Successfull!", data.message, "success");
                         }
                         else
@@ -88,5 +90,10 @@
                 });
             }
         });
+    });
+        $('.datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd/mm/yyyy'
     });
 </script>

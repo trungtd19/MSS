@@ -3,6 +3,7 @@ using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -35,6 +36,7 @@ namespace MSS_DEMO.Core.Import
         }
         public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> listIdSubjects, string semesterID)
         {
+            dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             DateTime _dateImport = DateTime.Parse(dateImport);
             var Spec_ID_CSV = -1;
             foreach (var listIdSubject in listIdSubjects)
@@ -69,6 +71,7 @@ namespace MSS_DEMO.Core.Import
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
         {
             Student_Course_Log log = new Student_Course_Log();
+            dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             DateTime _dateImport = DateTime.Parse(dateImport);
             int Cour_ID_CSV = -1;
             foreach (var listID in course_Spec_Subs)
