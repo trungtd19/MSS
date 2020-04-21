@@ -12,6 +12,7 @@ using PagedList;
 using MSS_DEMO.Common;
 using System.Globalization;
 using Rotativa;
+using Microsoft.Ajax.Utilities;
 
 namespace MSS_DEMO.Controllers
 {
@@ -51,16 +52,17 @@ namespace MSS_DEMO.Controllers
 
             DateTime date;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            if (ViewBag.date != null)
-            {
-                ViewBag.SelectDatetime = ViewBag.date;
-            }
             date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
             if (SelectDatetime != null)
             {
                 date = Convert.ToDateTime(SelectDatetime);
             }
-
+            if (searchCheck == "1")
+            {
+                List<string> dateL = new List<string>();
+                dateL.Add(Convert.ToDateTime(date).ToString("dd/MM/yyyy"));
+                ViewBag.SelectDatetime = new SelectList(dateL);
+            }
             var listSub = (from a in context.Subjects
                            where a.Subject_Active == true
                            select a).ToList();
@@ -749,24 +751,33 @@ namespace MSS_DEMO.Controllers
                     }
                 }
 
-                ListStudentCompleted.Distinct();
+                ListStudentCompleted = ListStudentCompleted.GroupBy(m => new { m.Roll, m.Subject }).Select(m => m.First()).ToList();
                 if (!String.IsNullOrEmpty(SearchString))
                 {
+                    SearchString = SearchString.Trim();
                     ListStudentCompleted = ListStudentCompleted.Where(a => a.Roll.Contains(SearchString)).ToList();
+                    ViewBag.TotalSearch = ListStudentCompleted.Count();
+                    ViewBag.Spec = (from a in context.Students
+                                    join b in context.Subject_Student on a.Roll equals b.Roll
+                                    join c in context.Subjects on b.Subject_ID equals c.Subject_ID
+                                    where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString
+                                    select c.Subject_ID).Count();
+                    if(ViewBag.TotalSearch > 0 && ViewBag.Spec > 0)
+                    {
+                        ViewBag.Percent = percent(ViewBag.TotalSearch, ViewBag.Spec);
+                    }
+                }
+                else if (String.IsNullOrEmpty(SearchString))
+                {
+                    ViewBag.TotalSearchForSearchNull = ListStudentCompleted.Count();
                 }
                 if (!String.IsNullOrEmpty(SelectCampus))
                 {
                     ListStudentCompleted = ListStudentCompleted.Where(a => a.Campus.Contains(SelectCampus)).ToList();
                 }
             }
-            ViewBag.TotalSearch = ListStudentCompleted.Count();
-            var TotalStudent = (from a in context.Students
-                                    where a.Semester_ID == SelectSemester
-                                    select a).Count();
-            ViewBag.TotalStudent = TotalStudent;
-            ViewBag.Percent = percent(ListStudentCompleted.Count(), TotalStudent);
+            
             listS.ls1 = ListStudentCompleted;
-            //var specCompletedListCourse = (from a in context.Student_Course_Log)
 
             return View("SpecCompleted", listS);
         }

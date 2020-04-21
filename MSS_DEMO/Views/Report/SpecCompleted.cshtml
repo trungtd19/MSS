@@ -95,8 +95,14 @@
 <div>
     @if (Model.ls1.Count > 0)
     {
-        
-        <h4>Total of the records: @ViewBag.TotalSearch/@ViewBag.TotalStudent (@ViewBag.Percent%) <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        if (ViewBag.TotalSearchForSearchNull != null)
+        {
+            <h4>Total of the records: @ViewBag.TotalSearchForSearchNull <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        }
+        else if (ViewBag.TotalSearchForSearchNull == null)
+        {
+            <h4>Total of the records: @ViewBag.TotalSearch/@ViewBag.Spec (@ViewBag.Percent%) <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        }
         <table class="table table-bordered table-striped" id="dataTable">
             <tr>
                 <th>STT</th>
@@ -108,13 +114,13 @@
             @{ int a = 1;}
             @foreach (var t in Model.ls1)
             {
-            <tr>
-                <th>@(a++)</th>
-                <th>@Html.DisplayFor(m => t.Roll)</th>
-                <th>@Html.DisplayFor(m => t.Email)</th>
-                <th>@Html.DisplayFor(m => t.Subject)</th>
-                <th>@Html.DisplayFor(m => t.Campus)</th>
-            </tr>
+                <tr>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Roll)</th>
+                    <th>@Html.DisplayFor(m => t.Email)</th>
+                    <th>@Html.DisplayFor(m => t.Subject)</th>
+                    <th>@Html.DisplayFor(m => t.Campus)</th>
+                </tr>
             }
 
         </table>
