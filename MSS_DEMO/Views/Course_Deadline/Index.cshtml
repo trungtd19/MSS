@@ -4,9 +4,7 @@
 @{
     ViewBag.Title = "Index";
 }
-@{
-    SelectList listSem = new SelectList((IList<string>)Model.lstSemester);
-}
+
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Setup for the new semester", "Index", "SetupBeginSemester") > Courses deadline</span>
 <hr />
@@ -29,7 +27,7 @@
             Semester :
         </div>
         <div class="col-md-2">
-            @Html.DropDownList("Semester_ID", listSem, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
+            @Html.DropDownList("Semester_ID", Model.lstSemester, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
         </div>
         <br />
         <br />

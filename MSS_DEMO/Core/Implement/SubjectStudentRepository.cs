@@ -81,7 +81,7 @@ namespace MSS_DEMO.Core.Implement
             {
                 sb.Append("-" + _subject);
             }
-            if (!string.IsNullOrEmpty(sb.ToString())) sb.Remove(0, 2);
+            if (!string.IsNullOrEmpty(sb.ToString())) sb.Remove(0, 1);
             return sb;
         }
         public Student getByRollAndSemester(string id)

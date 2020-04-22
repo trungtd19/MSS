@@ -133,37 +133,102 @@ namespace MSS_DEMO.Controllers.Log
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];           
             return View(unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName));
         }
-        public ActionResult Detail(string id)
+        public ActionResult Detail(CoursesReportViewModel model,string id,string searchCheck, int? page)
         {
-
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
             var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName);
             MSSWSSoapClient soap = new MSSWSSoapClient();
             string jsonDataClass = "";
             List<string> listRoll = new List<string>();
+
             List<Student_Course_Log> list = new List<Student_Course_Log>();
-            foreach (var subjectClass in listSubjectClass)
+            string SearchString = model.Email;
+            model.searchCheck = searchCheck;
+            List<SelectListItem> listSubjiect = new List<SelectListItem>();
+            var subject = unitOfWork.Subject.GetAll();
+            foreach (var sub in subject)
             {
-                if (id == subjectClass.id)
+                listSubjiect.Add(new SelectListItem
                 {
-                    jsonDataClass = soap.GetClass(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
-                    listRoll = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(jsonDataClass);
-                    foreach (var roll in listRoll)
+                    Text = sub.Subject_Name,
+                    Value = sub.Subject_ID
+                });
+            }
+                             
+            model.listSubject = listSubjiect;
+            if (searchCheck == null)
+            {
+                page = 1;
+            }
+            else
+            {
+                foreach (var subjectClass in listSubjectClass)
+                {
+                    if (id == subjectClass.id)
                     {
-                        var student = unitOfWork.CoursesLog.GetAll().Where(o => o.Roll.Contains(roll.Trim()) && o.Subject_ID.Contains(subjectClass.Subject_ID.Trim())).FirstOrDefault();
-                        if (student != null)
+                        jsonDataClass = soap.GetClass(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
+                        listRoll = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(jsonDataClass);
+                        foreach (var roll in listRoll)
                         {
-                            list.Add(student);
+                            var student = new Student_Course_Log();
+                            try
+                            {
+                                var x = unitOfWork.CoursesLog.GetAll();
+                                student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() ==  subjectClass.Subject_ID.Trim()).FirstOrDefault();
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+                            if (student != null)
+                            {
+                                list.Add(student);
+                            }
                         }
+                        break;
                     }
-                    var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-                    list = list.Where(o => o.Date_Import == maxDate).ToList();
-                    ViewBag.Subject = subjectClass.Subject_Name;
-                    ViewBag.Class = subjectClass.Class_ID;
-                    break;
                 }
-            }       
-            return View(list);
+            }
+            ViewBag.Subject = id.Split('^')[0];
+            ViewBag.Class = id.Split('^')[1];
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                if (!String.IsNullOrWhiteSpace(SearchString))
+                {
+                    list = list.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+
+                if (model.completedCourse != null)
+                {
+                    list = model.completedCourse == "Yes" ? list.Where(s => s.Completed == true).ToList() : list.Where(s => s.Completed == false).ToList();
+                }
+                if (model.compulsoryCourse != null)
+                {
+                    list = model.compulsoryCourse == "Yes" ? list = list.Where(s => s.Course_ID != null).ToList() : list = list.Where(s => s.Course_ID == null).ToList();
+                }
+                if (!String.IsNullOrWhiteSpace(model.Subject_ID))
+                {
+                    list = list.Where(s => s.Subject_ID == model.Subject_ID).ToList();
+                }
+                if (list.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
+            }
+            List<string> completedCour = new List<string>() { "Yes", "No" };
+            List<string> compulsoryCour = new List<string>() { "Yes", "No" };
+            model.completedCour = completedCour;
+            model.compulsoryCour = compulsoryCour;
+            ViewBag.CountRoll = list.Select(o => o.Roll).Distinct().Count();
+            ViewBag.CountLog = list.Count();
+            int pageSize = 30;
+            int pageNumber = (page ?? 1);
+            model.PageList = list.ToList().ToPagedList(pageNumber, pageSize);
+            return View(model);
         }
         [HttpGet]
         public void Export(string check)

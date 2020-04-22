@@ -28,7 +28,7 @@ namespace MSS_DEMO.Controllers.SetUp
             string SearchString = model.Courses_Name;
             if (searchCheck != null)
             {
-                List = unitOfWork.DeadLine.GetPageList();
+                List = unitOfWork.DeadLine.GetPageList(null, null);
             }
             else
             {
@@ -36,14 +36,8 @@ namespace MSS_DEMO.Controllers.SetUp
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                if (!String.IsNullOrWhiteSpace(SearchString))
-                {
-                    List = List.Where(s => s.Courses_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
-                }
-                if (!String.IsNullOrWhiteSpace(model.Semester_ID))
-                {
-                    List = List.Where(s => s.Semester_Name.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
-                }
+                List = unitOfWork.DeadLine.GetPageList(SearchString, model.Semester_ID);
+                
                 if (List.Count == 0)
                 {
                     ViewBag.Nodata = "Showing 0 results";
@@ -53,8 +47,17 @@ namespace MSS_DEMO.Controllers.SetUp
                     ViewBag.Nodata = "";
                 }
             }
-            List<string> semester = unitOfWork.Semesters.GetAll().Select(o => o.Semester_Name).ToList();
-            model.lstSemester = semester;
+            List<SelectListItem> semesterList = new List<SelectListItem>();
+            var semester = unitOfWork.Semesters.GetAll();
+            foreach (var sem in semester)
+            {
+                semesterList.Add(new SelectListItem
+                {
+                    Text = sem.Semester_Name,
+                    Value = sem.Semester_ID
+                });
+            }
+            model.lstSemester = semesterList;
             model.searchCheck = searchCheck;
             int pageSize = 30;
             int pageNumber = (page ?? 1);
