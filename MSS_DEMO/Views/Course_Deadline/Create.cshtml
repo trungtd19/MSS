@@ -20,7 +20,12 @@
                 @Html.ValidationMessageFor(model => model.Semester_ID, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="control-label col-md-2">Subject Name</label>
+            <div class="col-md-10">
+                @Html.DropDownList("Subject_ID", null,"--- Select Subject ---", htmlAttributes: new { @class = "form-control", @required = "required" })
+            </div>
+        </div>
         <div class="form-group">
             <label class="control-label col-md-2">Coures Name</label>
             <div class="col-md-10">
@@ -65,4 +70,26 @@
         
         // }   
         //});
+     $('#Subject_ID').change(function () {
+                var subjectID = $('#Subject_ID').val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getListCourse","Course_Deadline")',
+                    data: { 'Subject_ID': subjectID },
+                    dataType: 'json',
+                    success: function (data) {
+                        sl = document.getElementById("Course_ID");
+                        while (sl.firstChild) {
+                            sl.removeChild(sl.firstChild);
+                        }
+                        if (data.list.length > 0) {
+                            for (i = 0; i < data.list.length; i++) {
+                                newOption = new Option(data.list[i].Course_Name, data.list[i].Course_ID);
+                                document.getElementById("Course_ID").options.add(newOption);
+                            }
+                        }
+                        document.searchForm.submit();
+                    }
+                });
+            });
 </script>  

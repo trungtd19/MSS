@@ -30,11 +30,19 @@
     </div>
     <div class="col-md-12"></div>
 </div>
-<br/>
+<br />
 <div class="form-group">
     <label class="col-md-2 control-label">Semester: </label>
     <div class="col-md-3 col-xs-12">
         @Html.DropDownList("Semester_ID", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+    <div class="col-md-12"></div>
+</div>
+<br />
+<div class="form-group">
+    <label class="col-md-2 control-label">Campus: </label>
+    <div class="col-md-3 col-xs-12">
+        @Html.DropDownList("Campus_ID", null, htmlAttributes: new { @class = "form-control" })
     </div>
     <div class="col-md-12"></div>
 </div>
@@ -53,7 +61,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-10">
                         <br />
-                        <input type="submit" title="Upload" value="Upload" class="btn btn-default" id="btn" />
+                        <input  title="Upload" value="Upload" class="btn btn-default" id="btn" />
                     </div>
                 </div>
             </div>
@@ -67,12 +75,18 @@
             if (selectSemester == "None") {
                   sweetAlert("Lỗi!","Choose semester please!", "error");
             }
+            else
+            if ($("#Campus_ID").val() == "None") {
+                sweetAlert("Lỗi!","Choose campus please!", "error");
+            }
             else {
             var semester = $("#Semester_ID").val();
+            var campus = $("#Campus_ID").val();
             var formData = new FormData();
             var file = document.getElementById("postedFile").files[0];
             formData.append("FileUpload", file);
             formData.append("Semester", semester);
+            formData.append("Campus", campus);
             HoldOn.open({
                     message: 'Please wait...',
                     theme: "sk-circle"
@@ -94,6 +108,6 @@
                  }).done(function () {
                      HoldOn.close();
                 });
-            }         
+            }
         });
 </script>

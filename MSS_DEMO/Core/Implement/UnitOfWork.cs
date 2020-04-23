@@ -22,84 +22,19 @@ namespace MSS_DEMO.Repository
         private SemestersRepository SemestersRepository;
         private SubjectStudentRepository SubjectStudentRepository;
         private CoursesDeadlineRepository CoursesDeadlineRepository;
-        public StudentRepository Students
-        {
-            get
-            {
-                return StudentRepository ?? (StudentRepository = new StudentRepository(context));
-            }
-        }
-        public CoursesDeadlineRepository DeadLine
-        {
-            get
-            {
-                return CoursesDeadlineRepository ?? (CoursesDeadlineRepository = new CoursesDeadlineRepository(context));
-            }
-        }
-        public UserRepository User
-        {
-            get
-            {
-                return UserRepository ?? (UserRepository = new UserRepository(context));
-            }
-        }
-        public CampusRepository Campus
-        {
-            get
-            {
-                return CampusRepository ?? (CampusRepository = new CampusRepository(context));
-            }
-        }
-        public SubjectRepository Subject
-        {
-            get
-            {
-                return SubjectRepository ?? (SubjectRepository = new SubjectRepository(context));
-            }
-        }
-        public SpecificationsRepository Specifications
-        {
-            get
-            {
-                return SpecificationsRepository ?? (SpecificationsRepository = new SpecificationsRepository(context));
-            }
-        }
-        public CoursesRepository Courses
-        {
-            get
-            {
-                return CoursesRepository ?? (CoursesRepository = new CoursesRepository(context));
-            }
-        }
-        public StudentSpecificationLogRepository SpecificationsLog
-        {
-            get
-            {
-                return SpecificationLogRepository ?? (SpecificationLogRepository = new StudentSpecificationLogRepository(context));
-            }
-        }
-        public StudentCoursesLogRepository CoursesLog
-        {
-            get
-            {
-                return CoursesLogRepository ?? (CoursesLogRepository = new StudentCoursesLogRepository(context));
-            }
-        }
-        public SemestersRepository Semesters
-        {
-            get
-            {
-                return SemestersRepository ?? (SemestersRepository = new SemestersRepository(context));
-            }
-        }
 
-        public SubjectStudentRepository SubjectStudent
-        {
-            get
-            {
-                return SubjectStudentRepository ?? (SubjectStudentRepository = new SubjectStudentRepository(context));
-            }
-        }
+
+        public StudentRepository Students => StudentRepository ?? (StudentRepository = new StudentRepository(context));
+        public CoursesDeadlineRepository DeadLine => CoursesDeadlineRepository ?? (CoursesDeadlineRepository = new CoursesDeadlineRepository(context));
+        public UserRepository User => UserRepository ?? (UserRepository = new UserRepository(context));
+        public CampusRepository Campus => CampusRepository ?? (CampusRepository = new CampusRepository(context));
+        public SubjectRepository Subject => SubjectRepository ?? (SubjectRepository = new SubjectRepository(context));
+        public SpecificationsRepository Specifications => SpecificationsRepository ?? (SpecificationsRepository = new SpecificationsRepository(context));
+        public CoursesRepository Courses => CoursesRepository ?? (CoursesRepository = new CoursesRepository(context));
+        public StudentSpecificationLogRepository SpecificationsLog => SpecificationLogRepository ?? (SpecificationLogRepository = new StudentSpecificationLogRepository(context));
+        public StudentCoursesLogRepository CoursesLog => CoursesLogRepository ?? (CoursesLogRepository = new StudentCoursesLogRepository(context));
+        public SemestersRepository Semesters => SemestersRepository ?? (SemestersRepository = new SemestersRepository(context));
+        public SubjectStudentRepository SubjectStudent => SubjectStudentRepository ?? (SubjectStudentRepository = new SubjectStudentRepository(context));
 
         public bool Save()
         {

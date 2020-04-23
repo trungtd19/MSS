@@ -27,17 +27,6 @@ namespace MSS_DEMO.Core.Components
             }
 
         }
-        public List<Specification> GetListID()
-        {
-            List<Specification> spec = new List<Specification>();
-            using (MSSEntities db = new MSSEntities())
-            {
-                spec = (from sp in db.Specifications     
-                        join su in db.Subjects on sp.Subject_ID equals su.Subject_ID
-                       select new Specification { Subject_ID = su.Subject_ID , Specification_ID = sp.Specification_ID }).ToList();
-                return spec;
-            }
-        }
         public bool IsExitsSpec(string spec_Name)
         {
             bool check = true;
