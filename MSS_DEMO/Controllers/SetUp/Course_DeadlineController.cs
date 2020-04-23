@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Core.Implement;
 using MSS_DEMO.Models;
@@ -74,11 +71,20 @@ namespace MSS_DEMO.Controllers.SetUp
 
         public ActionResult Create()
         {
-            ViewBag.Course_ID = new SelectList(unitOfWork.Courses.GetAll(), "Course_ID", "Course_Name");
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll().Where(o => o.Subject_Active == true).ToList(), "Subject_ID", "Subject_Name");
+            List<Course> list = new List<Course>();
+            ViewBag.Course_ID = new SelectList(list, "Course_ID", "Course_Name");
             ViewBag.Semester_ID = new SelectList(unitOfWork.Semesters.GetAll(), "Semester_ID", "Semester_Name");
             return View();
         }
-
+        [HttpPost]
+        public ActionResult getListCourse(string Subject_ID)
+        {
+            return (ActionResult)this.Json((object)new
+            {
+                list = unitOfWork.Courses.GetList().Where(o => o.Subject_ID == Subject_ID).ToList()
+            });
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Semester_ID,Course_ID,Course_Deadline_ID")] Course_Deadline course_Deadline, string Deadline)
@@ -86,7 +92,9 @@ namespace MSS_DEMO.Controllers.SetUp
             Deadline = DateTime.ParseExact(Deadline, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             course_Deadline.Deadline = DateTime.Parse(Deadline);
             ViewBag.CheckExits = "";
-            ViewBag.Course_ID = new SelectList(unitOfWork.Courses.GetAll(), "Course_ID", "Course_Name");
+            ViewBag.Subject_ID = new SelectList(unitOfWork.Subject.GetAll().Where(o => o.Subject_Active == true).ToList(), "Subject_ID", "Subject_Name");
+            List<Course> list = new List<Course>();
+            ViewBag.Course_ID = new SelectList(list, "Course_ID", "Course_Name");
             ViewBag.Semester_ID = new SelectList(unitOfWork.Semesters.GetAll(), "Semester_ID", "Semester_Name");
             if (unitOfWork.DeadLine.IsExitsDeadline(course_Deadline))
             {

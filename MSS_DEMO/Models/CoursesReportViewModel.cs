@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using MSS_DEMO.Core.Implement;
+using PagedList;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -8,6 +9,7 @@ namespace MSS_DEMO.Models
     {
         public string id { get; set; }
         public IPagedList<Student_Course_Log> PageList;
+        public IPagedList<UsageReportNote> PageListLogNote;
         public string searchCheck { get; set; }
         public string Subject_Name { get; set; }
         public string completedCourse { get; set; }        

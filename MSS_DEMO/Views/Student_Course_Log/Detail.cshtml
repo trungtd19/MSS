@@ -2,8 +2,8 @@
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Detail";
-    var pagecount = Model.PageList.PageCount != 0 ? Model.PageList.PageCount : Model.PageList.PageCount;
-    var pagenumber = Model.PageList.PageCount < Model.PageList.PageNumber ? 0 : Model.PageList.PageNumber;
+    var pagecount = Model.PageListLogNote.PageCount != 0 ? Model.PageListLogNote.PageCount : Model.PageListLogNote.PageCount;
+    var pagenumber = Model.PageListLogNote.PageCount < Model.PageListLogNote.PageNumber ? 0 : Model.PageListLogNote.PageNumber;
 
     SelectList listCompleted = new SelectList((IList<string>)Model.completedCour);
     SelectList listCompulsory = new SelectList((IList<string>)Model.compulsoryCour);
@@ -74,7 +74,7 @@
     int stt = 1;
 }
 <span style="color: red;">@ViewBag.Nodata</span>
-@if (Model.PageList.PageCount != 0)
+@if (Model.PageListLogNote.PageCount != 0)
 {
     <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label>
     <div style="overflow-x: auto;" class="drag">
@@ -123,14 +123,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.PageList)
+                    @foreach (var item in Model.PageListLogNote)
                     {
+                        string textNote = item.Note;
+                        textNote = textNote.Length > 100 ? "..."+textNote.Substring(textNote.Length - 100) : textNote;
                         var Note = item.Roll + "^" + item.Semester_ID + "^" + item.Subject_ID;
                         var complete = item.Completed == true ? "Yes" : "No";
                         var status = item.Status == true ? "Yes" : "No";
                         var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
                         string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+                        string Course_Start_Time = Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
                         <tr>
                             <td>@(stt++)</td>
                             <td>
@@ -144,7 +147,7 @@
                             </td>
 
                             <td>
-                                @Course_Enrollment_Time
+                                @Course_Start_Time
                             </td>
                             <td>
                                 @Last_Course_Activity_Time
@@ -168,8 +171,8 @@
                                 @Html.DisplayFor(modelItem => item.Course_Grade)
                             </td>
                             <td>
-                                <textarea id="textArea"></textarea>
-                                @Html.Hidden("Note", Note);
+                                <textarea id="textArea" style="width: 280px; height: 80px;">@textNote</textarea>
+                                @Html.Hidden("Note", Note)
                             </td>
                         </tr>
                     }
@@ -179,7 +182,7 @@
     </div>
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
-@Html.PagedListPager(Model.PageList, page => Url.Action("Detail",
+@Html.PagedListPager(Model.PageListLogNote, page => Url.Action("Detail",
  new
  {
      page,
@@ -211,15 +214,23 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    $(function ()
-    {
-            $(".table tbody #textArea").each(function (id, item) {
-                var textArea = $(this).parents("tr:first").find("#Note").val();
-                  $("#textArea").focusout(function ()
-                  {
-                      alert(textArea.val() + this.val()) 
-                     });
-             });
-    });
-
+   $(".table tbody #textArea").each(function (id, item) {
+        $(this).focusout(function ()
+        {
+                var noteID = $(this).parents("tr:first").find("#Note").val();
+                var note = $(this).parents("tr:first").find("#textArea").val();
+                $.ajax({
+                url: '@Url.Action("AddNote","Student_Course_Log")',
+                type: 'POST',
+                data:  { 'id' : noteID, 'note' : note },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.check == true) {
+                        window.location.reload();
+                    }
+                 }
+                 }).done(function () {                  
+                });
+         });
+   });
 </script>
