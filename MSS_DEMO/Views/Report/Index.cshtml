@@ -56,7 +56,7 @@
 
     }
 
-    @if (Model != null)
+    @if (Model != null && ViewBag.Name != null && ViewBag.Count != null)
     {
         <div>
             <h4>Tổng số SV: @ViewBag.TotalStudent1</h4>

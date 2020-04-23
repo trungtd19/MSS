@@ -75,7 +75,12 @@
                 </div>
                 <br />
                 <div class="form-group">
-
+                    <div class="col-md-2">
+                        <label class="control-label"> Compulsory: </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.CheckBox("Compulsory", true)
+                    </div>
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
                     </div>

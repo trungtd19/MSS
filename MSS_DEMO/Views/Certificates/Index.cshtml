@@ -13,14 +13,18 @@
                 <th>Subject Name</th>
                 <th>Course Name</th>
                 <th>Enter coursera link</th>
+                <th></th>
             </tr>
                 @for (var i = 0; i < Model.certificatesModel.Count; i++)
                 {
-                    <tr>
-                        <th>@Model.certificatesModel[i].SubjectName</th>
-                        <th>@Model.certificatesModel[i].CourseName</th>
-                        <th>@Html.TextBox("CourseN", @Model.certificatesModel[i].Link, htmlAttributes: new { @class = "form-control" })</th>
-                    </tr>
+                <tr>
+                    <th>@Model.certificatesModel[i].SubjectName</th>
+                    <th>@Model.certificatesModel[i].CourseName</th>
+                    <th>@Html.TextBox("CourseN", @Model.certificatesModel[i].Link, htmlAttributes: new { @class = "form-control" })</th>
+                    <th>
+                        <button onclick="window.open('@Model.certificatesModel[i].Link')">View</button>
+                    </th>
+                </tr>
                 }
         </table>
         <input class="btn btn-default" type="submit" value="Save" />

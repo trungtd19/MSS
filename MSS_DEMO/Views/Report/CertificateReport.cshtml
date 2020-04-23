@@ -93,17 +93,29 @@
                 <th>Date Submit</th>
                 <th></th>
             </tr>
-            @for (var i = 0; i < Model.certificatesModel.Count; i++)
+            @for (var i = 0; i < Model.certificatesModel.Count;i = i + Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll).Count())
             {
-                <tr>
-                    <th>@Model.certificatesModel[i].Roll</th>
-                    <th>@Model.certificatesModel[i].SubjectName</th>
-                    <th>@Model.certificatesModel[i].CourseName</th>
-                    <th>@Model.certificatesModel[i].Link</th>
-                    <th>@Model.certificatesModel[i].Date_Submit</th>
-                    <th>
-                        <button onclick="window.open('@Model.certificatesModel[i].Link')">View</button>
-                    </th>
+            <tr>
+                <th rowspan="@Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll).Count()">@Model.certificatesModel[i].Roll</th>
+                @{int y = 0; }
+                @{int z = i;}
+                @foreach (var t in Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll))
+                {
+                    if (y > 0)
+                    {
+                    @:</tr><tr>
+                    }
+                        <th>@Model.certificatesModel[z].SubjectName</th>
+                        <th>@Model.certificatesModel[z].CourseName</th>
+                        <th>@Model.certificatesModel[z].Link</th>
+                        <th>@Model.certificatesModel[z].Date_Submit</th>
+                        <th>
+                            <button onclick="window.open('@Model.certificatesModel[z].Link')">View</button>
+                        </th>
+                    y++;
+                    z++;
+                }
+
                 </tr>
             }
         </table>
