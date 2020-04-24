@@ -29,17 +29,7 @@ namespace MSS_DEMO.Common
             {
                 return false;
             }
-            if (IsNumber(checkStudent))
-            {
-                if (Student.Contains(this.Role_ID))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }          
+                      
             if(role.Role ==1)
             {
                 if (admin.Contains(this.Role_ID))
@@ -76,6 +66,17 @@ namespace MSS_DEMO.Common
             else if (role.Role == 2)
             {
                 if (Hana.Contains(this.Role_ID))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (IsNumber(checkStudent))
+            {
+                if (Student.Contains(this.Role_ID))
                 {
                     return true;
                 }

@@ -63,23 +63,28 @@ namespace MSS_DEMO.Controllers.Login
             string xy = Request["Mail"];
             string[] temp = xy.Split('@');
             string checkmail = temp[1];
-            if(!checkmail.Equals("fpt.edu.vn"))
-            {                
-                return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
-            }
+           
            
                 user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
 
             if (user == null)
             {
-                var RoleSession = new RoleLogin();
-                RoleSession.Role = 0;
-                var UserSession = new UserLogin();
-                UserSession.UserID = 0;
-                UserSession.UserName = xy;
-                Session.Add(CommonConstants.ROLE_Session, RoleSession);
-                Session.Add(CommonConstants.User_Session, UserSession);
-                return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                if (!checkmail.Equals("fpt.edu.vn"))
+                {
+                    return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var RoleSession = new RoleLogin();
+                    RoleSession.Role = 0;
+                    var UserSession = new UserLogin();
+                    UserSession.UserID = 0;
+                    UserSession.UserName = xy;
+                    Session.Add(CommonConstants.ROLE_Session, RoleSession);
+                    Session.Add(CommonConstants.User_Session, UserSession);
+                    return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                }
+                
             }
             else if (user.isActive == false)
             {
