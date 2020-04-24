@@ -50,7 +50,7 @@
                     <label class="control-label"> Search by Roll:</label>
                 </div>
                 <div class="col-lg-3">
-                    @Html.TextBox("SearchString")
+                    @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
                     @Html.Hidden("searchCheck", "true")
                 </div>
                 <div class="col-md-2">
@@ -91,7 +91,7 @@
             <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
             <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
-                    <th>STT</th>
+                    <th>No</th>
                     <th>Course Name</th>
                     <th>Enrolled</th>
                     <th>Last Active</th>

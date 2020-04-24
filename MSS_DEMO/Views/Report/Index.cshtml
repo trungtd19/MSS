@@ -24,42 +24,49 @@
             @Html.ActionLink("Bonus Report", "Bonus")&nbsp;&nbsp;
         </h4>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding-top: initial;">
+            @using (Html.BeginForm("Index", "Report", FormMethod.Post))
+            {
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Reported date: </label>
+                    @Html.Hidden("searchCheck", "true")
+                </div>
+                <div class="col-md-3">
+                    <label>@Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label"> Semester:  </label>
+                </div>
+                <div class="col-md-3">
+                    <label> @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label">  Week off:  </label>                      
+                </div>
+                <div class="col-md-3">
+                    <label> @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })</label>
+                </div>
+                <div class="col-md-6">
+                    <label><input class="btn btn-default" type="submit" value="Display" /></label>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
     <div style="margin-left: auto; margin-right: auto; text-align: center;">
         <h2>
             <label style="color: green;">Summary reports</label>
         </h2>
     </div>
-    @using (Html.BeginForm("Index", "Report", FormMethod.Post))
-    {
-        <div class="form-group">
-            <div style="margin-left:auto;">
-                <label class="control-label"> Reported date: </label>
-                <label>@Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
-                @Html.Hidden("searchCheck", "true")
-            </div>
-        </div>
-        <div class="form-group">
-            <div style="margin-left:auto;">
-                <label class="control-label"> Semester:  </label>
-                <label> @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
-            </div>
-        </div>
-        <div class="form-group">
-            <div style="margin-left:auto;">
-                <label class="control-label">  Week off:  </label>
-                <label> @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })</label>
-                <label style="margin-left:100px;"><input class="btn btn-default" type="submit" value="Display" /></label>
-                <label>@Html.ActionLink("Export", "PrintViewToPdf", "Report", new {weekNumber = ViewBag.weekNumber, SelectDatetime = ViewBag.date, SelectSemester = ViewBag.semester, searchCheck = 1 },null)</label>
-            </div>
-        </div>
-
-
-    }
-
     @if (Model != null && ViewBag.Name != null && ViewBag.Count != null)
     {
         <div>
-            <h4>Tổng số SV: @ViewBag.TotalStudent1</h4>
+            <h4>Total number of students: @ViewBag.TotalStudent1    @Html.ActionLink("Export", "PrintViewToPdf", "Report", new { weekNumber = ViewBag.weekNumber, SelectDatetime = ViewBag.date, SelectSemester = ViewBag.semester, searchCheck = 1 }, null)</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Sub</th>
@@ -95,13 +102,13 @@
                 </tr>
             </table>
         </div>
-        <h4>Tổng số SV đã vào khóa học bắt buộc: @ViewBag.TotalStudent2</h4>
+        <h4>Total students were on compulsory courses: @ViewBag.TotalStudent2</h4>
         <div>
             <table class="table table-bordered">
                 <tr>
                     <th>Sub</th>
                     <th>Name</th>
-                    <th>% Vào học</th>
+                    <th>% Enroll</th>
                     <th>All</th>
                     @foreach (var t in ViewBag.Name)
                     {
@@ -134,7 +141,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th>% Vào học theo campus:</th>
+                    <th>% Enroll according to campus:</th>
                     @foreach (var p in ViewBag.Per)
                     {
                         <th>@p%</th>
@@ -142,8 +149,8 @@
                 </tr>
             </table>
         </div>
-        <h4>@ViewBag.studentComplete sinh viên đã hoàn thành @ViewBag.courseComplete khóa học bắt buộc</h4>
-        <h4>@ViewBag.Estimated sinh viên có số giờ học nhỏ hơn 5/Tuần(@ViewBag.Percent%)</h4>
+        <h4>@ViewBag.studentComplete student completed @ViewBag.courseComplete required course</h4>
+        <h4>@ViewBag.Estimated Students have less than 5 hours per week(@ViewBag.Percent%)</h4>
     }
 </body>
 </html>

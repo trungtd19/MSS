@@ -651,7 +651,7 @@ namespace MSS_DEMO.Controllers
             return report;
         }
 
-        public ActionResult SpecCompleted(ListStudent listS, string SelectSemester, string searchCheck, string SearchString, string SelectDatetime, string SelectCampus, string Compulsory)
+        public ActionResult SpecCompleted(ListStudent listS, string SelectSemester, string searchCheck, string SearchString, string SelectDatetime, string SelectCampus, string Compulsory, string SelectSubject)
         {
             var context = new MSSEntities();
             List<SelectListItem> selectSemes = new List<SelectListItem>();
@@ -687,6 +687,7 @@ namespace MSS_DEMO.Controllers
                 });
             }
             ViewBag.SelectCampus = selectCp;
+            ViewBag.SelectSubject = Sub();
 
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
@@ -751,7 +752,16 @@ namespace MSS_DEMO.Controllers
                 }
                 foreach (var t in specCompletedListSpec)
                 {
-                    ListStudentCompleted.Add(new ListStudent { Roll = t.Roll, Campus = t.Campus, Subject = t.Specialization, Semester_ID = t.Semester_ID,Email = t.Email });
+                    var subid = "";
+                    if(t.Subject_ID == null)
+                    {
+                        subid = "";
+                    }
+                    else
+                    {
+                        subid = t.Subject_ID;
+                    }
+                    ListStudentCompleted.Add(new ListStudent { Roll = t.Roll, Campus = t.Campus, Subject = t.Specialization, Semester_ID = t.Semester_ID,Email = t.Email, Subject_ID = subid });
                 }
                 foreach (var t in studentList)
                 {
@@ -776,12 +786,21 @@ namespace MSS_DEMO.Controllers
 
                         if (countOfCourse == completed)
                         {
-                            ListStudentCompleted.Add(new ListStudent { Roll = t, Campus = info.Campus_ID, Subject = u.Subject_Name, Semester_ID = info.Semester_ID,Email = info.Email });
+                            ListStudentCompleted.Add(new ListStudent { Roll = t, Campus = info.Campus_ID, Subject = u.Subject_Name, Semester_ID = info.Semester_ID,Email = info.Email, Subject_ID = u.Subject_ID });
                         }
                     }
                 }
 
                 ListStudentCompleted = ListStudentCompleted.GroupBy(m => new { m.Roll, m.Subject }).Select(m => m.First()).ToList();
+
+                if (!String.IsNullOrEmpty(SelectCampus))
+                {
+                    ListStudentCompleted = ListStudentCompleted.Where(a => a.Campus.Contains(SelectCampus)).ToList();
+                }
+                if (!String.IsNullOrEmpty(SelectSubject))
+                {
+                    ListStudentCompleted = ListStudentCompleted.Where(a => a.Subject_ID.Contains(SelectSubject)).ToList();
+                }
                 if (!String.IsNullOrEmpty(SearchString))
                 {
                     ListStudentCompleted = ListStudentCompleted.Where(a => a.Roll.Contains(SearchString)).ToList();
@@ -791,7 +810,7 @@ namespace MSS_DEMO.Controllers
                                     join c in context.Subjects on b.Subject_ID equals c.Subject_ID
                                     where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString
                                     select c.Subject_ID).Count();
-                    if(ViewBag.TotalSearch > 0 && ViewBag.Spec > 0)
+                    if (ViewBag.TotalSearch > 0 && ViewBag.Spec > 0)
                     {
                         ViewBag.Percent = percent(ViewBag.TotalSearch, ViewBag.Spec);
                     }
@@ -799,10 +818,6 @@ namespace MSS_DEMO.Controllers
                 else if (String.IsNullOrEmpty(SearchString))
                 {
                     ViewBag.TotalSearchForSearchNull = ListStudentCompleted.Count();
-                }
-                if (!String.IsNullOrEmpty(SelectCampus))
-                {
-                    ListStudentCompleted = ListStudentCompleted.Where(a => a.Campus.Contains(SelectCampus)).ToList();
                 }
             }
             
@@ -1006,6 +1021,29 @@ namespace MSS_DEMO.Controllers
                 });
             }
             return selectDate;
+        }
+
+        private List<SelectListItem> Sub()
+        {
+            var context = new MSSEntities();
+            var listSubject = (from a in context.Subjects
+                               where a.Subject_Active == true
+                               select a).ToList();
+            List<SelectListItem> selectSj = new List<SelectListItem>();
+            selectSj.Add(new SelectListItem
+            {
+                Text = "--Select Subject--",
+                Value = ""
+            });
+            foreach (var a in listSubject)
+            {
+                selectSj.Add(new SelectListItem
+                {
+                    Text = a.Subject_Name,
+                    Value = a.Subject_ID
+                });
+            }
+            return selectSj;
         }
     }
 }
