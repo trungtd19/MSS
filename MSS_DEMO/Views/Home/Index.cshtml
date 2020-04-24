@@ -22,6 +22,8 @@
         <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
         <hr />
         <h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
+        <hr />
+        <h5>@Html.ActionLink("Clean Data System", "Index", "CleanSystem")</h5>
 
     }
     else if (Role == 1)
@@ -29,12 +31,15 @@
         <h5>@Html.ActionLink("User Management", "Index", "User_Role")</h5>
         <hr />
         <h5>@Html.ActionLink("Login AS", "Index", "LoginAs")</h5>
+        <hr />
+        <h5>@Html.ActionLink("Clean Data System", "Index", "CleanSystem")</h5>
     }
     else if (Role == 3)
     {
         <h5>@Html.ActionLink("Usage Report", "Mentor", "Student_Course_Log")</h5>
         <hr />
         <h5>@Html.ActionLink("Specialization Report", "Mentor", "Student_Specification_Log")</h5>
+
     }
     else if (Role == 2)
     {
@@ -46,6 +51,6 @@
     }
 }
 <hr />
-<h5>@Html.ActionLink("Clean Data System", "Index", "CleanSystem")</h5>
+
 
 

@@ -107,6 +107,16 @@ namespace MSS_DEMO.Core.Implement
                 " ON a.Roll = b.Roll and a.Semester_ID = b.Semester_ID and a.Subject_ID = b.Subject_ID").ToList();         
             return list;
         }
+        public bool IsExitsDateImport(string date)
+        {
+            DateTime dt = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var log = context.Student_Course_Log.Where(o => o.Date_Import == dt).FirstOrDefault();
+            if (log == null)
+            {
+                return false;
+            }
+            else return true;
+        }
     }
     public class MentorObject
     {
