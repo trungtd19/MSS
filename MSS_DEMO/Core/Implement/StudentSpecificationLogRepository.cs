@@ -52,5 +52,15 @@ namespace MSS_DEMO.Core.Implement
             rowDelete = context.Database.ExecuteSqlCommand(sqlQuery);
             return rowDelete;
         }
+        public bool IsExitsDateImport(string date)
+        {
+            DateTime dt = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var log = context.Student_Specification_Log.Where(o => o.Date_Import == dt).FirstOrDefault();
+            if (log == null)
+            {
+                return false;
+            }
+            else return true;
+        }
     }
 }

@@ -79,6 +79,11 @@ namespace MSS_DEMO.Controllers
                                     messageImport = "The number of columns is invalid";
                                     return Json(new { message = messageImport });
                                 }
+                                if (unitOfWork.CoursesLog.IsExitsDateImport(_dateImport))
+                                {
+                                    messageImport = "Reported date existed, if you continue please contact admin to delete records this date!";
+                                    return Json(new { message = messageImport });
+                                }
                                 var listCoureseName = unitOfWork.Courses.GetList();
                                 string semesterID = unitOfWork.Semesters.checkDateOfSemester(_dateImport);
                                 while (!sreader.EndOfStream)
@@ -195,6 +200,11 @@ namespace MSS_DEMO.Controllers
                                 else
                                 {
                                     messageImport = "The number of columns is invalid";
+                                    return Json(new { message = messageImport });
+                                }
+                                if (unitOfWork.SpecificationsLog.IsExitsDateImport(_dateImport))
+                                {
+                                    messageImport = "Reported date existed, if you continue please contact admin to delete records this date!";
                                     return Json(new { message = messageImport });
                                 }
                                 var listIdSubject = unitOfWork.Specifications.GetAll();
