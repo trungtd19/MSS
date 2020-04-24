@@ -199,11 +199,11 @@
     </Compile>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Certificates\CertificatesController.cs" />
+    <Compile Include="Controllers\LoginAs\LoginAsController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
     <Compile Include="Controllers\Log\CleanSystemController.cs" />
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\SetUp\Course_DeadlineController.cs" />
-    <Compile Include="Controllers\SetUp\UserController.cs" />
     <Compile Include="Controllers\UserManagement\User_RoleController.cs" />
     <Compile Include="Core\Implement\CoursesDeadlineRepository.cs" />
     <Compile Include="Core\Implement\StudentCoursesLogRepository.cs" />
@@ -443,8 +443,6 @@
     <Content Include="libman.json" />
     <Content Include="Views\Student_Course_Log\Mentor.cshtml" />
     <Content Include="Views\Student_Course_Log\Detail.cshtml" />
-    <Content Include="Views\Student_Specification_Log\Mentor.cshtml" />
-    <Content Include="Views\Student_Specification_Log\Detail.cshtml" />
     <Content Include="Views\Report\SpecCompleted.cshtml" />
     <Content Include="Views\Report\Bonus.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
@@ -457,6 +455,7 @@
     <Content Include="Views\CleanSystem\UsageReport.cshtml" />
     <Content Include="Views\CleanSystem\SpecificationReport.cshtml" />
     <Content Include="Views\CleanSystem\Index.cshtml" />
+    <Content Include="Views\LoginAs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

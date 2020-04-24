@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using MSS_DEMO.Common;
+using MSS_DEMO.Core.Implement;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
@@ -133,37 +134,139 @@ namespace MSS_DEMO.Controllers.Log
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];           
             return View(unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName));
         }
-        public ActionResult Detail(string id)
+        public ActionResult Detail(CoursesReportViewModel model,string id,string searchCheck, int? page)
         {
-
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
             var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName);
             MSSWSSoapClient soap = new MSSWSSoapClient();
             string jsonDataClass = "";
             List<string> listRoll = new List<string>();
+
             List<Student_Course_Log> list = new List<Student_Course_Log>();
-            foreach (var subjectClass in listSubjectClass)
+            List<UsageReportNote> listNote = new List<UsageReportNote>();
+            string SearchString = model.Email;
+            model.searchCheck = searchCheck;
+            List<SelectListItem> listSubjiect = new List<SelectListItem>();
+            var subject = unitOfWork.Subject.GetAll();
+            foreach (var sub in subject)
             {
-                if (id == subjectClass.id)
+                listSubjiect.Add(new SelectListItem
                 {
-                    jsonDataClass = soap.GetClass(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
-                    listRoll = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(jsonDataClass);
-                    foreach (var roll in listRoll)
+                    Text = sub.Subject_Name,
+                    Value = sub.Subject_ID
+                });
+            }
+                             
+            model.listSubject = listSubjiect;
+            if (searchCheck == null)
+            {
+                page = 1;
+            }
+            else
+            {
+                foreach (var subjectClass in listSubjectClass)
+                {
+                    if (id == subjectClass.id)
                     {
-                        var student = unitOfWork.CoursesLog.GetAll().Where(o => o.Roll.Contains(roll.Trim()) && o.Subject_ID.Contains(subjectClass.Subject_ID.Trim())).FirstOrDefault();
-                        if (student != null)
+                        jsonDataClass = soap.GetClass(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
+                        listRoll = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(jsonDataClass);
+                        foreach (var roll in listRoll)
                         {
-                            list.Add(student);
+                            var student = new UsageReportNote();
+                            try
+                            {
+                                var x = unitOfWork.CoursesLog.getListUsageReportNote().ToList();
+                                student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() ==  subjectClass.Subject_ID.Trim()).FirstOrDefault();
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+                            if (student != null)
+                            {
+                                listNote.Add(student);
+                            }
                         }
+                        break;
                     }
-                    var maxDate = list.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-                    list = list.Where(o => o.Date_Import == maxDate).ToList();
-                    ViewBag.Subject = subjectClass.Subject_Name;
-                    ViewBag.Class = subjectClass.Class_ID;
-                    break;
                 }
-            }       
-            return View(list);
+ 
+            }
+            ViewBag.Subject = id.Split('^')[0];
+            ViewBag.Class = id.Split('^')[1];
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                if (!String.IsNullOrWhiteSpace(SearchString))
+                {
+                    listNote = listNote.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                }
+
+                if (model.completedCourse != null)
+                {
+                    listNote = model.completedCourse == "Yes" ? listNote.Where(s => s.Completed == true).ToList() : listNote.Where(s => s.Completed == false).ToList();
+                }
+                if (model.compulsoryCourse != null)
+                {
+                    listNote = model.compulsoryCourse == "Yes" ? listNote.Where(s => s.Course_ID != null).ToList() :  listNote.Where(s => s.Course_ID == null).ToList();
+                }
+                if (!String.IsNullOrWhiteSpace(model.Subject_ID))
+                {
+                    listNote = listNote.Where(s => s.Subject_ID == model.Subject_ID).ToList();
+                }
+                if (listNote.Count == 0)
+                {
+                    ViewBag.Nodata = "Not found data";
+                }
+                else
+                {
+                    ViewBag.Nodata = "";
+                }
+            }
+            List<string> completedCour = new List<string>() { "Yes", "No" };
+            List<string> compulsoryCour = new List<string>() { "Yes", "No" };
+            model.completedCour = completedCour;
+            model.compulsoryCour = compulsoryCour;
+            ViewBag.CountRoll = listNote.Select(o => o.Roll).Distinct().Count();
+            ViewBag.CountLog = listNote.Count();
+            int pageSize = 30;
+            int pageNumber = (page ?? 1);
+            model.PageListLogNote = listNote.ToPagedList(pageNumber, pageSize);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AddNote(string id, string note)
+        {   
+            try
+            {
+                MSSEntities context = new MSSEntities();
+
+                Mentor_Log log = new Mentor_Log();
+                var Roll = id.Split('^')[0];
+                var Semester_ID = id.Split('^')[1];
+                var Subject_ID = id.Split('^')[2];
+
+
+                var noteLog = context.Mentor_Log.Where(o => o.Roll.Trim() == Roll && o.Semester_ID.Trim() == Semester_ID.Trim() && o.Subject_ID.Trim() == Subject_ID.Trim()).FirstOrDefault();
+                if (noteLog == null)
+                {
+                    context.Mentor_Log.Add(new Mentor_Log {
+                        Roll = Roll,
+                        Semester_ID = Semester_ID,
+                        Subject_ID = Subject_ID,
+                        Note = note
+                    });
+                    context.SaveChanges();
+                }
+                else
+                {
+                    noteLog.Note = note;
+                    context.SaveChanges();
+                }                             
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(new { check = true }); ;
         }
         [HttpGet]
         public void Export(string check)

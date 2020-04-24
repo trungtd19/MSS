@@ -3,6 +3,10 @@ using MSS_DEMO.Repository;
 using MSS_DEMO.ServiceReference;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -56,30 +60,9 @@ namespace MSS_DEMO.Core.Implement
                      }).ToList();
             return list;
         }
-        public List<CourseSubject> getListCourseSubject(string SubjectID)
-        {
-            var list = (from a in context.Courses
-                        join b in context.Specifications on a.Specification_ID equals b.Specification_ID
-                        join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                        where (c.Subject_Active == true && c.Subject_ID.Trim() == SubjectID.Trim())
-                        select new
-                        {
-                            Course_Name = a.Course_Name,
-                            Subject_ID = c.Subject_ID,
-                            Subject_Name = c.Subject_Name
-                        }).ToList()
-                          .Select(x => new CourseSubject
-                          {
-                              Course_Name = x.Course_Name,
-                              Subject_ID = x.Subject_ID,
-                              Subject_Name = x.Subject_Name
-                          })
-                       .ToList();
 
-            return list;
-        }
         public int CleanUsageReport(string ImportedDate, string Semester_ID)
-        {            
+        {
             int rowDelete = 0;
             string sqlQuery = "";
             if (!string.IsNullOrEmpty(ImportedDate) && !string.IsNullOrEmpty(Semester_ID))
@@ -102,12 +85,28 @@ namespace MSS_DEMO.Core.Implement
             rowDelete = context.Database.ExecuteSqlCommand(sqlQuery);
             return rowDelete;
         }
-    }
-    public class CourseSubject
-    {
-        public string Subject_ID { get; set; }
-        public string Subject_Name { get; set; }
-        public string Course_Name { get; set; }
+        public List<UsageReportNote> getListUsageReportNote()
+        {
+            var list = context.Database.SqlQuery<UsageReportNote>("Select " +
+                " a.Roll,        " +
+                " a.Email,       " +
+                " a.Course_Name, " +
+                " a.Course_Enrollment_Time,    " +
+                " a.Course_Start_Time,         " +
+                " a.Last_Course_Activity_Time, " +
+                " a.Overall_Progress,          " +
+                " a.Estimated, " +
+                " a.Completed, " +
+                " a.Status,    " +
+                " a.Completion_Time, " +
+                " a.Course_Grade,    " +
+                " a.Semester_ID,     " +
+                " a.Subject_ID,      " +
+                " b.Note             " +
+                " FROM Student_Course_Log a LEFT JOIN Mentor_Log b " +
+                " ON a.Roll = b.Roll and a.Semester_ID = b.Semester_ID and a.Subject_ID = b.Subject_ID").ToList();         
+            return list;
+        }
     }
     public class MentorObject
     {
@@ -115,5 +114,9 @@ namespace MSS_DEMO.Core.Implement
         public string Class_ID { get; set; }
         public string Subject_Name { get; set; }
         public string Subject_ID { get; set; }
+    }
+    public class UsageReportNote : Student_Course_Log
+    {
+        public string Note { get; set; }
     }
 }

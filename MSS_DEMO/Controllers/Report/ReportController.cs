@@ -63,141 +63,143 @@ namespace MSS_DEMO.Controllers
                 dateL.Add(Convert.ToDateTime(date).ToString("dd/MM/yyyy"));
                 ViewBag.SelectDatetime = new SelectList(dateL);
             }
-            var listSub = (from a in context.Subjects
-                           where a.Subject_Active == true
-                           select a).ToList();
-            foreach (var sub in listSub)
+            if (!String.IsNullOrEmpty(searchCheck))
             {
-                var Totall = (from a in context.Subjects
-                              join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
-                              join c in context.Students on b.Roll equals c.Roll
-                              where sub.Subject_ID == a.Subject_ID && c.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester
-                             select c.Roll).Count();
-
-                var Type = (from a in context.Specifications
-                            where sub.Subject_ID == a.Subject_ID && a.Is_Real_Specification == true
-                            select a.Specification_ID).Count();
-                String ListType = "";
-                if (Type == 1)
+                var listSub = (from a in context.Subjects
+                               where a.Subject_Active == true
+                               select a).ToList();
+                foreach (var sub in listSub)
                 {
-                    ListType = "Spec";
-                }
-                else
-                {
-                    ListType = "Course";
-                }
+                    var Totall = (from a in context.Subjects
+                                  join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
+                                  join c in context.Students on b.Roll equals c.Roll
+                                  where sub.Subject_ID == a.Subject_ID && c.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester
+                                  select c.Roll).Count();
 
-                List<double> count = new List<double>();
-                List<string> name = new List<string>();
+                    var Type = (from a in context.Specifications
+                                where sub.Subject_ID == a.Subject_ID && a.Is_Real_Specification == true
+                                select a.Specification_ID).Count();
+                    String ListType = "";
+                    if (Type == 1)
+                    {
+                        ListType = "Spec";
+                    }
+                    else
+                    {
+                        ListType = "Course";
+                    }
 
-                foreach (var cp in context.Campus)
-                {
-                    count.Add(Campus(sub.Subject_ID, cp.Campus_ID, SelectSemester));
-                    name.Add(cp.Campus_ID);
-                }
-                ViewBag.Name = name;
-                ViewBag.Cmp = count;
-
-                reportStudent.Add(new Report {Sub = sub.Subject_ID, Name = sub.Subject_Name, Type = ListType, Total = Totall, Cmp = count });
-
-                List<double> count2 = new List<double>();
-                if(date != null)
-                {
-                    int Total = Count(sub.Subject_ID, "", date);
+                    List<double> count = new List<double>();
+                    List<string> name = new List<string>();
 
                     foreach (var cp in context.Campus)
                     {
-                        count2.Add(Count(sub.Subject_ID, cp.Campus_ID, date));
+                        count.Add(Campus(sub.Subject_ID, cp.Campus_ID, SelectSemester));
+                        name.Add(cp.Campus_ID);
                     }
-                    reportCourse.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total, Totall), Total = Total, Cmp = count2 });
-                }
+                    ViewBag.Name = name;
+                    ViewBag.Cmp = count;
 
-            }
-            var TotalStudent = (from a in context.Students
-                                where a.Semester_ID == SelectSemester
-                                select a.Roll).Count();
-            List<double> temp = new List<double>();
-            temp.Add(Campus("", "", SelectSemester));
-            foreach (var cp in context.Campus)
-            {
-                temp.Add(Campus("",cp.Campus_ID, SelectSemester));
-            }
-            ViewBag.Count = temp;
-            ViewBag.TotalStudent1 = TotalStudent;
-            int TotalStudent2 = Count("", "", date);
-            ViewBag.TotalStudent2 = TotalStudent2;
+                    reportStudent.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Type = ListType, Total = Totall, Cmp = count });
 
-
-            List<double> temp2 = new List<double>();
-            ViewBag.TotalPercent = percent(TotalStudent2, TotalStudent);
-            temp2.Add(Count("", "", date));
-            foreach (var cp in context.Campus)
-            {
-                temp2.Add(Count("", cp.Campus_ID, date));
-            }
-            ViewBag.Count2 = temp2;
-
-            List<double> per = new List<double>();
-            //per.Add(percent(Count("", ""), Campus("", "")));
-            foreach (var cp in context.Campus)
-            {
-                per.Add(percent(Count("", cp.Campus_ID, date), Campus("", cp.Campus_ID, SelectSemester)));
-            }
-            ViewBag.Per = per;
-
-            var studentComplete = (from a in context.Student_Course_Log
-                                   where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
-                                   select a.Roll).Distinct().Count();
-            var courseComplete = (from a in context.Student_Course_Log
-                                  where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
-                                  select a.Course_ID).Count();
-
-            ViewBag.studentComplete = studentComplete;
-            ViewBag.courseComplete = courseComplete;
-
-            var RollList = (from a in context.Students
-                            where a.Semester_ID == SelectSemester
-                            select a.Roll).ToList();
-            int CountStudent = 0;
-            //DateTime nowDate = DateTime.Now;
-            var starDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.Start_Date).FirstOrDefault();
-            TimeSpan timeSpan = date - (DateTime)starDate;
-            //var weekN = Math.Floor((double)(date.Day - starDate.Value.Day) / 7);
-            double weekN = 0;
-            if (date != DateTime.MinValue)
-            {
-                weekN = Math.Floor(timeSpan.TotalDays / 7);
-            }
-            //ViewBag.Week = weekN;
-            int weekOff = 0;
-            if (!String.IsNullOrEmpty(weekNumber))
-            {
-                weekOff = Int32.Parse(weekNumber);
-            }
-            ViewBag.weekNumber = weekOff;
-            ViewBag.date = date;
-            ViewBag.semester = SelectSemester;
-            var weekTotal = weekN - weekOff;
-            if (weekTotal > 0)
-            {
-                foreach (var t in RollList)
-                {
-                    var Estimated = (from a in context.Student_Course_Log
-                                        where a.Roll == t && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
-                                        select a.Estimated).ToList();
-                    var EstimatedTotal = Estimated.Sum();
-                    if ((EstimatedTotal / weekTotal) < 5)
+                    List<double> count2 = new List<double>();
+                    if (date != null)
                     {
-                        CountStudent++;
-                    }
-                }
-                var perc = percent(CountStudent, TotalStudent);
-                ViewBag.Estimated = CountStudent;
-                ViewBag.Percent = perc;
-            }
+                        int Total = Count(sub.Subject_ID, "", date);
 
+                        foreach (var cp in context.Campus)
+                        {
+                            count2.Add(Count(sub.Subject_ID, cp.Campus_ID, date));
+                        }
+                        reportCourse.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total, Totall), Total = Total, Cmp = count2 });
+                    }
+
+                }
+                var TotalStudent = (from a in context.Students
+                                    where a.Semester_ID == SelectSemester
+                                    select a.Roll).Count();
+                List<double> temp = new List<double>();
+                temp.Add(Campus("", "", SelectSemester));
+                foreach (var cp in context.Campus)
+                {
+                    temp.Add(Campus("", cp.Campus_ID, SelectSemester));
+                }
+                ViewBag.Count = temp;
+                ViewBag.TotalStudent1 = TotalStudent;
+                int TotalStudent2 = Count("", "", date);
+                ViewBag.TotalStudent2 = TotalStudent2;
+
+
+                List<double> temp2 = new List<double>();
+                ViewBag.TotalPercent = percent(TotalStudent2, TotalStudent);
+                temp2.Add(Count("", "", date));
+                foreach (var cp in context.Campus)
+                {
+                    temp2.Add(Count("", cp.Campus_ID, date));
+                }
+                ViewBag.Count2 = temp2;
+
+                List<double> per = new List<double>();
+                //per.Add(percent(Count("", ""), Campus("", "")));
+                foreach (var cp in context.Campus)
+                {
+                    per.Add(percent(Count("", cp.Campus_ID, date), Campus("", cp.Campus_ID, SelectSemester)));
+                }
+                ViewBag.Per = per;
+
+                var studentComplete = (from a in context.Student_Course_Log
+                                       where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
+                                       select a.Roll).Distinct().Count();
+                var courseComplete = (from a in context.Student_Course_Log
+                                      where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
+                                      select a.Course_ID).Count();
+
+                ViewBag.studentComplete = studentComplete;
+                ViewBag.courseComplete = courseComplete;
+
+                var RollList = (from a in context.Students
+                                where a.Semester_ID == SelectSemester
+                                select a.Roll).ToList();
+                int CountStudent = 0;
+                //DateTime nowDate = DateTime.Now;
+                var starDate = (from a in context.Semesters
+                                where a.Semester_ID == SelectSemester
+                                select a.Start_Date).FirstOrDefault();
+                TimeSpan timeSpan = date - (DateTime)starDate;
+                //var weekN = Math.Floor((double)(date.Day - starDate.Value.Day) / 7);
+                double weekN = 0;
+                if (date != DateTime.MinValue)
+                {
+                    weekN = Math.Floor(timeSpan.TotalDays / 7);
+                }
+                //ViewBag.Week = weekN;
+                int weekOff = 0;
+                if (!String.IsNullOrEmpty(weekNumber))
+                {
+                    weekOff = Int32.Parse(weekNumber);
+                }
+                ViewBag.weekNumber = weekOff;
+                ViewBag.date = date;
+                ViewBag.semester = SelectSemester;
+                var weekTotal = weekN - weekOff;
+                if (weekTotal > 0)
+                {
+                    foreach (var t in RollList)
+                    {
+                        var Estimated = (from a in context.Student_Course_Log
+                                         where a.Roll == t && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
+                                         select a.Estimated).ToList();
+                        var EstimatedTotal = Estimated.Sum();
+                        if ((EstimatedTotal / weekTotal) < 5)
+                        {
+                            CountStudent++;
+                        }
+                    }
+                    var perc = percent(CountStudent, TotalStudent);
+                    ViewBag.Estimated = CountStudent;
+                    ViewBag.Percent = perc;
+                }
+            }
 
             rp.rp1 = reportStudent;
             rp.rp2 = reportCourse;
@@ -378,7 +380,7 @@ namespace MSS_DEMO.Controllers
             }
 
             var listCampus = (from a in context.Campus
-                              select a.Campus_ID).ToList();
+                              select a).ToList();
             var listSubject = (from a in context.Subjects
                                where a.Subject_Active == true
                                select a.Subject_Name).ToList();
@@ -393,8 +395,8 @@ namespace MSS_DEMO.Controllers
             {
                 selectCp.Add(new SelectListItem
                 {
-                    Text = a,
-                    Value = a
+                    Text = a.Campus_Name,
+                    Value = a.Campus_ID
                 });
             }
 
@@ -649,7 +651,7 @@ namespace MSS_DEMO.Controllers
             return report;
         }
 
-        public ActionResult SpecCompleted(ListStudent listS, string SelectSemester, string searchCheck, string SearchString, string SelectDatetime, string SelectCampus)
+        public ActionResult SpecCompleted(ListStudent listS, string SelectSemester, string searchCheck, string SearchString, string SelectDatetime, string SelectCampus, string Compulsory)
         {
             var context = new MSSEntities();
             List<SelectListItem> selectSemes = new List<SelectListItem>();
@@ -669,7 +671,7 @@ namespace MSS_DEMO.Controllers
 
 
             var listCampus = (from a in context.Campus
-                              select a.Campus_ID).ToList();
+                              select a).ToList();
             List<SelectListItem> selectCp = new List<SelectListItem>();
             selectCp.Add(new SelectListItem
             {
@@ -680,8 +682,8 @@ namespace MSS_DEMO.Controllers
             {
                 selectCp.Add(new SelectListItem
                 {
-                    Text = a,
-                    Value = a
+                    Text = a.Campus_Name,
+                    Value = a.Campus_ID
                 });
             }
             ViewBag.SelectCampus = selectCp;
@@ -700,23 +702,51 @@ namespace MSS_DEMO.Controllers
             List<ListStudent> ListStudentCompleted = new List<ListStudent>();
             List<Student_Specification_Log> specCompletedListSpec = new List<Student_Specification_Log>();
             List<string> studentList = new List<string>();
-
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                SearchString = SearchString.Trim();
+            }
             if (!String.IsNullOrEmpty(searchCheck))
             {
                 if (String.IsNullOrEmpty(SearchString))
                 {
-                    specCompletedListSpec = (from a in context.Student_Specification_Log
+                    if(Compulsory == "true")
+                    {
+                        specCompletedListSpec = (from a in context.Student_Specification_Log
+                                                 join b in context.Specifications on a.Specification_ID equals b.Specification_ID
                                                  where a.Completed == true && a.Semester_ID == SelectSemester && a.Date_Import == date
-                                                 select a).Distinct().ToList();
-                    studentList = (from a in context.Student_Course_Log
+                                                 select a).ToList();
+                        studentList = (from a in context.Student_Course_Log
                                        where a.Semester_ID == SelectSemester && a.Completed == true && a.Course_ID != null
                                        select a.Roll).Distinct().ToList();
+                    }
+                    else
+                    {
+                        specCompletedListSpec = (from a in context.Student_Specification_Log
+                                                 where a.Completed == true && a.Semester_ID == SelectSemester && a.Date_Import == date
+                                                 select a).ToList();
+                        studentList = (from a in context.Student_Course_Log
+                                       where a.Semester_ID == SelectSemester && a.Completed == true
+                                       select a.Roll).Distinct().ToList();
+                    }
+
                 }
                 else
                 {
-                    specCompletedListSpec = (from a in context.Student_Specification_Log
-                                             where a.Completed == true && a.Semester_ID == SelectSemester && a.Roll == SearchString && a.Date_Import == date
-                                             select a).Distinct().ToList();
+                    if (Compulsory == "true")
+                    {
+                        specCompletedListSpec = (from a in context.Student_Specification_Log
+                                                 join b in context.Specifications on a.Specification_ID equals b.Specification_ID
+                                                 where a.Completed == true && a.Semester_ID == SelectSemester && a.Roll == SearchString && a.Date_Import == date
+                                                 select a).ToList();
+                    }
+                    else
+                    {
+                        specCompletedListSpec = (from a in context.Student_Specification_Log
+                                                 where a.Completed == true && a.Semester_ID == SelectSemester && a.Roll == SearchString && a.Date_Import == date
+                                                 select a).ToList();
+                    }
+
                     studentList.Add(SearchString);
                 }
                 foreach (var t in specCompletedListSpec)
@@ -754,7 +784,6 @@ namespace MSS_DEMO.Controllers
                 ListStudentCompleted = ListStudentCompleted.GroupBy(m => new { m.Roll, m.Subject }).Select(m => m.First()).ToList();
                 if (!String.IsNullOrEmpty(SearchString))
                 {
-                    SearchString = SearchString.Trim();
                     ListStudentCompleted = ListStudentCompleted.Where(a => a.Roll.Contains(SearchString)).ToList();
                     ViewBag.TotalSearch = ListStudentCompleted.Count();
                     ViewBag.Spec = (from a in context.Students

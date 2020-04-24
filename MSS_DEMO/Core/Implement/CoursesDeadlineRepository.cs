@@ -13,7 +13,7 @@ namespace MSS_DEMO.Core.Implement
            : base(context)
         {
         }
-        public List<Cour_dealine> GetPageList()
+        public List<Cour_dealine> GetPageList(string courseName, string SemesterID)
         {
             List<Cour_dealine> cour = new List<Cour_dealine>();
             if (context.Course_Deadline.Count() == 0)
@@ -50,6 +50,14 @@ namespace MSS_DEMO.Core.Implement
                             deadlineString = Convert.ToDateTime(x.Deadline).ToString("dd/MM/yyyy"),
                             Subject_ID = x.Subject_ID
                         }).ToList();
+                if (!string.IsNullOrWhiteSpace(courseName))
+                {
+                    cour = cour.Where(s => s.Courses_Name.Trim().ToUpper().Contains(courseName.Trim().ToUpper())).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(SemesterID))
+                {
+                    cour = cour.Where(s => s.Semester_ID.Trim().ToUpper() == SemesterID.Trim().ToUpper()).ToList();
+                }
                 cour = (from o in cour
                         orderby o.Subject_ID descending
                         select o)
