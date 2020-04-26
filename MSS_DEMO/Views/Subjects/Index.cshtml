@@ -10,14 +10,14 @@
     @using (Html.BeginForm("Index", "Subjects", FormMethod.Get))
     {
         <div class="col-md-2" style="width: 11.666667%;">
-            Subject name:
+            Subject ID:
         </div>
         <div class="col-md-2">
             @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
             @Html.Hidden("searchCheck", "true")
         </div>
-        <div class="col-md-2" style="width: 16%;">
-            Show subject inactivity:
+        <div class="col-md-2" style="width: 18%;">
+            Show active subjects only:
         </div>
         <div class="col-md-1">
             @{

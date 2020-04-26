@@ -78,8 +78,21 @@ namespace MSS_DEMO.Controllers.SetUp
             model.searchCheck = searchCheck;
             int pageSize = 30;
             int pageNumber = (page ?? 1);
-            model.PageList = students.ToList().ToPagedList(pageNumber, pageSize);
-            ViewBag.Count = students.Count();
+            List<StudentSubjectView> lst = new List<StudentSubjectView>();
+            foreach (var stud in students)
+            {
+                lst.Add(new StudentSubjectView
+                {
+                    Roll = stud.Roll,
+                    Full_Name = stud.Full_Name,
+                    Email = stud.Email,
+                    Campus_ID = stud.Campus_ID,
+                    Semester = stud.Semester,
+                    Subject = unitOfWork.SubjectStudent.getListSubject(stud.Roll + "^" + stud.Semester_ID).ToString()
+            });
+            }
+            model.PageList = lst.ToList().ToPagedList(pageNumber, pageSize);
+            ViewBag.Count = lst.Count();
             return View(model);
 
         }

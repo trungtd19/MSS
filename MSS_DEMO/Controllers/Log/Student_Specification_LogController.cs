@@ -27,16 +27,6 @@ namespace MSS_DEMO.Controllers.Log
             List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
             string SearchString = model.Email;
             model.searchCheck = searchCheck;
-            List<SelectListItem> listSubjiect = new List<SelectListItem>();
-            var subject = unitOfWork.Subject.GetAll();
-            foreach (var sub in subject)
-            {
-                listSubjiect.Add(new SelectListItem
-                {
-                    Text = sub.Subject_Name,
-                    Value = sub.Subject_ID
-                });
-            }
             List<SelectListItem> campusList = new List<SelectListItem>();
             var campus = unitOfWork.Campus.GetAll();
             foreach (var cam in campus)
@@ -67,7 +57,6 @@ namespace MSS_DEMO.Controllers.Log
             model.importedDate = date;
             model.lstSemester = semesterList;
             model.lstCampus = campusList;
-            model.listSubject = listSubjiect;
             if (searchCheck == null)
             {
                 page = 1;
@@ -94,10 +83,6 @@ namespace MSS_DEMO.Controllers.Log
                 if (model.compulsorySpec != null)
                 {
                     LogList = model.compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Specification_ID != null).ToList() : LogList = LogList.Where(s => s.Specification_ID == null).ToList();
-                }
-                if (!String.IsNullOrWhiteSpace(model.Subject_ID))
-                {                   
-                    LogList = LogList.Where(s => s.Subject_ID == model.Subject_ID).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
                 {                 
@@ -135,7 +120,6 @@ namespace MSS_DEMO.Controllers.Log
             string searchCheck = check.Split('^')[0];
             string Campus = check.Split('^')[1];
             string Semester_ID = check.Split('^')[2];
-            string Subject_ID = check.Split('^')[3];
             string completedSpec = check.Split('^')[4];
             string compulsorySpec = check.Split('^')[5];
             string ImportedDate = check.Split('^')[6];
@@ -160,10 +144,6 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Specification_ID != null).ToList() : LogList = LogList.Where(s => s.Specification_ID == null).ToList();
                 }
-                if (Subject_ID != "4")
-                {
-                    LogList = LogList.Where(s => s.Subject_ID == Subject_ID.Trim()).ToList();
-                }
                 if (Campus != "2")
                 {
                     LogList = LogList.Where(s => s.Campus == Campus.Trim()).ToList();
@@ -176,7 +156,7 @@ namespace MSS_DEMO.Controllers.Log
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             var list = LogList.ToList();
-            sb.Append(string.Join(",", "Name", "Email", "Subject ID", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
+            sb.Append(string.Join(",", "Name", "Email", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
                 "Completed", "Status", "Program Slug", "Program Name", "Enrollment Sourse", "Completion Time", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
@@ -184,7 +164,6 @@ namespace MSS_DEMO.Controllers.Log
                 sb.Append(string.Join(",",
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
-                    csv.AddCSVQuotes(item.Subject_ID),
                     csv.AddCSVQuotes(item.Campus),
                     csv.AddCSVQuotes(item.Specialization),
                     csv.AddCSVQuotes(item.Specialization_Slug),

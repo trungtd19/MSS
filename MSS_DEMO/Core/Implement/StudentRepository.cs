@@ -45,5 +45,10 @@ namespace MSS_DEMO.Repository
             string SemesterID = id.Split('^')[1];
             return context.Students.Find(Roll, SemesterID);
         }    
+
+    }
+    public class StudentSubjectView :Student
+    {
+        public string Subject { set; get; }
     }
 }

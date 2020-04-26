@@ -34,39 +34,65 @@ namespace MSS_DEMO.Core.Import
             };
 
         }
-        public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> listIdSubjects, string semesterID)
+        public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> specifications, string semesterID)
         {
             dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             DateTime _dateImport = DateTime.Parse(dateImport);
             var Spec_ID_CSV = -1;
-            foreach (var listIdSubject in listIdSubjects)
+            foreach (var spec in specifications)
             {
-                Spec_ID_CSV = listIdSubject.Subject_ID.Trim() == row[2].ToString().Split('-')[0] ? listIdSubject.Specification_ID : -1;
+                string specName = spec.Specification_Name.ToLower().Trim();
+                string csvSpecName = row[3].ToString().ToLower().Trim();
+                Spec_ID_CSV = specName.Equals(csvSpecName) ? spec.Specification_ID : -1;
                 if (Spec_ID_CSV != -1) break;
             }
-            return new Student_Specification_Log
+            if (Spec_ID_CSV != -1)
+                return new Student_Specification_Log
+                {
+                    Email = row[1].ToString(),
+                    Roll = row[2].ToString().Split('-')[2],
+                    Specification_ID = Spec_ID_CSV,
+                    Campus = row[2].ToString().Split('-')[1],
+                    Specialization = row[3].ToString(),
+                    Specialization_Slug = row[4].ToString(),
+                    University = row[5].ToString(),
+                    Specialization_Enrollment_Time = row[6].ToString() != "" ? DateTime.Parse(row[6].ToString()) : DateTime.Parse("01/01/1970"),
+                    Last_Specialization_Activity_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
+                    Completed = bool.Parse((row[8].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Status = bool.Parse((row[9].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Program_Slug = row[10].ToString(),
+                    Program_Name = row[11].ToString(),
+                    Specialization_Completion_Time = row[13].ToString() != "" ? DateTime.Parse(row[13].ToString()) : DateTime.Parse("01/01/1970"),
+                    User_ID = userID,
+                    Date_Import = _dateImport,
+                    Semester_ID = semesterID,
+                    Name = row[0].ToString(),
+                    Enrollment_Source = row[12].ToString(),
+                };
+            else
             {
-                Email = row[1].ToString(),
-                Roll = row[2].ToString().Split('-')[2],
-                Subject_ID = row[2].ToString().Split('-')[0],
-                Specification_ID = Spec_ID_CSV,
-                Campus = row[2].ToString().Split('-')[1],
-                Specialization = row[3].ToString(),
-                Specialization_Slug = row[4].ToString(),
-                University = row[5].ToString(),
-                Specialization_Enrollment_Time = row[6].ToString() != "" ? DateTime.Parse(row[6].ToString()) : DateTime.Parse("01/01/1970"),
-                Last_Specialization_Activity_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
-                Completed = bool.Parse((row[8].ToString().ToLower() == "yes" ? "True" : "False")),
-                Status = bool.Parse((row[9].ToString().ToLower() == "yes" ? "True" : "False")),
-                Program_Slug = row[10].ToString(),
-                Program_Name = row[11].ToString(),
-                Specialization_Completion_Time = row[13].ToString() != "" ? DateTime.Parse(row[13].ToString()) : DateTime.Parse("01/01/1970"),
-                User_ID = userID,
-                Date_Import = _dateImport,
-                Semester_ID = semesterID,
-                Name = row[0].ToString(),
-                Enrollment_Source = row[12].ToString(),
-            };
+                return new Student_Specification_Log
+                {
+                    Email = row[1].ToString(),
+                    Roll = row[2].ToString().Split('-')[2],
+                    Campus = row[2].ToString().Split('-')[1],
+                    Specialization = row[3].ToString(),
+                    Specialization_Slug = row[4].ToString(),
+                    University = row[5].ToString(),
+                    Specialization_Enrollment_Time = row[6].ToString() != "" ? DateTime.Parse(row[6].ToString()) : DateTime.Parse("01/01/1970"),
+                    Last_Specialization_Activity_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
+                    Completed = bool.Parse((row[8].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Status = bool.Parse((row[9].ToString().ToLower() == "yes" ? "True" : "False")),
+                    Program_Slug = row[10].ToString(),
+                    Program_Name = row[11].ToString(),
+                    Specialization_Completion_Time = row[13].ToString() != "" ? DateTime.Parse(row[13].ToString()) : DateTime.Parse("01/01/1970"),
+                    User_ID = userID,
+                    Date_Import = _dateImport,
+                    Semester_ID = semesterID,
+                    Name = row[0].ToString(),
+                    Enrollment_Source = row[12].ToString(),
+                };
+            }
         }
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
         {
@@ -109,7 +135,7 @@ namespace MSS_DEMO.Core.Import
                     Status = Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")),
                     Program_Slug = row[14].ToString(),
                     Program_Name = row[15].ToString(),
-                    Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString()) : DateTime.Parse("01/01/1970"),
+                    Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970"),
                     Course_Grade = Double.Parse(row[18].ToString()),
                     User_ID = userID,
                     Date_Import = _dateImport,
@@ -138,7 +164,7 @@ namespace MSS_DEMO.Core.Import
                     Status = Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")),
                     Program_Slug = row[14].ToString(),
                     Program_Name = row[15].ToString(),
-                    Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString()) : DateTime.Parse("01/01/1970"),
+                    Completion_Time = row[17].ToString() != "" ? DateTime.Parse(row[17].ToString().Substring(0,10)) : DateTime.Parse("01/01/1970"),
                     Course_Grade = Double.Parse(row[18].ToString()),
                     User_ID = userID,
                     Date_Import = _dateImport,

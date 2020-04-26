@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using MSS_DEMO.Core.Implement;
+using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using PagedList;
@@ -153,6 +154,35 @@ namespace MSS_DEMO.Controllers.SetUp
                 return View(deadline);
             }
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public ActionResult ExportCoursesDeadline(string check)
+        {
+
+            string searchCheck = check.Split('^')[0];
+            string Course_Name = check.Split('^')[1];
+            string Semester_ID = check.Split('^')[2];
+            Course_Name = Course_Name == "2" ? "" : Course_Name;
+            Semester_ID = Semester_ID == "3" ? "" : Semester_ID;
+            List<Cour_dealine> list = new List<Cour_dealine>();
+
+            if (searchCheck != "1")
+            {
+                list = unitOfWork.DeadLine.GetPageList(Course_Name, Semester_ID);
+            }
+            var myExport = new CSVExport();
+
+            foreach (var course in list)
+            {
+                myExport.AddRow();
+                myExport[""] = course.groupRowNo;
+                myExport["Subject ID"] = course.Subject_ID;
+                myExport["Course Name"] = course.Subject_ID;
+                myExport["Deadline"] = course.deadlineString;
+                myExport["Semester"] = course.Semester_Name;
+            }
+
+            return File(myExport.ExportToBytes(), "text/csv", "Courses-Deadline.csv");
         }
 
     }

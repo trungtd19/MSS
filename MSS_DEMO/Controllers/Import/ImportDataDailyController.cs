@@ -207,7 +207,7 @@ namespace MSS_DEMO.Controllers
                                     messageImport = "Reported date existed, if you continue please contact admin to delete records this date!";
                                     return Json(new { message = messageImport });
                                 }
-                                var listIdSubject = unitOfWork.Specifications.GetAll();
+                                var specifications = unitOfWork.Specifications.GetAll();
                                 string semesterID = unitOfWork.Semesters.checkDateOfSemester(_dateImport);
                                 while (!sreader.EndOfStream)
                                 {
@@ -230,7 +230,7 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
-                                        var log = getRow.GetStudentSpec(rows, userID, _dateImport, listIdSubject, semesterID);
+                                        var log = getRow.GetStudentSpec(rows, userID, _dateImport, specifications, semesterID);
                                         unitOfWork.SpecificationsLog.Insert(log);
                                         countSusscess++;
                                     }
