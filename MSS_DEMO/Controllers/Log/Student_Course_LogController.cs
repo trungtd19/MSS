@@ -140,7 +140,6 @@ namespace MSS_DEMO.Controllers.Log
             var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName);
             MSSWSSoapClient soap = new MSSWSSoapClient();
             string jsonDataClass = "";
-            List<string> listRoll = new List<string>();
 
             List<Student_Course_Log> list = new List<Student_Course_Log>();
             List<UsageReportNote> listNote = new List<UsageReportNote>();
@@ -168,23 +167,26 @@ namespace MSS_DEMO.Controllers.Log
                 {
                     if (id == subjectClass.id)
                     {
-                        jsonDataClass = soap.GetClass(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
-                        listRoll = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(jsonDataClass);
+                        jsonDataClass = soap.getStudents(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
+                        var listRoll = jsonDataClass.Replace(@"""", "").Split(',');
                         foreach (var roll in listRoll)
                         {
-                            var student = new UsageReportNote();
-                            try
+                            if (!string.IsNullOrEmpty(roll))
                             {
-                                var x = unitOfWork.CoursesLog.getListUsageReportNote().ToList();
-                                student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() ==  subjectClass.Subject_ID.Trim()).FirstOrDefault();
-                            }
-                            catch
-                            {
-                                continue;
-                            }
-                            if (student != null)
-                            {
-                                listNote.Add(student);
+                                var student = new UsageReportNote();
+                                try
+                                {
+                                    var x = unitOfWork.CoursesLog.getListUsageReportNote().ToList();
+                                    student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() == subjectClass.Subject_ID.Trim()).FirstOrDefault();
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                                if (student != null)
+                                {
+                                    listNote.Add(student);
+                                }
                             }
                         }
                         break;

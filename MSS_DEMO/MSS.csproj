@@ -309,10 +309,10 @@
     <None Include="Connected Services\ServiceReference\MSSWS.disco" />
     <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\ServiceReference\configuration.svcinfo" />
-    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.GetClassResponse.datasource">
+    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.getScheduledSubjectResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.GetMentorResponse.datasource">
+    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.getStudentsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\ServiceReference\Reference.svcmap">
@@ -457,10 +457,7 @@
     <Content Include="Views\CleanSystem\Index.cshtml" />
     <Content Include="Views\LoginAs\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Base\" />
-    <Folder Include="Views\Logout\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
