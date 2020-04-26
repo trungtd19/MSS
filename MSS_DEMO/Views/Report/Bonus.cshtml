@@ -48,7 +48,6 @@
                 </div>
                 <div class="col-lg-3">
                     @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.Hidden("searchCheck", "true")
                 </div>
                 <div class="col-md-2">
                     <label class="control-label">Semester</label>
@@ -65,10 +64,22 @@
                     <div class="col-md-3">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
-                    <div class="col-md-6">
-                        <input class="btn btn-default" type="submit" value="Search" />
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Subject: </label>
                     </div>
-
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <input class="btn btn-default" type="submit" value="Display Student Bonus" name="Display" />
+                        @Html.Hidden("searchCheck", "true")
+                    </div>
+                    <div class="col-md-3">
+                        <input class="btn btn-default" type="submit" value="Display Student-Course Bonus" name="Display" />
+                    </div>
                 </div>
             }
         </div>
@@ -91,17 +102,21 @@
                     <th>No</th>
                     <th>Roll</th>
                     <th>Campus</th>
+                    <th>Subject</th>
                     <th>Bonus</th>
+                    <th>Course</th>
                 </tr>
                 @{ int a = 1;}
                 @foreach (var t in Model.ls1)
                 {
-                    <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Roll)</th>
-                        <th>@Html.DisplayFor(m => t.Campus)</th>
-                        <th>@Html.DisplayFor(m => t.PBonus)</th>
-                    </tr>
+                <tr>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Roll)</th>
+                    <th>@Html.DisplayFor(m => t.Campus)</th>
+                    <th>@Html.DisplayFor(m => t.Subject)</th>
+                    <th>@Html.DisplayFor(m => t.PBonus)</th>
+                    <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                </tr>
                 }
 
             </table>
