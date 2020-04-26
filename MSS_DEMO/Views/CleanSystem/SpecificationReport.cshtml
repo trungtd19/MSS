@@ -3,7 +3,9 @@
     ViewBag.Title = "Specification Report";
     SelectList importedDate = new SelectList((IList<string>)ViewBag.ImportedDate);
 }
-
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Remove Data", "Index", "CleanSystem") > Specification Report</span>
+<hr />
 <h2>Specification Report</h2>
 @using (Html.BeginForm("SpecificationReport", "CleanSystem", FormMethod.Get))
 {

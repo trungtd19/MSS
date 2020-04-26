@@ -40,8 +40,20 @@ namespace MSS_DEMO.Core.Implement
             var listSubjectID = context.Subjects.Where(o => o.Subject_Active == true).Select(o => o.Subject_ID).ToList();
             ArrayOfString arraySubject = new ArrayOfString();
             arraySubject.AddRange(listSubjectID);
-            string jsonData = soap.GetMentor(userMentor, arraySubject);
-            List<MentorObject> objectMentor = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MentorObject>>(jsonData);
+            string jsonData = soap.getScheduledSubject(userMentor, arraySubject).Replace(@"""","");
+            var scheduledSubject = jsonData.Split(',');
+            List<MentorObject> objectMentor = new List<MentorObject>();
+            foreach (var scheduled in scheduledSubject)
+            {
+                if (!string.IsNullOrEmpty(scheduled))
+                {
+                    objectMentor.Add(new MentorObject
+                    {
+                        Subject_ID = scheduled.Split(';')[0],
+                        Class_ID = scheduled.Split(';')[1]
+                    });
+                }
+            }
             var list = (from a in objectMentor
                         join b in context.Subjects on a.Subject_ID equals b.Subject_ID
                         select new

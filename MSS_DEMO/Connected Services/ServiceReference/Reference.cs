@@ -25,33 +25,33 @@ namespace MSS_DEMO.ServiceReference {
     public interface MSSWSSoap {
         
         // CODEGEN: Generating message contract since element name userLogin from namespace http://tempuri.org/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetMentor", ReplyAction="*")]
-        MSS_DEMO.ServiceReference.GetMentorResponse GetMentor(MSS_DEMO.ServiceReference.GetMentorRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getScheduledSubject", ReplyAction="*")]
+        MSS_DEMO.ServiceReference.getScheduledSubjectResponse getScheduledSubject(MSS_DEMO.ServiceReference.getScheduledSubjectRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetMentor", ReplyAction="*")]
-        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetMentorResponse> GetMentorAsync(MSS_DEMO.ServiceReference.GetMentorRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getScheduledSubject", ReplyAction="*")]
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.getScheduledSubjectResponse> getScheduledSubjectAsync(MSS_DEMO.ServiceReference.getScheduledSubjectRequest request);
         
         // CODEGEN: Generating message contract since element name userLogin from namespace http://tempuri.org/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetClass", ReplyAction="*")]
-        MSS_DEMO.ServiceReference.GetClassResponse GetClass(MSS_DEMO.ServiceReference.GetClassRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getStudents", ReplyAction="*")]
+        MSS_DEMO.ServiceReference.getStudentsResponse getStudents(MSS_DEMO.ServiceReference.getStudentsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetClass", ReplyAction="*")]
-        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetClassResponse> GetClassAsync(MSS_DEMO.ServiceReference.GetClassRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getStudents", ReplyAction="*")]
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.getStudentsResponse> getStudentsAsync(MSS_DEMO.ServiceReference.getStudentsRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class GetMentorRequest {
+    public partial class getScheduledSubjectRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMentor", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.ServiceReference.GetMentorRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="getScheduledSubject", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.getScheduledSubjectRequestBody Body;
         
-        public GetMentorRequest() {
+        public getScheduledSubjectRequest() {
         }
         
-        public GetMentorRequest(MSS_DEMO.ServiceReference.GetMentorRequestBody Body) {
+        public getScheduledSubjectRequest(MSS_DEMO.ServiceReference.getScheduledSubjectRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -60,20 +60,20 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class GetMentorRequestBody {
+    public partial class getScheduledSubjectRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public string userLogin;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public MSS_DEMO.ServiceReference.ArrayOfString listCourse;
+        public MSS_DEMO.ServiceReference.ArrayOfString listSubject;
         
-        public GetMentorRequestBody() {
+        public getScheduledSubjectRequestBody() {
         }
         
-        public GetMentorRequestBody(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listCourse) {
+        public getScheduledSubjectRequestBody(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listSubject) {
             this.userLogin = userLogin;
-            this.listCourse = listCourse;
+            this.listSubject = listSubject;
         }
     }
     
@@ -81,15 +81,15 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class GetMentorResponse {
+    public partial class getScheduledSubjectResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMentorResponse", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.ServiceReference.GetMentorResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="getScheduledSubjectResponse", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.getScheduledSubjectResponseBody Body;
         
-        public GetMentorResponse() {
+        public getScheduledSubjectResponse() {
         }
         
-        public GetMentorResponse(MSS_DEMO.ServiceReference.GetMentorResponseBody Body) {
+        public getScheduledSubjectResponse(MSS_DEMO.ServiceReference.getScheduledSubjectResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -98,16 +98,16 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class GetMentorResponseBody {
+    public partial class getScheduledSubjectResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string GetMentorResult;
+        public string getScheduledSubjectResult;
         
-        public GetMentorResponseBody() {
+        public getScheduledSubjectResponseBody() {
         }
         
-        public GetMentorResponseBody(string GetMentorResult) {
-            this.GetMentorResult = GetMentorResult;
+        public getScheduledSubjectResponseBody(string getScheduledSubjectResult) {
+            this.getScheduledSubjectResult = getScheduledSubjectResult;
         }
     }
     
@@ -115,15 +115,15 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class GetClassRequest {
+    public partial class getStudentsRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetClass", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.ServiceReference.GetClassRequestBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="getStudents", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.getStudentsRequestBody Body;
         
-        public GetClassRequest() {
+        public getStudentsRequest() {
         }
         
-        public GetClassRequest(MSS_DEMO.ServiceReference.GetClassRequestBody Body) {
+        public getStudentsRequest(MSS_DEMO.ServiceReference.getStudentsRequestBody Body) {
             this.Body = Body;
         }
     }
@@ -132,7 +132,7 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class GetClassRequestBody {
+    public partial class getStudentsRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
         public string userLogin;
@@ -141,15 +141,15 @@ namespace MSS_DEMO.ServiceReference {
         public string classID;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public string courseName;
+        public string subjectID;
         
-        public GetClassRequestBody() {
+        public getStudentsRequestBody() {
         }
         
-        public GetClassRequestBody(string userLogin, string classID, string courseName) {
+        public getStudentsRequestBody(string userLogin, string classID, string subjectID) {
             this.userLogin = userLogin;
             this.classID = classID;
-            this.courseName = courseName;
+            this.subjectID = subjectID;
         }
     }
     
@@ -157,15 +157,15 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class GetClassResponse {
+    public partial class getStudentsResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetClassResponse", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.ServiceReference.GetClassResponseBody Body;
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="getStudentsResponse", Namespace="http://tempuri.org/", Order=0)]
+        public MSS_DEMO.ServiceReference.getStudentsResponseBody Body;
         
-        public GetClassResponse() {
+        public getStudentsResponse() {
         }
         
-        public GetClassResponse(MSS_DEMO.ServiceReference.GetClassResponseBody Body) {
+        public getStudentsResponse(MSS_DEMO.ServiceReference.getStudentsResponseBody Body) {
             this.Body = Body;
         }
     }
@@ -174,16 +174,16 @@ namespace MSS_DEMO.ServiceReference {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class GetClassResponseBody {
+    public partial class getStudentsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string GetClassResult;
+        public string getStudentsResult;
         
-        public GetClassResponseBody() {
+        public getStudentsResponseBody() {
         }
         
-        public GetClassResponseBody(string GetClassResult) {
-            this.GetClassResult = GetClassResult;
+        public getStudentsResponseBody(string getStudentsResult) {
+            this.getStudentsResult = getStudentsResult;
         }
     }
     
@@ -215,59 +215,59 @@ namespace MSS_DEMO.ServiceReference {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MSS_DEMO.ServiceReference.GetMentorResponse MSS_DEMO.ServiceReference.MSSWSSoap.GetMentor(MSS_DEMO.ServiceReference.GetMentorRequest request) {
-            return base.Channel.GetMentor(request);
+        MSS_DEMO.ServiceReference.getScheduledSubjectResponse MSS_DEMO.ServiceReference.MSSWSSoap.getScheduledSubject(MSS_DEMO.ServiceReference.getScheduledSubjectRequest request) {
+            return base.Channel.getScheduledSubject(request);
         }
         
-        public string GetMentor(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listCourse) {
-            MSS_DEMO.ServiceReference.GetMentorRequest inValue = new MSS_DEMO.ServiceReference.GetMentorRequest();
-            inValue.Body = new MSS_DEMO.ServiceReference.GetMentorRequestBody();
+        public string getScheduledSubject(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listSubject) {
+            MSS_DEMO.ServiceReference.getScheduledSubjectRequest inValue = new MSS_DEMO.ServiceReference.getScheduledSubjectRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.getScheduledSubjectRequestBody();
             inValue.Body.userLogin = userLogin;
-            inValue.Body.listCourse = listCourse;
-            MSS_DEMO.ServiceReference.GetMentorResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetMentor(inValue);
-            return retVal.Body.GetMentorResult;
+            inValue.Body.listSubject = listSubject;
+            MSS_DEMO.ServiceReference.getScheduledSubjectResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).getScheduledSubject(inValue);
+            return retVal.Body.getScheduledSubjectResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetMentorResponse> MSS_DEMO.ServiceReference.MSSWSSoap.GetMentorAsync(MSS_DEMO.ServiceReference.GetMentorRequest request) {
-            return base.Channel.GetMentorAsync(request);
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.getScheduledSubjectResponse> MSS_DEMO.ServiceReference.MSSWSSoap.getScheduledSubjectAsync(MSS_DEMO.ServiceReference.getScheduledSubjectRequest request) {
+            return base.Channel.getScheduledSubjectAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetMentorResponse> GetMentorAsync(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listCourse) {
-            MSS_DEMO.ServiceReference.GetMentorRequest inValue = new MSS_DEMO.ServiceReference.GetMentorRequest();
-            inValue.Body = new MSS_DEMO.ServiceReference.GetMentorRequestBody();
+        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.getScheduledSubjectResponse> getScheduledSubjectAsync(string userLogin, MSS_DEMO.ServiceReference.ArrayOfString listSubject) {
+            MSS_DEMO.ServiceReference.getScheduledSubjectRequest inValue = new MSS_DEMO.ServiceReference.getScheduledSubjectRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.getScheduledSubjectRequestBody();
             inValue.Body.userLogin = userLogin;
-            inValue.Body.listCourse = listCourse;
-            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetMentorAsync(inValue);
+            inValue.Body.listSubject = listSubject;
+            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).getScheduledSubjectAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MSS_DEMO.ServiceReference.GetClassResponse MSS_DEMO.ServiceReference.MSSWSSoap.GetClass(MSS_DEMO.ServiceReference.GetClassRequest request) {
-            return base.Channel.GetClass(request);
+        MSS_DEMO.ServiceReference.getStudentsResponse MSS_DEMO.ServiceReference.MSSWSSoap.getStudents(MSS_DEMO.ServiceReference.getStudentsRequest request) {
+            return base.Channel.getStudents(request);
         }
         
-        public string GetClass(string userLogin, string classID, string courseName) {
-            MSS_DEMO.ServiceReference.GetClassRequest inValue = new MSS_DEMO.ServiceReference.GetClassRequest();
-            inValue.Body = new MSS_DEMO.ServiceReference.GetClassRequestBody();
+        public string getStudents(string userLogin, string classID, string subjectID) {
+            MSS_DEMO.ServiceReference.getStudentsRequest inValue = new MSS_DEMO.ServiceReference.getStudentsRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.getStudentsRequestBody();
             inValue.Body.userLogin = userLogin;
             inValue.Body.classID = classID;
-            inValue.Body.courseName = courseName;
-            MSS_DEMO.ServiceReference.GetClassResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetClass(inValue);
-            return retVal.Body.GetClassResult;
+            inValue.Body.subjectID = subjectID;
+            MSS_DEMO.ServiceReference.getStudentsResponse retVal = ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).getStudents(inValue);
+            return retVal.Body.getStudentsResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetClassResponse> MSS_DEMO.ServiceReference.MSSWSSoap.GetClassAsync(MSS_DEMO.ServiceReference.GetClassRequest request) {
-            return base.Channel.GetClassAsync(request);
+        System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.getStudentsResponse> MSS_DEMO.ServiceReference.MSSWSSoap.getStudentsAsync(MSS_DEMO.ServiceReference.getStudentsRequest request) {
+            return base.Channel.getStudentsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.GetClassResponse> GetClassAsync(string userLogin, string classID, string courseName) {
-            MSS_DEMO.ServiceReference.GetClassRequest inValue = new MSS_DEMO.ServiceReference.GetClassRequest();
-            inValue.Body = new MSS_DEMO.ServiceReference.GetClassRequestBody();
+        public System.Threading.Tasks.Task<MSS_DEMO.ServiceReference.getStudentsResponse> getStudentsAsync(string userLogin, string classID, string subjectID) {
+            MSS_DEMO.ServiceReference.getStudentsRequest inValue = new MSS_DEMO.ServiceReference.getStudentsRequest();
+            inValue.Body = new MSS_DEMO.ServiceReference.getStudentsRequestBody();
             inValue.Body.userLogin = userLogin;
             inValue.Body.classID = classID;
-            inValue.Body.courseName = courseName;
-            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).GetClassAsync(inValue);
+            inValue.Body.subjectID = subjectID;
+            return ((MSS_DEMO.ServiceReference.MSSWSSoap)(this)).getStudentsAsync(inValue);
         }
     }
 }
