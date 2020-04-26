@@ -108,7 +108,7 @@
                 <tr>
                     <th>Sub</th>
                     <th>Name</th>
-                    <th>% Enroll</th>
+                    <th>% enrollment</th>
                     <th>All</th>
                     @foreach (var t in ViewBag.Name)
                     {
@@ -141,7 +141,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th>% Enroll according to campus:</th>
+                    <th>% enrollment by campus:</th>
                     @foreach (var p in ViewBag.Per)
                     {
                         <th>@p%</th>
@@ -149,8 +149,8 @@
                 </tr>
             </table>
         </div>
-        <h4>@ViewBag.studentComplete student completed @ViewBag.courseComplete required course</h4>
-        <h4>@ViewBag.Estimated Students have less than 5 hours per week(@ViewBag.Percent%)</h4>
+        <h4>@ViewBag.studentComplete students completed @ViewBag.courseComplete required courses</h4>
+        <h4>@ViewBag.Estimated students have average learning hours less than 5 hours per week (@ViewBag.Percent%)</h4>
     }
 </body>
 </html>

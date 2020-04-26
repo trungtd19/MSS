@@ -103,23 +103,23 @@
                 @{ int a = 1;}
                 @foreach (var t in Model.InforList)
                 {
-                    <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Course_Name)</th>
-                        <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
-                        <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
-                        <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
-                        <th>@Html.DisplayFor(m => t.Completion_Time)</th>
-                        <th>@Html.DisplayFor(m => t.Estimated)</th>
-                        @if (t.Completed)
-                        {
-                            <th><span style="color:green;">Completed</span></th>
-                        }
-                        else
-                        {
-                            <th><span style="color:red;">Incomplete</span></th>
-                        }
-                    </tr>
+                <tr>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                    <th>@Html.DisplayFor(m => t.Course_Enrollment_Time)</th>
+                    <th>@Html.DisplayFor(m => t.Last_Course_Activity_Time)</th>
+                    <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
+                    <th>@Html.DisplayFor(m => t.Estimated)</th>
+                    <th>@Html.DisplayFor(m => t.Completion_Time)</th>
+                    @if (t.Completed)
+                    {
+                        <th><span style="color:green;">Completed</span></th>
+                    }
+                    else
+                    {
+                        <th><span style="color:red;">Incomplete</span></th>
+                    }
+                </tr>
                 }
             </table>
         }

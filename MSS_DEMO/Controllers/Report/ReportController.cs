@@ -215,6 +215,10 @@ namespace MSS_DEMO.Controllers
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.Trim().ToUpper();
+            }
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
@@ -433,7 +437,10 @@ namespace MSS_DEMO.Controllers
             //List<InfoStudent> distinctList = new List<InfoStudent>();
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
-
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.Trim().ToUpper();
+            }
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
@@ -574,7 +581,10 @@ namespace MSS_DEMO.Controllers
             List<CertificateViewModel> certificate = new List<CertificateViewModel>();
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
-
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                SearchString = SearchString.Trim().ToUpper();
+            }
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
@@ -718,7 +728,7 @@ namespace MSS_DEMO.Controllers
             List<string> studentList = new List<string>();
             if (!String.IsNullOrEmpty(SearchString))
             {
-                SearchString = SearchString.Trim();
+                SearchString = SearchString.Trim().ToUpper();
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
@@ -893,6 +903,10 @@ namespace MSS_DEMO.Controllers
             List<ListStudent> ListCompleted = new List<ListStudent>();
             List<SelectListItem> selectSemes = new List<SelectListItem>();
 
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                SearchString = SearchString.Trim().ToUpper();
+            }
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
