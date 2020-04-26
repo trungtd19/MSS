@@ -2,11 +2,11 @@
 <wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
-      <s:element name="GetMentor">
+      <s:element name="getScheduledSubject">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="userLogin" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="listCourse" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="listSubject" type="tns:ArrayOfString" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -15,57 +15,57 @@
           <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
         </s:sequence>
       </s:complexType>
-      <s:element name="GetMentorResponse">
+      <s:element name="getScheduledSubjectResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetMentorResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="getScheduledSubjectResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetClass">
+      <s:element name="getStudents">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="userLogin" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="classID" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="courseName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="subjectID" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetClassResponse">
+      <s:element name="getStudentsResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetClassResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="getStudentsResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="GetMentorSoapIn">
-    <wsdl:part name="parameters" element="tns:GetMentor" />
+  <wsdl:message name="getScheduledSubjectSoapIn">
+    <wsdl:part name="parameters" element="tns:getScheduledSubject" />
   </wsdl:message>
-  <wsdl:message name="GetMentorSoapOut">
-    <wsdl:part name="parameters" element="tns:GetMentorResponse" />
+  <wsdl:message name="getScheduledSubjectSoapOut">
+    <wsdl:part name="parameters" element="tns:getScheduledSubjectResponse" />
   </wsdl:message>
-  <wsdl:message name="GetClassSoapIn">
-    <wsdl:part name="parameters" element="tns:GetClass" />
+  <wsdl:message name="getStudentsSoapIn">
+    <wsdl:part name="parameters" element="tns:getStudents" />
   </wsdl:message>
-  <wsdl:message name="GetClassSoapOut">
-    <wsdl:part name="parameters" element="tns:GetClassResponse" />
+  <wsdl:message name="getStudentsSoapOut">
+    <wsdl:part name="parameters" element="tns:getStudentsResponse" />
   </wsdl:message>
   <wsdl:portType name="MSSWSSoap">
-    <wsdl:operation name="GetMentor">
-      <wsdl:input message="tns:GetMentorSoapIn" />
-      <wsdl:output message="tns:GetMentorSoapOut" />
+    <wsdl:operation name="getScheduledSubject">
+      <wsdl:input message="tns:getScheduledSubjectSoapIn" />
+      <wsdl:output message="tns:getScheduledSubjectSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetClass">
-      <wsdl:input message="tns:GetClassSoapIn" />
-      <wsdl:output message="tns:GetClassSoapOut" />
+    <wsdl:operation name="getStudents">
+      <wsdl:input message="tns:getStudentsSoapIn" />
+      <wsdl:output message="tns:getStudentsSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="MSSWSSoap" type="tns:MSSWSSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetMentor">
-      <soap:operation soapAction="http://tempuri.org/GetMentor" style="document" />
+    <wsdl:operation name="getScheduledSubject">
+      <soap:operation soapAction="http://tempuri.org/getScheduledSubject" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -73,8 +73,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetClass">
-      <soap:operation soapAction="http://tempuri.org/GetClass" style="document" />
+    <wsdl:operation name="getStudents">
+      <soap:operation soapAction="http://tempuri.org/getStudents" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -85,8 +85,8 @@
   </wsdl:binding>
   <wsdl:binding name="MSSWSSoap12" type="tns:MSSWSSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetMentor">
-      <soap12:operation soapAction="http://tempuri.org/GetMentor" style="document" />
+    <wsdl:operation name="getScheduledSubject">
+      <soap12:operation soapAction="http://tempuri.org/getScheduledSubject" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -94,8 +94,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetClass">
-      <soap12:operation soapAction="http://tempuri.org/GetClass" style="document" />
+    <wsdl:operation name="getStudents">
+      <soap12:operation soapAction="http://tempuri.org/getStudents" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

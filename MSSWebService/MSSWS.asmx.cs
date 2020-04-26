@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Script.Services;
@@ -20,8 +21,9 @@ namespace MSSWebService
     {
 
         [WebMethod]
-        public string GetMentor(string userLogin, string[] listCourse)
+        public string getScheduledSubject(string userLogin, string[] listSubject)
         {
+            // List class mô phỏng
             List<SubjectClass> listA = new List<SubjectClass>();
             listA.Add(new SubjectClass
             {
@@ -33,6 +35,7 @@ namespace MSSWebService
                 Subject_ID = "SSL101",
                 Class_ID = "11"
             });
+            // Object Mentor mô phỏng
             Menotr[] objstudents = new Menotr[]
                 {
                     new Menotr()
@@ -41,8 +44,7 @@ namespace MSSWebService
                         ListSubjectClass =  listA
                     },
                  };
-            //CoursesClass[] objClass = new CoursesClass[] { };           
-            List<SubjectClass> objClass = new List<SubjectClass>();
+            StringBuilder sb = new StringBuilder();
             foreach (var x in objstudents)
             {
                 if (x.Email == userLogin)
@@ -50,20 +52,15 @@ namespace MSSWebService
                 
                     foreach (var y in x.ListSubjectClass)
                     {
-                        if(IsExistCourses(y.Subject_ID, listCourse))
+                        if(IsExistCourses(y.Subject_ID, listSubject))
                         {
-                            objClass.Add(new SubjectClass
-                            {
-                                Subject_ID = y.Subject_ID,
-                                Class_ID = y.Class_ID
-                            });
-                   
+                            sb.Append(y.Subject_ID + ";" + y.Class_ID + ",");            
                         }                     
                     }
                 }
             }
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(objClass);
+            return js.Serialize(sb.ToString());
         }
         public bool IsExistCourses(string couresName, string[] listCourse)
         {
@@ -77,12 +74,13 @@ namespace MSSWebService
             return false;
         }
         [WebMethod]
-        public string GetClass(string userLogin, string classID, string courseName)
+        public string getStudents(string userLogin, string classID, string subjectID)
         {
-
+            // List Roll Student mô phỏng
             List<string> listStudent = new List<string>();
             listStudent.Add("HE150005");
             listStudent.Add("HE150820");
+            // Object Mentor mô phỏng
             Menotr[] objstudents = new Menotr[]
                 {
                     new Menotr()
@@ -101,19 +99,19 @@ namespace MSSWebService
                         ListRoll = listStudent
                     },
                  };
-            List<string> objStudent = new List<string>();
+            StringBuilder sb = new StringBuilder();
             foreach (var x in objstudents)
             {
-                if (x.Email == userLogin)
+                if (x.Email == userLogin && x.Class_ID == classID && x.Subject_ID == subjectID)
                 {
                     foreach (var y in x.ListRoll)
                     {
-                        objStudent.Add(y);
+                        sb.Append(y + ",");
                     }
                 }
             }
             JavaScriptSerializer js = new JavaScriptSerializer();
-            return js.Serialize(objStudent);
+            return js.Serialize(sb.ToString());
         }
         public class Menotr
         {
