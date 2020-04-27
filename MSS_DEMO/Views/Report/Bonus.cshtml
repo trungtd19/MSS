@@ -104,7 +104,10 @@
                     <th>Campus</th>
                     <th>Subject</th>
                     <th>Bonus</th>
-                    <th>Course</th>
+                    @if (Model.ls1.Any(m => m.Course_Name != null))
+                    {
+                        <th>Course</th>
+                    }
                 </tr>
                 @{ int a = 1;}
                 @foreach (var t in Model.ls1)
@@ -115,7 +118,10 @@
                     <th>@Html.DisplayFor(m => t.Campus)</th>
                     <th>@Html.DisplayFor(m => t.Subject)</th>
                     <th>@Html.DisplayFor(m => t.PBonus)</th>
-                    <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                    @if (Model.ls1.Any(m => m.Course_Name != null))
+                    {
+                        <th>@Html.DisplayFor(m => t.Course_Name)</th>
+                    }
                 </tr>
                 }
 

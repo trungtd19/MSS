@@ -941,7 +941,7 @@ namespace MSS_DEMO.Controllers
                                                join d in context.Student_Course_Log on a.Roll equals d.Roll
                                                join e in context.Courses on d.Course_ID equals e.Course_ID
                                                join f in context.Course_Deadline on e.Course_ID equals f.Course_ID
-                                               where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time < f.Deadline && c.Subject_Active == true
+                                               where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time <= f.Deadline && c.Subject_Active == true
                                                select d).ToList();
 
                 if (Display == "Display Student Bonus")
@@ -952,7 +952,7 @@ namespace MSS_DEMO.Controllers
                                        join d in context.Student_Course_Log on a.Roll equals d.Roll
                                        join e in context.Courses on d.Course_ID equals e.Course_ID
                                        join f in context.Course_Deadline on e.Course_ID equals f.Course_ID
-                                       where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time < f.Deadline && c.Subject_Active == true
+                                       where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time <= f.Deadline && c.Subject_Active == true
                                        select new { b, a, c, e }).DistinctBy(m => m.b).ToList();
                     foreach (var t in listStudent)
                     {
@@ -977,7 +977,7 @@ namespace MSS_DEMO.Controllers
                                        join d in context.Student_Course_Log on a.Roll equals d.Roll
                                        join e in context.Courses on d.Course_ID equals e.Course_ID
                                        join f in context.Course_Deadline on e.Course_ID equals f.Course_ID
-                                       where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time < f.Deadline && c.Subject_Active == true
+                                       where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time <= f.Deadline && c.Subject_Active == true
                                        select new { b, a, c, e }).ToList();
                     foreach (var t in listStudent)
                     {
