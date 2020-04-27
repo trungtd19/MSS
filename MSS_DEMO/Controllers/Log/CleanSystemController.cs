@@ -27,11 +27,6 @@ namespace MSS_DEMO.Controllers.Log
             ViewBag.Semester_ID = new SelectList(semester, "Semester_ID", "Semester_Name");
             var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
             List<string> date = new List<string>();
-            foreach (var _date in listDate)
-            {
-                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
-            }
-            date = date.Distinct().ToList();
             ViewBag.ImportedDate = date;
             
             if (!string.IsNullOrEmpty(ImportedDate) || !string.IsNullOrEmpty(Semester_ID))
@@ -88,6 +83,21 @@ namespace MSS_DEMO.Controllers.Log
             }
 
             return View();
+        }
+        [HttpPost]
+        public ActionResult getListDate(string SemesterID)
+        {
+            var semester = unitOfWork.Semesters.GetById(SemesterID);
+            var dateList = unitOfWork.CoursesLog.GetAll().Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).ToList();
+            List<string> date = new List<string>();
+            foreach (var _date in dateList)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return (ActionResult)this.Json((object)new
+            {
+                list = date
+            });
         }
     }
 }

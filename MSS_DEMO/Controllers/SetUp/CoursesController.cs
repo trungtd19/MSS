@@ -40,7 +40,7 @@ namespace MSS_DEMO.Controllers.SetUp
                LogList = unitOfWork.Courses.GetPageList();
                 if (!String.IsNullOrWhiteSpace(SearchString))
                 {
-                    LogList = LogList.Where(s => s.Course_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    LogList = LogList.Where(s => s.Course_Name.Trim().ToUpper().Contains(SearchString.Trim().ToUpper())).ToList();
                 }
                 if (LogList.Count == 0)
                 {

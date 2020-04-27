@@ -39,7 +39,7 @@ namespace MSS_DEMO.Controllers.SetUp
                 List = unitOfWork.Specifications.GetPageList();
                 if (!String.IsNullOrWhiteSpace(SearchString))
                 {
-                    List = List.Where(s => s.Specification_Name.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    List = List.Where(s => s.Specification_Name.Trim().ToUpper().Contains(SearchString.Trim().ToUpper())).ToList();
                 }
                 if (List.Count == 0)
                 {
