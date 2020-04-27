@@ -93,6 +93,9 @@
                 Email
             </th>
             <th>
+                Subject
+            </th>
+            <th>
                 Campus
             </th>
             <th>
@@ -103,24 +106,29 @@
         @foreach (var item in Model.PageList)
         {
             var id = item.Roll + "^" + item.Semester.Semester_ID;
-            <tr>
-                <td>@(stt++)</td>
-                <td>
-                    @Html.ActionLink(item.Roll, "Details", new { id = id })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Full_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Campus_ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
-                </td>
-            </tr>
+
+    <tr>
+        <td>@(stt++)</td>
+        <td>
+            @Html.ActionLink(item.Roll, "Details", new { id = id })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Full_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Campus_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester.Semester_Name)
+        </td>
+
+    </tr>
         }
 
     </table>

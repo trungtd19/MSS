@@ -55,23 +55,10 @@
                                     </div>
                                 </div>
                                 <br />
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Semester</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Semester_ID", Model.lstSemester, new { @name = "compulsoryCourse", @class = "form-control select" })
-                                    </div>
-                                </div>
+                 
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Subject</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Subject_ID", Model.listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Completed</label>
@@ -86,6 +73,12 @@
                                     <div class="col-md-9 col-xs-12">
                                         @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Semester</label>
+                                <div class="col-md-9 col-xs-12">
+                                    @Html.DropDownList("Semester_ID", Model.lstSemester, new { @name = "compulsoryCourse", @class = "form-control select" })
                                 </div>
                             </div>
                         </div>
@@ -116,9 +109,6 @@
                         </th>
                         <th>
                             Email
-                        </th>
-                        <th>
-                            Subject ID
                         </th>
                         <th>
                             Campus
@@ -183,9 +173,6 @@
                             @Html.DisplayFor(modelItem => item.Email)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Subject_ID)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Campus)
                         </td>
                         <td>
@@ -240,7 +227,6 @@
      ImportedDate = Model.ImportedDate,
      compulsorySpec = Model.compulsorySpec,
      completedSpec = Model.completedSpec,
-     Subject_ID = Model.Subject_ID,
      Semester_ID = Model.Semester_ID,
      Campus = Model.Campus,
      searchCheck = "true"
@@ -252,7 +238,7 @@
         var searchCheck = $("#searchCheck").val() || "1";
         var Campus = $("#Campus").val() || "2";
         var Semester_ID = $("#Semester_ID").val() || "3";
-        var Subject_ID = $("#Subject_ID").val() || "4";
+        var Subject_ID = "4";
         var completedSpec = $("#completedSpec").val() || "5";
         var compulsorySpec = $("#compulsorySpec").val() || "6";
         var ImportedDate = $("#ImportedDate").val() || "7";

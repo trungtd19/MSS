@@ -445,6 +445,10 @@
     <Content Include="Views\Student_Course_Log\Detail.cshtml" />
     <Content Include="Views\Report\SpecCompleted.cshtml" />
     <Content Include="Views\Report\Bonus.cshtml" />
+    <Content Include="Views\CleanSystem\UsageReport.cshtml" />
+    <Content Include="Views\CleanSystem\SpecificationReport.cshtml" />
+    <Content Include="Views\CleanSystem\Index.cshtml" />
+    <Content Include="Views\LoginAs\Index.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -452,10 +456,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\CleanSystem\UsageReport.cshtml" />
-    <Content Include="Views\CleanSystem\SpecificationReport.cshtml" />
-    <Content Include="Views\CleanSystem\Index.cshtml" />
-    <Content Include="Views\LoginAs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

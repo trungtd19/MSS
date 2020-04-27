@@ -36,7 +36,7 @@ namespace MSS_DEMO.Controllers
                 {
                     List = List.Where(s => s.Subject_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
                 }
-                if (!checkActive)
+                if (checkActive)
                 {
                     List = List.Where(s => s.Subject_Active == true).ToList();
                 }

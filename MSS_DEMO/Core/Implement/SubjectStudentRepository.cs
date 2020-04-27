@@ -71,6 +71,7 @@ namespace MSS_DEMO.Core.Implement
             if (subStudent != null) return true;
             return false;
         }
+
         public StringBuilder getListSubject(string id)
         {
             string Roll = id.Split('^')[0];
@@ -83,12 +84,6 @@ namespace MSS_DEMO.Core.Implement
             }
             if (!string.IsNullOrEmpty(sb.ToString())) sb.Remove(0, 1);
             return sb;
-        }
-        public Student getByRollAndSemester(string id)
-        {
-            string Roll = id.Split('^')[0];
-            string SemesterID = id.Split('^')[1];
-            return context.Students.Find(Roll, SemesterID);
         }
     }
 }
