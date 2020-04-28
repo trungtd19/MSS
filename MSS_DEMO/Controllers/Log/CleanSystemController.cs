@@ -25,16 +25,10 @@ namespace MSS_DEMO.Controllers.Log
         {
             List<Semester> semester = unitOfWork.Semesters.GetAll();
             ViewBag.Semester_ID = new SelectList(semester, "Semester_ID", "Semester_Name");
-            var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
             List<string> date = new List<string>();
-            foreach (var _date in listDate)
-            {
-                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
-            }
-            date = date.Distinct().ToList();
             ViewBag.ImportedDate = date;
             
-            if (!string.IsNullOrEmpty(ImportedDate) || !string.IsNullOrEmpty(Semester_ID))
+            if (!string.IsNullOrEmpty(ImportedDate) && !string.IsNullOrEmpty(Semester_ID))
             {
                 int deleteRecord = 0;
                 deleteRecord = unitOfWork.CoursesLog.CleanUsageReport(ImportedDate, Semester_ID);
@@ -50,7 +44,7 @@ namespace MSS_DEMO.Controllers.Log
             else
             if (!string.IsNullOrEmpty(checkDelete))
             {
-                ViewBag.error = "Choose Reported date or Semester";
+                ViewBag.error = "Choose Reported date and Semester";
             }
             
             return View();
@@ -59,16 +53,10 @@ namespace MSS_DEMO.Controllers.Log
         {
             List<Semester> semester = unitOfWork.Semesters.GetAll();
             ViewBag.Semester_ID = new SelectList(semester, "Semester_ID", "Semester_Name");
-            var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
             List<string> date = new List<string>();
-            foreach (var _date in listDate)
-            {
-                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
-            }
-            date = date.Distinct().ToList();
             ViewBag.ImportedDate = date;
 
-            if (!string.IsNullOrEmpty(ImportedDate) || !string.IsNullOrEmpty(Semester_ID))
+            if (!string.IsNullOrEmpty(ImportedDate) && !string.IsNullOrEmpty(Semester_ID))
             {
                 int deleteRecord = 0;
                 deleteRecord = unitOfWork.SpecificationsLog.CleanSpecificationReport(ImportedDate, Semester_ID);
@@ -84,10 +72,40 @@ namespace MSS_DEMO.Controllers.Log
             else
             if (!string.IsNullOrEmpty(checkDelete))
             {
-                ViewBag.error = "Choose Reported date or Semester";
+                ViewBag.error = "Choose Reported date and Semester";
             }
 
             return View();
+        }
+        [HttpPost]
+        public ActionResult getListDate(string Semester_ID)
+        {
+            var semester = unitOfWork.Semesters.GetById(Semester_ID);
+            var dateList = unitOfWork.CoursesLog.GetAll().Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+            List<string> date = new List<string>();
+            foreach (var _date in dateList)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return (ActionResult)this.Json((object)new
+            {
+                list = date
+            });
+        }
+        [HttpPost]
+        public ActionResult getListDateSpec(string Semester_ID)
+        {
+            var semester = unitOfWork.Semesters.GetById(Semester_ID);
+            var dateList = unitOfWork.SpecificationsLog.GetAll().Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+            List<string> date = new List<string>();
+            foreach (var _date in dateList)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return (ActionResult)this.Json((object)new
+            {
+                list = date
+            });
         }
     }
 }

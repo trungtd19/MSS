@@ -109,7 +109,6 @@ namespace MSS_DEMO.Controllers
                                         }
                                         var log = getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName, semesterID);
                                         unitOfWork.CoursesLog.Insert(log);
-                                        unitOfWork.Save();
                                         countSusscess++;
                                     }
                                     catch
@@ -215,11 +214,6 @@ namespace MSS_DEMO.Controllers
                                     try
                                     {
                                         List<string> rows = csv.RegexRow(sreader);
-                                        if (!unitOfWork.Subject.IsExitsSubject(rows[2].ToString().Split('-')[0]))
-                                        {
-                                            countFail++;
-                                            continue;
-                                        }
                                         if (!unitOfWork.Campus.IsExitsCampusID(rows[2].ToString().Split('-')[1]))
                                         {
                                             countFail++;

@@ -34,7 +34,7 @@ namespace MSS_DEMO.Controllers
                 List = unitOfWork.Subject.GetPageList();
                 if (!String.IsNullOrWhiteSpace(SearchString))
                 {
-                    List = List.Where(s => s.Subject_ID.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    List = List.Where(s => s.Subject_ID.Trim().ToUpper().Contains(SearchString.Trim().ToUpper())).ToList();
                 }
                 if (checkActive)
                 {

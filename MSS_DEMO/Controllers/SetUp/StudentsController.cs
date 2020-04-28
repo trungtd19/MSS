@@ -34,15 +34,15 @@ namespace MSS_DEMO.Controllers.SetUp
             {
                 if (!String.IsNullOrWhiteSpace(SearchString))
                 {
-                    students = students.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    students = students.Where(s => s.Email.Trim().ToUpper().Contains(SearchString.Trim().ToUpper())).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Semester_ID))
                 {
-                    students = students.Where(s => s.Semester_ID.ToUpper().Contains(model.Semester_ID.ToUpper())).ToList();
+                    students = students.Where(s => s.Semester_ID.Trim().Equals(model.Semester_ID.Trim())).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus_ID))
                 {
-                    students = students.Where(s => s.Campus_ID.ToUpper().Contains(model.Campus_ID)).ToList();
+                    students = students.Where(s => s.Campus_ID.Trim().Equals(model.Campus_ID.Trim())).ToList();
                 }
                 if (students.Count == 0)
                 {
@@ -313,7 +313,7 @@ namespace MSS_DEMO.Controllers.SetUp
             {
                 if (Email != "2")
                 {
-                    students = students.Where(s => s.Email.ToUpper().Contains(Email.Trim().ToUpper())).ToList();
+                    students = students.Where(s => s.Email.Trim().ToUpper().Contains(Email.Trim().ToUpper())).ToList();
                 }
                 if (Semester_ID != "3")
                 {
@@ -351,7 +351,7 @@ namespace MSS_DEMO.Controllers.SetUp
             {
                 if (Email != "2")
                 {
-                    students = students.Where(s => s.Email.ToUpper().Contains(Email.Trim().ToUpper())).ToList();
+                    students = students.Where(s => s.Email.Trim().ToUpper().Contains(Email.Trim().ToUpper())).ToList();
                 }
                 if (Semester_ID != "3")
                 {

@@ -82,7 +82,7 @@ namespace MSS_DEMO.Controllers.Log
             {
                 if (!String.IsNullOrWhiteSpace(SearchString))
                 {
-                    LogList = LogList.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                    LogList = LogList.Where(s => s.Email.Trim().ToUpper().Contains(SearchString.Trim().ToUpper())).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.ImportedDate))
                 {
@@ -287,7 +287,7 @@ namespace MSS_DEMO.Controllers.Log
             {
                 if (Email != "8")
                 {
-                    LogList = LogList.Where(s => s.Email.ToUpper().Contains(Email.ToUpper())).ToList();
+                    LogList = LogList.Where(s => s.Email.Trim().ToUpper().Contains(Email.Trim().ToUpper())).ToList();
                 }
                 if (ImportedDate != "7")
                 {
