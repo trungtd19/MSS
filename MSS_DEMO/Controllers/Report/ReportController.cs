@@ -754,8 +754,8 @@ namespace MSS_DEMO.Controllers
                                                  join c in context.Subjects on b.Subject_ID equals c.Subject_ID
                                                  join d in context.Specifications on c.Subject_ID equals d.Subject_ID
                                                  join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                                 where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && e.Date_Import == date
-                                                 select e).ToList();
+                                                 where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
+                                                 select e).Distinct().ToList();
                         studentList = (from a in context.Student_Course_Log
                                        where a.Semester_ID == SelectSemester && a.Completed == true
                                        select a.Roll).Distinct().ToList();
@@ -769,8 +769,8 @@ namespace MSS_DEMO.Controllers
                                               join c in context.Subjects on b.Subject_ID equals c.Subject_ID
                                               join d in context.Specifications on c.Subject_ID equals d.Subject_ID
                                               join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                              where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && e.Date_Import == date
-                                              select e).ToList();
+                                              where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
+                                              select e).Distinct().ToList();
                         specCompletedListSpec = allSpec.Except(CompulsorySpec).ToList();
                     }
 
@@ -790,8 +790,8 @@ namespace MSS_DEMO.Controllers
                                                  join c in context.Subjects on b.Subject_ID equals c.Subject_ID
                                                  join d in context.Specifications on c.Subject_ID equals d.Subject_ID
                                                  join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                                 where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString && e.Date_Import == date
-                                                 select e).ToList();
+                                                 where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
+                                                 select e).Distinct().ToList();
                     }
                     else if (Compulsory == "No")
                     {
@@ -803,8 +803,8 @@ namespace MSS_DEMO.Controllers
                                               join c in context.Subjects on b.Subject_ID equals c.Subject_ID
                                               join d in context.Specifications on c.Subject_ID equals d.Subject_ID
                                               join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                              where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString && e.Date_Import == date
-                                              select e).ToList();
+                                              where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
+                                              select e).Distinct().ToList();
                         specCompletedListSpec = allSpec.Except(CompulsorySpec).ToList();
                     }
 
@@ -829,7 +829,7 @@ namespace MSS_DEMO.Controllers
                                                       join sub in context.Subjects on sub_Stus.Subject_ID equals sub.Subject_ID
                                                       join stu_cour_log in context.Student_Course_Log on stus.Roll equals stu_cour_log.Roll
                                                       join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
-                                                      where sub.Subject_Active == true && stus.Semester_ID == SelectSemester && sub_Stus.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
+                                                      where sub.Subject_Active == true && stus.Semester_ID == SelectSemester && sub_Stus.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date && stu_cour_log.Completed == true && stu_cour_log.Course_ID != null
                                                       select new { stu_cour_log, stus, sub }).ToList();
                     foreach (var t in listSpecCompletedForCourse)
                     {
@@ -838,7 +838,7 @@ namespace MSS_DEMO.Controllers
                                              where spec.Subject_ID == t.stu_cour_log.Subject_ID
                                              select cour.Course_ID).Count();
                         var completed = (from stu_cour_log in context.Student_Course_Log
-                                         where stu_cour_log.Roll == t.stus.Roll && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Subject_ID == t.stu_cour_log.Subject_ID && stu_cour_log.Completed == true && stu_cour_log.Course_ID != null && stu_cour_log.Date_Import == date
+                                         where stu_cour_log.Roll == t.stus.Roll && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Subject_ID == t.stu_cour_log.Subject_ID && stu_cour_log.Completed == true && stu_cour_log.Course_ID != null && stu_cour_log.Date_Import == date && stu_cour_log.Course_ID == t.stu_cour_log.Course_ID
                                          select stu_cour_log).Count();
                         var specName = (from spec in context.Specifications
                                         where spec.Subject_ID == t.sub.Subject_ID
@@ -989,6 +989,71 @@ namespace MSS_DEMO.Controllers
             ViewBag.TotalSearch = bonusListStudent.Count();
             listS.ls1 = bonusListStudent;
             return View("Bonus", listS);
+        }
+
+        public ActionResult Estimated(EstimatedViewModel EstimatedVM,string SelectSemester, string searchCheck, string SearchString, string SelectDatetime)
+        {
+            var context = new MSSEntities();
+            List<SelectListItem> selectSemes = new List<SelectListItem>();
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                SearchString = SearchString.Trim().ToUpper();
+            }
+            var listSemes = (from a in context.Semesters
+                             select a).ToList();
+            var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            foreach (var a in orderedListSemes)
+            {
+                selectSemes.Add(new SelectListItem
+                {
+                    Text = a.Semester_Name,
+                    Value = a.Semester_ID
+                });
+            }
+            ViewBag.SelectSemester = selectSemes;
+
+            List<EstimatedViewModel> EstimatedList = new List<EstimatedViewModel>();
+            if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
+            {
+                SelectSemester = orderedListSemes[0].Semester_ID;
+            }
+            ViewBag.SelectSubject = Sub();
+            DateTime date;
+            ViewBag.SelectDatetime = Date(SelectSemester);
+            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (SelectDatetime != null)
+            {
+                date = Convert.ToDateTime(SelectDatetime);
+            }
+            if (!String.IsNullOrEmpty(searchCheck))
+            {
+                var studentLog = (from stu_cour_log in context.Student_Course_Log
+                                  where stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
+                                  select stu_cour_log).ToList();
+                var rollList = (from stu_cour_log in context.Student_Course_Log
+                                where stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
+                                select stu_cour_log.Roll).Distinct().ToList();
+
+
+                foreach (var t in rollList)
+                {
+                    var info = studentLog.Where(m => m.Roll == t).FirstOrDefault();
+                    var totalEstimated = studentLog.Where(m => m.Roll == t).Sum(m => m.Estimated);
+                    var compulsory = studentLog.Where(m => m.Roll == t && m.Course_ID != null).Sum(m => m.Estimated);
+                    var nonCompulsory = studentLog.Where(m => m.Roll == t && m.Course_ID == null).Sum(m => m.Estimated);
+                    EstimatedList.Add(new EstimatedViewModel { Roll = t, Campus = info.Campus, Email = info.Email, TotalEstimated = (double)totalEstimated, Compulsory = (double)compulsory, NonCompulsory = (double)nonCompulsory });
+                }
+                EstimatedList = EstimatedList.OrderByDescending(m => m.Compulsory).ToList();
+                if (!String.IsNullOrEmpty(SearchString))
+                {
+                    EstimatedList = EstimatedList.Where(a => a.Roll.Contains(SearchString)).ToList();
+                }
+            }
+            
+            ViewBag.TotalSearch = EstimatedList.Count();
+            EstimatedVM.EstimatedModel = EstimatedList;
+            return View("Estimated", EstimatedVM);
         }
 
         private int Count(string subject, string campus, DateTime dateImport)

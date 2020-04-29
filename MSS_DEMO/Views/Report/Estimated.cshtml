@@ -1,11 +1,7 @@
-﻿
-@model MSS_DEMO.Models.ListNotRequiredCourse
-
-
+﻿@model MSS_DEMO.Models.EstimatedViewModel
 @{
-    ViewBag.Title = "NotRequiredCourse";
+    ViewBag.Title = "Estimated";
 }
-
 <script src="~/Content/FileSaver.js"></script>
 <script>
     function fnExcelReport(id, name) {
@@ -18,13 +14,10 @@
 
 
         var exportTable = $('#' + id).clone();
-        //exportTable.find('th').last().remove();
-        //exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
-        //exportTable.find('a').each(function (index, elem) { $(elem).remove(); });
 
         tab_text = tab_text + exportTable.html();
         tab_text = tab_text + '</table></body></html>';
-        var fileName = "NotRequiredCourseReport" + '.xls';
+        var fileName = "EstimatedLearningHoursReport" + '.xls';
 
         //Save the file
         var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
@@ -37,81 +30,89 @@
             @Html.ActionLink("Summary reports", "Index")&nbsp;&nbsp;
             @Html.ActionLink("No Enrollment", "Enrollment")&nbsp;&nbsp;
             @Html.ActionLink("Member Report", "Member")&nbsp;&nbsp;
-            <u>@Html.ActionLink("Not Required Course", "NotRequiredCourse", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
+            @Html.ActionLink("Not Required Course", "NotRequiredCourse")&nbsp;&nbsp;
             @Html.ActionLink("Certificate Report", "CertificateReport")&nbsp;&nbsp;
             @Html.ActionLink("Spec Completed", "SpecCompleted")&nbsp;&nbsp;
             @Html.ActionLink("Bonus Report", "Bonus")&nbsp;&nbsp;
             <br />
-            @Html.ActionLink("Estimated Learning Hours", "Estimated")&nbsp;&nbsp;
+            <u>@Html.ActionLink("Estimated Learning Hours", "Estimated", null, new { @style = "color: red;" })</u>&nbsp;&nbsp;
         </h4>
     </div>
     <br />
     <div class="panel panel-default">
         <div class="panel-body" style="padding-top: initial;">
 
-            @using (Html.BeginForm("NotRequiredCourse", "Report", FormMethod.Get))
+            @using (Html.BeginForm("Estimated", "Report", FormMethod.Get))
             {
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Completed </label>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Roll:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Semester</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">Semester</label>
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                </div>
-            </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-2">
                         <label class="control-label"> Reported date </label>
                     </div>
                     <div class="col-md-3">
-                        @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                        @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Search" />
+                        @Html.Hidden("searchCheck", "true")
                     </div>
-
                 </div>
+                <br />
             }
         </div>
     </div>
 </div>
 <div style="margin-left: auto; margin-right: auto; text-align: center;">
     <h2>
-        <label style="color: green;">Not Required Course Report</label>
+        <label style="color: green;">Estimated Learning Hours Report</label>
     </h2>
 </div>
 @if (Model != null)
 {
     <div>
-        @if (Model.lc1.Count > 0)
+        @if (Model.EstimatedModel.Count > 0)
         {
 
             <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
             <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
                     <th>No</th>
-                    <th>Course Name</th>
-                    <th>Number Student Completed</th>
-                    <th>Number Student Not Completed</th>
+                    <th>Roll</th>
+                    <th>Email</th>
+                    <th>Campus</th>
+                    <th>Total Estimated Learning Hours</th>
+                    <th>Compulsory</th>
+                    <th>Non-Compulsory</th>
                 </tr>
                 @{ int a = 1;}
-                @foreach (var t in Model.lc1)
+                @foreach (var t in Model.EstimatedModel)
                 {
-                    <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Name)</th>
-                        <th>@Html.DisplayFor(m => t.Complelted)</th>
-                        <th>@Html.DisplayFor(m => t.NotComplelted)</th>
-                    </tr>
+                <tr>
+                    <th>@(a++)</th>
+                    <th>@Html.DisplayFor(m => t.Roll)</th>
+                    <th>@Html.DisplayFor(m => t.Email)</th>
+                    <th>@Html.DisplayFor(m => t.Campus)</th>
+                    <th>@Html.DisplayFor(m => t.TotalEstimated)</th>
+                    <th>@Html.DisplayFor(m => t.Compulsory)</th>
+                    <th>@Html.DisplayFor(m => t.NonCompulsory)</th>
+
+                </tr>
                 }
+
             </table>
         }
         else
@@ -120,4 +121,4 @@
         }
     </div>
 }
-<br />
+
