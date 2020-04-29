@@ -249,6 +249,7 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DeadlineCoursesViewModel.cs" />
+    <Compile Include="Models\EstimatedViewModel.cs" />
     <Compile Include="Models\Mentor_Log.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -293,6 +294,9 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Subject_Student.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User_Role.cs">
@@ -456,6 +460,7 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Report\Estimated.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
