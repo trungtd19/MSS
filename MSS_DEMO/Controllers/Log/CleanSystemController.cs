@@ -24,7 +24,13 @@ namespace MSS_DEMO.Controllers.Log
         public ActionResult UsageReport(string ImportedDate, string Semester_ID, string checkDelete)
         {
             List<Semester> semester = unitOfWork.Semesters.GetAll();
-            ViewBag.Semester_ID = new SelectList(semester, "Semester_ID", "Semester_Name");
+            List<Semester> _semester = new List<Semester>();
+            _semester.Add(new Semester { Semester_ID = "", Semester_Name = "--- Choose Semester ---" });
+            foreach (var sem in semester)
+            {
+                _semester.Add(sem);
+            }
+            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
             List<string> date = new List<string>();
             ViewBag.ImportedDate = date;
             
@@ -52,7 +58,13 @@ namespace MSS_DEMO.Controllers.Log
         public ActionResult SpecificationReport(string ImportedDate, string Semester_ID, string checkDelete)
         {
             List<Semester> semester = unitOfWork.Semesters.GetAll();
-            ViewBag.Semester_ID = new SelectList(semester, "Semester_ID", "Semester_Name");
+            List<Semester> _semester = new List<Semester>();
+            _semester.Add(new Semester { Semester_ID = "", Semester_Name = "--- Choose Semester ---" });
+            foreach (var sem in semester)
+            {
+                _semester.Add(sem);
+            }
+            ViewBag.Semester_ID = new SelectList(_semester, "Semester_ID", "Semester_Name");
             List<string> date = new List<string>();
             ViewBag.ImportedDate = date;
 
