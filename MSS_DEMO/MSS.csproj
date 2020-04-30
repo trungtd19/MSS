@@ -296,9 +296,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -453,6 +450,7 @@
     <Content Include="Views\CleanSystem\SpecificationReport.cshtml" />
     <Content Include="Views\CleanSystem\Index.cshtml" />
     <Content Include="Views\LoginAs\Index.cshtml" />
+    <Content Include="Views\Report\Estimated.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -460,7 +458,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\Estimated.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
