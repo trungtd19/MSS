@@ -30,15 +30,15 @@ namespace MSS_DEMO.Controllers
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
 
-            var listSemes = (from a in context.Semesters
-                             select a).ToList();
+            var listSemes = (from semes in context.Semesters
+                             select semes).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
-            foreach (var a in orderedListSemes)
+            foreach (var item in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
                 {
-                    Text = a.Semester_Name,
-                    Value = a.Semester_ID
+                    Text = item.Semester_Name,
+                    Value = item.Semester_ID
                 });
             }
             ViewBag.SelectSemester = selectSemes;
@@ -69,20 +69,20 @@ namespace MSS_DEMO.Controllers
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                var listSub = (from a in context.Subjects
-                               where a.Subject_Active == true
-                               select a).ToList();
+                var listSub = (from sub in context.Subjects
+                               where sub.Subject_Active == true
+                               select sub).ToList();
                 foreach (var sub in listSub)
                 {
-                    var Totall = (from a in context.Subjects
-                                  join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
-                                  join c in context.Students on b.Roll equals c.Roll
-                                  where sub.Subject_ID == a.Subject_ID && c.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester
-                                  select c.Roll).Count();
+                    var Totall = (from subject in context.Subjects
+                                  join sub_stu in context.Subject_Student on subject.Subject_ID equals sub_stu.Subject_ID
+                                  join stu in context.Students on sub_stu.Roll equals stu.Roll
+                                  where subject.Subject_ID == sub.Subject_ID && stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester
+                                  select stu.Roll).Count();
 
-                    var Type = (from a in context.Specifications
-                                where sub.Subject_ID == a.Subject_ID && a.Is_Real_Specification == true
-                                select a.Specification_ID).Count();
+                    var Type = (from spec in context.Specifications
+                                where sub.Subject_ID == spec.Subject_ID && spec.Is_Real_Specification == true
+                                select spec.Specification_ID).Count();
                     String ListType = "";
                     if (Type == 1)
                     {
@@ -106,22 +106,22 @@ namespace MSS_DEMO.Controllers
 
                     reportStudent.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Type = ListType, Total = Totall, Cmp = count });
 
-                    List<double> count2 = new List<double>();
+                    List<double> countS = new List<double>();
                     if (date != null)
                     {
                         int Total = Count(sub.Subject_ID, "", date);
 
                         foreach (var cp in context.Campus)
                         {
-                            count2.Add(Count(sub.Subject_ID, cp.Campus_ID, date));
+                            countS.Add(Count(sub.Subject_ID, cp.Campus_ID, date));
                         }
-                        reportCourse.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total, Totall), Total = Total, Cmp = count2 });
+                        reportCourse.Add(new Report { Sub = sub.Subject_ID, Name = sub.Subject_Name, Study = percent(Total, Totall), Total = Total, Cmp = countS });
                     }
 
                 }
-                var TotalStudent = (from a in context.Students
-                                    where a.Semester_ID == SelectSemester
-                                    select a.Roll).Count();
+                var TotalStudent = (from stu in context.Students
+                                    where stu.Semester_ID == SelectSemester
+                                    select stu.Roll).Count();
                 List<double> temp = new List<double>();
                 temp.Add(Campus("", "", SelectSemester));
                 foreach (var cp in context.Campus)
@@ -134,14 +134,14 @@ namespace MSS_DEMO.Controllers
                 ViewBag.TotalStudent2 = TotalStudent2;
 
 
-                List<double> temp2 = new List<double>();
+                List<double> tempC = new List<double>();
                 ViewBag.TotalPercent = percent(TotalStudent2, TotalStudent);
-                temp2.Add(Count("", "", date));
+                tempC.Add(Count("", "", date));
                 foreach (var cp in context.Campus)
                 {
-                    temp2.Add(Count("", cp.Campus_ID, date));
+                    tempC.Add(Count("", cp.Campus_ID, date));
                 }
-                ViewBag.Count2 = temp2;
+                ViewBag.Count2 = tempC;
 
                 List<double> per = new List<double>();
                 //per.Add(percent(Count("", ""), Campus("", "")));
@@ -151,24 +151,24 @@ namespace MSS_DEMO.Controllers
                 }
                 ViewBag.Per = per;
 
-                var studentComplete = (from a in context.Student_Course_Log
-                                       where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
-                                       select a.Roll).Distinct().Count();
-                var courseComplete = (from a in context.Student_Course_Log
-                                      where a.Completed == true && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
-                                      select a.Course_ID).Count();
+                var studentComplete = (from stu_cour_log in context.Student_Course_Log
+                                       where stu_cour_log.Completed == true && stu_cour_log.Course_ID != null && stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
+                                       select stu_cour_log.Roll).Distinct().Count();
+                var courseComplete = (from stu_cour_log in context.Student_Course_Log
+                                      where stu_cour_log.Completed == true && stu_cour_log.Course_ID != null && stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
+                                      select stu_cour_log.Course_ID).Count();
 
                 ViewBag.studentComplete = studentComplete;
                 ViewBag.courseComplete = courseComplete;
 
-                var RollList = (from a in context.Students
-                                where a.Semester_ID == SelectSemester
-                                select a.Roll).ToList();
+                var RollList = (from stu in context.Students
+                                where stu.Semester_ID == SelectSemester
+                                select stu.Roll).ToList();
                 int CountStudent = 0;
                 //DateTime nowDate = DateTime.Now;
-                var starDate = (from a in context.Semesters
-                                where a.Semester_ID == SelectSemester
-                                select a.Start_Date).FirstOrDefault();
+                var starDate = (from semes in context.Semesters
+                                where semes.Semester_ID == SelectSemester
+                                select semes.Start_Date).FirstOrDefault();
                 TimeSpan timeSpan = date - (DateTime)starDate;
                 //var weekN = Math.Floor((double)(date.Day - starDate.Value.Day) / 7);
                 double weekN = 0;
@@ -188,11 +188,11 @@ namespace MSS_DEMO.Controllers
                 var weekTotal = weekN - weekOff;
                 if (weekTotal > 0)
                 {
-                    foreach (var t in RollList)
+                    foreach (var item in RollList)
                     {
-                        var Estimated = (from a in context.Student_Course_Log
-                                         where a.Roll == t && a.Course_ID != null && a.Date_Import == date && a.Semester_ID == SelectSemester
-                                         select a.Estimated).ToList();
+                        var Estimated = (from stu_cour_log in context.Student_Course_Log
+                                         where stu_cour_log.Roll == item && stu_cour_log.Course_ID != null && stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
+                                         select stu_cour_log.Estimated).ToList();
                         var EstimatedTotal = Estimated.Sum();
                         if ((EstimatedTotal / weekTotal) < 5)
                         {
@@ -213,9 +213,7 @@ namespace MSS_DEMO.Controllers
         public ActionResult Enrollment(ListStudent ls,string searchString, string searchCheck, string SelectCampus, string SelectSubject, string SelectSemester, string SelectDatetime)
         {
             var context = new MSSEntities();
-            List<string> NoEnrollment = new List<string>();
-            List<ListStudent> s = new List<ListStudent>();
-            List<string> NotRequiredCourse = new List<string>();
+            List<ListStudent> studentList = new List<ListStudent>();
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
 
@@ -223,15 +221,15 @@ namespace MSS_DEMO.Controllers
             {
                 searchString = searchString.Trim().ToUpper();
             }
-            var listSemes = (from a in context.Semesters
-                             select a).ToList();
+            var listSemes = (from semes in context.Semesters
+                             select semes).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
-            foreach (var a in orderedListSemes)
+            foreach (var item in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
                 {
-                    Text = a.Semester_Name,
-                    Value = a.Semester_ID
+                    Text = item.Semester_Name,
+                    Value = item.Semester_ID
                 });
             }
             ViewBag.SelectSemester = selectSemes;
@@ -252,150 +250,74 @@ namespace MSS_DEMO.Controllers
             if (!String.IsNullOrEmpty(searchCheck))
             {
 
-                var CourseStudent = (from a in context.Student_Course_Log
-                                     where a.Semester_ID == SelectSemester
-                                     select new
-                                     {
-                                         Roll = a.Roll
-                                     }).Distinct().ToList();
-                var Student = (from a in context.Students
-                               where a.Semester_ID == SelectSemester
-                               select new
-                               {
-                                   Roll = a.Roll
-                               }).Distinct().ToList();
+                var CourseStudent = (from stu_cour_log in context.Student_Course_Log
+                                     where stu_cour_log.Semester_ID == SelectSemester
+                                     select stu_cour_log.Roll).Distinct().ToList();
+                var Student = (from stu in context.Students
+                               where stu.Semester_ID == SelectSemester
+                               select stu.Roll).Distinct().ToList();
 
-                var listStudentEnrollment = (from a in context.Student_Course_Log
-                                             where a.Course_ID != null && a.Semester_ID == SelectSemester
-                                             select new
-                                             {
-                                                 Roll = a.Roll
-                                             }).Distinct().ToList();
+                var listStudentEnrollment = (from stu in context.Students
+                                             join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                             join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                             join stu_cour_log in context.Student_Course_Log on stu.Roll equals stu_cour_log.Roll
+                                             join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                                             where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && sub.Subject_Active == true && stu_cour_log.Date_Import == date
+                                             select stu.Roll).Distinct().ToList();
+                    
+                var NoEnrollment = Student.Except(CourseStudent);
+                var NotRequiredCourse = NoEnrollment.Except(listStudentEnrollment);
+                var infoAllStudent = (from stu in context.Students
+                                   where stu.Semester_ID == SelectSemester
+                                   select stu).Distinct().ToList();
 
-                foreach (var cs in Student)
+
+                foreach (var item in NoEnrollment)
                 {
-                    int temp = 0;
-                    foreach (var st in CourseStudent)
-                    {
-                        if (cs.Roll.Equals(st.Roll))
-                        {
-                            temp = 0;
-                            break;
-                        }
-                        else
-                        {
-                            temp = 1;
-                        }
-                    }
-                    if (temp == 1)
-                    {
-                        NoEnrollment.Add(cs.Roll);
-                    }
-
-                }
-
-                foreach (var cs in CourseStudent)
-                {
-                    int temp = 0;
-                    foreach (var st in listStudentEnrollment)
-                    {
-                        if (cs.Roll.Equals(st.Roll))
-                        {
-                            temp = 0;
-                            break;
-                        }
-                        else
-                        {
-                            temp = 1;
-                        }
-                    }
-                    if (temp == 1)
-                    {
-                        NotRequiredCourse.Add(cs.Roll);
-                    }
-
-                }
-                int rowNo = 0;
-                foreach (var b in NoEnrollment)
-                {
-                    List<ListStudent> infoStudent = (from c in context.Students
-                                                     where c.Roll == b && c.Semester_ID == SelectSemester
-                                                     select new
-                                                     {
-                                                         Email = c.Email,
-                                                         Roll = c.Roll,
-                                                         Full_Name = c.Full_Name,
-                                                         Campus = c.Campus_ID
-                                                     }).ToList().Select(p => new ListStudent
-                                                     {
-                                                         Email = p.Email,
-                                                         Roll = p.Roll,
-                                                         Full_Name = p.Full_Name,
-                                                         Campus = p.Campus
-                                                     }).ToList();
-                    List<string> subjectStudent =   (from c in context.Students
-                                                     join d in context.Subject_Student on c.Roll equals d.Roll
-                                                     join e in context.Subjects on d.Subject_ID equals e.Subject_ID
-                                                     where c.Roll == b && c.Semester_ID == SelectSemester && d.Semester_ID == SelectSemester
-                                                     select e.Subject_Name).ToList();
-
+                    var info = infoAllStudent.Where(m => m.Roll == item).FirstOrDefault();
+                    List<string> subjectStudent =   (from stu in context.Students
+                                                     join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                                     join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                                     where stu.Roll == item && stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester
+                                                     select sub.Subject_Name).ToList();
                                 
-                    foreach (var i in infoStudent)
-                    {
-                        s.Add(new ListStudent { STT = rowNo, Email = i.Email, Roll = i.Roll, Full_Name = i.Full_Name, Campus = i.Campus, ListSubject = subjectStudent, Note = "No Enrollment" });
-                    }
+                     studentList.Add(new ListStudent { Email = info.Email, Roll = info.Roll, Full_Name = info.Full_Name, Campus = info.Campus_ID, ListSubject = subjectStudent, Note = "No Enrollment" });
+
 
                 }
-                foreach (var b in NotRequiredCourse)
+                foreach (var item in NotRequiredCourse)
                 {
-                    List<ListStudent> infoStudent = (from c in context.Students
-                                                     where c.Roll == b && c.Semester_ID == SelectSemester
-                                                     select new
-                                                     {
-                                                         Email = c.Email,
-                                                         Roll = c.Roll,
-                                                         Full_Name = c.Full_Name,
-                                                         Campus = c.Campus_ID
-                                                     }).ToList().Select(p => new ListStudent
-                                                     {
-                                                         Email = p.Email,
-                                                         Roll = p.Roll,
-                                                         Full_Name = p.Full_Name,
-                                                         Campus = p.Campus
-                                                     }).ToList();
-                    List<string> subjectStudent = (from c in context.Students
-                                                   join d in context.Subject_Student on c.Roll equals d.Roll
-                                                   join e in context.Subjects on d.Subject_ID equals e.Subject_ID
-                                                   where c.Roll == b && c.Semester_ID == SelectSemester && d.Semester_ID == SelectSemester
-                                                   select e.Subject_Name).ToList();
+                    var info = infoAllStudent.Where(m => m.Roll == item).FirstOrDefault();
+                    List<string> subjectStudent = (from stu in context.Students
+                                                   join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                                   join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                                   where stu.Roll == item && stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester
+                                                   select sub.Subject_Name).ToList();
 
+                     studentList.Add(new ListStudent { Email = info.Email, Roll = info.Roll, Full_Name = info.Full_Name, Campus = info.Campus_ID, ListSubject = subjectStudent, Note = "Have not entered the required course" });
 
-                    foreach (var i in infoStudent)
-                    {
-                        s.Add(new ListStudent { STT = rowNo, Email = i.Email, Roll = i.Roll, Full_Name = i.Full_Name, Campus = i.Campus, ListSubject = subjectStudent, Note = "Have not entered the required course" });
-                    }
 
                 }
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    s = s.Where(a => a.Roll.Contains(searchString)).ToList();        
+                    studentList = studentList.Where(a => a.Roll.Contains(searchString)).ToList();        
                 }
                 if (!String.IsNullOrEmpty(SelectCampus))
                 {
-                    s = s.Where(a => a.Campus.Contains(SelectCampus)).ToList();
+                    studentList = studentList.Where(a => a.Campus.Contains(SelectCampus)).ToList();
                 }
                 if (!String.IsNullOrEmpty(SelectSubject))
                 {
-                    s = s.Where(a => a.ListSubject.Contains(SelectSubject)).ToList();
+                    studentList = studentList.Where(a => a.ListSubject.Contains(SelectSubject)).ToList();
                 }
             }
 
-            var listCampus = (from a in context.Campus
-                              select a).ToList();
-            var listSubject = (from a in context.Subjects
-                               where a.Subject_Active == true
-                               select a.Subject_Name).ToList();
+            var listCampus = (from cp in context.Campus
+                              select cp).ToList();
+            var listSubject = (from sub in context.Subjects
+                               where sub.Subject_Active == true
+                               select sub.Subject_Name).ToList();
             List<SelectListItem> selectCp = new List<SelectListItem>();
             List<SelectListItem> selectSj = new List<SelectListItem>();
             selectCp.Add(new SelectListItem
@@ -427,9 +349,9 @@ namespace MSS_DEMO.Controllers
             }
             ViewBag.SelectSubject = selectSj;
             ViewBag.SelectCampus = selectCp;
-            ls.ls1 = s;
+            ls.ls1 = studentList;
 
-            ViewBag.TotalSearch = s.Count();
+            ViewBag.TotalSearch = studentList.Count();
             //rp.Students = s;
             return View("Enrollment", ls);
         }
@@ -471,17 +393,17 @@ namespace MSS_DEMO.Controllers
 
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                infoOfStudent = (from a in context.Student_Course_Log
-                                 where a.Roll == searchString && a.Semester_ID == SelectSemester && a.Date_Import == date
+                infoOfStudent = (from stu_cour_log in context.Student_Course_Log
+                                 where stu_cour_log.Roll == searchString && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
                                  select new
                                  {
-                                     Course_Name = a.Course_Name,
-                                     Course_Enrollment_Time = a.Course_Enrollment_Time,
-                                     Last_Course_Activity_Time = a.Last_Course_Activity_Time,
-                                     Overall_Progress = a.Overall_Progress,
-                                     Completion_Time = a.Completion_Time,
-                                     Estimated = a.Estimated,
-                                     Completed = a.Completed
+                                     Course_Name = stu_cour_log.Course_Name,
+                                     Course_Enrollment_Time = stu_cour_log.Course_Enrollment_Time,
+                                     Last_Course_Activity_Time = stu_cour_log.Last_Course_Activity_Time,
+                                     Overall_Progress = stu_cour_log.Overall_Progress,
+                                     Completion_Time = stu_cour_log.Completion_Time,
+                                     Estimated = stu_cour_log.Estimated,
+                                     Completed = stu_cour_log.Completed
                                  }).ToList().Select(p => new InfoStudent
                                  {
                                      Course_Name = p.Course_Name,
@@ -503,10 +425,6 @@ namespace MSS_DEMO.Controllers
         {
             var context = new MSSEntities();
             List<ListNotRequiredCourse> listNotRequiredCourses = new List<ListNotRequiredCourse>();
-
-            var NotRequired = (from a in context.Student_Course_Log
-                               where a.Course_ID == null && a.Semester_ID == SelectSemester
-                               select a.Course_Name).Distinct().ToList();
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
 
@@ -538,15 +456,18 @@ namespace MSS_DEMO.Controllers
 
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                foreach (var a in NotRequired)
+                var NotRequired = (from stu_cour_log in context.Student_Course_Log
+                                   where stu_cour_log.Course_ID == null && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
+                                   select stu_cour_log.Course_Name).Distinct().ToList();
+                foreach (var item in NotRequired)
                 {
-                    var completed = (from b in context.Student_Course_Log
-                                     where b.Course_Name == a && b.Completed == true && b.Course_ID == null && b.Semester_ID == SelectSemester && b.Date_Import == date
-                                     select b.Roll).Distinct().Count();
-                    var notCompleted = (from b in context.Student_Course_Log
-                                        where b.Course_Name == a && b.Completed == false && b.Course_ID == null && b.Semester_ID == SelectSemester && b.Date_Import == date
-                                        select b.Roll).Distinct().Count();
-                    listNotRequiredCourses.Add(new ListNotRequiredCourse { Name = a, Complelted = completed, NotComplelted = notCompleted });
+                    var completed = (from stu_cour_log in context.Student_Course_Log
+                                     where stu_cour_log.Course_Name == item && stu_cour_log.Completed == true && stu_cour_log.Course_ID == null && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
+                                     select stu_cour_log.Roll).Distinct().Count();
+                    var notCompleted = (from stu_cour_log in context.Student_Course_Log
+                                        where stu_cour_log.Course_Name == item && stu_cour_log.Completed == false && stu_cour_log.Course_ID == null && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
+                                        select stu_cour_log.Roll).Distinct().Count();
+                    listNotRequiredCourses.Add(new ListNotRequiredCourse { Name = item, Complelted = completed, NotComplelted = notCompleted });
                 }
 
                 if (!String.IsNullOrEmpty(SelectString))
@@ -579,9 +500,9 @@ namespace MSS_DEMO.Controllers
         public ActionResult CertificateReport(CertificateViewModel cv, string searchCheck,string SearchString, string SelectString, string SelectSemester)
         {
             var context = new MSSEntities();
-            var rollList = (from a in context.Certificates
-                            where a.Semester_ID == SelectSemester
-                            select a.Roll).Distinct().ToList();
+            var rollList = (from certi in context.Certificates
+                            where certi.Semester_ID == SelectSemester
+                            select certi.Roll).Distinct().ToList();
             List<CertificateViewModel> certificate = new List<CertificateViewModel>();
 
             List<SelectListItem> selectSemes = new List<SelectListItem>();
@@ -604,15 +525,15 @@ namespace MSS_DEMO.Controllers
 
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                 certificate = (from a in context.Certificates
-                                where a.Semester_ID == SelectSemester
+                 certificate = (from certi in context.Certificates
+                                where certi.Semester_ID == SelectSemester
                                    select new
                                    {
-                                       Link = a.Link,
-                                       Date_Submit = a.Date_Submit,
-                                       Roll = a.Roll,
-                                       Course_ID = a.Course_ID,
-                                       Specification_ID = a.Specification_ID
+                                       Link = certi.Link,
+                                       Date_Submit = certi.Date_Submit,
+                                       Roll = certi.Roll,
+                                       Course_ID = certi.Course_ID,
+                                       Specification_ID = certi.Specification_ID
                                    }).ToList().Select(p => new CertificateViewModel
                                    {
                                        Link = p.Link,
@@ -638,9 +559,9 @@ namespace MSS_DEMO.Controllers
                 }
             }
                
-            var listSubject = (from a in context.Subjects
-                               where a.Subject_Active == true
-                               select a.Subject_Name).ToList();
+            var listSubject = (from sub in context.Subjects
+                               where sub.Subject_Active == true
+                               select sub.Subject_Name).ToList();
             List<SelectListItem> selectSj = new List<SelectListItem>();
             selectSj.Add(new SelectListItem
             {
@@ -736,121 +657,52 @@ namespace MSS_DEMO.Controllers
             }
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                if (String.IsNullOrEmpty(SearchString))
+                var infoStudent = (from stu in context.Students
+                                   where stu.Semester_ID == SelectSemester
+                                   select stu).ToList();
+                var infoSub = (from sub in context.Subjects
+                               where sub.Subject_Active == true
+                               select sub).ToList();
+                if(Compulsory == "")
                 {
-                    if(Compulsory == "")
+                    var listSpecCompulsoryCompleted = context.sp_Get_Compulsory_Spec_Completion(date, SelectSemester);
+                    var listSpecNonCompulsoryCompleted = context.sp_Get_Non_Compulsory_Spec_Completion(date, SelectSemester);
+                    if(listSpecCompulsoryCompleted!=null && listSpecNonCompulsoryCompleted!= null)
                     {
-                        specCompletedListSpec = (from a in context.Student_Specification_Log
-                                                 where a.Completed == true && a.Semester_ID == SelectSemester && a.Date_Import == date
-                                                 select a).ToList();
-                        studentList = (from a in context.Student_Course_Log
-                                       where a.Semester_ID == SelectSemester && a.Completed == true && a.Course_ID != null
-                                       select a.Roll).Distinct().ToList();
-                    }
-                    else if(Compulsory == "Yes")
-                    {
-                        specCompletedListSpec = (from a in context.Students
-                                                 join b in context.Subject_Student on a.Roll equals b.Roll
-                                                 join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                                 join d in context.Specifications on c.Subject_ID equals d.Subject_ID
-                                                 join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                                 where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
-                                                 select e).Distinct().ToList();
-                        studentList = (from a in context.Student_Course_Log
-                                       where a.Semester_ID == SelectSemester && a.Completed == true
-                                       select a.Roll).Distinct().ToList();
-                    }else if(Compulsory == "No")
-                    {
-                        var allSpec = (from a in context.Student_Specification_Log
-                                       where a.Completed == true && a.Semester_ID == SelectSemester && a.Date_Import == date
-                                       select a).ToList();
-                        var CompulsorySpec = (from a in context.Students
-                                              join b in context.Subject_Student on a.Roll equals b.Roll
-                                              join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                              join d in context.Specifications on c.Subject_ID equals d.Subject_ID
-                                              join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                              where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
-                                              select e).Distinct().ToList();
-                        specCompletedListSpec = allSpec.Except(CompulsorySpec).ToList();
-                    }
-
-                }
-                else
-                {
-                    if (Compulsory == "")
-                    {
-                        specCompletedListSpec = (from a in context.Student_Specification_Log
-                                                 where a.Completed == true && a.Semester_ID == SelectSemester && a.Date_Import == date && a.Roll == SearchString
-                                                 select a).ToList();
-                    }
-                    else if (Compulsory == "Yes")
-                    {
-                        specCompletedListSpec = (from a in context.Students
-                                                 join b in context.Subject_Student on a.Roll equals b.Roll
-                                                 join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                                 join d in context.Specifications on c.Subject_ID equals d.Subject_ID
-                                                 join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                                 where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
-                                                 select e).Distinct().ToList();
-                    }
-                    else if (Compulsory == "No")
-                    {
-                        var allSpec = (from a in context.Student_Specification_Log
-                                       where a.Completed == true && a.Semester_ID == SelectSemester && a.Date_Import == date && a.Roll == SearchString
-                                       select a).ToList();
-                        var CompulsorySpec = (from a in context.Students
-                                              join b in context.Subject_Student on a.Roll equals b.Roll
-                                              join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                              join d in context.Specifications on c.Subject_ID equals d.Subject_ID
-                                              join e in context.Student_Specification_Log on d.Specification_ID equals e.Specification_ID
-                                              where c.Subject_Active == true && a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString && e.Date_Import == date && e.Completed == true && a.Roll == e.Roll
-                                              select e).Distinct().ToList();
-                        specCompletedListSpec = allSpec.Except(CompulsorySpec).ToList();
-                    }
-
-                    studentList.Add(SearchString);
-                }
-                foreach (var t in specCompletedListSpec)
-                {
-                    var subid = (from sub in context.Subjects
-                                 join spec in context.Specifications on sub.Subject_ID equals spec.Subject_ID
-                                 where sub.Subject_Active == true && spec.Specification_ID == t.Specification_ID
-                                 select sub.Subject_ID).FirstOrDefault();
-                    if(subid == null)
-                    {
-                        subid = "";
-                    }
-                    ListStudentCompleted.Add(new ListStudent { Roll = t.Roll, Campus = t.Campus, Subject = t.Specialization, Semester_ID = t.Semester_ID,Email = t.Email, Subject_ID =  subid});
-                }
-                if(Compulsory != "No")
-                {
-                    var listSpecCompletedForCourse = (from stus in context.Students
-                                                      join sub_Stus in context.Subject_Student on stus.Roll equals sub_Stus.Roll
-                                                      join sub in context.Subjects on sub_Stus.Subject_ID equals sub.Subject_ID
-                                                      join stu_cour_log in context.Student_Course_Log on stus.Roll equals stu_cour_log.Roll
-                                                      join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
-                                                      where sub.Subject_Active == true && stus.Semester_ID == SelectSemester && sub_Stus.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date && stu_cour_log.Completed == true && stu_cour_log.Course_ID != null
-                                                      select new { stu_cour_log, stus, sub }).ToList();
-                    foreach (var t in listSpecCompletedForCourse)
-                    {
-                        var countOfCourse = (from cour in context.Courses
-                                             join spec in context.Specifications on cour.Specification_ID equals spec.Specification_ID
-                                             where spec.Subject_ID == t.stu_cour_log.Subject_ID
-                                             select cour.Course_ID).Count();
-                        var completed = (from stu_cour_log in context.Student_Course_Log
-                                         where stu_cour_log.Roll == t.stus.Roll && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Subject_ID == t.stu_cour_log.Subject_ID && stu_cour_log.Completed == true && stu_cour_log.Course_ID != null && stu_cour_log.Date_Import == date && stu_cour_log.Course_ID == t.stu_cour_log.Course_ID
-                                         select stu_cour_log).Count();
-                        var specName = (from spec in context.Specifications
-                                        where spec.Subject_ID == t.sub.Subject_ID
-                                        select spec.Specification_Name).FirstOrDefault();
-                        if (countOfCourse == completed)
+                        var listAll = listSpecCompulsoryCompleted.Concat(listSpecNonCompulsoryCompleted.Select(m => m.Roll_Sub)).Distinct();
+                        foreach (var item in listAll)
                         {
-                            ListStudentCompleted.Add(new ListStudent { Roll = t.stus.Roll, Campus = t.stus.Campus_ID, Subject = specName, Semester_ID = SelectSemester, Email = t.stus.Email, Subject_ID = t.sub.Subject_ID });
+                            var roll = item.Split('-')[0];
+                            var sub = item.Split('-')[1];
+                            var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
+                            var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
+                            ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
                         }
+                    }                    
+                }
+                else if(Compulsory == "Yes")
+                {
+                    var listSpecCompulsoryCompleted = context.sp_Get_Compulsory_Spec_Completion(date, SelectSemester);
+                    foreach(var item in listSpecCompulsoryCompleted)
+                    {
+                        var roll = item.Split('-')[0];
+                        var sub = item.Split('-')[1];
+                        var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
+                        var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
+                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
+                    }
+                }else if(Compulsory == "No")
+                {
+                    var listSpecNonCompulsoryCompleted = context.sp_Get_Non_Compulsory_Spec_Completion(date, SelectSemester);
+                    foreach (var item in listSpecNonCompulsoryCompleted)
+                    {
+                        var roll = item.Roll_Sub.Split('-')[0];
+                        var sub = item.Roll_Sub.Split('-')[1];
+                        var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
+                        var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
+                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
                     }
                 }
-
-                ListStudentCompleted = ListStudentCompleted.GroupBy(m => new { m.Roll, m.Subject }).Select(m => m.First()).ToList();
 
                 if (!String.IsNullOrEmpty(SelectCampus))
                 {
@@ -924,28 +776,28 @@ namespace MSS_DEMO.Controllers
 
             if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
-                 var listCourseCompleted = (from a in context.Students
-                                               join b in context.Subject_Student on a.Roll equals b.Roll
-                                               join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                               join d in context.Student_Course_Log on a.Roll equals d.Roll
-                                               join e in context.Courses on d.Course_ID equals e.Course_ID
-                                               join f in context.Course_Deadline on e.Course_ID equals f.Course_ID
-                                               where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time <= f.Deadline && c.Subject_Active == true
-                                               select d).ToList();
+                 var listCourseCompleted = (from stu in context.Students
+                                               join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                               join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                               join stu_cour_log in context.Student_Course_Log on stu.Roll equals stu_cour_log.Roll
+                                               join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                                               join cour_dead in context.Course_Deadline on cour.Course_ID equals cour_dead.Course_ID
+                                               where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && stu_cour_log.Completed == true && stu_cour_log.Date_Import == date && stu_cour_log.Course_ID != null && cour_dead.Semester_ID == SelectSemester && stu_cour_log.Completion_Time <= cour_dead.Deadline && sub.Subject_Active == true
+                                               select stu_cour_log).ToList();
 
                 if (Display == "Display Student Bonus")
                 {
-                    var listStudent = (from a in context.Students
-                                       join b in context.Subject_Student on a.Roll equals b.Roll
-                                       join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                       join d in context.Student_Course_Log on a.Roll equals d.Roll
-                                       join e in context.Courses on d.Course_ID equals e.Course_ID
-                                       join f in context.Course_Deadline on e.Course_ID equals f.Course_ID
-                                       where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time <= f.Deadline && c.Subject_Active == true
-                                       select new { b, a, c, e }).DistinctBy(m => m.b).ToList();
+                    var listStudent = (from stu in context.Students
+                                       join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                       join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                       join stu_cour_log in context.Student_Course_Log on stu.Roll equals stu_cour_log.Roll
+                                       join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                                       join cour_dead in context.Course_Deadline on cour.Course_ID equals cour_dead.Course_ID
+                                       where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && stu_cour_log.Completed == true && stu_cour_log.Date_Import == date && stu_cour_log.Course_ID != null && cour_dead.Semester_ID == SelectSemester && stu_cour_log.Completion_Time <= cour_dead.Deadline && sub.Subject_Active == true
+                                       select new { sub_stu, stu, sub, cour }).DistinctBy(m => m.sub_stu).ToList();
                     foreach (var t in listStudent)
                     {
-                        var countBonus = listCourseCompleted.Where(m => m.Roll == t.b.Roll && m.Subject_ID == t.b.Subject_ID).Count();
+                        var countBonus = listCourseCompleted.Where(m => m.Roll == t.sub_stu.Roll && m.Subject_ID == t.sub_stu.Subject_ID).Count();
                         double bonus = 0;
                         bonus = countBonus * 0.25;
                         if (bonus > 1)
@@ -954,26 +806,27 @@ namespace MSS_DEMO.Controllers
                         }
                         if (bonus > 0)
                         {
-                            bonusListStudent.Add(new ListStudent { Roll = t.b.Roll, Campus = t.a.Campus_ID, PBonus = bonus, Subject = t.c.Subject_Name,Subject_ID = t.c.Subject_ID });
+                            bonusListStudent.Add(new ListStudent { Roll = t.sub_stu.Roll, Campus = t.stu.Campus_ID, PBonus = bonus, Subject = t.sub.Subject_Name,Subject_ID = t.sub.Subject_ID });
                         }
                     }
                 }
                 if (Display == "Display Student-Course Bonus")
                 {
-                    var listStudent = (from a in context.Students
-                                       join b in context.Subject_Student on a.Roll equals b.Roll
-                                       join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                       join d in context.Student_Course_Log on a.Roll equals d.Roll
-                                       join e in context.Courses on d.Course_ID equals e.Course_ID
-                                       join f in context.Course_Deadline on e.Course_ID equals f.Course_ID
-                                       where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && d.Completed == true && d.Date_Import == date && d.Course_ID != null && f.Semester_ID == SelectSemester && d.Completion_Time <= f.Deadline && c.Subject_Active == true
-                                       select new { b, a, c, e }).ToList();
+                    var listStudent = (from stu in context.Students
+                                       join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                       join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                       join stu_cour_log in context.Student_Course_Log on stu.Roll equals stu_cour_log.Roll
+                                       join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                                       join cour_dead in context.Course_Deadline on cour.Course_ID equals cour_dead.Course_ID
+                                       where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && stu_cour_log.Completed == true && stu_cour_log.Date_Import == date && stu_cour_log.Course_ID != null && cour_dead.Semester_ID == SelectSemester && stu_cour_log.Completion_Time <= cour_dead.Deadline && sub.Subject_Active == true
+                                       select new { sub_stu, stu, sub, cour }).ToList();
                     foreach (var t in listStudent)
                     {
                         double bonus = 0.25;
-                        bonusListStudent.Add(new ListStudent { Roll = t.b.Roll, Campus = t.a.Campus_ID, PBonus = bonus, Subject = t.c.Subject_Name, Course_Name = t.e.Course_Name, Subject_ID = t.c.Subject_ID});
+                        bonusListStudent.Add(new ListStudent { Roll = t.sub_stu.Roll, Campus = t.stu.Campus_ID, PBonus = bonus, Subject = t.sub.Subject_Name, Course_Name = t.cour.Course_Name, Subject_ID = t.sub.Subject_ID});
 
                     }
+                    bonusListStudent = bonusListStudent.OrderBy(m => m.Roll).ToList();
                 }
 
                 if (!String.IsNullOrEmpty(SearchString))
@@ -1064,39 +917,39 @@ namespace MSS_DEMO.Controllers
             var context = new MSSEntities();
             if (subject != "" && campus == "")
             {
-                count = (from a in context.Student_Course_Log
-                         join b in context.Courses on a.Course_ID equals b.Course_ID
-                         join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                         join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where subject == a.Subject_ID && a.Date_Import == dateImport
-                         select a.Roll).Distinct().Count();
+                count = (from stu_cour_log in context.Student_Course_Log
+                         join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                         join spec in context.Specifications on cour.Specification_ID equals spec.Specification_ID
+                         join sub in context.Subjects on spec.Subject_ID equals sub.Subject_ID
+                         where subject == stu_cour_log.Subject_ID && stu_cour_log.Date_Import == dateImport
+                         select stu_cour_log.Roll).Distinct().Count();
             }
             else if (subject == "" && campus == "")
             {
-                count = (from a in context.Student_Course_Log
-                         join b in context.Courses on a.Course_ID equals b.Course_ID
-                         join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                         join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where a.Date_Import == dateImport
-                         select a.Roll).Distinct().Count();
+                count = (from stu_cour_log in context.Student_Course_Log
+                         join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                         join spec in context.Specifications on cour.Specification_ID equals spec.Specification_ID
+                         join sub in context.Subjects on spec.Subject_ID equals sub.Subject_ID
+                         where stu_cour_log.Date_Import == dateImport
+                         select stu_cour_log.Roll).Distinct().Count();
             }
             else if(subject != "" && campus != "")
             {
-                count = (from a in context.Student_Course_Log
-                         join b in context.Courses on a.Course_ID equals b.Course_ID
-                         join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                         join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where  a.Campus == campus && a.Subject_ID == subject && a.Date_Import == dateImport
-                         select a.Roll).Distinct().Count();
+                count = (from stu_cour_log in context.Student_Course_Log
+                         join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                         join spec in context.Specifications on cour.Specification_ID equals spec.Specification_ID
+                         join sub in context.Subjects on spec.Subject_ID equals sub.Subject_ID
+                         where stu_cour_log.Campus == campus && stu_cour_log.Subject_ID == subject && stu_cour_log.Date_Import == dateImport
+                         select stu_cour_log.Roll).Distinct().Count();
             }
             else if(subject == "" && campus != "")
             {
-                count = (from a in context.Student_Course_Log
-                         join b in context.Courses on a.Course_ID equals b.Course_ID
-                         join c in context.Specifications on b.Specification_ID equals c.Specification_ID
-                         join d in context.Subjects on c.Subject_ID equals d.Subject_ID
-                         where a.Campus == campus && a.Date_Import == dateImport
-                         select a.Roll).Distinct().Count();
+                count = (from stu_cour_log in context.Student_Course_Log
+                         join cour in context.Courses on stu_cour_log.Course_ID equals cour.Course_ID
+                         join spec in context.Specifications on cour.Specification_ID equals spec.Specification_ID
+                         join sub in context.Subjects on spec.Subject_ID equals sub.Subject_ID
+                         where stu_cour_log.Campus == campus && stu_cour_log.Date_Import == dateImport
+                         select stu_cour_log.Roll).Distinct().Count();
             }
             return count;
         }
@@ -1121,27 +974,27 @@ namespace MSS_DEMO.Controllers
             var student = 0;
             if (subjectId == "" && campus != "")
             {
-                student = (from a in context.Subjects
-                               join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
-                               join c in context.Students on b.Roll equals c.Roll
-                               where c.Campus_ID == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
-                               select c.Roll).Count();
+                student = (from sub in context.Subjects
+                               join sub_stu in context.Subject_Student on sub.Subject_ID equals sub_stu.Subject_ID
+                               join stu in context.Students on sub_stu.Roll equals stu.Roll
+                               where stu.Campus_ID == campus && stu.Semester_ID == semester && sub.Subject_Active == true && sub_stu.Semester_ID == semester
+                               select stu.Roll).Count();
             }
             else if(subjectId == "" && campus == "")
             {
-                student = (from a in context.Subjects
-                           join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
-                           join c in context.Students on b.Roll equals c.Roll
-                           where c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
-                           select c.Roll).Count();
+                student = (from sub in context.Subjects
+                           join sub_stu in context.Subject_Student on sub.Subject_ID equals sub_stu.Subject_ID
+                           join stu in context.Students on sub_stu.Roll equals stu.Roll
+                           where stu.Semester_ID == semester && sub.Subject_Active == true && sub_stu.Semester_ID == semester
+                           select stu.Roll).Count();
             }
             else
             {
-                student = (from a in context.Subjects
-                               join b in context.Subject_Student on a.Subject_ID equals b.Subject_ID
-                               join c in context.Students on b.Roll equals c.Roll
-                               where subjectId == a.Subject_ID && c.Campus_ID == campus && c.Semester_ID == semester && a.Subject_Active == true && b.Semester_ID == semester
-                           select c.Roll).Count();
+                student = (from sub in context.Subjects
+                               join sub_stu in context.Subject_Student on sub.Subject_ID equals sub_stu.Subject_ID
+                               join stu in context.Students on sub_stu.Roll equals stu.Roll
+                               where subjectId == sub.Subject_ID && stu.Campus_ID == campus && stu.Semester_ID == semester && sub.Subject_Active == true && sub_stu.Semester_ID == semester
+                           select stu.Roll).Count();
             }
             
             return student;
@@ -1150,17 +1003,17 @@ namespace MSS_DEMO.Controllers
         {
             var context = new MSSEntities();
             List<SelectListItem> selectDate = new List<SelectListItem>();
-            var starDate = (from a in context.Semesters
-                            where a.Semester_ID == SelectSemester
-                            select a.Start_Date).FirstOrDefault();
-            var endDate = (from a in context.Semesters
-                           where a.Semester_ID == SelectSemester
-                           select a.End_Date).FirstOrDefault();
+            var starDate = (from semes in context.Semesters
+                            where semes.Semester_ID == SelectSemester
+                            select semes.Start_Date).FirstOrDefault();
+            var endDate = (from semes in context.Semesters
+                           where semes.Semester_ID == SelectSemester
+                           select semes.End_Date).FirstOrDefault();
 
 
-            var listDate = (from a in context.Student_Course_Log
-                            where (a.Date_Import <= endDate && a.Date_Import >= starDate)
-                            select a.Date_Import).Distinct().ToList();
+            var listDate = (from stu_cour_log in context.Student_Course_Log
+                            where (stu_cour_log.Date_Import <= endDate && stu_cour_log.Date_Import >= starDate)
+                            select stu_cour_log.Date_Import).Distinct().ToList();
 
             var orderedListDate = listDate.OrderByDescending(x => x).ToList();
             foreach (var a in orderedListDate)
@@ -1177,9 +1030,9 @@ namespace MSS_DEMO.Controllers
         private List<SelectListItem> Sub()
         {
             var context = new MSSEntities();
-            var listSubject = (from a in context.Subjects
-                               where a.Subject_Active == true
-                               select a).ToList();
+            var listSubject = (from sub in context.Subjects
+                               where sub.Subject_Active == true
+                               select sub).ToList();
             List<SelectListItem> selectSj = new List<SelectListItem>();
             selectSj.Add(new SelectListItem
             {
