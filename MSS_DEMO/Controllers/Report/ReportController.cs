@@ -667,18 +667,20 @@ namespace MSS_DEMO.Controllers
                 {
                     var listSpecCompulsoryCompleted = context.sp_Get_Compulsory_Spec_Completion(date, SelectSemester);
                     var listSpecNonCompulsoryCompleted = context.sp_Get_Non_Compulsory_Spec_Completion(date, SelectSemester);
-                    if(listSpecCompulsoryCompleted!=null && listSpecNonCompulsoryCompleted!= null)
+                    foreach (var item in listSpecCompulsoryCompleted)
                     {
-                        var listAll = listSpecCompulsoryCompleted.Concat(listSpecNonCompulsoryCompleted.Select(m => m.Roll_Sub)).Distinct();
-                        foreach (var item in listAll)
-                        {
-                            var roll = item.Split('-')[0];
-                            var sub = item.Split('-')[1];
-                            var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
-                            var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
-                            ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
-                        }
-                    }                    
+                        var roll = item.Split('-')[0];
+                        var sub = item.Split('-')[1];
+                        var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
+                        var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
+                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
+                    }
+                    foreach (var item in listSpecNonCompulsoryCompleted)
+                    {
+                        var roll = item.Roll_Sub.Split('-')[0];
+                        var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
+                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = "UnknownSub", Semester_ID = SelectSemester, Email = info.Email, Subject_ID = "UnknownSub"});
+                    }
                 }
                 else if(Compulsory == "Yes")
                 {
@@ -697,10 +699,8 @@ namespace MSS_DEMO.Controllers
                     foreach (var item in listSpecNonCompulsoryCompleted)
                     {
                         var roll = item.Roll_Sub.Split('-')[0];
-                        var sub = item.Roll_Sub.Split('-')[1];
                         var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
-                        var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
-                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
+                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = "UnknownSub", Semester_ID = SelectSemester, Email = info.Email, Subject_ID = "UnknownSub" });
                     }
                 }
 
@@ -716,11 +716,11 @@ namespace MSS_DEMO.Controllers
                 {
                     ListStudentCompleted = ListStudentCompleted.Where(a => a.Roll.Contains(SearchString)).ToList();
                     ViewBag.TotalSearch = ListStudentCompleted.Count();
-                    ViewBag.Spec = (from a in context.Students
-                                    join b in context.Subject_Student on a.Roll equals b.Roll
-                                    join c in context.Subjects on b.Subject_ID equals c.Subject_ID
-                                    where a.Semester_ID == SelectSemester && b.Semester_ID == SelectSemester && a.Roll == SearchString
-                                    select c.Subject_ID).Count();
+                    ViewBag.Spec = (from stu in context.Students
+                                    join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                                    join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                                    where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && sub_stu.Roll == SearchString
+                                    select sub.Subject_ID).Count();
                     if (ViewBag.TotalSearch > 0 && ViewBag.Spec > 0)
                     {
                         ViewBag.Percent = percent(ViewBag.TotalSearch, ViewBag.Spec);
