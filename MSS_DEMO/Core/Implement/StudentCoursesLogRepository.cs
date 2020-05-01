@@ -1,5 +1,6 @@
 ﻿using MSS_DEMO.Core.Components;
 using MSS_DEMO.Models;
+using MSS_DEMO.MssService;
 using MSS_DEMO.Repository;
 using MSS_DEMO.ServiceReference;
 using System;
@@ -13,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
+using ArrayOfString = MSS_DEMO.MssService.ArrayOfString;
 
 namespace MSS_DEMO.Core.Implement
 {
@@ -36,25 +38,32 @@ namespace MSS_DEMO.Core.Implement
             }
 
         }
-        public List<MentorObject> getListSubjectClass(string userMentor)
+        public List<MentorObject> getListSubjectClass(string userMentor,string semesterName)
         {
-            MSSWSSoapClient soap = new MSSWSSoapClient();
+            CourseraApiSoapClient courseraApiSoap = new CourseraApiSoapClient();
             var listSubjectID = context.Subjects.Where(o => o.Subject_Active == true).Select(o => o.Subject_ID).ToList();
             ArrayOfString arraySubject = new ArrayOfString();
             arraySubject.AddRange(listSubjectID);
-            string jsonData = soap.getScheduledSubject(userMentor, arraySubject).Replace(@"""","");
-            var scheduledSubject = jsonData.Split(',');
+            string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
             List<MentorObject> objectMentor = new List<MentorObject>();
-            foreach (var scheduled in scheduledSubject)
+            try
             {
-                if (!string.IsNullOrEmpty(scheduled))
+                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey, userMentor.Split('@')[0], arraySubject, semesterName);
+                var scheduledSubject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MertorFAP>>(jsonData);
+                scheduledSubject = scheduledSubject.Distinct(new ListComparer()).ToList();
+               
+                foreach (var scheduled in scheduledSubject)
                 {
                     objectMentor.Add(new MentorObject
                     {
-                        Subject_ID = scheduled.Split(';')[0],
-                        Class_ID = scheduled.Split(';')[1]
+                        Subject_ID = scheduled.SubjectCode,
+                        Class_ID = scheduled.ClassName
                     });
-                }
+                }             
+            }
+            catch
+            {
+                objectMentor = new List<MentorObject>();
             }
             var list = (from a in objectMentor
                         join b in context.Subjects on a.Subject_ID equals b.Subject_ID
@@ -65,13 +74,13 @@ namespace MSS_DEMO.Core.Implement
                             Class_ID = a.Class_ID,
                             id = a.Subject_ID + "^" + a.Class_ID
                         }).ToList()
-                     .Select(o => new MentorObject
-                     {
-                         Subject_ID = o.Subject_ID,
-                         Subject_Name = o.Subject_Name,
-                         Class_ID = o.Class_ID,
-                         id = o.id
-                     }).ToList();
+                          .Select(o => new MentorObject
+                          {
+                              Subject_ID = o.Subject_ID,
+                              Subject_Name = o.Subject_Name,
+                              Class_ID = o.Class_ID,
+                              id = o.id
+                          }).ToList();
             return list;
         }
 
@@ -226,5 +235,34 @@ namespace MSS_DEMO.Core.Implement
     public class UsageReportNote : Student_Course_Log
     {
         public string Note { get; set; }
+    }
+    public class MertorFAP
+    {
+        public string Lecturer { get; set; }
+        public string SubjectCode { get; set; }
+        public string ClassName { get; set; }
+    }
+    class ListComparer : IEqualityComparer<MertorFAP>
+    {
+        public bool Equals(MertorFAP x, MertorFAP y)
+        {
+            if (Object.ReferenceEquals(x, y)) return true;
+
+            if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                return false;
+
+            return x.ClassName == y.ClassName && x.SubjectCode == y.SubjectCode;
+        }
+        public int GetHashCode(MertorFAP product)
+        {
+            if (Object.ReferenceEquals(product, null)) return 0;
+            int hashclassName = product.ClassName == null ? 0 : product.ClassName.GetHashCode();
+            int hashsubCode = product.SubjectCode.GetHashCode();
+            return hashclassName ^ hashsubCode;
+        }
+    }
+    public class RollFAP
+    {        
+             public string RollNumber { get; set; }
     }
 }

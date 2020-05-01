@@ -11,7 +11,7 @@
 <br />
 <span>
     @Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Usage Report", "Mentor", "Student_Course_Log")
-    > Detail Class
+    > Class Details
 </span>
 <br />
 <h3>Subject: @ViewBag.Subject - Class: @ViewBag.Class</h3>
@@ -70,12 +70,11 @@
         </div>
     </div>
 }
-@{
-    int stt = 1;
-}
 <span style="color: red;">@ViewBag.Nodata</span>
 @if (Model.PageListLogNote.PageCount != 0)
 {
+    int stt = 1 + (pagenumber - 1) * Model.PageListLogNote.PageSize;
+
     <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label>
     <div style="overflow-x: auto;" class="drag">
         <div class="table-responsive text-nowrap">
@@ -84,10 +83,16 @@
                     <tr>
                         <th>No</th>
                         <th>
+                            Roll
+                        </th>
+                        <th>
                             Email
                         </th>
                         <th style="min-width: 250px;">
                             Course Name
+                        </th>
+                        <th>
+                            Note
                         </th>
                         <th>
                             Enrollment Time
@@ -116,17 +121,14 @@
                         <th>
                             Course Grade
                         </th>
-                        <th>
-                            Note
-                            <span data-toggle="tooltip" title="Focusout for saving" style="color: red">(!)</span>
-                        </th>
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.PageListLogNote)
                     {
                         string textNote = item.Note;
-                        textNote = textNote.Length > 100 ? "..."+textNote.Substring(textNote.Length - 100) : textNote;
+                        textNote = !string.IsNullOrEmpty(textNote) ? (textNote.Length > 100 ? "..." + textNote.Substring(textNote.Length - 100) : textNote) : "";
                         var Note = item.Roll + "^" + item.Semester_ID + "^" + item.Subject_ID;
                         var complete = item.Completed == true ? "Yes" : "No";
                         var status = item.Status == true ? "Yes" : "No";
@@ -134,47 +136,51 @@
                         string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                         string Course_Start_Time = Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
-                        <tr>
-                            <td>@(stt++)</td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Course_Name)
-                            </td>
-                            <td>
-                                @Course_Enrollment_Time
-                            </td>
+                    <tr>
+                        <td>@(stt++)</td>
+                        <td>
+                            <a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote" >@item.Roll</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Name)
+                        </td>
+                        <td>
+                            <span id="textArea" style="width: 280px; height: 80px;">@textNote</span>
+                            @Html.Hidden("Note", Note)
+                            @Html.Hidden("TextNode",item.Note)
+                        </td>
+                        <td>
+                            @Course_Enrollment_Time
+                        </td>
 
-                            <td>
-                                @Course_Start_Time
-                            </td>
-                            <td>
-                                @Last_Course_Activity_Time
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Overall_Progress)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Estimated)
-                            </td>
-                            <td>
-                                @complete
-                            </td>
-                            <td>
-                                @status
-                            </td>
-                            <td>
-                                @completeTime
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Course_Grade)
-                            </td>
-                            <td>
-                                <textarea id="textArea" style="width: 280px; height: 80px;">@textNote</textarea>
-                                @Html.Hidden("Note", Note)
-                            </td>
-                        </tr>
+                        <td>
+                            @Course_Start_Time
+                        </td>
+                        <td>
+                            @Last_Course_Activity_Time
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overall_Progress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estimated)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @completeTime
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Grade)
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -192,6 +198,28 @@
      Subject_ID = Model.Subject_ID,
      searchCheck = "true"
  }))
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <textarea id="textAreaNote" style="height: 252px; width: 540px;max-width: 550px;"></textarea>
+                @Html.Hidden("idModelNote")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var mx = 0;
 
@@ -213,8 +241,33 @@
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
-
-   $(".table tbody #textArea").each(function (id, item) {
+    $(".table tbody #modalNote").each(function (id, item) {
+        var noteID = $(this).parents("tr:first").find("#Note").val();
+        var TextNode = $(this).parents("tr:first").find("#TextNode").val();
+        $(this).click(function ()
+        {                  
+            $("#textAreaNote").val(TextNode);
+            $("#idModelNote").val(noteID);
+        });       
+    });
+    $("#save").click(function ()
+        {      var noteID = $("#idModelNote").val();      
+               var note = $("#textAreaNote").val();  
+                $.ajax({
+                url: '@Url.Action("AddNote","Student_Course_Log")',
+                type: 'POST',
+                data:  { 'id' : noteID, 'note' : note },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.check == true) {
+                        window.location.reload();
+                    }
+                 }
+                }).done(function () {
+                    
+                });
+        });
+   @*$(".table tbody #textArea").each(function (id, item) {
         $(this).focusout(function ()
         {
                 var noteID = $(this).parents("tr:first").find("#Note").val();
@@ -229,8 +282,8 @@
                         window.location.reload();
                     }
                  }
-                 }).done(function () {                  
+                 }).done(function () {
                 });
          });
-   });
+   });*@
 </script>
