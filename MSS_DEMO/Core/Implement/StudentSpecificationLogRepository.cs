@@ -62,5 +62,44 @@ namespace MSS_DEMO.Core.Implement
             }
             else return true;
         }
+        public List<Student_Specification_Log> listSpecCompulsory(List<Student_Specification_Log>  logList, string SemesterID, string checkString)
+        {
+            List<Student_Specification_Log> lst = new List<Student_Specification_Log>();
+            if (checkString == "Yes")
+            {
+                //var listSpecCompulsoryCompleted = context.sp_Get_Compulsory_Spec_Completion(ImportedDate, SemesterID).ToList();
+                //foreach (var item in listSpecCompulsoryCompleted)
+                //{
+                //    var roll = item.Split('-')[0];
+                //    var sub = item.Split('-')[1];
+                //    var info = context.Students.Where(m => m.Roll == roll && m.Semester_ID == SemesterID).FirstOrDefault();
+                //    var spec = context.Specifications.Where(m => m.Subject_ID == sub).FirstOrDefault();
+                //    logList = logList.Where(l => l.Roll == info.Roll && l.Specification_ID == spec.Specification_ID).ToList();
+                //}
+                lst = (from log in logList
+                            join spec in context.Specifications on log.Specification_ID equals spec.Specification_ID
+                            join sub in context.Subjects on spec.Subject_ID equals sub.Subject_ID
+                            join subStud in context.Subject_Student on sub.Subject_ID equals subStud.Subject_ID
+                            where (subStud.Semester_ID == SemesterID && sub.Subject_Active == true)
+                            select log)
+                          .ToList();
+            }
+            else
+            {
+               var lstID = (from log in logList
+                       join spec in context.Specifications on log.Specification_ID equals spec.Specification_ID
+                       join sub in context.Subjects on spec.Subject_ID equals sub.Subject_ID
+                       join subStud in context.Subject_Student on sub.Subject_ID equals subStud.Subject_ID
+                       where (subStud.Semester_ID == SemesterID && sub.Subject_Active == true)
+                       select log.Specification_Log_ID)
+                       .ToList();
+                lst = logList;
+                foreach (var item in lstID)
+                {
+                    lst.Remove(lst.Where(l => l.Specification_Log_ID == item).FirstOrDefault());
+                }
+            }
+            return lst;
+        }
     }
 }

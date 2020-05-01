@@ -93,7 +93,8 @@ namespace MSS_DEMO.Controllers.Log
         public ActionResult getListDate(string Semester_ID)
         {
             var semester = unitOfWork.Semesters.GetById(Semester_ID);
-            var dateList = unitOfWork.CoursesLog.GetAll().Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+            var dateList = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+    
             List<string> date = new List<string>();
             foreach (var _date in dateList)
             {
@@ -108,7 +109,7 @@ namespace MSS_DEMO.Controllers.Log
         public ActionResult getListDateSpec(string Semester_ID)
         {
             var semester = unitOfWork.Semesters.GetById(Semester_ID);
-            var dateList = unitOfWork.SpecificationsLog.GetAll().Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+            var dateList = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
             List<string> date = new List<string>();
             foreach (var _date in dateList)
             {
