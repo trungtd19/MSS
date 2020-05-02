@@ -280,6 +280,19 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecReportViewModel.cs" />
+    <Compile Include="Models\sp_Get_Main_Report_Result.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_Get_Non_Compulsory_Spec_Completion_Result.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StatusOverviewModel.cs" />
     <Compile Include="Models\Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -294,6 +307,9 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Subject_Student.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User_Role.cs">
@@ -458,6 +474,7 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Report\StatusOverview.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

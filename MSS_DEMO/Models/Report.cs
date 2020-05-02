@@ -47,12 +47,14 @@ namespace MSS_DEMO.Models
     public class InfoStudent
     {
         public string Course_Name { get; set; }
-        public DateTime Course_Enrollment_Time { get; set; }
-        public DateTime Last_Course_Activity_Time { get; set; }
+        public string Course_Enrollment_Time { get; set; }
+        public string Last_Course_Activity_Time { get; set; }
         public double Overall_Progress { get; set; }
         public bool Completed { get; set; }
         public double Estimated { get; set; }
-        public DateTime Completion_Time { get; set; }
+        public string Completion_Time { get; set; }
+        public string Subject { get; set; }
+        public string Note { get; set; }
         public List<InfoStudent> InforList { get; set; }
     }
 }
