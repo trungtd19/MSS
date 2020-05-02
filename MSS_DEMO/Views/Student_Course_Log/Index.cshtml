@@ -14,6 +14,7 @@
     SelectList listCompulsory = new SelectList((IList<string>)Model.compulsoryCour);
     SelectList importedDate = new SelectList((IList<string>)Model.importedDate);
 }
+<h2 style="text-align: center; color: green;">Usage Report</h2>
 <div class="form-group">
     <div class="col-md-2">
         @Html.ActionLink("Import Usage Report", "UsageReport", "ImportDataDaily")
@@ -102,8 +103,10 @@
 {
     int stt = 1 + (pagenumber - 1) * Model.PageList.PageSize;
 
-    <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label> <a href="" id="Export">Export</a>
-
+    <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label>
+    <button class="btn btn-success" id="Export">Export</button>
+    <br />
+    <br />
     <div style="overflow-x: auto;" class="drag">
         <div class="table-responsive text-nowrap">
             <table class="table table-bordered table-striped">
@@ -182,69 +185,69 @@
                         string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                         string Course_Start_Time = Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
-                    <tr>
-                        <td>@(stt++)</td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Subject_ID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Campus)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.University)
-                        </td>
-                        <td>
-                            @Course_Enrollment_Time
-                        </td>
-                        <td>
-                            @Course_Start_Time
-                        </td>
-                        <td>
-                            @Last_Course_Activity_Time
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Overall_Progress)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Estimated)
-                        </td>
-                        <td>
-                            @complete
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Slug)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Program_Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Enrollment_Source)
-                        </td>
-                        <td>
-                            @completeTime
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course_Grade)
-                        </td>
-                        <td>
-                            @date
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>@(stt++)</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Subject_ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Course_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Course_Slug)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Campus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.University)
+                            </td>
+                            <td>
+                                @Course_Enrollment_Time
+                            </td>
+                            <td>
+                                @Course_Start_Time
+                            </td>
+                            <td>
+                                @Last_Course_Activity_Time
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Overall_Progress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Estimated)
+                            </td>
+                            <td>
+                                @complete
+                            </td>
+                            <td>
+                                @status
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Program_Slug)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Program_Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Enrollment_Source)
+                            </td>
+                            <td>
+                                @completeTime
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Course_Grade)
+                            </td>
+                            <td>
+                                @date
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -288,7 +291,7 @@
                     success: function (data) {
                     window.location.href = "@Url.RouteUrl(new
                     { Controller = "Student_Course_Log", Action = "Export" })/?check=" + list;
-              
+
                 }
             });
 

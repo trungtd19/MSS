@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetScheduledSubject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authenKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="teacher" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lsSubjects" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="semester" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetScheduledSubjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetScheduledSubjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getStudents">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authenKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="teacher" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="subjectCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="className" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="semester" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getStudentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getStudentsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetScheduledSubjectSoapIn">
+    <wsdl:part name="parameters" element="tns:GetScheduledSubject" />
+  </wsdl:message>
+  <wsdl:message name="GetScheduledSubjectSoapOut">
+    <wsdl:part name="parameters" element="tns:GetScheduledSubjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="getStudentsSoapIn">
+    <wsdl:part name="parameters" element="tns:getStudents" />
+  </wsdl:message>
+  <wsdl:message name="getStudentsSoapOut">
+    <wsdl:part name="parameters" element="tns:getStudentsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CourseraApiSoap">
+    <wsdl:operation name="GetScheduledSubject">
+      <wsdl:input message="tns:GetScheduledSubjectSoapIn" />
+      <wsdl:output message="tns:GetScheduledSubjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getStudents">
+      <wsdl:input message="tns:getStudentsSoapIn" />
+      <wsdl:output message="tns:getStudentsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CourseraApiSoap" type="tns:CourseraApiSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetScheduledSubject">
+      <soap:operation soapAction="http://tempuri.org/GetScheduledSubject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStudents">
+      <soap:operation soapAction="http://tempuri.org/getStudents" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CourseraApiSoap12" type="tns:CourseraApiSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetScheduledSubject">
+      <soap12:operation soapAction="http://tempuri.org/GetScheduledSubject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStudents">
+      <soap12:operation soapAction="http://tempuri.org/getStudents" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CourseraApi">
+    <wsdl:port name="CourseraApiSoap" binding="tns:CourseraApiSoap">
+      <soap:address location="http://testfap.fpt.edu.vn/CourseraApi.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CourseraApiSoap12" binding="tns:CourseraApiSoap12">
+      <soap12:address location="http://testfap.fpt.edu.vn/CourseraApi.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -9,6 +9,7 @@ using MSS_DEMO.Common;
 using MSS_DEMO.Core.Implement;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
+using MSS_DEMO.MssService;
 using MSS_DEMO.Repository;
 using MSS_DEMO.ServiceReference;
 using PagedList;
@@ -131,16 +132,19 @@ namespace MSS_DEMO.Controllers.Log
         }
         public ActionResult Mentor()
         {
-            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];           
-            return View(unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName));
+            var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
+            DateTime date = DateTime.Now;
+            var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault().Semester_Name;
+            return View(unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester));
         }
         public ActionResult Detail(CoursesReportViewModel model,string id,string searchCheck, int? page)
         {
+            DateTime date = DateTime.Now;
+            var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault().Semester_Name;
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName);
-            MSSWSSoapClient soap = new MSSWSSoapClient();
+            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester);
+            CourseraApiSoapClient courseraApiSoap = new CourseraApiSoapClient();
             string jsonDataClass = "";
-
             List<Student_Course_Log> list = new List<Student_Course_Log>();
             List<UsageReportNote> listNote = new List<UsageReportNote>();
             string SearchString = model.Email;
@@ -163,34 +167,44 @@ namespace MSS_DEMO.Controllers.Log
             }
             else
             {
-                foreach (var subjectClass in listSubjectClass)
+                try
                 {
-                    if (id == subjectClass.id)
+                    foreach (var subjectClass in listSubjectClass)
                     {
-                        jsonDataClass = soap.getStudents(userMentor.UserName, subjectClass.Class_ID.Trim(), subjectClass.Subject_ID.Trim());
-                        var listRoll = jsonDataClass.Replace(@"""", "").Split(',');
-                        foreach (var roll in listRoll)
+                        if (id == subjectClass.id)
                         {
-                            if (!string.IsNullOrEmpty(roll))
+                            string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
+                            jsonDataClass = courseraApiSoap.getStudents(authenKey, userMentor.UserName.Split('@')[0], subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester);
+                            var rollFap = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RollFAP>>(jsonDataClass);
+                            var listRoll = rollFap[0].RollNumber.ToString().Split(',');
+                            listRoll = listRoll.Distinct().ToArray();
+                            foreach (var roll in listRoll)
                             {
-                                var student = new UsageReportNote();
-                                try
+                                if (!string.IsNullOrEmpty(roll))
                                 {
-                                    var x = unitOfWork.CoursesLog.getListUsageReportNote().ToList();
-                                    student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() == subjectClass.Subject_ID.Trim()).FirstOrDefault();
-                                }
-                                catch
-                                {
-                                    continue;
-                                }
-                                if (student != null)
-                                {
-                                    listNote.Add(student);
+                                    var student = new UsageReportNote();
+                                    try
+                                    {
+                                        var x = unitOfWork.CoursesLog.getListUsageReportNote().ToList();
+                                        student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() == subjectClass.Subject_ID.Trim()).FirstOrDefault();
+                                    }
+                                    catch
+                                    {
+                                        continue;
+                                    }
+                                    if (student != null)
+                                    {
+                                        listNote.Add(student);
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
                     }
+                }
+                catch
+                {
+                    listNote = new List<UsageReportNote>();
                 }
  
             }

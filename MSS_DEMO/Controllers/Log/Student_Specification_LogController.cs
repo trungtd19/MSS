@@ -82,7 +82,8 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsorySpec != null)
                 {
-                    LogList = model.compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Specification_ID != null).ToList() : LogList = LogList.Where(s => s.Specification_ID == null).ToList();
+                    DateTime dt = DateTime.ParseExact(model.ImportedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    LogList = unitOfWork.SpecificationsLog.listSpecCompulsory(LogList, model.Semester_ID, model.compulsorySpec);
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
                 {                 
@@ -142,7 +143,8 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (compulsorySpec != "6")
                 {
-                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Specification_ID != null).ToList() : LogList = LogList.Where(s => s.Specification_ID == null).ToList();
+                    DateTime dt = DateTime.ParseExact(ImportedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    LogList = unitOfWork.SpecificationsLog.listSpecCompulsory(LogList, Semester_ID, compulsorySpec);
                 }
                 if (Campus != "2")
                 {
