@@ -25,6 +25,7 @@
             <br />
             <br />
             @Html.ActionLink("Estimated Learning Hours", "Estimated")&nbsp;&nbsp;
+            @Html.ActionLink("Studying Status Overview", "StatusOverview")&nbsp;&nbsp;
         </h4>
     </div>
     <div class="panel panel-default">
@@ -69,7 +70,7 @@
     @if (Model != null && ViewBag.Name != null && ViewBag.Count != null)
     {
         <div>
-            <h4>Total number of students: @ViewBag.TotalStudent1    @Html.ActionLink("Export", "PrintViewToPdf", "Report", new { weekNumber = ViewBag.weekNumber, SelectDatetime = ViewBag.date, SelectSemester = ViewBag.semester, searchCheck = 1 }, null)</h4>
+            <h4>Number of students: @ViewBag.TotalStudent1    @Html.ActionLink("Export", "PrintViewToPdf", "Report", new { weekNumber = ViewBag.weekNumber, SelectDatetime = ViewBag.date, SelectSemester = ViewBag.semester, searchCheck = 1 }, null)</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Sub</th>
@@ -105,7 +106,7 @@
                 </tr>
             </table>
         </div>
-        <h4>Total students were on compulsory courses: @ViewBag.TotalStudent2</h4>
+        <h4>Number of students enrolled compulsory courses: @ViewBag.TotalStudent2</h4>
         <div>
             <table class="table table-bordered">
                 <tr>

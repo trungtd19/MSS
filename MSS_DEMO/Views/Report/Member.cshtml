@@ -40,6 +40,7 @@
             <br />
             <br />
             @Html.ActionLink("Estimated Learning Hours", "Estimated")&nbsp;&nbsp;
+            @Html.ActionLink("Studying Status Overview", "StatusOverview")&nbsp;&nbsp;
         </h4>
     </div>
     <br />
@@ -71,10 +72,18 @@
                     <div class="col-md-3">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
+                    <div class="col-md-2">
+                        <label class="control-label"> Compulsory: </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("Compulsory", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
                     <div class="col-md-6">
                         <input class="btn btn-default" type="submit" value="Display" />
                     </div>
-
                 </div>
             }
         </div>
@@ -101,6 +110,7 @@
                     <th>Progress</th>
                     <th>Estimated learning hour</th>
                     <th>Completion Time</th>
+                    <th>Subject</th>
                     <th>Status</th>
                 </tr>
                 @{ int a = 1;}
@@ -114,6 +124,7 @@
                     <th>@Html.DisplayFor(m => t.Overall_Progress)%</th>
                     <th>@Html.DisplayFor(m => t.Estimated)</th>
                     <th>@Html.DisplayFor(m => t.Completion_Time)</th>
+                    <th>@Html.DisplayFor(m => t.Subject)</th>
                     @if (t.Completed)
                     {
                         <th><span style="color:green;">Completed</span></th>
