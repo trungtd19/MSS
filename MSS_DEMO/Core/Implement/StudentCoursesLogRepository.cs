@@ -130,6 +130,15 @@ namespace MSS_DEMO.Core.Implement
                 " ON a.Roll = b.Roll and a.Semester_ID = b.Semester_ID and a.Subject_ID = b.Subject_ID").ToList();         
             return list;
         }
+        public List<string> getSubjectID(string CourseName, string Roll, string Semester)
+        {
+            var list = context.Database.SqlQuery<string>("SELECT DISTINCT d.Subject_ID FROM  Course b " +
+                "inner join Specification c on b.Specification_ID = c.Specification_ID " +
+                "inner join Subject_Student d on c.Subject_ID = d.Subject_ID " +
+                "where b.Course_Name = '"+ CourseName + "' and d.Roll = '"+ Roll +"' and d.Semester_ID = '" + Semester + "'")
+                .ToList();
+            return list;
+        }
         public bool IsExitsDateImport(string date)
         {
             DateTime dt = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);

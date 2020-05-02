@@ -96,7 +96,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsoryCourse != null)
                 {
-                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Course_ID != null).ToList() : LogList = LogList.Where(s => s.Course_ID == null).ToList();
+                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Subject_ID))
                 {                  
@@ -223,7 +223,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsoryCourse != null)
                 {
-                    listNote = model.compulsoryCourse == "Yes" ? listNote.Where(s => s.Course_ID != null).ToList() :  listNote.Where(s => s.Course_ID == null).ToList();
+                    listNote = model.compulsoryCourse == "Yes" ? listNote.Where(s => s.Subject_ID != "").ToList() :  listNote.Where(s => s.Subject_ID == "").ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Subject_ID))
                 {

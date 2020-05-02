@@ -34,7 +34,7 @@ namespace MSS_DEMO.Core.Import
             };
 
         }
-        public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> specifications, string semesterID)
+        public Student_Specification_Log GetStudentSpec(List<string> row,int userID, string dateImport, List<Specification> specifications, string semesterID, List<string> lstSubjectID)
         {
             dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             DateTime _dateImport = DateTime.Parse(dateImport);
@@ -51,6 +51,7 @@ namespace MSS_DEMO.Core.Import
                 {
                     Email = row[1].ToString(),
                     Roll = row[2].ToString().Split('-')[2],
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
                     Specification_ID = Spec_ID_CSV,
                     Campus = row[2].ToString().Split('-')[1],
                     Specialization = row[3].ToString(),
@@ -75,6 +76,7 @@ namespace MSS_DEMO.Core.Import
                 {
                     Email = row[1].ToString(),
                     Roll = row[2].ToString().Split('-')[2],
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
                     Campus = row[2].ToString().Split('-')[1],
                     Specialization = row[3].ToString(),
                     Specialization_Slug = row[4].ToString(),
@@ -94,7 +96,7 @@ namespace MSS_DEMO.Core.Import
                 };
             }
         }
-        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
+        public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID, List<string> lstSubjectID)
         {
             Student_Course_Log log = new Student_Course_Log();
             dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
@@ -124,7 +126,7 @@ namespace MSS_DEMO.Core.Import
                     Roll = row[2].ToString().Split('-')[2],
                     Course_ID = Cour_ID_CSV,
                     Course_Name = row[3].ToString(),
-                    Subject_ID = row[2].ToString().Split('-')[0],
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
                     Campus = row[2].ToString().Split('-')[1],
                     Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
                     Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
@@ -153,7 +155,7 @@ namespace MSS_DEMO.Core.Import
                     Email = row[1].ToString(),
                     Roll = row[2].ToString().Split('-')[2],
                     Course_Name = row[3].ToString(),
-                    Subject_ID = row[2].ToString().Split('-')[0],
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
                     Campus = row[2].ToString().Split('-')[1],
                     Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
                     Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
