@@ -314,7 +314,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (compulsorySpec != "6")
                 {
-                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Course_ID != null).ToList() : LogList = LogList.Where(s => s.Course_ID == null).ToList();
+                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
                 }
                 if (Subject_ID != "4")
                 {
