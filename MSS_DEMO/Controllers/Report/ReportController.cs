@@ -937,6 +937,7 @@ namespace MSS_DEMO.Controllers
                 });
             }
             ViewBag.SelectSemester = selectSemes;
+            ViewBag.SelectSubject = Sub();
 
             List<EstimatedViewModel> EstimatedList = new List<EstimatedViewModel>();
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)

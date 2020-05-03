@@ -107,7 +107,7 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
-                                        var log = getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName, semesterID);
+                                        var log = getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName, semesterID, unitOfWork.CoursesLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID));
                                         unitOfWork.CoursesLog.Insert(log);
                                         countSusscess++;
                                     }
@@ -224,7 +224,7 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
-                                        var log = getRow.GetStudentSpec(rows, userID, _dateImport, specifications, semesterID);
+                                        var log = getRow.GetStudentSpec(rows, userID, _dateImport, specifications, semesterID, unitOfWork.SpecificationsLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID));
                                         unitOfWork.SpecificationsLog.Insert(log);
                                         countSusscess++;
                                     }

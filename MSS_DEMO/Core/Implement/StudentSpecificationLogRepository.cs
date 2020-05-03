@@ -92,5 +92,13 @@ namespace MSS_DEMO.Core.Implement
             }
             return lst;
         }
+        public List<string> getSubjectID(string SpecName, string Roll, string Semester)
+        {
+            var list = context.Database.SqlQuery<string>("SELECT DISTINCT c.Subject_ID from Specification c  " +
+                "inner join Subject_Student d on c.Subject_ID = d.Subject_ID " +
+                "where c.Specification_Name ='"+ SpecName + "' and d.Roll = '" + Roll + "' and d.Semester_ID = '" + Semester + "'")
+                .ToList();
+            return list;
+        }
     }
 }
