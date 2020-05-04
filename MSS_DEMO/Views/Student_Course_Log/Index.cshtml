@@ -182,9 +182,9 @@
                         var status = item.Status == true ? "Yes" : "No";
                         string date = Convert.ToDateTime(item.Date_Import).ToString("dd/MM/yyyy");
                         var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
-                        string Course_Enrollment_Time = Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
-                        string Last_Course_Activity_Time = Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
-                        string Course_Start_Time = Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
+                        string Course_Enrollment_Time =item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
+                        string Last_Course_Activity_Time =item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+                        string Course_Start_Time =item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
                         <tr>
                             <td>@(stt++)</td>
                             <td>

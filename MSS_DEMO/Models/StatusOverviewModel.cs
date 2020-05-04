@@ -15,6 +15,7 @@ namespace MSS_DEMO.Models
         public Nullable<int> No_Course_Completed { get; set; }
         public string Spec_Completed { get; set; }
         public string Final_Status { get; set; }
+        public string Campus { get; set; }
         public List<StatusOverviewModel> OverviewList { get; set; }
     }
 }

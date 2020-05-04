@@ -96,7 +96,7 @@
         @if (Model.lc1.Count > 0)
         {
 
-            <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+            <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
             <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
                     <th>No</th>
@@ -118,8 +118,39 @@
         }
         else
         {
-            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 results</h4>
+            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
         }
     </div>
 }
 <br />
+<script>
+         $('#SelectSemester').change(function () {
+             var SelectSemester = $('#SelectSemester').val();
+             if (SelectSemester != null) {
+                 $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("getListDateCourse", "Report")',
+                     data: { 'SelectSemester': SelectSemester },
+                     dataType: 'json',
+                     success: function (data) {
+                         sl = document.getElementById("SelectDatetime");
+                         while (sl.firstChild) {
+                             sl.removeChild(sl.firstChild);
+                         }
+                         if (data.list.length > 0) {
+                             for (i = 0; i < data.list.length; i++) {
+                                 newOption = new Option(data.list[i]);
+                                 document.getElementById("SelectDatetime").options.add(newOption);
+                             }
+                         }
+                     }
+                 });
+             }
+        });
+
+        $(function () {
+        if (($("#error").text() != "") || ($("#success").text() != "")) {
+            $('#SelectSemester').val("").change();
+        }
+    });
+</script>

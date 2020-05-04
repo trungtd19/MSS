@@ -82,7 +82,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsorySpec != null)
                 {
-                    LogList = model.compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "" ).ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
+                    LogList = model.compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
                 {                 
@@ -142,7 +142,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (compulsorySpec != "6")
                 {
-                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
+                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
                 }
                 if (Campus != "2")
                 {
@@ -156,7 +156,7 @@ namespace MSS_DEMO.Controllers.Log
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             var list = LogList.ToList();
-            sb.Append(string.Join(",", "Name", "Email", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
+            sb.Append(string.Join(",", "Name", "Email", "Campus", "Subject", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
                 "Completed", "Status", "Program Slug", "Program Name", "Enrollment Sourse", "Completion Time", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
@@ -165,6 +165,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Campus),
+                    csv.AddCSVQuotes(item.Subject_ID),
                     csv.AddCSVQuotes(item.Specialization),
                     csv.AddCSVQuotes(item.Specialization_Slug),
                     csv.AddCSVQuotes(item.University),

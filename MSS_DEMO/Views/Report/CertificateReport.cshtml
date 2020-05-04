@@ -87,7 +87,7 @@
     if (Model.certificatesModel.Count > 0)
     {
 
-        <h4>Total of the records: @ViewBag.TotalSearch <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
         <table class="table table-bordered" id="dataTable">
             <tr>
                 <th>Roll</th>
@@ -126,7 +126,7 @@
     }
     else
     {
-        <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 results</h4>
+        <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
     }
 
 }

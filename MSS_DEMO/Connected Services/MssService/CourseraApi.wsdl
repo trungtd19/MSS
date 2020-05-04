@@ -110,10 +110,10 @@
   </wsdl:binding>
   <wsdl:service name="CourseraApi">
     <wsdl:port name="CourseraApiSoap" binding="tns:CourseraApiSoap">
-      <soap:address location="http://testfap.fpt.edu.vn/CourseraApi.asmx" />
+      <soap:address location="http://fap.fpt.edu.vn/CourseraAPI.asmx" />
     </wsdl:port>
     <wsdl:port name="CourseraApiSoap12" binding="tns:CourseraApiSoap12">
-      <soap12:address location="http://testfap.fpt.edu.vn/CourseraApi.asmx" />
+      <soap12:address location="http://fap.fpt.edu.vn/CourseraAPI.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

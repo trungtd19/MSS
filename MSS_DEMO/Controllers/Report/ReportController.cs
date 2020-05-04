@@ -55,12 +55,15 @@ namespace MSS_DEMO.Controllers
                 }
             }
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
             if (searchCheck == "1")
             {
@@ -68,7 +71,7 @@ namespace MSS_DEMO.Controllers
                 dateL.Add(Convert.ToDateTime(date).ToString("dd/MM/yyyy"));
                 ViewBag.SelectDatetime = new SelectList(dateL);
             }
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var listSub = (from sub in context.Subjects
                                where sub.Subject_Active == true
@@ -239,16 +242,19 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
 
                 var CourseStudent = (from stu_cour_log in context.Student_Course_Log
@@ -314,42 +320,8 @@ namespace MSS_DEMO.Controllers
                 }
             }
 
-            var listCampus = (from cp in context.Campus
-                              select cp).ToList();
-            var listSubject = (from sub in context.Subjects
-                               where sub.Subject_Active == true
-                               select sub.Subject_Name).ToList();
-            List<SelectListItem> selectCp = new List<SelectListItem>();
-            List<SelectListItem> selectSj = new List<SelectListItem>();
-            selectCp.Add(new SelectListItem
-            {
-                Text = "--Select Campus--",
-                Value = ""
-            });
-            foreach (var a in listCampus)
-            {
-                selectCp.Add(new SelectListItem
-                {
-                    Text = a.Campus_Name,
-                    Value = a.Campus_ID
-                });
-            }
-
-            selectSj.Add(new SelectListItem
-            {
-                Text = "--Select Subject--",
-                Value = ""
-            });
-            foreach (var a in listSubject)
-            {
-                selectSj.Add(new SelectListItem
-                {
-                    Text = a,
-                    Value = a
-                });
-            }
-            ViewBag.SelectSubject = selectSj;
-            ViewBag.SelectCampus = selectCp;
+            ViewBag.SelectSubject = Sub();
+            ViewBag.SelectCampus = Campus();
             ls.ls1 = studentList;
 
             ViewBag.TotalSearch = studentList.Count();
@@ -384,9 +356,8 @@ namespace MSS_DEMO.Controllers
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
 
             List<SelectListItem> selectCompulsory = new List<SelectListItem>();
             selectCompulsory.Add(new SelectListItem { Text = "--All--", Value = "" });
@@ -394,12 +365,16 @@ namespace MSS_DEMO.Controllers
             selectCompulsory.Add(new SelectListItem { Text = "No", Value = "No" });
             ViewBag.Compulsory = selectCompulsory;
 
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var info = (from stu_cour_log in context.Student_Course_Log
                             where stu_cour_log.Roll == searchString && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
@@ -418,12 +393,7 @@ namespace MSS_DEMO.Controllers
                 var nonCompulsory = courseListLog.Except(courseAll);
                 string timeActive = "";
                 string timeCompleted = "";
-                int checkCompulsory = 0;
-                if(Compulsory == "")
-                {
-                    checkCompulsory = 1;
-                }
-                if (Compulsory == "Yes" || checkCompulsory == 1)
+                if (Compulsory == "Yes" || Compulsory == "")
                 {
                     foreach(var item in listCour)
                     {
@@ -450,6 +420,13 @@ namespace MSS_DEMO.Controllers
                             {
                                 timeCompleted = comple.ToString("dd/MM/yyyy");
                             }
+                            var note = (from menter in context.Mentor_Log
+                                        where menter.Roll == searchString && menter.Subject_ID == courseInfo.Subject_ID && menter.Semester_ID == SelectSemester
+                                        select menter.Note).FirstOrDefault();
+                            //if (note != null && note.Length > 100)
+                            //{
+                            //    note = note.Substring(note.Length - 100, 100);
+                            //}
                             infoOfStudent.Add(new InfoStudent
                             {
                                 Course_Name = item.Course_Name,
@@ -458,6 +435,8 @@ namespace MSS_DEMO.Controllers
                                 Overall_Progress = Math.Round((double)courseInfo.Overall_Progress, 1),
                                 Completion_Time = timeCompleted,
                                 Subject = subName,
+                                SubjectID = courseInfo.Subject_ID,
+                                Note = note,
                                 Estimated = Math.Round((double)courseInfo.Estimated, 1),
                                 Completed = (bool)courseInfo.Completed
                             });
@@ -468,7 +447,7 @@ namespace MSS_DEMO.Controllers
                         }
                     }
                 }
-                if (Compulsory == "No" || checkCompulsory == 1)
+                if (Compulsory == "No" || Compulsory == "")
                 {
                     foreach(var item in nonCompulsory)
                     {
@@ -578,15 +557,18 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var NotRequired = (from stu_cour_log in context.Student_Course_Log
                                    where stu_cour_log.Course_ID == null && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
@@ -746,39 +728,29 @@ namespace MSS_DEMO.Controllers
 
             var listCampus = (from a in context.Campus
                               select a).ToList();
-            List<SelectListItem> selectCp = new List<SelectListItem>();
+
             List<SelectListItem> selectCompulsory = new List<SelectListItem>();
             selectCompulsory.Add(new SelectListItem { Text = "--All--", Value = "" });
             selectCompulsory.Add(new SelectListItem { Text = "Yes", Value = "Yes" });
             selectCompulsory.Add(new SelectListItem { Text = "No", Value = "No" });
             ViewBag.Compulsory = selectCompulsory;
 
-            selectCp.Add(new SelectListItem
-            {
-                Text = "--Select Campus--",
-                Value = ""
-            });
-            foreach (var a in listCampus)
-            {
-                selectCp.Add(new SelectListItem
-                {
-                    Text = a.Campus_Name,
-                    Value = a.Campus_ID
-                });
-            }
-            ViewBag.SelectCampus = selectCp;
+            ViewBag.SelectCampus = Campus();
             ViewBag.SelectSubject = Sub();
 
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
             List<ListStudent> ListStudentCompleted = new List<ListStudent>();
             List<Student_Specification_Log> specCompletedListSpec = new List<Student_Specification_Log>();
@@ -787,7 +759,7 @@ namespace MSS_DEMO.Controllers
             {
                 SearchString = SearchString.Trim().ToUpper();
             }
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var infoStudent = (from stu in context.Students
                                    where stu.Semester_ID == SelectSemester
@@ -795,27 +767,7 @@ namespace MSS_DEMO.Controllers
                 var infoSub = (from sub in context.Subjects
                                where sub.Subject_Active == true
                                select sub).ToList();
-                if(Compulsory == "")
-                {
-                    var listSpecCompulsoryCompleted = context.sp_Get_Compulsory_Spec_Completion(date, SelectSemester);
-                    var listSpecNonCompulsoryCompleted = context.sp_Get_Non_Compulsory_Spec_Completion(date, SelectSemester);
-                    foreach (var item in listSpecCompulsoryCompleted)
-                    {
-                        var roll = item.Split('-')[0];
-                        var sub = item.Split('-')[1];
-                        var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
-                        var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
-                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
-                    }
-                    foreach (var item in listSpecNonCompulsoryCompleted)
-                    {
-                        var roll = item.Roll_Sub.Split('-')[0];
-                        var spec = item.Roll_Sub_Spec_Completed.Split('-')[2];
-                        var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
-                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = spec, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = spec});
-                    }
-                }
-                else if(Compulsory == "Yes")
+                if (Compulsory == "Yes" || Compulsory == "")
                 {
                     var listSpecCompulsoryCompleted = context.sp_Get_Compulsory_Spec_Completion(date, SelectSemester);
                     foreach(var item in listSpecCompulsoryCompleted)
@@ -826,7 +778,8 @@ namespace MSS_DEMO.Controllers
                         var subName = infoSub.Where(m => m.Subject_ID == sub).FirstOrDefault();
                         ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = subName.Subject_Name, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = sub });
                     }
-                }else if(Compulsory == "No")
+                }
+                if (Compulsory == "No" || Compulsory == "")
                 {
                     var listSpecNonCompulsoryCompleted = context.sp_Get_Non_Compulsory_Spec_Completion(date, SelectSemester);
                     foreach (var item in listSpecNonCompulsoryCompleted)
@@ -834,7 +787,7 @@ namespace MSS_DEMO.Controllers
                         var roll = item.Roll_Sub.Split('-')[0];
                         var spec = item.Roll_Sub_Spec_Completed.Split('-')[2];
                         var info = infoStudent.Where(m => m.Roll == roll).FirstOrDefault();
-                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = spec, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = spec });
+                        ListStudentCompleted.Add(new ListStudent { Roll = roll, Campus = info.Campus_ID, Subject = spec, Semester_ID = SelectSemester, Email = info.Email, Subject_ID = "" });
                     }
                 }
 
@@ -899,12 +852,15 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
             ViewBag.SelectSubject = Sub();
-            DateTime date;
+            DateTime date  = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
-            if(SelectDatetime!= null)
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            if (SelectDatetime != null)
+            {
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
 
@@ -1007,14 +963,17 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
             ViewBag.SelectSubject = Sub();
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var studentLog = (from stu_cour_log in context.Student_Course_Log
                                   where stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
@@ -1044,7 +1003,7 @@ namespace MSS_DEMO.Controllers
             return View("Estimated", EstimatedVM);
         }
 
-        public ActionResult StatusOverview(StatusOverviewModel StatusOM, string SelectSemester, string searchCheck, string SearchString, string SelectDatetime, string selectCoursCompleted, string selectFinalStatus, string SelectSubject)
+        public ActionResult StatusOverview(StatusOverviewModel StatusOM, string SelectSemester, string searchCheck, string SearchString, string SelectDatetime, string selectCoursCompleted, string selectFinalStatus, string SelectSubject, string SelectCampus)
         {
             var context = new MSSEntities();
             List<StatusOverviewModel> Status = new List<StatusOverviewModel>();
@@ -1074,48 +1033,32 @@ namespace MSS_DEMO.Controllers
             }
             ViewBag.SelectSubject = Sub();
 
-            List<SelectListItem> selectCours = new List<SelectListItem>();
-            selectCours.Add(new SelectListItem { Text = "--All--", Value = "" });
-            selectCours.Add(new SelectListItem { Text = "No Course Completed", Value = "0" });
-            ViewBag.selectCoursCompleted = selectCours;
-
             List<SelectListItem> selectFinal = new List<SelectListItem>();
             selectFinal.Add(new SelectListItem { Text = "--All--", Value = "" });
             selectFinal.Add(new SelectListItem { Text = "Completed", Value = "Completed" });
             selectFinal.Add(new SelectListItem { Text = "Not Completed", Value = "Not Completed" });
             ViewBag.selectFinalStatus = selectFinal;
 
-            DateTime date;
+            ViewBag.SelectCampus = Campus();
+
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-            //ObjectResult<sp_Get_Main_Report_Result> statusList;
-            if (!String.IsNullOrEmpty(searchCheck))
+
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
-                var statusList = context.sp_Get_Main_Report(date, SelectSemester, -1, "", "", "").ToList();
-                if (!String.IsNullOrEmpty(SearchString))
-                {
-                    statusList = statusList.Where(m => m.Roll.Contains(SearchString)).ToList();
-                }
-                if (!String.IsNullOrEmpty(SelectSubject))
-                {
-                    statusList = statusList.Where(m => m.Subject_ID.Contains(SelectSubject)).ToList();
-                }
-                if (!String.IsNullOrEmpty(selectCoursCompleted))
-                {
-                    statusList = statusList.Where(m => m.No_Course_Completed == Convert.ToInt32(selectCoursCompleted)).ToList();
-                }
-                if (!String.IsNullOrEmpty(selectFinalStatus))
-                {
-                    statusList = statusList.Where(m => m.Final_status.Equals(selectFinalStatus)).ToList();
-                }
+                var statusList = context.sp_Get_Main_Report(date, SelectSemester, Convert.ToInt32(selectCoursCompleted), selectFinalStatus, SearchString, SelectSubject, SelectCampus).ToList();
                 foreach (var item in statusList)
                 {
                     Status.Add(new StatusOverviewModel { Roll = item.Roll, Email = item.Email, SubjectID = item.Subject_ID, SubjectName = item.Subject_Name,
-                        No_Compulsory_Course = item.No_Compulsory_Course,  No_Course_Completed = item.No_Course_Completed, Spec_Completed = item.Spec_Completed, Final_Status = item.Final_status});
+                        No_Compulsory_Course = item.No_Compulsory_Course,  No_Course_Completed = item.No_Course_Completed, Spec_Completed = item.Spec_Completed, Final_Status = item.Final_status , Campus = item.Campus_ID});
                 }
             }
 
@@ -1214,6 +1157,24 @@ namespace MSS_DEMO.Controllers
             
             return student;
         }
+
+        [HttpPost]
+        public ActionResult getListDateCourse(string SelectSemester)
+        {
+            var context = new MSSEntities();
+            var listDate = (from stu_cour_log in context.Student_Course_Log
+                            where stu_cour_log.Semester_ID == SelectSemester
+                            select stu_cour_log.Date_Import).Distinct().ToList();
+            List<string> date = new List<string>();
+            foreach (var _date in listDate)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return (ActionResult)this.Json((object)new
+            {
+                list = date
+            });
+        }
         private List<SelectListItem> Date(string SelectSemester)
         {
             var context = new MSSEntities();
@@ -1236,7 +1197,7 @@ namespace MSS_DEMO.Controllers
                 selectDate.Add(new SelectListItem
                 {
                     Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
-                    Value = a.ToString()
+                    Value = Convert.ToDateTime(a).ToString("dd/MM/yyyy")
                 });
             }
             return selectDate;
@@ -1263,6 +1224,30 @@ namespace MSS_DEMO.Controllers
                 });
             }
             return selectSj;
+        }
+
+        private List<SelectListItem> Campus()
+        {
+            var context = new MSSEntities();
+            var listCampus = (from a in context.Campus
+                              select a).ToList();
+            List<SelectListItem> selectCp = new List<SelectListItem>();
+
+            selectCp.Add(new SelectListItem
+            {
+                Text = "--Select Campus--",
+                Value = ""
+            });
+            foreach (var a in listCampus)
+            {
+                selectCp.Add(new SelectListItem
+                {
+                    Text = a.Campus_Name,
+                    Value = a.Campus_ID
+                });
+            }
+            return selectCp;
+
         }
     }
 }
