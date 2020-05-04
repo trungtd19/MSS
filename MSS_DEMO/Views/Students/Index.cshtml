@@ -43,7 +43,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Semester</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Semester_ID", Model.lstSemester, "--- All ---", new { @name = "Semester_ID", @class = "form-control select" })
+                                            @Html.DropDownList("Semester_ID", Model.lstSemester, "--- All ---", new { @name = "Semester_ID", @class = "form-control select", @style = "width:300px;" })
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +53,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Campus</label>
                                         <div class="col-md-9 col-xs-12">
-                                            @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
+                                            @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select",@style = "width:300px;" })
                                         </div>
                                     </div>
                                 </div>
@@ -104,8 +104,8 @@
         </tr>
 
         @foreach (var item in Model.PageList)
-        {
-            var id = item.Roll + "^" + item.Semester.Semester_ID;
+                                                {
+                                                    var id = item.Roll + "^" + item.Semester.Semester_ID;
 
     <tr>
         <td>@(stt++)</td>
@@ -135,32 +135,32 @@
 
     <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
-@Html.PagedListPager(Model.PageList, page => Url.Action("Index",
+                                            @Html.PagedListPager(Model.PageList, page => Url.Action("Index",
       new { page, Email = Model.Email, Semester_ID = Model.Semester_ID, Campus_ID = Model.Campus_ID, searchCheck = "true" }))
 <script>
         $(function () {
         $("#Export").click(function () {
-        var searchCheck = $("#searchCheck").val() || "1";
-        var Email = $("#Email").val() || "2";
-        var Semester_ID = $("#Semester_ID").val() || "3";
-        var Campus_ID = $("#Campus_ID").val() || "4";
+                                                var searchCheck = $("#searchCheck").val() || "1";
+                                                var Email = $("#Email").val() || "2";
+                                                var Semester_ID = $("#Semester_ID").val() || "3";
+                                                var Campus_ID = $("#Campus_ID").val() || "4";
 
-            var list = searchCheck + "^" + Email + "^" + Semester_ID + "^" + Campus_ID;
+                                                var list = searchCheck + "^" + Email + "^" + Semester_ID + "^" + Campus_ID;
             $.ajax(
                 {
-                    url: '@Url.Action("Export", "Students")',
+                                                    url: '@Url.Action("Export", "Students")',
                     contentType: 'application/json; charset=utf-8',
                     datatype: 'json',
                     data: { check : list},
                     type: "GET",
                     success: function (data) {
-                    window.location.href = "@Url.RouteUrl(new
+                                                        window.location.href = "@Url.RouteUrl(new
                     { Controller = "Students", Action = "Export" })/?check=" + list;
 
                 }
-            });
+                                                });
 
-        });
+                                            });
         });
         $(function () {
         $("#ExportCoursera").click(function () {
