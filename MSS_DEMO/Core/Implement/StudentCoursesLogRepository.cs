@@ -2,18 +2,12 @@
 using MSS_DEMO.Models;
 using MSS_DEMO.MssService;
 using MSS_DEMO.Repository;
-using MSS_DEMO.ServiceReference;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Web;
 using ArrayOfString = MSS_DEMO.MssService.ArrayOfString;
 
 namespace MSS_DEMO.Core.Implement
@@ -132,11 +126,19 @@ namespace MSS_DEMO.Core.Implement
         }
         public List<string> getSubjectID(string CourseName, string Roll, string Semester)
         {
-            var list = context.Database.SqlQuery<string>("SELECT DISTINCT d.Subject_ID FROM  Course b " +
-                "inner join Specification c on b.Specification_ID = c.Specification_ID " +
-                "inner join Subject_Student d on c.Subject_ID = d.Subject_ID " +
-                "where b.Course_Name = '"+ CourseName + "' and d.Roll = '"+ Roll +"' and d.Semester_ID = '" + Semester + "'")
-                .ToList();
+            List<string> list = new List<string>();
+            try
+            {
+                list = context.Database.SqlQuery<string>("SELECT DISTINCT d.Subject_ID FROM  Course b " +
+            "inner join Specification c on b.Specification_ID = c.Specification_ID " +
+            "inner join Subject_Student d on c.Subject_ID = d.Subject_ID " +
+            "where b.Course_Name = '" + CourseName + "' and d.Roll = '" + Roll + "' and d.Semester_ID = '" + Semester + "'")
+            .ToList();
+            }
+            catch
+            {
+                list = new List<string>();
+            }      
             return list;
         }
         public bool IsExitsDateImport(string date)

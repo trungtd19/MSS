@@ -34,8 +34,9 @@
 <span id="success" style="color:green;">@ViewBag.success</span>
 <script>
          $('#Semester_ID').change(function () {
-                var Semester_ID = $('#Semester_ID').val();
-                $.ajax({
+             var Semester_ID = $('#Semester_ID').val();
+             if (Semester_ID != "") {
+                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("getListDate","CleanSystem")',
                     data: { 'Semester_ID': Semester_ID },
@@ -53,6 +54,7 @@
                         }
                     }
                 });
+             }                
          });
     $(function () {
         if (($("#error").text() != "") || ($("#success").text() != "")) {

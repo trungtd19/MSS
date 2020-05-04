@@ -10,36 +10,44 @@
 @{
     int stt = 1;
 }
-<table class="table table-bordered table-striped">
-    <tr>
-        <th>No</th>
-        <th>
-            Subject ID
-        </th>
-        <th>
-            Subject Name
-        </th>
-        <th>
-            Class
-        </th>
+@if (ViewBag.checkData != "")
+{
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>No</th>
+            <th>
+                Subject ID
+            </th>
+            <th>
+                Subject Name
+            </th>
+            <th>
+                Class
+            </th>
 
 
-    </tr>
+        </tr>
 
-    @foreach (var item in Model)
-    {
-<tr>
-    <td>@(stt++)</td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(stt++)</td>
 
-    <td>
-        @Html.DisplayFor(modelItem => item.Subject_ID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Subject_Name)
-    </td>
-    <td>
-        @Html.ActionLink(item.Class_ID, "Detail", new { id = item.id })
-    </td>
-</tr>
-    }
-</table>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject_Name)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Class_ID, "Detail", new { id = item.id })
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <span style="color:red;">Not found data</span>
+}
+
