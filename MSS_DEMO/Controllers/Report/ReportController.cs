@@ -55,12 +55,15 @@ namespace MSS_DEMO.Controllers
                 }
             }
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
             if (searchCheck == "1")
             {
@@ -68,7 +71,7 @@ namespace MSS_DEMO.Controllers
                 dateL.Add(Convert.ToDateTime(date).ToString("dd/MM/yyyy"));
                 ViewBag.SelectDatetime = new SelectList(dateL);
             }
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var listSub = (from sub in context.Subjects
                                where sub.Subject_Active == true
@@ -239,16 +242,19 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
 
                 var CourseStudent = (from stu_cour_log in context.Student_Course_Log
@@ -350,9 +356,8 @@ namespace MSS_DEMO.Controllers
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
 
             List<SelectListItem> selectCompulsory = new List<SelectListItem>();
             selectCompulsory.Add(new SelectListItem { Text = "--All--", Value = "" });
@@ -360,12 +365,16 @@ namespace MSS_DEMO.Controllers
             selectCompulsory.Add(new SelectListItem { Text = "No", Value = "No" });
             ViewBag.Compulsory = selectCompulsory;
 
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var info = (from stu_cour_log in context.Student_Course_Log
                             where stu_cour_log.Roll == searchString && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
@@ -548,15 +557,18 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var NotRequired = (from stu_cour_log in context.Student_Course_Log
                                    where stu_cour_log.Course_ID == null && stu_cour_log.Semester_ID == SelectSemester && stu_cour_log.Date_Import == date
@@ -730,12 +742,15 @@ namespace MSS_DEMO.Controllers
             {
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
             List<ListStudent> ListStudentCompleted = new List<ListStudent>();
             List<Student_Specification_Log> specCompletedListSpec = new List<Student_Specification_Log>();
@@ -744,7 +759,7 @@ namespace MSS_DEMO.Controllers
             {
                 SearchString = SearchString.Trim().ToUpper();
             }
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var infoStudent = (from stu in context.Students
                                    where stu.Semester_ID == SelectSemester
@@ -837,12 +852,15 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
             ViewBag.SelectSubject = Sub();
-            DateTime date;
+            DateTime date  = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
-            if(SelectDatetime!= null)
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            if (SelectDatetime != null)
+            {
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
 
@@ -945,14 +963,17 @@ namespace MSS_DEMO.Controllers
                 SelectSemester = orderedListSemes[0].Semester_ID;
             }
             ViewBag.SelectSubject = Sub();
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-            if (!String.IsNullOrEmpty(searchCheck))
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var studentLog = (from stu_cour_log in context.Student_Course_Log
                                   where stu_cour_log.Date_Import == date && stu_cour_log.Semester_ID == SelectSemester
@@ -1020,15 +1041,18 @@ namespace MSS_DEMO.Controllers
 
             ViewBag.SelectCampus = Campus();
 
-            DateTime date;
+            DateTime date = DateTime.MinValue;
             ViewBag.SelectDatetime = Date(SelectSemester);
-            date = Convert.ToDateTime(Date(SelectSemester).Select(m => m.Value).FirstOrDefault());
+            if (!String.IsNullOrEmpty(Date(SelectSemester).Select(m => m.Value).FirstOrDefault()))
+            {
+                date = DateTime.ParseExact(Date(SelectSemester).Select(m => m.Value).FirstOrDefault(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             if (SelectDatetime != null)
             {
-                date = Convert.ToDateTime(SelectDatetime);
+                date = DateTime.ParseExact(SelectDatetime, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
-            //ObjectResult<sp_Get_Main_Report_Result> statusList;
-            if (!String.IsNullOrEmpty(searchCheck))
+
+            if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
                 var statusList = context.sp_Get_Main_Report(date, SelectSemester, Convert.ToInt32(selectCoursCompleted), selectFinalStatus, SearchString, SelectSubject, SelectCampus).ToList();
                 foreach (var item in statusList)
@@ -1173,7 +1197,7 @@ namespace MSS_DEMO.Controllers
                 selectDate.Add(new SelectListItem
                 {
                     Text = Convert.ToDateTime(a).ToString("dd/MM/yyyy"),
-                    Value = a.ToString()
+                    Value = Convert.ToDateTime(a).ToString("dd/MM/yyyy")
                 });
             }
             return selectDate;
