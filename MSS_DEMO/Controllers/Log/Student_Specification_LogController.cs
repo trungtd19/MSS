@@ -156,7 +156,7 @@ namespace MSS_DEMO.Controllers.Log
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             var list = LogList.ToList();
-            sb.Append(string.Join(",", "Name", "Email", "Campus", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
+            sb.Append(string.Join(",", "Name", "Email", "Campus", "Subject", "Specialization", "Specialization Slug", "University", "Enrollment Time", "Last Activity Time",
                 "Completed", "Status", "Program Slug", "Program Name", "Enrollment Sourse", "Completion Time", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
@@ -165,6 +165,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Campus),
+                    csv.AddCSVQuotes(item.Subject_ID),
                     csv.AddCSVQuotes(item.Specialization),
                     csv.AddCSVQuotes(item.Specialization_Slug),
                     csv.AddCSVQuotes(item.University),
