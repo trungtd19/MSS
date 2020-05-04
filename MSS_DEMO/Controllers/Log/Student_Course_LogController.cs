@@ -59,13 +59,9 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
+            var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
             List<string> date = new List<string>();
-            foreach (var _date in listDate)
-            {
-                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
-            }
-            date  = date.Distinct().ToList();
+            date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
             model.importedDate = date;
             model.lstSemester = semesterList;
             model.lstCampus = campusList;
@@ -233,7 +229,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (listNote.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "No data found";
                 }
                 else
                 {

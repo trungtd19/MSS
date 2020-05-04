@@ -8,50 +8,57 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > User Management</span>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
+<hr/>
 <body>
-    <h1>User Management</h1>
-    <p>
-        @using (Html.BeginForm("Index", "User_Role", FormMethod.Post))
-        {
-            <input type="text" name="SearchString" />
-            <button type="submit">Display</button>
-            @Html.ActionLink("Add new user", "Create")
+    <h2>User Management</h2>
 
-        }
-
-    </p>
+    @using (Html.BeginForm("Index", "User_Role", FormMethod.Post))
+    {
+        <div class="form-group">
+            <div class="form-group">
+                <label class="col-md-1 control-label">User: </label>
+                <div class="col-md-2 col-xs-12">
+                    <input type="text" name="SearchString" class="form-control" />
+                </div>
+                <div class="col-md-1" style="margin-left: 27px;">
+                    <button class="btn btn-success" type="submit">Display</button>
+                </div>
+                <div class="col-md-2"style="float:left">
+                    @Html.ActionLink("Add new user", "Create")
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+    <br />
     @if (Model != null)
     {
-        <table border="1">
+        <table class="table table-bordered table-striped" style="width: 50%;">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Login)
+                    Login
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.isActive)
+                   IsActive
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Role.Role_Name)
-                </th>              
+                   Role Name
+                </th>
             </tr>
 
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.isActive)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role.Role_Name)
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role.Role_Name)
+                    </td>
+                </tr>
             }
 
         </table>

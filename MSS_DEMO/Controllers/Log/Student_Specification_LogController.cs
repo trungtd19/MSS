@@ -21,7 +21,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        [CheckCredential(Role_ID = "3")]
+        [CheckCredential(Role_ID = "4")]
         public ActionResult Index(SpecReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
@@ -47,12 +47,9 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
+            var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
             List<string> date = new List<string>();
-            foreach (var _date in listDate)
-            {
-                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
-            }
+            date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
             date = date.Distinct().ToList();
             model.importedDate = date;
             model.lstSemester = semesterList;

@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Specialization Report";
 }
+<style>
+    .form-group{
+        margin:2px;
+    }
+</style>
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Report", "Report", "Home") > Specialization Report</span>
 <hr />
@@ -35,56 +40,62 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Email</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
-                                        @Html.Hidden("searchCheck", "true")
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Email:</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+                                            @Html.Hidden("searchCheck", "true")
+                                        </div>
                                     </div>
                                 </div>
                                 <br />
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Reported date</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("ImportedDate", importedDate, new { @name = "compulsoryCourse", @class = "form-control select" })
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Compulsory:</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            @Html.DropDownList("compulsorySpec", listCompulsory, "--- All ---", new { @name = "compulsorySpec", @class = "form-control select" })
+                                        </div>
                                     </div>
                                 </div>
                                 <br />
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Compulsory</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("compulsorySpec", listCompulsory, "--- All ---", new { @name = "compulsorySpec", @class = "form-control select" })
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Campus:</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
+                                        </div>
                                     </div>
                                 </div>
-                                <br />
-
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6" style="margin-top: 4px;">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Completed</label>
-                                    <div class="col-md-9 col-xs-12">
+                                    <label class="col-md-4 control-label">Completed:</label>
+                                    <div class="col-md-8 col-xs-12">
                                         @Html.DropDownList("completedSpec", listCompleted, "--- All ---", new { @name = "completedSpec", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
+                            <br />
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Campus</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Semester</label>
-                                    <div class="col-md-9 col-xs-12">
+                                    <label class="col-md-4 control-label">Semester:</label>
+                                    <div class="col-md-8 col-xs-12">
                                         @Html.DropDownList("Semester_ID", Model.lstSemester, new { @name = "compulsoryCourse", @class = "form-control select" })
                                     </div>
                                 </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Reported date:</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        @Html.DropDownList("ImportedDate", importedDate, new { @name = "compulsoryCourse", @class = "form-control select" })
+                                    </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                 </div>
                 <div class="panel-footer text-center">
@@ -289,4 +300,27 @@
     $(document).on("mouseup", function () {
         mx = 0;
     });
+        $('#Semester_ID').change(function () {
+                var Semester_ID = $('#Semester_ID').val();
+                 if (Semester_ID != "") {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getListDateSpec","CleanSystem")',
+                    data: { 'Semester_ID': Semester_ID },
+                    dataType: 'json',
+                    success: function (data) {
+                        sl = document.getElementById("ImportedDate");
+                        while (sl.firstChild) {
+                            sl.removeChild(sl.firstChild);
+                        }
+                        if (data.list.length > 0) {
+                            for (i = 0; i < data.list.length; i++) {
+                                newOption = new Option(data.list[i]);
+                                document.getElementById("ImportedDate").options.add(newOption);
+                            }
+                        }
+                    }
+                });
+                }
+         });
 </script>
