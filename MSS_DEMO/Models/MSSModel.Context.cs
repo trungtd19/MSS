@@ -12,6 +12,8 @@ namespace MSS_DEMO.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class MSSEntities : DbContext
     {
@@ -39,5 +41,31 @@ namespace MSS_DEMO.Models
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<Subject_Student> Subject_Student { get; set; }
         public virtual DbSet<User_Role> User_Role { get; set; }
+    
+        public virtual ObjectResult<string> sp_Get_Compulsory_Spec_Completion(Nullable<System.DateTime> date_Import, string semester_ID)
+        {
+            var date_ImportParameter = date_Import.HasValue ?
+                new ObjectParameter("Date_Import", date_Import) :
+                new ObjectParameter("Date_Import", typeof(System.DateTime));
+    
+            var semester_IDParameter = semester_ID != null ?
+                new ObjectParameter("Semester_ID", semester_ID) :
+                new ObjectParameter("Semester_ID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_Get_Compulsory_Spec_Completion", date_ImportParameter, semester_IDParameter);
+        }
+    
+        public virtual ObjectResult<sp_Get_Non_Compulsory_Spec_Completion_Result> sp_Get_Non_Compulsory_Spec_Completion(Nullable<System.DateTime> date_Import, string semester_ID)
+        {
+            var date_ImportParameter = date_Import.HasValue ?
+                new ObjectParameter("Date_Import", date_Import) :
+                new ObjectParameter("Date_Import", typeof(System.DateTime));
+    
+            var semester_IDParameter = semester_ID != null ?
+                new ObjectParameter("Semester_ID", semester_ID) :
+                new ObjectParameter("Semester_ID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_Non_Compulsory_Spec_Completion_Result>("sp_Get_Non_Compulsory_Spec_Completion", date_ImportParameter, semester_IDParameter);
+        }
     }
 }

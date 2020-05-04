@@ -47,11 +47,12 @@ namespace MSS_DEMO.Core.Import
                 if (Spec_ID_CSV != -1) break;
             }
             if (Spec_ID_CSV != -1)
+            {
                 return new Student_Specification_Log
                 {
                     Email = row[1].ToString(),
                     Roll = row[2].ToString().Split('-')[2],
-                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : null,
                     Specification_ID = Spec_ID_CSV,
                     Campus = row[2].ToString().Split('-')[1],
                     Specialization = row[3].ToString(),
@@ -70,13 +71,14 @@ namespace MSS_DEMO.Core.Import
                     Name = row[0].ToString(),
                     Enrollment_Source = row[12].ToString(),
                 };
+            }
             else
             {
                 return new Student_Specification_Log
                 {
                     Email = row[1].ToString(),
                     Roll = row[2].ToString().Split('-')[2],
-                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : null,
                     Campus = row[2].ToString().Split('-')[1],
                     Specialization = row[3].ToString(),
                     Specialization_Slug = row[4].ToString(),
@@ -95,6 +97,7 @@ namespace MSS_DEMO.Core.Import
                     Enrollment_Source = row[12].ToString(),
                 };
             }
+        
         }
         public Student_Course_Log GetStudentCourse(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID, List<string> lstSubjectID)
         {
@@ -126,7 +129,7 @@ namespace MSS_DEMO.Core.Import
                     Roll = row[2].ToString().Split('-')[2],
                     Course_ID = Cour_ID_CSV,
                     Course_Name = row[3].ToString(),
-                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : null,
                     Campus = row[2].ToString().Split('-')[1],
                     Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
                     Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),
@@ -155,7 +158,7 @@ namespace MSS_DEMO.Core.Import
                     Email = row[1].ToString(),
                     Roll = row[2].ToString().Split('-')[2],
                     Course_Name = row[3].ToString(),
-                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : "",
+                    Subject_ID = lstSubjectID.Count > 0 ? lstSubjectID[0] : null,
                     Campus = row[2].ToString().Split('-')[1],
                     Course_Enrollment_Time = row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970"),
                     Course_Start_Time = row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970"),

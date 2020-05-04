@@ -197,11 +197,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Connected Services\ServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Certificates\CertificatesController.cs" />
     <Compile Include="Controllers\LoginAs\LoginAsController.cs" />
@@ -285,16 +280,7 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecReportViewModel.cs" />
-    <Compile Include="Models\sp_Get_Main_Report_Result.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\sp_Get_Non_Compulsory_Spec_Completion_Result.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StatusOverviewModel.cs" />
@@ -314,9 +300,6 @@
     <Compile Include="Models\Subject_Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\User_Role.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -328,30 +311,17 @@
     <Compile Include="Core\Implement\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\MssService\CourseraApi.wsdl" />
+    <None Include="Connected Services\MssService\CourseraAPI.wsdl" />
     <Content Include="Connected Services\MssService\MSS_DEMO.MssService.GetScheduledSubjectResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Connected Services\MssService\MSS_DEMO.MssService.getStudentsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Connected Services\ServiceReference\MSSWS.disco" />
-    <None Include="Connected Services\ServiceReference\configuration91.svcinfo" />
-    <None Include="Connected Services\ServiceReference\configuration.svcinfo" />
-    <None Include="Connected Services\MssService\CourseraApi.disco" />
+    <None Include="Connected Services\MssService\CourseraAPI.disco" />
     <None Include="Connected Services\MssService\configuration91.svcinfo" />
     <None Include="Connected Services\MssService\configuration.svcinfo" />
     <None Include="Connected Services\MssService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.getScheduledSubjectResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\ServiceReference\MSS_DEMO.ServiceReference.getStudentsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Connected Services\ServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -377,7 +347,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
-    <None Include="Connected Services\ServiceReference\MSSWS.wsdl" />
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.min.js" />
@@ -486,6 +455,7 @@
     <Content Include="Views\CleanSystem\Index.cshtml" />
     <Content Include="Views\LoginAs\Index.cshtml" />
     <Content Include="Views\Report\Estimated.cshtml" />
+    <Content Include="Views\Report\StatusOverview.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -493,7 +463,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\StatusOverview.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -514,7 +483,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\MssService\" />
-    <WCFMetadataStorage Include="Connected Services\ServiceReference\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -11,7 +11,6 @@ using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
 using MSS_DEMO.MssService;
 using MSS_DEMO.Repository;
-using MSS_DEMO.ServiceReference;
 using PagedList;
 
 namespace MSS_DEMO.Controllers.Log
@@ -96,7 +95,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsoryCourse != null)
                 {
-                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
+                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Subject_ID))
                 {                  
@@ -135,7 +134,10 @@ namespace MSS_DEMO.Controllers.Log
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
             DateTime date = DateTime.Now;
             var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault().Semester_Name;
-            return View(unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester));
+            var lstSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester);
+            if (lstSubjectClass.Count > 0) ViewBag.checkData = "true";
+            else ViewBag.checkData = "";
+            return View(lstSubjectClass);
         }
         public ActionResult Detail(CoursesReportViewModel model,string id,string searchCheck, int? page)
         {
@@ -223,7 +225,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsoryCourse != null)
                 {
-                    listNote = model.compulsoryCourse == "Yes" ? listNote.Where(s => s.Subject_ID != "").ToList() :  listNote.Where(s => s.Subject_ID == "").ToList();
+                    listNote = model.compulsoryCourse == "Yes" ? listNote.Where(s => s.Subject_ID != null).ToList() :  listNote.Where(s => s.Subject_ID == null).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Subject_ID))
                 {
@@ -314,7 +316,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (compulsorySpec != "6")
                 {
-                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
+                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
                 }
                 if (Subject_ID != "4")
                 {
