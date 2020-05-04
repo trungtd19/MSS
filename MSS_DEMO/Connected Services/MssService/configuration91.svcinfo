@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="8GC/BQ+29cozEqOonr8GZDX8P70=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="lmKxowtcg12z00YE0WG9kZ9tyPQ=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="CourseraApiSoap">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CourseraApiSoap" contract="MssService.CourseraApiSoap" bindingType="basicHttpBinding" address="http://testfap.fpt.edu.vn/CourseraApi.asmx" bindingConfiguration="CourseraApiSoap">
+    <endpoint name="CourseraApiSoap" contract="MssService.CourseraApiSoap" bindingType="basicHttpBinding" address="http://fap.fpt.edu.vn/CourseraAPI.asmx" bindingConfiguration="CourseraApiSoap">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://testfap.fpt.edu.vn/CourseraApi.asmx</serializedValue>
+          <serializedValue>http://fap.fpt.edu.vn/CourseraAPI.asmx</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

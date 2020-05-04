@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewBag.Title = "Specification Report";
     SelectList importedDate = new SelectList((IList<string>)ViewBag.ImportedDate);
@@ -30,11 +30,12 @@
     <button class="btn btn-success" type="submit">Delete</button>
 }
 <br />
-<span style="color:red;">@ViewBag.error</span>
-<span style="color:green;">@ViewBag.success</span>
+<span id="error" style="color:red;">@ViewBag.error</span>
+<span id="success" style="color:green;">@ViewBag.success</span>
 <script>
          $('#Semester_ID').change(function () {
                 var Semester_ID = $('#Semester_ID').val();
+                 if (Semester_ID != "") {
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("getListDateSpec","CleanSystem")',
@@ -53,6 +54,7 @@
                         }
                     }
                 });
+                }
          });
         $(function () {
         if (($("#error").text() != "") || ($("#success").text() != "")) {

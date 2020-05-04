@@ -118,6 +118,9 @@
                             Campus
                         </th>
                         <th>
+                            Subject
+                        </th>
+                        <th>
                             Specialization
                         </th>
                         <th>
@@ -163,59 +166,62 @@
                         var complete = item.Completed == true ? "Yes" : "No";
                         var status = item.Status == true ? "Yes" : "No";
                         string date = Convert.ToDateTime(item.Date_Import).ToString("dd/MM/yyyy");
-                        var completeTime = item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : item.Specialization_Completion_Time.ToString();
-                        string Specialization_Enrollment_Time = Convert.ToDateTime(item.Specialization_Enrollment_Time).ToString("dd/MM/yyyy");
-                        string Last_Specialization_Activity_Time = Convert.ToDateTime(item.Last_Specialization_Activity_Time).ToString("dd/MM/yyyy");
-                        <tr>
-                            <td>
-                                @(stt++)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Campus)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Specialization)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Specialization_Slug)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.University)
-                            </td>
-                            <td>
-                                @Specialization_Enrollment_Time
-                            </td>
-                            <td>
-                                @Last_Specialization_Activity_Time
-                            </td>
-                            <td>
-                                @complete
-                            </td>
-                            <td>
-                                @status
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Program_Slug)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Program_Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Enrollment_Source)
-                            </td>
-                            <td>
-                                @completeTime
-                            </td>
-                            <td>
-                                @date
-                            </td>
-                        </tr>
+                        var completeTime = item.Specialization_Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Specialization_Completion_Time).ToString("dd/MM/yyyy");
+                        string Specialization_Enrollment_Time = item.Specialization_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Specialization_Enrollment_Time).ToString("dd/MM/yyyy");
+                        string Last_Specialization_Activity_Time = item.Last_Specialization_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Last_Specialization_Activity_Time).ToString("dd/MM/yyyy");
+                    <tr>
+                        <td>
+                            @(stt++)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Specialization_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University)
+                        </td>
+                        <td>
+                            @Specialization_Enrollment_Time
+                        </td>
+                        <td>
+                            @Last_Specialization_Activity_Time
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Enrollment_Source)
+                        </td>
+                        <td>
+                            @completeTime
+                        </td>
+                        <td>
+                            @date
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

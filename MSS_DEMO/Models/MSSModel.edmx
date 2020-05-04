@@ -127,6 +127,7 @@
           </Key>
           <Property Name="Specification_Log_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" />
+          <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
           <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
           <Property Name="Specialization_Slug" Type="nvarchar" MaxLength="50" />
           <Property Name="University" Type="nvarchar" MaxLength="250" />
@@ -422,6 +423,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_Get_Compulsory_Spec_Completion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date_Import" Type="datetime" Mode="In" />
+          <Parameter Name="Semester_ID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_Get_Non_Compulsory_Spec_Completion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date_Import" Type="datetime" Mode="In" />
+          <Parameter Name="Semester_ID" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="MSSModelStoreContainer">
           <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Certificate" EntityType="Self.Certificate" Schema="dbo" store:Type="Tables" />
@@ -674,6 +683,7 @@
           </Key>
           <Property Name="Specification_Log_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Specialization" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Specialization_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="University" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -1075,7 +1085,19 @@
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="Subject_Student" EntitySet="Subject_Student" />
           </AssociationSet>
+          <FunctionImport Name="sp_Get_Compulsory_Spec_Completion" ReturnType="Collection(String)">
+            <Parameter Name="Date_Import" Mode="In" Type="DateTime" />
+            <Parameter Name="Semester_ID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_Get_Non_Compulsory_Spec_Completion" ReturnType="Collection(MSSModel.sp_Get_Non_Compulsory_Spec_Completion_Result)">
+            <Parameter Name="Date_Import" Mode="In" Type="DateTime" />
+            <Parameter Name="Semester_ID" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_Get_Non_Compulsory_Spec_Completion_Result">
+          <Property Type="String" Name="Roll_Sub" Nullable="true" MaxLength="101" />
+          <Property Type="String" Name="Roll_Sub_Spec_Completed" Nullable="true" MaxLength="252" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1212,6 +1234,7 @@
               <MappingFragment StoreEntitySet="Student_Specification_Log">
                 <ScalarProperty Name="Specification_Log_ID" ColumnName="Specification_Log_ID" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
                 <ScalarProperty Name="Specialization" ColumnName="Specialization" />
                 <ScalarProperty Name="Specialization_Slug" ColumnName="Specialization_Slug" />
                 <ScalarProperty Name="University" ColumnName="University" />
@@ -1262,6 +1285,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_Get_Compulsory_Spec_Completion" FunctionName="MSSModel.Store.sp_Get_Compulsory_Spec_Completion" />
+          <FunctionImportMapping FunctionImportName="sp_Get_Non_Compulsory_Spec_Completion" FunctionName="MSSModel.Store.sp_Get_Non_Compulsory_Spec_Completion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSSModel.sp_Get_Non_Compulsory_Spec_Completion_Result">
+                <ScalarProperty Name="Roll_Sub" ColumnName="Roll_Sub" />
+                <ScalarProperty Name="Roll_Sub_Spec_Completed" ColumnName="Roll_Sub_Spec_Completed" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
