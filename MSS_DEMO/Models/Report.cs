@@ -54,6 +54,7 @@ namespace MSS_DEMO.Models
         public double Estimated { get; set; }
         public string Completion_Time { get; set; }
         public string Subject { get; set; }
+        public string SubjectID { get; set; }
         public string Note { get; set; }
         public List<InfoStudent> InforList { get; set; }
     }
