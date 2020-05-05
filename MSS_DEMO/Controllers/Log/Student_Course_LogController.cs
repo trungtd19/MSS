@@ -160,7 +160,7 @@ namespace MSS_DEMO.Controllers.Log
                             var rolls = rollFap[0].RollNumber.ToString().Trim();
                             rolls = "," + rolls + ",";
                             var maxDate = new MSSEntities().Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, Convert.ToInt32(selectCoursCompleted), selectFinalStatus,model.Roll == null ? "" : model.Roll, id.Split('^')[0], "", "").ToList();
+                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, Convert.ToInt32(selectCoursCompleted), selectFinalStatus,model.Roll == null ? "" : model.Roll, id.Split('^')[0], "", rolls).ToList();
                             foreach (var item in statusList)
                             {
                                 Status.Add(new StatusOverviewModel
