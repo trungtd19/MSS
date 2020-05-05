@@ -10,8 +10,8 @@
             <PropertyRef Name="Campus_ID" />
           </Key>
           <Property Name="Campus_ID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Campus_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Campus_Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Contact_Point" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="Certificate">
@@ -75,7 +75,7 @@
           </Key>
           <Property Name="Specification_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
-          <Property Name="Specification_Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Specification_Name" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="Is_Real_Specification" Type="bit" Nullable="false" />
           <Property Name="Url" Type="nvarchar" MaxLength="1000" />
           <Property Name="Description" Type="nvarchar" MaxLength="1500" />
@@ -85,7 +85,7 @@
             <PropertyRef Name="Roll" />
             <PropertyRef Name="Semester_ID" />
           </Key>
-          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Full_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Campus_ID" Type="varchar" MaxLength="50" Nullable="false" />
@@ -103,7 +103,7 @@
           <Property Name="Estimated" Type="float" />
           <Property Name="Completed" Type="bit" />
           <Property Name="Status" Type="bit" />
-          <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
+          <Property Name="Program_Slug" Type="nvarchar" MaxLength="150" />
           <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Completion_Time" Type="datetime" />
           <Property Name="Course_ID" Type="int" />
@@ -118,7 +118,7 @@
           <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Course_Slug" Type="nvarchar" MaxLength="150" />
-          <Property Name="University" Type="nvarchar" MaxLength="150" />
+          <Property Name="University" Type="nvarchar" MaxLength="250" />
           <Property Name="Enrollment_Source" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Student_Specification_Log">
@@ -127,16 +127,15 @@
           </Key>
           <Property Name="Specification_Log_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Roll" Type="varchar" MaxLength="50" />
-          <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
-          <Property Name="Specialization" Type="nvarchar" MaxLength="150" />
-          <Property Name="Specialization_Slug" Type="nvarchar" MaxLength="50" />
+          <Property Name="Specialization" Type="nvarchar" MaxLength="250" />
+          <Property Name="Specialization_Slug" Type="nvarchar" MaxLength="250" />
           <Property Name="University" Type="nvarchar" MaxLength="250" />
           <Property Name="Specialization_Enrollment_Time" Type="datetime" />
           <Property Name="Last_Specialization_Activity_Time" Type="datetime" />
           <Property Name="Completed" Type="bit" />
           <Property Name="Status" Type="bit" />
-          <Property Name="Program_Slug" Type="nvarchar" MaxLength="50" />
-          <Property Name="Program_Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Program_Slug" Type="nvarchar" MaxLength="250" />
+          <Property Name="Program_Name" Type="nvarchar" MaxLength="250" />
           <Property Name="Specialization_Completion_Time" Type="datetime" />
           <Property Name="Campus" Type="nvarchar" MaxLength="150" />
           <Property Name="Date_Import" Type="datetime" />
@@ -146,6 +145,7 @@
           <Property Name="Semester_ID" Type="varchar" MaxLength="50" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" />
           <Property Name="Enrollment_Source" Type="nvarchar" MaxLength="150" />
+          <Property Name="Subject_ID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -170,7 +170,7 @@
           </Key>
           <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Role_ID" Type="int" Nullable="false" />
-          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Certificate_Course">
@@ -427,6 +427,15 @@
           <Parameter Name="Date_Import" Type="datetime" Mode="In" />
           <Parameter Name="Semester_ID" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_Get_Main_Report" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Date_Import" Type="datetime" Mode="In" />
+          <Parameter Name="Semester_ID" Type="varchar" Mode="In" />
+          <Parameter Name="No_Course_Completed" Type="int" Mode="In" />
+          <Parameter Name="Final_Status" Type="varchar" Mode="In" />
+          <Parameter Name="Roll" Type="varchar" Mode="In" />
+          <Parameter Name="Subjet_ID" Type="varchar" Mode="In" />
+          <Parameter Name="Campus_ID" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="sp_Get_Non_Compulsory_Spec_Completion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Date_Import" Type="datetime" Mode="In" />
           <Parameter Name="Semester_ID" Type="varchar" Mode="In" />
@@ -537,8 +546,8 @@
             <PropertyRef Name="Campus_ID" />
           </Key>
           <Property Name="Campus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Campus_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Campus_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Contact_Point" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Student_Campus" FromRole="Campus" ToRole="Student" />
         </EntityType>
@@ -617,7 +626,7 @@
           </Key>
           <Property Name="Specification_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Specification_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Specification_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Is_Real_Specification" Type="Boolean" Nullable="false" />
           <Property Name="Url" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
@@ -631,7 +640,7 @@
             <PropertyRef Name="Roll" />
             <PropertyRef Name="Semester_ID" />
           </Key>
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Full_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Campus_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -656,7 +665,7 @@
           <Property Name="Estimated" Type="Double" />
           <Property Name="Completed" Type="Boolean" />
           <Property Name="Status" Type="Boolean" />
-          <Property Name="Program_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Program_Slug" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Completion_Time" Type="DateTime" Precision="3" />
           <Property Name="Course_ID" Type="Int32" />
@@ -671,7 +680,7 @@
           <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Course_Slug" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="University" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="University" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Enrollment_Source" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Log_Course" FromRole="Student_Course_Log" ToRole="Course" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Log_Student" FromRole="Student_Course_Log" ToRole="Student" />
@@ -683,16 +692,15 @@
           </Key>
           <Property Name="Specification_Log_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Roll" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Specialization" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Specialization_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Specialization" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Specialization_Slug" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="University" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Specialization_Enrollment_Time" Type="DateTime" Precision="3" />
           <Property Name="Last_Specialization_Activity_Time" Type="DateTime" Precision="3" />
           <Property Name="Completed" Type="Boolean" />
           <Property Name="Status" Type="Boolean" />
-          <Property Name="Program_Slug" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Program_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Program_Slug" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Program_Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Specialization_Completion_Time" Type="DateTime" Precision="3" />
           <Property Name="Campus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Date_Import" Type="DateTime" Precision="3" />
@@ -702,6 +710,7 @@
           <Property Name="Semester_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Enrollment_Source" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Subject_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Specification" Relationship="Self.FK_Student_Specification_Log_Specification" FromRole="Student_Specification_Log" ToRole="Specification" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Specification_Log_Student" FromRole="Student_Specification_Log" ToRole="Student" />
           <NavigationProperty Name="User_Role" Relationship="Self.FK_Student_Specification_Log_User_Role" FromRole="Student_Specification_Log" ToRole="User_Role" />
@@ -734,7 +743,7 @@
           </Key>
           <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Role_ID" Type="Int32" Nullable="false" />
-          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Role" Relationship="Self.FK_User_Role_Role" FromRole="User_Role" ToRole="Role" />
           <NavigationProperty Name="Student_Course_Log" Relationship="Self.FK_Student_Course_Log_User_Role" FromRole="User_Role" ToRole="Student_Course_Log" />
@@ -1089,14 +1098,34 @@
             <Parameter Name="Date_Import" Mode="In" Type="DateTime" />
             <Parameter Name="Semester_ID" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_Get_Main_Report" ReturnType="Collection(MSSModel.sp_Get_Main_Report_Result)">
+            <Parameter Name="Date_Import" Mode="In" Type="DateTime" />
+            <Parameter Name="Semester_ID" Mode="In" Type="String" />
+            <Parameter Name="No_Course_Completed" Mode="In" Type="Int32" />
+            <Parameter Name="Final_Status" Mode="In" Type="String" />
+            <Parameter Name="Roll" Mode="In" Type="String" />
+            <Parameter Name="Subjet_ID" Mode="In" Type="String" />
+            <Parameter Name="Campus_ID" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="sp_Get_Non_Compulsory_Spec_Completion" ReturnType="Collection(MSSModel.sp_Get_Non_Compulsory_Spec_Completion_Result)">
             <Parameter Name="Date_Import" Mode="In" Type="DateTime" />
             <Parameter Name="Semester_ID" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_Get_Main_Report_Result">
+          <Property Type="String" Name="Roll" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Campus_ID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Subject_ID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Subject_Name" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="No_Compulsory_Course" Nullable="true" />
+          <Property Type="Int32" Name="No_Course_Completed" Nullable="true" />
+          <Property Type="String" Name="Spec_Completed" Nullable="true" MaxLength="9" />
+          <Property Type="String" Name="Final_status" Nullable="false" MaxLength="13" />
+        </ComplexType>
         <ComplexType Name="sp_Get_Non_Compulsory_Spec_Completion_Result">
           <Property Type="String" Name="Roll_Sub" Nullable="true" MaxLength="101" />
-          <Property Type="String" Name="Roll_Sub_Spec_Completed" Nullable="true" MaxLength="252" />
+          <Property Type="String" Name="Roll_Sub_Spec_Completed" Nullable="true" MaxLength="352" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1234,7 +1263,6 @@
               <MappingFragment StoreEntitySet="Student_Specification_Log">
                 <ScalarProperty Name="Specification_Log_ID" ColumnName="Specification_Log_ID" />
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
-                <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
                 <ScalarProperty Name="Specialization" ColumnName="Specialization" />
                 <ScalarProperty Name="Specialization_Slug" ColumnName="Specialization_Slug" />
                 <ScalarProperty Name="University" ColumnName="University" />
@@ -1253,6 +1281,7 @@
                 <ScalarProperty Name="Semester_ID" ColumnName="Semester_ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Enrollment_Source" ColumnName="Enrollment_Source" />
+                <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1286,6 +1315,21 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_Get_Compulsory_Spec_Completion" FunctionName="MSSModel.Store.sp_Get_Compulsory_Spec_Completion" />
+          <FunctionImportMapping FunctionImportName="sp_Get_Main_Report" FunctionName="MSSModel.Store.sp_Get_Main_Report">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MSSModel.sp_Get_Main_Report_Result">
+                <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
+                <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
+                <ScalarProperty Name="Subject_Name" ColumnName="Subject_Name" />
+                <ScalarProperty Name="No_Compulsory_Course" ColumnName="No_Compulsory_Course" />
+                <ScalarProperty Name="No_Course_Completed" ColumnName="No_Course_Completed" />
+                <ScalarProperty Name="Spec_Completed" ColumnName="Spec_Completed" />
+                <ScalarProperty Name="Final_status" ColumnName="Final_status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_Get_Non_Compulsory_Spec_Completion" FunctionName="MSSModel.Store.sp_Get_Non_Compulsory_Spec_Completion">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MSSModel.sp_Get_Non_Compulsory_Spec_Completion_Result">

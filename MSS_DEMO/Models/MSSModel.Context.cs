@@ -55,6 +55,39 @@ namespace MSS_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_Get_Compulsory_Spec_Completion", date_ImportParameter, semester_IDParameter);
         }
     
+        public virtual ObjectResult<sp_Get_Main_Report_Result> sp_Get_Main_Report(Nullable<System.DateTime> date_Import, string semester_ID, Nullable<int> no_Course_Completed, string final_Status, string roll, string subjet_ID, string campus_ID)
+        {
+            var date_ImportParameter = date_Import.HasValue ?
+                new ObjectParameter("Date_Import", date_Import) :
+                new ObjectParameter("Date_Import", typeof(System.DateTime));
+    
+            var semester_IDParameter = semester_ID != null ?
+                new ObjectParameter("Semester_ID", semester_ID) :
+                new ObjectParameter("Semester_ID", typeof(string));
+    
+            var no_Course_CompletedParameter = no_Course_Completed.HasValue ?
+                new ObjectParameter("No_Course_Completed", no_Course_Completed) :
+                new ObjectParameter("No_Course_Completed", typeof(int));
+    
+            var final_StatusParameter = final_Status != null ?
+                new ObjectParameter("Final_Status", final_Status) :
+                new ObjectParameter("Final_Status", typeof(string));
+    
+            var rollParameter = roll != null ?
+                new ObjectParameter("Roll", roll) :
+                new ObjectParameter("Roll", typeof(string));
+    
+            var subjet_IDParameter = subjet_ID != null ?
+                new ObjectParameter("Subjet_ID", subjet_ID) :
+                new ObjectParameter("Subjet_ID", typeof(string));
+    
+            var campus_IDParameter = campus_ID != null ?
+                new ObjectParameter("Campus_ID", campus_ID) :
+                new ObjectParameter("Campus_ID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_Main_Report_Result>("sp_Get_Main_Report", date_ImportParameter, semester_IDParameter, no_Course_CompletedParameter, final_StatusParameter, rollParameter, subjet_IDParameter, campus_IDParameter);
+        }
+    
         public virtual ObjectResult<sp_Get_Non_Compulsory_Spec_Completion_Result> sp_Get_Non_Compulsory_Spec_Completion(Nullable<System.DateTime> date_Import, string semester_ID)
         {
             var date_ImportParameter = date_Import.HasValue ?

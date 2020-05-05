@@ -16,7 +16,6 @@ namespace MSS_DEMO.Models
     {
         public int Specification_Log_ID { get; set; }
         public string Roll { get; set; }
-        public string Subject_ID { get; set; }
         public string Specialization { get; set; }
         public string Specialization_Slug { get; set; }
         public string University { get; set; }
@@ -35,6 +34,7 @@ namespace MSS_DEMO.Models
         public string Semester_ID { get; set; }
         public string Name { get; set; }
         public string Enrollment_Source { get; set; }
+        public string Subject_ID { get; set; }
     
         public virtual Specification Specification { get; set; }
         public virtual Student Student { get; set; }

@@ -177,7 +177,7 @@ namespace MSS_DEMO.Controllers.SetUp
                 myExport.AddRow();
                 myExport[""] = course.groupRowNo;
                 myExport["Subject ID"] = course.Subject_ID;
-                myExport["Course Name"] = course.Subject_ID;
+                myExport["Course Name"] = course.Courses_Name;
                 myExport["Deadline"] = course.deadlineString;
                 myExport["Semester"] = course.Semester_Name;
             }

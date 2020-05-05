@@ -280,6 +280,9 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecReportViewModel.cs" />
+    <Compile Include="Models\sp_Get_Main_Report_Result.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_Get_Non_Compulsory_Spec_Completion_Result.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
