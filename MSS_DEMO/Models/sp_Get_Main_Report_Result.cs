@@ -15,6 +15,7 @@ namespace MSS_DEMO.Models
     {
         public string Roll { get; set; }
         public string Email { get; set; }
+        public string Note { get; set; }
         public string Campus_ID { get; set; }
         public string Subject_ID { get; set; }
         public string Subject_Name { get; set; }

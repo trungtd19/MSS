@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="02acc580-73de-4c6d-8a1e-02416278b1a6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fb3551ff-a2ae-4ae8-ad0a-3261730ef409" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,8 +22,8 @@
     <MetadataSource Address="http://fap.fpt.edu.vn/CourseraAPI.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="CourseraAPI.disco" MetadataType="Disco" ID="c6bdf535-98c9-45a9-ae4c-c34bbf7b151a" SourceId="1" SourceUrl="http://fap.fpt.edu.vn/CourseraAPI.asmx?disco" />
-    <MetadataFile FileName="CourseraAPI.wsdl" MetadataType="Wsdl" ID="3dad6a00-8ff6-4fb7-a1cb-b9b4cf75c4e4" SourceId="1" SourceUrl="http://fap.fpt.edu.vn/CourseraAPI.asmx?wsdl" />
+    <MetadataFile FileName="CourseraAPI.disco" MetadataType="Disco" ID="3ee9e04e-5902-4c57-afbf-6dfb184a7b7a" SourceId="1" SourceUrl="http://fap.fpt.edu.vn/CourseraAPI.asmx?disco" />
+    <MetadataFile FileName="CourseraAPI.wsdl" MetadataType="Wsdl" ID="363491dc-b57c-438d-b1b7-670d8dbd6069" SourceId="1" SourceUrl="http://fap.fpt.edu.vn/CourseraAPI.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

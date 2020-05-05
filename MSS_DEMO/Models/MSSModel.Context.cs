@@ -55,7 +55,7 @@ namespace MSS_DEMO.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_Get_Compulsory_Spec_Completion", date_ImportParameter, semester_IDParameter);
         }
     
-        public virtual ObjectResult<sp_Get_Main_Report_Result> sp_Get_Main_Report(Nullable<System.DateTime> date_Import, string semester_ID, Nullable<int> no_Course_Completed, string final_Status, string roll, string subjet_ID, string campus_ID)
+        public virtual ObjectResult<sp_Get_Main_Report_Result> sp_Get_Main_Report(Nullable<System.DateTime> date_Import, string semester_ID, Nullable<int> no_Course_Completed, string final_Status, string roll, string subjet_ID, string campus_ID, string list_Roll)
         {
             var date_ImportParameter = date_Import.HasValue ?
                 new ObjectParameter("Date_Import", date_Import) :
@@ -85,7 +85,11 @@ namespace MSS_DEMO.Models
                 new ObjectParameter("Campus_ID", campus_ID) :
                 new ObjectParameter("Campus_ID", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_Main_Report_Result>("sp_Get_Main_Report", date_ImportParameter, semester_IDParameter, no_Course_CompletedParameter, final_StatusParameter, rollParameter, subjet_IDParameter, campus_IDParameter);
+            var list_RollParameter = list_Roll != null ?
+                new ObjectParameter("List_Roll", list_Roll) :
+                new ObjectParameter("List_Roll", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_Get_Main_Report_Result>("sp_Get_Main_Report", date_ImportParameter, semester_IDParameter, no_Course_CompletedParameter, final_StatusParameter, rollParameter, subjet_IDParameter, campus_IDParameter, list_RollParameter);
         }
     
         public virtual ObjectResult<sp_Get_Non_Compulsory_Spec_Completion_Result> sp_Get_Non_Compulsory_Spec_Completion(Nullable<System.DateTime> date_Import, string semester_ID)

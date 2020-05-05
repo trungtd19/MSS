@@ -42,6 +42,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetScheduledSubjectSoapIn">
@@ -56,6 +57,26 @@
   <wsdl:message name="getStudentsSoapOut">
     <wsdl:part name="parameters" element="tns:getStudentsResponse" />
   </wsdl:message>
+  <wsdl:message name="getStudentsHttpGetIn">
+    <wsdl:part name="authenKey" type="s:string" />
+    <wsdl:part name="teacher" type="s:string" />
+    <wsdl:part name="subjectCode" type="s:string" />
+    <wsdl:part name="className" type="s:string" />
+    <wsdl:part name="semester" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getStudentsHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getStudentsHttpPostIn">
+    <wsdl:part name="authenKey" type="s:string" />
+    <wsdl:part name="teacher" type="s:string" />
+    <wsdl:part name="subjectCode" type="s:string" />
+    <wsdl:part name="className" type="s:string" />
+    <wsdl:part name="semester" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="getStudentsHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
   <wsdl:portType name="CourseraApiSoap">
     <wsdl:operation name="GetScheduledSubject">
       <wsdl:input message="tns:GetScheduledSubjectSoapIn" />
@@ -64,6 +85,18 @@
     <wsdl:operation name="getStudents">
       <wsdl:input message="tns:getStudentsSoapIn" />
       <wsdl:output message="tns:getStudentsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="CourseraApiHttpGet">
+    <wsdl:operation name="getStudents">
+      <wsdl:input message="tns:getStudentsHttpGetIn" />
+      <wsdl:output message="tns:getStudentsHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="CourseraApiHttpPost">
+    <wsdl:operation name="getStudents">
+      <wsdl:input message="tns:getStudentsHttpPostIn" />
+      <wsdl:output message="tns:getStudentsHttpPostOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="CourseraApiSoap" type="tns:CourseraApiSoap">
@@ -108,12 +141,42 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
+  <wsdl:binding name="CourseraApiHttpGet" type="tns:CourseraApiHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="getStudents">
+      <http:operation location="/getStudents" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CourseraApiHttpPost" type="tns:CourseraApiHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="getStudents">
+      <http:operation location="/getStudents" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
   <wsdl:service name="CourseraApi">
     <wsdl:port name="CourseraApiSoap" binding="tns:CourseraApiSoap">
       <soap:address location="http://fap.fpt.edu.vn/CourseraAPI.asmx" />
     </wsdl:port>
     <wsdl:port name="CourseraApiSoap12" binding="tns:CourseraApiSoap12">
       <soap12:address location="http://fap.fpt.edu.vn/CourseraAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CourseraApiHttpGet" binding="tns:CourseraApiHttpGet">
+      <http:address location="http://fap.fpt.edu.vn/CourseraAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CourseraApiHttpPost" binding="tns:CourseraApiHttpPost">
+      <http:address location="http://fap.fpt.edu.vn/CourseraAPI.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

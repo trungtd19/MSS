@@ -135,36 +135,19 @@ namespace MSS_DEMO.Controllers.Log
             else ViewBag.checkData = "";
             return View(lstSubjectClass);
         }
-        public ActionResult Detail(CoursesReportViewModel model,string id,string searchCheck, int? page)
+        public ActionResult Detail(StatusOverviewModel model,string id,string searchCheck, string selectCoursCompleted, string selectFinalStatus)
         {
             DateTime date = DateTime.Now;
-            var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault().Semester_Name;
+            var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault();
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester);
+            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester.Semester_Name);
             CourseraApiSoapClient courseraApiSoap = new CourseraApiSoapClient();
             string jsonDataClass = "";
-            List<Student_Course_Log> list = new List<Student_Course_Log>();
-            List<UsageReportNote> listNote = new List<UsageReportNote>();
-            string SearchString = model.Email;
             model.searchCheck = searchCheck;
-            List<SelectListItem> listSubjiect = new List<SelectListItem>();
-            var subject = unitOfWork.Subject.GetAll();
-            foreach (var sub in subject)
+            List<StatusOverviewModel> Status = new List<StatusOverviewModel>();
+            if (!String.IsNullOrEmpty(searchCheck))
             {
-                listSubjiect.Add(new SelectListItem
-                {
-                    Text = sub.Subject_Name,
-                    Value = sub.Subject_ID
-                });
-            }
-                             
-            model.listSubject = listSubjiect;
-            if (searchCheck == null)
-            {
-                page = 1;
-            }
-            else
-            {
+                
                 try
                 {
                     foreach (var subjectClass in listSubjectClass)
@@ -172,29 +155,27 @@ namespace MSS_DEMO.Controllers.Log
                         if (id == subjectClass.id)
                         {
                             string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
-                            jsonDataClass = courseraApiSoap.getStudents(authenKey, userMentor.UserName.Split('@')[0], subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester);
+                            jsonDataClass = courseraApiSoap.getStudents(authenKey, userMentor.UserName.Split('@')[0], subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
                             var rollFap = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RollFAP>>(jsonDataClass);
-                            var listRoll = rollFap[0].RollNumber.ToString().Split(',');
-                            listRoll = listRoll.Distinct().ToArray();
-                            foreach (var roll in listRoll)
+                            var rolls = rollFap[0].RollNumber.ToString().Trim();
+                            rolls = "," + rolls + ",";
+                            var maxDate = new MSSEntities().Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, Convert.ToInt32(selectCoursCompleted), selectFinalStatus,model.Roll == null ? "" : model.Roll, id.Split('^')[0], "", "").ToList();
+                            foreach (var item in statusList)
                             {
-                                if (!string.IsNullOrEmpty(roll))
+                                Status.Add(new StatusOverviewModel
                                 {
-                                    var student = new UsageReportNote();
-                                    try
-                                    {
-                                        var x = unitOfWork.CoursesLog.getListUsageReportNote().ToList();
-                                        student = x.Where(o => o.Roll.Trim() == roll.Trim() && o.Subject_ID.Trim() == subjectClass.Subject_ID.Trim()).FirstOrDefault();
-                                    }
-                                    catch
-                                    {
-                                        continue;
-                                    }
-                                    if (student != null)
-                                    {
-                                        listNote.Add(student);
-                                    }
-                                }
+                                    Roll = item.Roll,
+                                    Email = item.Email,
+                                    Note = item.Note,
+                                    SubjectID = item.Subject_ID,
+                                    SubjectName = item.Subject_Name,
+                                    No_Compulsory_Course = item.No_Compulsory_Course,
+                                    No_Course_Completed = item.No_Course_Completed,
+                                    Spec_Completed = item.Spec_Completed,
+                                    Final_Status = item.Final_status,
+                                    Campus = item.Campus_ID
+                                });
                             }
                             break;
                         }
@@ -202,32 +183,9 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 catch
                 {
-                    listNote = new List<UsageReportNote>();
+                    Status = new List<StatusOverviewModel>();
                 }
- 
-            }
-            ViewBag.Subject = id.Split('^')[0];
-            ViewBag.Class = id.Split('^')[1];
-            if (!String.IsNullOrEmpty(searchCheck))
-            {
-                if (!String.IsNullOrWhiteSpace(SearchString))
-                {
-                    listNote = listNote.Where(s => s.Email.ToUpper().Contains(SearchString.ToUpper())).ToList();
-                }
-
-                if (model.completedCourse != null)
-                {
-                    listNote = model.completedCourse == "Yes" ? listNote.Where(s => s.Completed == true).ToList() : listNote.Where(s => s.Completed == false).ToList();
-                }
-                if (model.compulsoryCourse != null)
-                {
-                    listNote = model.compulsoryCourse == "Yes" ? listNote.Where(s => s.Subject_ID != null).ToList() :  listNote.Where(s => s.Subject_ID == null).ToList();
-                }
-                if (!String.IsNullOrWhiteSpace(model.Subject_ID))
-                {
-                    listNote = listNote.Where(s => s.Subject_ID == model.Subject_ID).ToList();
-                }
-                if (listNote.Count == 0)
+                if (Status.Count == 0)
                 {
                     ViewBag.Nodata = "No data found";
                 }
@@ -236,15 +194,17 @@ namespace MSS_DEMO.Controllers.Log
                     ViewBag.Nodata = "";
                 }
             }
-            List<string> completedCour = new List<string>() { "Yes", "No" };
-            List<string> compulsoryCour = new List<string>() { "Yes", "No" };
-            model.completedCour = completedCour;
-            model.compulsoryCour = compulsoryCour;
-            ViewBag.CountRoll = listNote.Select(o => o.Roll).Distinct().Count();
-            ViewBag.CountLog = listNote.Count();
-            int pageSize = 30;
-            int pageNumber = (page ?? 1);
-            model.PageListLogNote = listNote.ToPagedList(pageNumber, pageSize);
+            ViewBag.Subject = id.Split('^')[0];
+            ViewBag.Class = id.Split('^')[1];
+            ViewBag.SemesterID = semester.Semester_ID;
+            List<SelectListItem> selectFinal = new List<SelectListItem>();
+            selectFinal.Add(new SelectListItem { Text = "--All--", Value = "" });
+            selectFinal.Add(new SelectListItem { Text = "Completed", Value = "Completed" });
+            selectFinal.Add(new SelectListItem { Text = "Not Completed", Value = "Not Completed" });
+            ViewBag.selectFinalStatus = selectFinal;
+            ViewBag.CountRoll = Status.Select(o => o.Roll).Distinct().Count();
+            ViewBag.CountLog = Status.Count();
+            model.OverviewList = Status;
             return View(model);
         }
         [HttpPost]
@@ -256,8 +216,8 @@ namespace MSS_DEMO.Controllers.Log
 
                 Mentor_Log log = new Mentor_Log();
                 var Roll = id.Split('^')[0];
-                var Semester_ID = id.Split('^')[1];
-                var Subject_ID = id.Split('^')[2];
+                var Semester_ID = id.Split('^')[2];
+                var Subject_ID = id.Split('^')[1];
 
 
                 var noteLog = context.Mentor_Log.Where(o => o.Roll.Trim() == Roll && o.Semester_ID.Trim() == Semester_ID.Trim() && o.Subject_ID.Trim() == Subject_ID.Trim()).FirstOrDefault();

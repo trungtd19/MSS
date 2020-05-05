@@ -17,5 +17,7 @@ namespace MSS_DEMO.Models
         public string Final_Status { get; set; }
         public string Campus { get; set; }
         public List<StatusOverviewModel> OverviewList { get; set; }
+        public string Note { get; set; }
+        public string searchCheck { get; set; }
     }
 }

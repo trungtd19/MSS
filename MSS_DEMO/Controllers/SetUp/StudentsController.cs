@@ -181,14 +181,6 @@ namespace MSS_DEMO.Controllers.SetUp
         }
         public ActionResult Delete(string id)
         {
-            //StringBuilder sb = new StringBuilder();
-            //var subject = unitOfWork.SubjectStudent.GetAll().Where(s => s.Roll == id).ToList();
-            //foreach (var _subject in subject)
-            //{
-            //    sb.Append(" - " + _subject.Subject_ID);
-            //}
-            //sb.Remove(0, 2);
-            //ViewBag.Subject = sb;
             var student = unitOfWork.Students.getByRollAndSemester(id);
             return View(student);
         }
@@ -213,31 +205,6 @@ namespace MSS_DEMO.Controllers.SetUp
                 return View(student);
             }
             return RedirectToAction("Index");
-        }
-        public void Export_Student_CSV()
-        {
-            CSVConvert csv = new CSVConvert();
-            var sb = new StringBuilder();
-            IEnumerable<Student> query = unitOfWork.Students.GetAll();
-            var list = query.ToList();
-            Type type = typeof(Student);
-            var props = type.GetProperties();
-            sb.Append(string.Join(",", "ROLL", "Email"));
-            sb.Append(Environment.NewLine);
-            foreach (var item in list)
-            {
-                sb.Append(string.Join(",", csv.AddCSVQuotes(item.Roll), csv.AddCSVQuotes(item.Email)));
-                sb.Append(Environment.NewLine);
-            }
-            var response = System.Web.HttpContext.Current.Response;
-            response.BufferOutput = true;
-            response.Clear();
-            response.ClearHeaders();
-            response.ContentEncoding = Encoding.Unicode;
-            response.AddHeader("content-disposition", "attachment;filename=Student.CSV ");
-            response.ContentType = "text/plain";
-            response.Write(sb.ToString());
-            response.End();
         }
         [HttpPost]
         public ActionResult GetID()

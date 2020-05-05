@@ -1054,7 +1054,7 @@ namespace MSS_DEMO.Controllers
 
             if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
-                var statusList = context.sp_Get_Main_Report(date, SelectSemester, Convert.ToInt32(selectCoursCompleted), selectFinalStatus, SearchString, SelectSubject, SelectCampus).ToList();
+                var statusList = context.sp_Get_Main_Report(date, SelectSemester, Convert.ToInt32(selectCoursCompleted), selectFinalStatus, SearchString, SelectSubject, SelectCampus, "").ToList();
                 foreach (var item in statusList)
                 {
                     Status.Add(new StatusOverviewModel { Roll = item.Roll, Email = item.Email, SubjectID = item.Subject_ID, SubjectName = item.Subject_Name,

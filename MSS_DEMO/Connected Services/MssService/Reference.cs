@@ -9,198 +9,25 @@
 //------------------------------------------------------------------------------
 
 namespace MSS_DEMO.MssService {
-    using System.Runtime.Serialization;
-    using System;
     
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfString", Namespace="http://tempuri.org/", ItemName="string")]
-    [System.SerializableAttribute()]
-    public class ArrayOfString : System.Collections.Generic.List<string> {
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MssService.CourseraApiSoap")]
     public interface CourseraApiSoap {
         
-        // CODEGEN: Generating message contract since element name authenKey from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetScheduledSubject", ReplyAction="*")]
-        MSS_DEMO.MssService.GetScheduledSubjectResponse GetScheduledSubject(MSS_DEMO.MssService.GetScheduledSubjectRequest request);
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string GetScheduledSubject(string authenKey, string teacher, string[] lsSubjects, string semester);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetScheduledSubject", ReplyAction="*")]
-        System.Threading.Tasks.Task<MSS_DEMO.MssService.GetScheduledSubjectResponse> GetScheduledSubjectAsync(MSS_DEMO.MssService.GetScheduledSubjectRequest request);
-        
-        // CODEGEN: Generating message contract since element name authenKey from namespace http://tempuri.org/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getStudents", ReplyAction="*")]
-        MSS_DEMO.MssService.getStudentsResponse getStudents(MSS_DEMO.MssService.getStudentsRequest request);
+        System.Threading.Tasks.Task<string> GetScheduledSubjectAsync(string authenKey, string teacher, string[] lsSubjects, string semester);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getStudents", ReplyAction="*")]
-        System.Threading.Tasks.Task<MSS_DEMO.MssService.getStudentsResponse> getStudentsAsync(MSS_DEMO.MssService.getStudentsRequest request);
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class GetScheduledSubjectRequest {
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string getStudents(string authenKey, string teacher, string subjectCode, string className, string semester);
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetScheduledSubject", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.MssService.GetScheduledSubjectRequestBody Body;
-        
-        public GetScheduledSubjectRequest() {
-        }
-        
-        public GetScheduledSubjectRequest(MSS_DEMO.MssService.GetScheduledSubjectRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class GetScheduledSubjectRequestBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string authenKey;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public string teacher;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public MSS_DEMO.MssService.ArrayOfString lsSubjects;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
-        public string semester;
-        
-        public GetScheduledSubjectRequestBody() {
-        }
-        
-        public GetScheduledSubjectRequestBody(string authenKey, string teacher, MSS_DEMO.MssService.ArrayOfString lsSubjects, string semester) {
-            this.authenKey = authenKey;
-            this.teacher = teacher;
-            this.lsSubjects = lsSubjects;
-            this.semester = semester;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class GetScheduledSubjectResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetScheduledSubjectResponse", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.MssService.GetScheduledSubjectResponseBody Body;
-        
-        public GetScheduledSubjectResponse() {
-        }
-        
-        public GetScheduledSubjectResponse(MSS_DEMO.MssService.GetScheduledSubjectResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class GetScheduledSubjectResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string GetScheduledSubjectResult;
-        
-        public GetScheduledSubjectResponseBody() {
-        }
-        
-        public GetScheduledSubjectResponseBody(string GetScheduledSubjectResult) {
-            this.GetScheduledSubjectResult = GetScheduledSubjectResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class getStudentsRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="getStudents", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.MssService.getStudentsRequestBody Body;
-        
-        public getStudentsRequest() {
-        }
-        
-        public getStudentsRequest(MSS_DEMO.MssService.getStudentsRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class getStudentsRequestBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string authenKey;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public string teacher;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public string subjectCode;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
-        public string className;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
-        public string semester;
-        
-        public getStudentsRequestBody() {
-        }
-        
-        public getStudentsRequestBody(string authenKey, string teacher, string subjectCode, string className, string semester) {
-            this.authenKey = authenKey;
-            this.teacher = teacher;
-            this.subjectCode = subjectCode;
-            this.className = className;
-            this.semester = semester;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class getStudentsResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="getStudentsResponse", Namespace="http://tempuri.org/", Order=0)]
-        public MSS_DEMO.MssService.getStudentsResponseBody Body;
-        
-        public getStudentsResponse() {
-        }
-        
-        public getStudentsResponse(MSS_DEMO.MssService.getStudentsResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class getStudentsResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string getStudentsResult;
-        
-        public getStudentsResponseBody() {
-        }
-        
-        public getStudentsResponseBody(string getStudentsResult) {
-            this.getStudentsResult = getStudentsResult;
-        }
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getStudents", ReplyAction="*")]
+        System.Threading.Tasks.Task<string> getStudentsAsync(string authenKey, string teacher, string subjectCode, string className, string semester);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -230,68 +57,20 @@ namespace MSS_DEMO.MssService {
                 base(binding, remoteAddress) {
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MSS_DEMO.MssService.GetScheduledSubjectResponse MSS_DEMO.MssService.CourseraApiSoap.GetScheduledSubject(MSS_DEMO.MssService.GetScheduledSubjectRequest request) {
-            return base.Channel.GetScheduledSubject(request);
+        public string GetScheduledSubject(string authenKey, string teacher, string[] lsSubjects, string semester) {
+            return base.Channel.GetScheduledSubject(authenKey, teacher, lsSubjects, semester);
         }
         
-        public string GetScheduledSubject(string authenKey, string teacher, MSS_DEMO.MssService.ArrayOfString lsSubjects, string semester) {
-            MSS_DEMO.MssService.GetScheduledSubjectRequest inValue = new MSS_DEMO.MssService.GetScheduledSubjectRequest();
-            inValue.Body = new MSS_DEMO.MssService.GetScheduledSubjectRequestBody();
-            inValue.Body.authenKey = authenKey;
-            inValue.Body.teacher = teacher;
-            inValue.Body.lsSubjects = lsSubjects;
-            inValue.Body.semester = semester;
-            MSS_DEMO.MssService.GetScheduledSubjectResponse retVal = ((MSS_DEMO.MssService.CourseraApiSoap)(this)).GetScheduledSubject(inValue);
-            return retVal.Body.GetScheduledSubjectResult;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MSS_DEMO.MssService.GetScheduledSubjectResponse> MSS_DEMO.MssService.CourseraApiSoap.GetScheduledSubjectAsync(MSS_DEMO.MssService.GetScheduledSubjectRequest request) {
-            return base.Channel.GetScheduledSubjectAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<MSS_DEMO.MssService.GetScheduledSubjectResponse> GetScheduledSubjectAsync(string authenKey, string teacher, MSS_DEMO.MssService.ArrayOfString lsSubjects, string semester) {
-            MSS_DEMO.MssService.GetScheduledSubjectRequest inValue = new MSS_DEMO.MssService.GetScheduledSubjectRequest();
-            inValue.Body = new MSS_DEMO.MssService.GetScheduledSubjectRequestBody();
-            inValue.Body.authenKey = authenKey;
-            inValue.Body.teacher = teacher;
-            inValue.Body.lsSubjects = lsSubjects;
-            inValue.Body.semester = semester;
-            return ((MSS_DEMO.MssService.CourseraApiSoap)(this)).GetScheduledSubjectAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        MSS_DEMO.MssService.getStudentsResponse MSS_DEMO.MssService.CourseraApiSoap.getStudents(MSS_DEMO.MssService.getStudentsRequest request) {
-            return base.Channel.getStudents(request);
+        public System.Threading.Tasks.Task<string> GetScheduledSubjectAsync(string authenKey, string teacher, string[] lsSubjects, string semester) {
+            return base.Channel.GetScheduledSubjectAsync(authenKey, teacher, lsSubjects, semester);
         }
         
         public string getStudents(string authenKey, string teacher, string subjectCode, string className, string semester) {
-            MSS_DEMO.MssService.getStudentsRequest inValue = new MSS_DEMO.MssService.getStudentsRequest();
-            inValue.Body = new MSS_DEMO.MssService.getStudentsRequestBody();
-            inValue.Body.authenKey = authenKey;
-            inValue.Body.teacher = teacher;
-            inValue.Body.subjectCode = subjectCode;
-            inValue.Body.className = className;
-            inValue.Body.semester = semester;
-            MSS_DEMO.MssService.getStudentsResponse retVal = ((MSS_DEMO.MssService.CourseraApiSoap)(this)).getStudents(inValue);
-            return retVal.Body.getStudentsResult;
+            return base.Channel.getStudents(authenKey, teacher, subjectCode, className, semester);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<MSS_DEMO.MssService.getStudentsResponse> MSS_DEMO.MssService.CourseraApiSoap.getStudentsAsync(MSS_DEMO.MssService.getStudentsRequest request) {
-            return base.Channel.getStudentsAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<MSS_DEMO.MssService.getStudentsResponse> getStudentsAsync(string authenKey, string teacher, string subjectCode, string className, string semester) {
-            MSS_DEMO.MssService.getStudentsRequest inValue = new MSS_DEMO.MssService.getStudentsRequest();
-            inValue.Body = new MSS_DEMO.MssService.getStudentsRequestBody();
-            inValue.Body.authenKey = authenKey;
-            inValue.Body.teacher = teacher;
-            inValue.Body.subjectCode = subjectCode;
-            inValue.Body.className = className;
-            inValue.Body.semester = semester;
-            return ((MSS_DEMO.MssService.CourseraApiSoap)(this)).getStudentsAsync(inValue);
+        public System.Threading.Tasks.Task<string> getStudentsAsync(string authenKey, string teacher, string subjectCode, string className, string semester) {
+            return base.Channel.getStudentsAsync(authenKey, teacher, subjectCode, className, semester);
         }
     }
 }

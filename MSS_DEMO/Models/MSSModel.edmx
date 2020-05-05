@@ -435,6 +435,7 @@
           <Parameter Name="Roll" Type="varchar" Mode="In" />
           <Parameter Name="Subjet_ID" Type="varchar" Mode="In" />
           <Parameter Name="Campus_ID" Type="varchar" Mode="In" />
+          <Parameter Name="List_Roll" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_Get_Non_Compulsory_Spec_Completion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Date_Import" Type="datetime" Mode="In" />
@@ -1106,6 +1107,7 @@
             <Parameter Name="Roll" Mode="In" Type="String" />
             <Parameter Name="Subjet_ID" Mode="In" Type="String" />
             <Parameter Name="Campus_ID" Mode="In" Type="String" />
+            <Parameter Name="List_Roll" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_Get_Non_Compulsory_Spec_Completion" ReturnType="Collection(MSSModel.sp_Get_Non_Compulsory_Spec_Completion_Result)">
             <Parameter Name="Date_Import" Mode="In" Type="DateTime" />
@@ -1115,6 +1117,7 @@
         <ComplexType Name="sp_Get_Main_Report_Result">
           <Property Type="String" Name="Roll" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Note" Nullable="true" MaxLength="Max" />
           <Property Type="String" Name="Campus_ID" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Subject_ID" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Subject_Name" Nullable="false" MaxLength="200" />
@@ -1320,6 +1323,7 @@
               <ComplexTypeMapping TypeName="MSSModel.sp_Get_Main_Report_Result">
                 <ScalarProperty Name="Roll" ColumnName="Roll" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="Campus_ID" ColumnName="Campus_ID" />
                 <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />
                 <ScalarProperty Name="Subject_Name" ColumnName="Subject_Name" />

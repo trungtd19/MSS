@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using ArrayOfString = MSS_DEMO.MssService.ArrayOfString;
+
 
 namespace MSS_DEMO.Core.Implement
 {
@@ -35,14 +35,12 @@ namespace MSS_DEMO.Core.Implement
         public List<MentorObject> getListSubjectClass(string userMentor,string semesterName)
         {
             CourseraApiSoapClient courseraApiSoap = new CourseraApiSoapClient();
-            var listSubjectID = context.Subjects.Where(o => o.Subject_Active == true).Select(o => o.Subject_ID).ToList();
-            ArrayOfString arraySubject = new ArrayOfString();
-            arraySubject.AddRange(listSubjectID);
+            var listSubjectID = context.Subjects.Where(o => o.Subject_Active == true).Select(o => o.Subject_ID).ToArray();
             string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
             List<MentorObject> objectMentor = new List<MentorObject>();
             try
             {
-                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey, userMentor.Split('@')[0], arraySubject, semesterName);
+                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey, userMentor.Split('@')[0], listSubjectID, semesterName);
                 var scheduledSubject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MertorFAP>>(jsonData);
                 scheduledSubject = scheduledSubject.Distinct(new ListComparer()).ToList();
                
@@ -150,6 +148,17 @@ namespace MSS_DEMO.Core.Implement
                 return false;
             }
             else return true;
+        }
+        public List<string> getDatebySemester(Semester semester)
+        {
+            var dateList = context.Student_Course_Log.OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+
+            List<string> date = new List<string>();
+            foreach (var _date in dateList)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return date;
         }
         // không sử dụng 
         public void GetStudentCourse(string [] row, string userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
