@@ -47,9 +47,16 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
             List<string> date = new List<string>();
-            date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
+            try
+            {
+                var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
+                date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
+            }
+            catch
+            {
+                date = new List<string>();
+            }
             date = date.Distinct().ToList();
             model.importedDate = date;
             model.lstSemester = semesterList;
