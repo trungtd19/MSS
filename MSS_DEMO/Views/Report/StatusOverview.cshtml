@@ -137,7 +137,7 @@
                 {
                     <tr>
                         <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Roll)</th>
+                        <th>@Html.ActionLink(t.Roll, "Member", "Report", new { searchString = t.Roll, searchCheck = true, Compulsory  = "All", SelectSemester = t.Semester, SelectDatetime = Convert.ToDateTime(t.Date).ToString("dd/MM/yyyy") }, new { @class = "page-scroll" })</th>
                         <th>@Html.DisplayFor(m => t.Email)</th>
                         <th>@Html.DisplayFor(m => t.Campus)</th>
                         <th>@Html.DisplayFor(m => t.SubjectID)</th>
