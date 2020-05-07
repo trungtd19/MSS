@@ -162,12 +162,12 @@ namespace MSS_DEMO.Controllers.Log
                         if (id == subjectClass.id)
                         {
                             string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
-                            jsonDataClass = courseraApiSoap.getStudents(authenKey, /*userMentor.UserName.Split('@')[0]*/ "lampt", subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
+                            jsonDataClass = courseraApiSoap.getStudents(authenKey, userMentor.UserName.Split('@')[0], subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
                             var rollFap = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RollFAP>>(jsonDataClass);
                             var rolls = rollFap[0].RollNumber.ToString().Trim();
                             rolls = "," + rolls + ",";
                             var maxDate = new MSSEntities().Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, -1, "", "", "", "", "").ToList();
+                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, -1, "", "", "", "", rolls).ToList();
                             foreach (var item in statusList)
                             {
                                 if (item.Subject_ID.Trim().Equals(id.Split('^')[0].Trim()))
@@ -356,7 +356,7 @@ namespace MSS_DEMO.Controllers.Log
                 sb.Append(string.Join(",",
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
-                    csv.AddCSVQuotes(item.Subject_ID),
+                    csv.AddCSVQuotes(item.Subject_ID == null ? "" : item.Subject_ID),
                     csv.AddCSVQuotes(item.Campus),
                     csv.AddCSVQuotes(item.Course_Name),
                     csv.AddCSVQuotes(item.Course_Slug),
