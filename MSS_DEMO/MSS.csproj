@@ -290,6 +290,7 @@
     <Compile Include="Models\Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentDetailsViewModel.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\Student_Course_Log.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
@@ -460,6 +461,7 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Student_Course_Log\StudentDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\MssService\" />
