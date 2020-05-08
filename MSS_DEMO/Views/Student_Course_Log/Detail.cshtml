@@ -1,16 +1,16 @@
-﻿@model MSS_DEMO.Models.CoursesReportViewModel
+﻿@model MSS_DEMO.Models.StatusOverviewModel
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Detail";
-    var pagecount = Model.PageListLogNote.PageCount != 0 ? Model.PageListLogNote.PageCount : Model.PageListLogNote.PageCount;
-    var pagenumber = Model.PageListLogNote.PageCount < Model.PageListLogNote.PageNumber ? 0 : Model.PageListLogNote.PageNumber;
+    //var pagecount = Model.PageListLogNote.PageCount != 0 ? Model.PageListLogNote.PageCount : Model.PageListLogNote.PageCount;
+    //var pagenumber = Model.PageListLogNote.PageCount < Model.PageListLogNote.PageNumber ? 0 : Model.PageListLogNote.PageNumber;
 
-    SelectList listCompleted = new SelectList((IList<string>)Model.completedCour);
-    SelectList listCompulsory = new SelectList((IList<string>)Model.compulsoryCour);
+    //SelectList listCompleted = new SelectList((IList<string>)Model.completedCour);
+    //SelectList listCompulsory = new SelectList((IList<string>)Model.compulsoryCour);
 }
 <br />
 <span>
-    @Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Usage Report", "Mentor", "Student_Course_Log")
+    @Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("List Class", "Mentor", "Student_Course_Log")
     > Class Details
 </span>
 <br />
@@ -26,18 +26,19 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Email</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+                                    <label class="col-md-3 control-label">Roll:</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        @Html.TextBox("Roll", Model.Roll, new { @class = "form-control" })
                                         @Html.Hidden("searchCheck", "true")
                                     </div>
                                 </div>
                                 <br />
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Compulsory</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("compulsoryCourse", listCompulsory, "--- All ---", new { @name = "compulsoryCourse", @class = "form-control select" })
+                                    <label class="col-md-3 control-label">Final Status:</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        @Html.DropDownList("selectFinalStatus", null, htmlAttributes: new { @class = "form-control" })
                                     </div>
+
                                 </div>
                                 <br />
                             </div>
@@ -45,17 +46,9 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-3 control-label">Subject</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("Subject_ID", Model.listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Completed</label>
-                                    <div class="col-md-9 col-xs-12">
-                                        @Html.DropDownList("completedCourse", listCompleted, "--- All ---", new { @name = "completedCourse", @class = "form-control select" })
+                                    <label class="col-md-5 control-label">Course Completed:</label>
+                                    <div class="col-md-6 col-xs-12">
+                                        <label>@Html.TextBox("selectCoursCompleted", "-1", htmlAttributes: new { @class = "form-control", @type = "number", min = "-1", style = "width:70px" })</label>
                                     </div>
                                 </div>
                             </div>
@@ -71,154 +64,133 @@
     </div>
 }
 <span style="color: red;">@ViewBag.Nodata</span>
-@if (Model.PageListLogNote.PageCount != 0)
+@if (Model.OverviewList.Count > 0)
 {
-    int stt = 1 + (pagenumber - 1) * Model.PageListLogNote.PageSize;
-
-    <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label>
+    int stt = 1;
+    <label>Showing  @ViewBag.CountLog results</label>
     <div style="overflow-x: auto;" class="drag">
         <div class="table-responsive text-nowrap">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>
-                            Roll
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th style="min-width: 250px;">
-                            Course Name
-                        </th>
-                        <th>
-                            Note
-                        </th>
-                        <th>
-                            Enrollment Time
-                        </th>
-                        <th>
-                            Start Time
-                        </th>
-                        <th>
-                            Last ActivityTime
-                        </th>
-                        <th>
-                            Overall Progress
-                        </th>
-                        <th>
-                            Estimated
-                        </th>
-                        <th>
-                            Completed
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Completion Time
-                        </th>
-                        <th>
-                            Course Grade
-                        </th>
+                        <th>Roll</th>
+                        <th>Email</th>
+                        <th>Note</th>
+                        <th>Campus</th>
+                        <th>Subject ID</th>
+                        <th>Subject Name</th>
+                        <th>No Compulsory Course</th>
+                        <th>No Compulsory Completed</th>
+                        <th>Specifications Status</th>
+                        <th>Final Status</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.PageListLogNote)
+                    @foreach (var item in Model.OverviewList)
                     {
                         string textNote = item.Note;
                         textNote = !string.IsNullOrEmpty(textNote) ? (textNote.Length > 100 ? "..." + textNote.Substring(textNote.Length - 100) : textNote) : "";
-                        var Note = item.Roll + "^" + item.Semester_ID + "^" + item.Subject_ID;
-                        var complete = item.Completed == true ? "Yes" : "No";
-                        var status = item.Status == true ? "Yes" : "No";
-                        var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
-                        string Course_Enrollment_Time = item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
-                        string Last_Course_Activity_Time = item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
-                        string Course_Start_Time = item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");        
+                        var semester = ViewBag.SemesterID;
+                        var classID = ViewBag.Class;
+                        var Note = item.Roll + "^" + item.SubjectID + "^" + semester + "^" + classID;
+
                         <tr>
                             <td>@(stt++)</td>
                             <td>
-                                <a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote">@item.Roll</a>
+                                @Html.ActionLink(item.Roll, "StudentDetails", new { id = Note })
+                                @*<a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote">@item.Roll</a>*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Course_Name)
-                            </td>
-                            <td>
                                 <span id="textArea" style="width: 280px; height: 80px;">@textNote</span>
-                                @Html.Hidden("Note", Note)
+                                @*@Html.Hidden("Note", Note)*@
                                 @Html.Hidden("TextNode", item.Note)
                             </td>
                             <td>
-                                @Course_Enrollment_Time
-                            </td>
-
-                            <td>
-                                @Course_Start_Time
+                                @Html.DisplayFor(modelItem => item.Campus)
                             </td>
                             <td>
-                                @Last_Course_Activity_Time
+                                @Html.DisplayFor(modelItem => item.SubjectID)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Overall_Progress)
+                                @Html.DisplayFor(modelItem => item.SubjectName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Estimated)
+                                @Html.DisplayFor(modelItem => item.No_Compulsory_Course)
                             </td>
                             <td>
-                                @complete
+                                @Html.DisplayFor(modelItem => item.No_Course_Completed)
                             </td>
                             <td>
-                                @status
+                                @Html.DisplayFor(modelItem => item.Spec_Completed)
                             </td>
                             <td>
-                                @completeTime
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Course_Grade)
+                                @Html.DisplayFor(modelItem => item.Final_Status)
                             </td>
                         </tr>
-                        }
-                    </tbody>
+                    }
+                </tbody>
             </table>
         </div>
     </div>
-    <label>Page </label> @pagenumber <label> of </label> @pagecount
 }
-@Html.PagedListPager(Model.PageListLogNote, page => Url.Action("Detail",
- new
- {
-     page,
-     Email = Model.Email,
-     compulsoryCourse = Model.compulsoryCourse,
-     completedCourse = Model.completedCourse,
-     Subject_ID = Model.Subject_ID,
-     searchCheck = "true"
- }))
-
+<input id="SemesterID" hidden value="@ViewBag.SemesterID" />
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 170%;
+             margin-left: -35%;">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit note</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Student details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+           
             <div class="modal-body">
-               <textarea id="textAreaNote" style="height: 252px; width: 540px;max-width: 550px;"></textarea>
+                <h3 style="text-align: center; color: green;">Usage Report</h3>
+                <div style="overflow-x: auto;" class="drag">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th> Course Name </th>
+                                <th> Course Slug </th>
+                                <th> Campus</th>
+                                <th> University</th>
+                                <th> Enrollment Time</th>
+                                <th> Start Time</th>
+                                <th> Last Activity Time</th>
+                                <th> Overall Progress</th>
+                                <th> Estimated</th>
+                                <th> Completed</th>
+                                <th> Removed From Program</th>
+                                <th> Program Slug</th>
+                                <th> Program Name</th>
+                                <th> Enrollment Sourse</th>
+                                <th> Completion Time </th>
+                                <th> Course Grade</th>
+                                <th> Imported Date </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+                <h4 style="text-align: center; color: green;">Edit Note</h4>
+                <textarea id="textAreaNote" style="height: 100px; width: 100%;max-width: 100%;" class="form-control"></textarea>
                 @Html.Hidden("idModelNote")
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                </div>
             </div>
         </div>
-    </div>
 </div>
 <script>
     var mx = 0;
@@ -241,18 +213,30 @@
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
+    var semesterID = $("#SemesterID").val();
     $(".table tbody #modalNote").each(function (id, item) {
-        var noteID = $(this).parents("tr:first").find("#Note").val();
+        var noteID = $(this).parents("tr:first").find("#Note").val() +"^"+ semesterID;
         var TextNode = $(this).parents("tr:first").find("#TextNode").val();
         $(this).click(function ()
-        {                  
+        {
             $("#textAreaNote").val(TextNode);
             $("#idModelNote").val(noteID);
-        });       
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ReportStudent","Student_Course_Log")',
+                    data: { 'id': noteID },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#myTable').find('tbody').children().remove();
+                        $('#myTable').find('tbody').append(data.list);
+                    }
+                });
+        });
     });
+
     $("#save").click(function ()
-        {      var noteID = $("#idModelNote").val();      
-               var note = $("#textAreaNote").val();  
+        {      var noteID = $("#idModelNote").val();
+               var note = $("#textAreaNote").val();
                 $.ajax({
                 url: '@Url.Action("AddNote","Student_Course_Log")',
                 type: 'POST',
@@ -264,7 +248,7 @@
                     }
                  }
                 }).done(function () {
-                    
+
                 });
         });
 </script>

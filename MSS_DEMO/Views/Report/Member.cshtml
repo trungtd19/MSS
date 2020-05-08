@@ -84,7 +84,6 @@
                     <div  style="text-align:center">
                         <input class="btn btn-success" type="submit" value="Search" />
                     </div>
-                </div>
             }
         </div>
     </div>
@@ -104,14 +103,14 @@
             <table class="table table-bordered table-striped" id="dataTable">
                 <tr>
                     <th>No</th>
+                    <th>SubjectID</th>
+                    <th>Subject</th>
                     <th>Course Name</th>
                     <th>Enrolled</th>
                     <th>Last Active</th>
                     <th>Progress</th>
                     <th>Estimated learning hour</th>
                     <th>Completion Time</th>
-                    <th>Subject</th>
-                    <th>SubjectID</th>
                     <th>Status</th>
                     <th>Note</th>
                 </tr>
@@ -120,14 +119,14 @@
                 {
                 <tr>
                     <th>@(a++)</th>
+                    <th>@Model.InforList[i].SubjectID</th>
+                    <th>@Model.InforList[i].Subject</th>
                     <th>@Model.InforList[i].Course_Name</th>
                     <th>@Model.InforList[i].Course_Enrollment_Time</th>
                     <th>@Model.InforList[i].Last_Course_Activity_Time</th>
                     <th>@Model.InforList[i].Overall_Progress</th>
                     <th>@Model.InforList[i].Estimated</th>
                     <th>@Model.InforList[i].Completion_Time</th>
-                    <th>@Model.InforList[i].Subject</th>
-                    <th>@Model.InforList[i].SubjectID</th>
                     @if (Model.InforList[i].Completed)
                     {
                         <th><span style="color:green;">Completed</span></th>
@@ -136,7 +135,7 @@
                     {
                         <th><span style="color:red;">Incomplete</span></th>
                     }
-                    @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i-1].SubjectID)
+                    @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i - 1].SubjectID)
                     {
                         <th rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</th>
                     @:</tr><tr>

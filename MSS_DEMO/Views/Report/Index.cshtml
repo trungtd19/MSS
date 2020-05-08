@@ -56,7 +56,7 @@
                     <label> @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })</label>
                 </div>
                 <div class="col-md-6">
-                    <label><input class="btn btn-success" type="submit" value="Search" /></label>
+                    <label><input class="btn btn-default" type="submit" value="Search" /></label>
                 </div>
             </div>
             }
@@ -70,7 +70,7 @@
     @if (Model != null && ViewBag.Name != null && ViewBag.Count != null)
     {
         <div>
-            <h4>Number of students: @ViewBag.TotalStudent1    @Html.ActionLink("Export", "PrintViewToPdf", "Report", new { weekNumber = ViewBag.weekNumber, SelectDatetime = ViewBag.date, SelectSemester = ViewBag.semester, searchCheck = 1 }, null)</h4>
+            <h4>Number of students: @ViewBag.TotalStudent1    @Html.ActionLink("Export", "PrintViewToPdf", "Report", new { weekNumber = ViewBag.weekNumber, SelectDatetime = Convert.ToDateTime(ViewBag.date).ToString("dd/MM/yyyy"), SelectSemester = ViewBag.semester, searchCheck = 1 }, null)</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Sub</th>

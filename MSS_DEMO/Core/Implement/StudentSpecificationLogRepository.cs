@@ -100,5 +100,16 @@ namespace MSS_DEMO.Core.Implement
                 .ToList();
             return list;
         }
+        public List<string> getDatebySemester(Semester semester)
+        {
+            var dateList = context.Student_Specification_Log.OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+
+            List<string> date = new List<string>();
+            foreach (var _date in dateList)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return date;
+        }
     }
 }

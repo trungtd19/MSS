@@ -62,25 +62,28 @@ namespace MSS_DEMO.Core.Implement
                         orderby o.Subject_ID descending
                         select o)
                         .ToList();
-                cour[0].groupRow = growRow;
-                cour[0].groupRowNo = growRowNo;
-                while (coursesCount < cour.Count())
+                if (cour.Count > 0)
                 {
-                    if (cour[coursesCount - 1].Subject_ID == cour[coursesCount].Subject_ID)
+                    cour[0].groupRow = growRow;
+                    cour[0].groupRowNo = growRowNo;
+                    while (coursesCount < cour.Count())
                     {
-                        cour[coursesCount].groupRow = growRow;
-                        growRowNo++;
-                        cour[coursesCount].groupRowNo = growRowNo;
+                        if (cour[coursesCount - 1].Subject_ID == cour[coursesCount].Subject_ID)
+                        {
+                            cour[coursesCount].groupRow = growRow;
+                            growRowNo++;
+                            cour[coursesCount].groupRowNo = growRowNo;
+                        }
+                        else
+                        {
+                            growRow++;
+                            growRowNo = 1;
+                            cour[coursesCount].groupRow = growRow;
+                            cour[coursesCount].groupRowNo = growRowNo;
+                        }
+                        coursesCount++;
                     }
-                    else
-                    {
-                        growRow++;
-                        growRowNo = 1;
-                        cour[coursesCount].groupRow = growRow;
-                        cour[coursesCount].groupRowNo = growRowNo;
-                    }
-                    coursesCount++;
-                }
+                }             
                 return cour;
             }
 

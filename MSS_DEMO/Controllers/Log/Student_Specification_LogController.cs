@@ -21,7 +21,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        [CheckCredential(Role_ID = "1")]
+        [CheckCredential(Role_ID = "4")]
         public ActionResult Index(SpecReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
@@ -47,11 +47,15 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Distinct();
             List<string> date = new List<string>();
-            foreach (var _date in listDate)
+            try
             {
-                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+                var listDate = unitOfWork.SpecificationsLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
+                date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
+            }
+            catch
+            {
+                date = new List<string>();
             }
             date = date.Distinct().ToList();
             model.importedDate = date;
@@ -165,7 +169,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Campus),
-                    csv.AddCSVQuotes(item.Subject_ID),
+                    csv.AddCSVQuotes(item.Subject_ID == null ? "" : item.Subject_ID),
                     csv.AddCSVQuotes(item.Specialization),
                     csv.AddCSVQuotes(item.Specialization_Slug),
                     csv.AddCSVQuotes(item.University),

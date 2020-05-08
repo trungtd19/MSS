@@ -280,6 +280,9 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecReportViewModel.cs" />
+    <Compile Include="Models\sp_Get_Main_Report_Result.cs">
+      <DependentUpon>MSSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_Get_Non_Compulsory_Spec_Completion_Result.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
@@ -287,6 +290,7 @@
     <Compile Include="Models\Student.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentDetailsViewModel.cs" />
     <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\Student_Course_Log.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
@@ -311,13 +315,6 @@
     <Compile Include="Core\Implement\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\MssService\CourseraAPI.wsdl" />
-    <Content Include="Connected Services\MssService\MSS_DEMO.MssService.GetScheduledSubjectResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\MssService\MSS_DEMO.MssService.getStudentsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <None Include="Connected Services\MssService\CourseraAPI.disco" />
     <None Include="Connected Services\MssService\configuration91.svcinfo" />
     <None Include="Connected Services\MssService\configuration.svcinfo" />
@@ -347,6 +344,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
+    <None Include="Connected Services\MssService\CourseraAPI.wsdl" />
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.min.js" />
@@ -463,8 +461,11 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Student_Course_Log\StudentDetails.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\MssService\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -480,9 +481,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\MssService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

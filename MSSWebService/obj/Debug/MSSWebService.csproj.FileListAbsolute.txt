@@ -53,3 +53,4 @@ C:\Users\asus\Desktop\MSS\MSSWebService\obj\Debug\MSSWebService.csproj.CoreCompi
 C:\Users\asus\Desktop\MSS\MSSWebService\obj\Debug\MSSWebService.csproj.CopyComplete
 C:\Users\asus\Desktop\MSS\MSSWebService\obj\Debug\MSSWebService.dll
 C:\Users\asus\Desktop\MSS\MSSWebService\obj\Debug\MSSWebService.pdb
+C:\Users\asus\Desktop\MSS\MSSWebService\obj\Debug\MSSWebService.csprojAssemblyReference.cache

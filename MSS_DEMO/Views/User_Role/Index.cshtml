@@ -8,10 +8,7 @@
 <br />
 <span>@Html.ActionLink("Home", "Index", "Home") > User Management</span>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
+<hr/>
 <body>
     <h1>User Management</h1>
       
@@ -30,32 +27,32 @@
 
     @if (Model != null)
     {
-        <table border="1">
+        <table class="table table-bordered table-striped" style="width: 50%;">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Login)
+                    Login
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.isActive)
+                   IsActive
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Role.Role_Name)
-                </th>              
+                   Role Name
+                </th>
             </tr>
 
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.isActive)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role.Role_Name)
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role.Role_Name)
+                    </td>
+                </tr>
             }
 
         </table>

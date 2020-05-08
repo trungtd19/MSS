@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using ArrayOfString = MSS_DEMO.MssService.ArrayOfString;
+
 
 namespace MSS_DEMO.Core.Implement
 {
@@ -32,17 +32,15 @@ namespace MSS_DEMO.Core.Implement
             }
 
         }
-        public List<MentorObject> getListSubjectClass(string userMentor,string semesterName)
+        public List<MentorObject> getListSubjectClass(string userMentor,Semester semester)
         {
             CourseraApiSoapClient courseraApiSoap = new CourseraApiSoapClient();
-            var listSubjectID = context.Subjects.Where(o => o.Subject_Active == true).Select(o => o.Subject_ID).ToList();
-            ArrayOfString arraySubject = new ArrayOfString();
-            arraySubject.AddRange(listSubjectID);
+            var listSubjectID = context.Subjects.Where(o => o.Subject_Active == true).Select(o => o.Subject_ID).ToArray();
             string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
             List<MentorObject> objectMentor = new List<MentorObject>();
             try
             {
-                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey, userMentor.Split('@')[0], arraySubject, semesterName);
+                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey, userMentor.Split('@')[0], listSubjectID, semester.Semester_Name);
                 var scheduledSubject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MertorFAP>>(jsonData);
                 scheduledSubject = scheduledSubject.Distinct(new ListComparer()).ToList();
                
@@ -151,6 +149,17 @@ namespace MSS_DEMO.Core.Implement
             }
             else return true;
         }
+        public List<string> getDatebySemester(Semester semester)
+        {
+            var dateList = context.Student_Course_Log.OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
+
+            List<string> date = new List<string>();
+            foreach (var _date in dateList)
+            {
+                date.Add(Convert.ToDateTime(_date).ToString("dd/MM/yyyy"));
+            }
+            return date;
+        }
         // không sử dụng 
         public void GetStudentCourse(string [] row, string userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
         {
@@ -234,6 +243,80 @@ namespace MSS_DEMO.Core.Implement
               new SqlParameter("Course_Slug", row[5].ToString()),
               new SqlParameter("Enrollment_Source", row[16].ToString()));
             }
+        }
+        public List<InfoStudent> MemberReport(string Roll, string Semester, DateTime? ImportedDate)
+        {
+            List<InfoStudent> Info = new List<InfoStudent>();
+            var listCourseLog = (from stu_cour_log in context.Student_Course_Log
+                                 where stu_cour_log.Roll == Roll && stu_cour_log.Semester_ID == Semester && stu_cour_log.Date_Import == ImportedDate
+                                 select stu_cour_log).ToList();
+            var listCourCp = (from stu in context.Students
+                              join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
+                              join sub in context.Subjects on sub_stu.Subject_ID equals sub.Subject_ID
+                              join spec in context.Specifications on sub.Subject_ID equals spec.Subject_ID
+                              join cour in context.Courses on spec.Specification_ID equals cour.Specification_ID
+                              where stu.Semester_ID == Semester && sub_stu.Semester_ID == Semester && stu.Roll == Roll && sub.Subject_Active == true
+                              select new { cour, sub }).ToList();
+            var listCourseIdLog = listCourseLog.Where(m => m.Course_ID != null).Select(m => m.Course_ID).Cast<int>().ToList();
+            var listCourIdCp = listCourCp.Select(m => m.cour.Course_ID).ToList();
+            var noEnoll = listCourIdCp.Except(listCourseIdLog);
+            string timeActive = "";
+            string timeCompleted = "";
+            foreach (var item in listCourseLog)
+            {
+                var lastActive = (DateTime)item.Last_Course_Activity_Time;
+                var comple = (DateTime)item.Completion_Time;
+                string subjectId, subjectName;
+                if (item.Course_ID == null)
+                {
+                    subjectId = "";
+                    subjectName = "";
+                }
+                else
+                {
+                    subjectId = item.Subject_ID;
+                    subjectName = listCourCp.Where(m => m.sub.Subject_ID == subjectId).Select(m => m.sub.Subject_Name).FirstOrDefault();
+                }
+                if (lastActive.ToString("dd/MM/yyyy") == "01/01/1970")
+                {
+                    timeActive = "";
+                }
+                else
+                {
+                    timeActive = lastActive.ToString();
+                }
+                if (comple.ToString("dd/MM/yyyy") == "01/01/1970")
+                {
+                    timeCompleted = "";
+                }
+                else
+                {
+                    timeCompleted = comple.ToString("dd/MM/yyyy");
+                }
+                Info.Add(new InfoStudent
+                {
+                    SubjectID = subjectId,
+                    Subject = subjectName,
+                    Course_Name = item.Course_Name,
+                    Course_Enrollment_Time = ((DateTime)item.Course_Enrollment_Time).ToString(),
+                    Last_Course_Activity_Time = timeActive,
+                    Overall_Progress = Math.Round((double)item.Overall_Progress, 1),
+                    Completion_Time = timeCompleted,
+                    Estimated = Math.Round((double)item.Estimated, 1),
+                    Completed = (bool)item.Completed,
+                });
+            }
+            foreach (var item in noEnoll)
+            {
+                Info.Add(new InfoStudent
+                {
+                    SubjectID = listCourCp.Where(m => m.cour.Course_ID == item).Select(m => m.sub.Subject_ID).FirstOrDefault(),
+                    Subject = listCourCp.Where(m => m.cour.Course_ID == item).Select(m => m.sub.Subject_Name).FirstOrDefault(),
+                    Course_Name = listCourCp.Where(m => m.cour.Course_ID == item).Select(m => m.cour.Course_Name).FirstOrDefault()
+                });
+            }
+            return Info;
+
         }
     }
     public class MentorObject

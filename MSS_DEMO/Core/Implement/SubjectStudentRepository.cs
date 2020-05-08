@@ -23,18 +23,18 @@ namespace MSS_DEMO.Core.Implement
                 try
                 {
                     var student = context.Students.ToList();
-                    var list = context.Subject_Student.ToList();
-                    var list1 = list.Where(x => x.Subject_ID == Subject_ID && x.Semester_ID == SemesterID).ToList();
-                    List<string> li = list1.Select(x => x.Roll).ToList();
-                    foreach (var lst in list1)
+                    var listSubStudennt = context.Subject_Student.ToList();
+                    var list = listSubStudennt.Where(x => x.Subject_ID == Subject_ID && x.Semester_ID == SemesterID).ToList();
+                    List<string> listRoll = list.Select(x => x.Roll).ToList();
+                    foreach (var lst in list)
                     {
                         var sub = context.Subject_Student.Find(lst.ID);
                         context.Subject_Student.Remove(sub);
                     }
-                    list = context.Subject_Student.ToList();
-                    foreach (var ls in li)
+                    listSubStudennt = context.Subject_Student.ToList();
+                    foreach (var ls in listRoll)
                     {
-                        if (list.Where(x => x.Roll == ls && x.Semester_ID == SemesterID).FirstOrDefault() == null)
+                        if (listSubStudennt.Where(x => x.Roll == ls && x.Semester_ID == SemesterID).FirstOrDefault() == null)
                         {
                             var stu = context.Students.Find(ls, SemesterID);
                             if (stu.Campus_ID == CampusID)

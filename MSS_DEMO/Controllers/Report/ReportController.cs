@@ -360,7 +360,7 @@ namespace MSS_DEMO.Controllers
             ViewBag.SelectDatetime = Date(SelectSemester);
 
             List<SelectListItem> selectCompulsory = new List<SelectListItem>();
-            selectCompulsory.Add(new SelectListItem { Text = "--All--", Value = "" });
+            selectCompulsory.Add(new SelectListItem { Text = "--All--", Value = "All" });
             selectCompulsory.Add(new SelectListItem { Text = "Yes", Value = "Yes" });
             selectCompulsory.Add(new SelectListItem { Text = "No", Value = "No" });
             ViewBag.Compulsory = selectCompulsory;
@@ -385,25 +385,22 @@ namespace MSS_DEMO.Controllers
                                 join spec in context.Specifications on sub.Subject_ID equals spec.Subject_ID
                                 join cour in context.Courses on spec.Specification_ID equals cour.Specification_ID
                                 where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && stu.Roll == searchString && sub.Subject_Active == true
-                                select cour).ToList();
+                                select new { cour, sub }).ToList();
 
                 var courseListLog = info.Where(m => m.Course_ID != null).Select(m => m.Course_ID.Value).ToList();
-                var courseAll = listCour.Select(m => m.Course_ID).ToList();
+                var courseAll = listCour.Select(m => m.cour.Course_ID).ToList();
                 var noEnrollList = courseAll.Except(courseListLog);
                 var nonCompulsory = courseListLog.Except(courseAll);
                 string timeActive = "";
                 string timeCompleted = "";
-                if (Compulsory == "Yes" || Compulsory == "")
+                if (Compulsory == "Yes" || Compulsory == "All")
                 {
                     foreach(var item in listCour)
                     {
-                        if(info.Any(m => m.Course_ID == item.Course_ID)){
-                            var courseInfo = info.Where(m => m.Course_ID == item.Course_ID).FirstOrDefault();
+                        if(info.Any(m => m.Course_ID == item.cour.Course_ID)){
+                            var courseInfo = info.Where(m => m.Course_ID == item.cour.Course_ID).FirstOrDefault();
                             var lastActive = (DateTime)courseInfo.Last_Course_Activity_Time;
                             var comple = (DateTime)courseInfo.Completion_Time;
-                            var subName = (from sub in context.Subjects
-                                           where sub.Subject_ID == courseInfo.Subject_ID && sub.Subject_Active == true
-                                           select sub.Subject_Name).FirstOrDefault();
                             if (lastActive.ToString("dd/MM/yyyy") == "01/01/1970")
                             {
                                 timeActive = "";
@@ -429,12 +426,12 @@ namespace MSS_DEMO.Controllers
                             //}
                             infoOfStudent.Add(new InfoStudent
                             {
-                                Course_Name = item.Course_Name,
+                                Course_Name = item.cour.Course_Name,
                                 Course_Enrollment_Time = ((DateTime)courseInfo.Course_Enrollment_Time).ToString(),
                                 Last_Course_Activity_Time = timeActive,
                                 Overall_Progress = Math.Round((double)courseInfo.Overall_Progress, 1),
                                 Completion_Time = timeCompleted,
-                                Subject = subName,
+                                Subject = item.sub.Subject_Name,
                                 SubjectID = courseInfo.Subject_ID,
                                 Note = note,
                                 Estimated = Math.Round((double)courseInfo.Estimated, 1),
@@ -443,11 +440,11 @@ namespace MSS_DEMO.Controllers
                         }
                         else
                         {
-                            infoOfStudent.Add(new InfoStudent { Course_Name = item.Course_Name });
+                            infoOfStudent.Add(new InfoStudent { Course_Name = item.cour.Course_Name, Subject = item.sub.Subject_Name, SubjectID = item.sub.Subject_ID});
                         }
                     }
                 }
-                if (Compulsory == "No" || Compulsory == "")
+                if (Compulsory == "No" || Compulsory == "All")
                 {
                     foreach(var item in nonCompulsory)
                     {
@@ -526,9 +523,10 @@ namespace MSS_DEMO.Controllers
                 
 
             }
-            var distinctList = infoOfStudent.GroupBy(x => x.Course_Name).Select(y => y.FirstOrDefault());
-            ViewBag.TotalSearch = distinctList.Count();
-            Info.InforList = distinctList.OrderBy(t => t.Overall_Progress).ToList();
+            ViewBag.Sesmes = SelectSemester;
+            ViewBag.Roll = searchString;
+            ViewBag.TotalSearch = infoOfStudent.Count();
+            Info.InforList = infoOfStudent.OrderByDescending(t => t.SubjectID).ToList();
             return View("Member", Info);
         }
 
@@ -1054,10 +1052,10 @@ namespace MSS_DEMO.Controllers
 
             if (!String.IsNullOrEmpty(searchCheck) && date != DateTime.MinValue)
             {
-                var statusList = context.sp_Get_Main_Report(date, SelectSemester, Convert.ToInt32(selectCoursCompleted), selectFinalStatus, SearchString, SelectSubject, SelectCampus).ToList();
+                var statusList = context.sp_Get_Main_Report(date, SelectSemester, Convert.ToInt32(selectCoursCompleted), selectFinalStatus, SearchString, SelectSubject, SelectCampus, "").ToList();
                 foreach (var item in statusList)
                 {
-                    Status.Add(new StatusOverviewModel { Roll = item.Roll, Email = item.Email, SubjectID = item.Subject_ID, SubjectName = item.Subject_Name,
+                    Status.Add(new StatusOverviewModel { Roll = item.Roll, Email = item.Email, SubjectID = item.Subject_ID, SubjectName = item.Subject_Name, Semester = SelectSemester, Date = date.ToString(),
                         No_Compulsory_Course = item.No_Compulsory_Course,  No_Course_Completed = item.No_Course_Completed, Spec_Completed = item.Spec_Completed, Final_Status = item.Final_status , Campus = item.Campus_ID});
                 }
             }
@@ -1066,6 +1064,8 @@ namespace MSS_DEMO.Controllers
             StatusOM.OverviewList = Status;
             return View("StatusOverview", StatusOM);
         }
+
+       
 
         private int Count(string subject, string campus, DateTime dateImport)
         {
