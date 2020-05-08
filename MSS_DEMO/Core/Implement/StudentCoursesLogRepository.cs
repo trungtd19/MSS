@@ -40,7 +40,7 @@ namespace MSS_DEMO.Core.Implement
             List<MentorObject> objectMentor = new List<MentorObject>();
             try
             {
-                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey,/* userMentor.Split('@')[0]*/"lampt", listSubjectID, semester.Semester_Name);
+                string jsonData = courseraApiSoap.GetScheduledSubject(authenKey, userMentor.Split('@')[0], listSubjectID, semester.Semester_Name);
                 var scheduledSubject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MertorFAP>>(jsonData);
                 scheduledSubject = scheduledSubject.Distinct(new ListComparer()).ToList();
                
