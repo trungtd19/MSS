@@ -10,7 +10,7 @@
 }
 <br />
 <span>
-    @Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("Usage Report", "Mentor", "Student_Course_Log")
+    @Html.ActionLink("Home", "Index", "Home") > @Html.ActionLink("List Class", "Mentor", "Student_Course_Log")
     > Class Details
 </span>
 <br />
@@ -38,7 +38,7 @@
                                     <div class="col-md-8 col-xs-12">
                                         @Html.DropDownList("selectFinalStatus", null, htmlAttributes: new { @class = "form-control" })
                                     </div>
-                                    
+
                                 </div>
                                 <br />
                             </div>
@@ -67,7 +67,7 @@
 @if (Model.OverviewList.Count > 0)
 {
     int stt = 1;
-    <label>Showing  @ViewBag.CountLog results of @ViewBag.CountRoll students&emsp;&emsp; </label>
+    <label>Showing  @ViewBag.CountLog results</label>
     <div style="overflow-x: auto;" class="drag">
         <div class="table-responsive text-nowrap">
             <table class="table table-bordered table-striped">
@@ -94,67 +94,100 @@
                         textNote = !string.IsNullOrEmpty(textNote) ? (textNote.Length > 100 ? "..." + textNote.Substring(textNote.Length - 100) : textNote) : "";
                         var Note = item.Roll + "^" + item.SubjectID;
 
-                    <tr>
-                        <td>@(stt++)</td>
-                        <td>
-                            <a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote">@item.Roll</a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            <span id="textArea" style="width: 280px; height: 80px;">@textNote</span>
-                            @Html.Hidden("Note", Note)
-                            @Html.Hidden("TextNode", item.Note)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Campus)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SubjectID)
-                        </td>
-                        <td> @Html.DisplayFor(modelItem => item.SubjectName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.No_Compulsory_Course)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.No_Course_Completed)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Spec_Completed)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Final_Status)
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>@(stt++)</td>
+                            <td>
+                                <a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote">@item.Roll</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                <span id="textArea" style="width: 280px; height: 80px;">@textNote</span>
+                                @Html.Hidden("Note", Note)
+                                @Html.Hidden("TextNode", item.Note)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Campus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubjectID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubjectName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.No_Compulsory_Course)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.No_Course_Completed)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Spec_Completed)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Final_Status)
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
         </div>
     </div>
 }
-<input id="SemesterID" hidden value="@ViewBag.SemesterID"/>
+<input id="SemesterID" hidden value="@ViewBag.SemesterID" />
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 170%;
+             margin-left: -35%;">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit note</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Student details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+           
             <div class="modal-body">
-                <textarea id="textAreaNote" style="height: 252px; width: 540px;max-width: 550px;"></textarea>
+                <h3 style="text-align: center; color: green;">Usage Report</h3>
+                <div style="overflow-x: auto;" class="drag">
+                    <table id="myTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th> Course Name </th>
+                                <th> Course Slug </th>
+                                <th> Campus</th>
+                                <th> University</th>
+                                <th> Enrollment Time</th>
+                                <th> Start Time</th>
+                                <th> Last Activity Time</th>
+                                <th> Overall Progress</th>
+                                <th> Estimated</th>
+                                <th> Completed</th>
+                                <th> Removed From Program</th>
+                                <th> Program Slug</th>
+                                <th> Program Name</th>
+                                <th> Enrollment Sourse</th>
+                                <th> Completion Time </th>
+                                <th> Course Grade</th>
+                                <th> Imported Date </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+                <h4 style="text-align: center; color: green;">Edit Note</h4>
+                <textarea id="textAreaNote" style="height: 100px; width: 100%;max-width: 100%;" class="form-control"></textarea>
                 @Html.Hidden("idModelNote")
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                </div>
             </div>
         </div>
-    </div>
 </div>
 <script>
     var mx = 0;
@@ -185,8 +218,19 @@
         {
             $("#textAreaNote").val(TextNode);
             $("#idModelNote").val(noteID);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ReportStudent","Student_Course_Log")',
+                    data: { 'id': noteID },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#myTable').find('tbody').children().remove();
+                        $('#myTable').find('tbody').append(data.list);
+                    }
+                });
         });
     });
+
     $("#save").click(function ()
         {      var noteID = $("#idModelNote").val();
                var note = $("#textAreaNote").val();

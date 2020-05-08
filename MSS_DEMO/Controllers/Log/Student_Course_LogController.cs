@@ -15,7 +15,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers.Log
 {
-    
+
     public class Student_Course_LogController : Controller
     {
         private IUnitOfWork unitOfWork;
@@ -59,9 +59,16 @@ namespace MSS_DEMO.Controllers.Log
                     Value = sem.Semester_ID
                 });
             }
-            var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
             List<string> date = new List<string>();
-            date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
+            try
+            {
+                var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
+                date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
+            }
+            catch
+            {
+                date = new List<string>();
+            }
             model.importedDate = date;
             model.lstSemester = semesterList;
             model.lstCampus = campusList;
@@ -87,14 +94,14 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.completedCourse != null)
                 {
-                    LogList = model.completedCourse =="Yes" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == false).ToList();
+                    LogList = model.completedCourse == "Yes" ? LogList.Where(s => s.Completed == true).ToList() : LogList.Where(s => s.Completed == false).ToList();
                 }
                 if (model.compulsoryCourse != null)
                 {
                     LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Subject_ID))
-                {                  
+                {
                     LogList = LogList.Where(s => s.Subject_ID == model.Subject_ID).ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Campus))
@@ -114,8 +121,8 @@ namespace MSS_DEMO.Controllers.Log
                     ViewBag.Nodata = "";
                 }
             }
-            List<string> completedCour = new List<string>() { "Yes","No"};
-            List<string> compulsoryCour = new List<string>() { "Yes","No" };           
+            List<string> completedCour = new List<string>() { "Yes", "No" };
+            List<string> compulsoryCour = new List<string>() { "Yes", "No" };
             model.completedCour = completedCour;
             model.compulsoryCour = compulsoryCour;
             ViewBag.CountRoll = LogList.Select(o => o.Roll).Distinct().Count();
@@ -135,7 +142,7 @@ namespace MSS_DEMO.Controllers.Log
             else ViewBag.checkData = "";
             return View(lstSubjectClass);
         }
-        public ActionResult Detail(StatusOverviewModel model,string id,string searchCheck, string selectCoursCompleted, string selectFinalStatus)
+        public ActionResult Detail(StatusOverviewModel model, string id, string searchCheck, string selectCoursCompleted, string selectFinalStatus)
         {
             DateTime date = DateTime.Now;
             var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault();
@@ -147,7 +154,7 @@ namespace MSS_DEMO.Controllers.Log
             List<StatusOverviewModel> Status = new List<StatusOverviewModel>();
             if (!String.IsNullOrEmpty(searchCheck))
             {
-                
+
                 try
                 {
                     foreach (var subjectClass in listSubjectClass)
@@ -155,27 +162,30 @@ namespace MSS_DEMO.Controllers.Log
                         if (id == subjectClass.id)
                         {
                             string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
-                            jsonDataClass = courseraApiSoap.getStudents(authenKey, userMentor.UserName.Split('@')[0], subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
+                            jsonDataClass = courseraApiSoap.getStudents(authenKey, /*userMentor.UserName.Split('@')[0]*/ "lampt", subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
                             var rollFap = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RollFAP>>(jsonDataClass);
                             var rolls = rollFap[0].RollNumber.ToString().Trim();
                             rolls = "," + rolls + ",";
                             var maxDate = new MSSEntities().Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, Convert.ToInt32(selectCoursCompleted), selectFinalStatus,model.Roll == null ? "" : model.Roll, id.Split('^')[0], "", rolls).ToList();
+                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, -1, "", "", "", "", "").ToList();
                             foreach (var item in statusList)
                             {
-                                Status.Add(new StatusOverviewModel
+                                if (item.Subject_ID.Trim().Equals(id.Split('^')[0].Trim()))
                                 {
-                                    Roll = item.Roll,
-                                    Email = item.Email,
-                                    Note = item.Note,
-                                    SubjectID = item.Subject_ID,
-                                    SubjectName = item.Subject_Name,
-                                    No_Compulsory_Course = item.No_Compulsory_Course,
-                                    No_Course_Completed = item.No_Course_Completed,
-                                    Spec_Completed = item.Spec_Completed,
-                                    Final_Status = item.Final_status,
-                                    Campus = item.Campus_ID
-                                });
+                                    Status.Add(new StatusOverviewModel
+                                    {
+                                        Roll = item.Roll,
+                                        Email = item.Email,
+                                        Note = item.Note,
+                                        SubjectID = item.Subject_ID,
+                                        SubjectName = item.Subject_Name,
+                                        No_Compulsory_Course = item.No_Compulsory_Course,
+                                        No_Course_Completed = item.No_Course_Completed,
+                                        Spec_Completed = item.Spec_Completed,
+                                        Final_Status = item.Final_status,
+                                        Campus = item.Campus_ID
+                                    });
+                                }
                             }
                             break;
                         }
@@ -184,6 +194,18 @@ namespace MSS_DEMO.Controllers.Log
                 catch
                 {
                     Status = new List<StatusOverviewModel>();
+                }
+                if (!string.IsNullOrWhiteSpace(model.Roll))
+                {
+                    Status = Status.Where(s => s.Roll.Trim().Contains(model.Roll.Trim())).ToList();
+                }
+                if (Convert.ToInt32(selectCoursCompleted) != -1)
+                {
+                    Status = Status.Where(s => s.No_Course_Completed == Convert.ToInt32(selectCoursCompleted)).ToList();
+                }
+                if (!string.IsNullOrWhiteSpace(selectFinalStatus))
+                {
+                    Status = Status.Where(s => s.Final_Status.Trim().Equals(selectFinalStatus.Trim())).ToList();
                 }
                 if (Status.Count == 0)
                 {
@@ -207,6 +229,42 @@ namespace MSS_DEMO.Controllers.Log
             model.OverviewList = Status;
             return View(model);
         }
+        [HttpPost]
+        public ActionResult ReportStudent(string id)
+        {
+            var Roll = id.Split('^')[0];
+            var Semester_ID = id.Split('^')[2];
+            var Subject_ID = id.Split('^')[1];
+            var maxDate = new MSSEntities().Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+            var list = new MSSEntities().Student_Course_Log.Where(l => l.Roll == Roll && l.Semester_ID == Semester_ID && l.Subject_ID == Subject_ID && l.Date_Import == maxDate).ToList();
+            StringBuilder sb = new StringBuilder();
+            foreach (var lst in list)
+            {
+                var complete = lst.Completed == true ? "Yes" : "No";
+                var status = lst.Status == true ? "Yes" : "No";
+                var completeTime = lst.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(lst.Completion_Time).ToString("dd/MM/yyyy");
+                string Course_Enrollment_Time = lst.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(lst.Course_Enrollment_Time).ToString("dd/MM/yyyy");
+                string Last_Course_Activity_Time = lst.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(lst.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+                string Course_Start_Time = lst.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(lst.Course_Start_Time).ToString("dd/MM/yyyy");
+                string date = Convert.ToDateTime(lst.Date_Import).ToString("dd/MM/yyyy");
+
+                sb.Append("<tr><td>" + lst.Course_Name + "</td><td>" + lst.Course_Slug + "</td>" +
+                    "<td>" + lst.Campus + "</td><td> " + lst.University + "</td>" +
+                    "<td>" + Course_Enrollment_Time + " </td><td> " + Course_Start_Time + "</td>" +
+                    "<td>" + Last_Course_Activity_Time + "</td><td> " + lst.Overall_Progress + "</td>" +
+                    "<td>" + lst.Estimated + "</td><td> " + complete + "</td>" +
+                    "<td>" + status + "</td><td> " + lst.Program_Slug + "</td>" +
+                    "<td>" + lst.Program_Name + "</td><td> " + lst.Enrollment_Source + "</td>" +
+                    "<td>" + completeTime + "</td><td> " + lst.Course_Grade + "</td>" +
+                    "<td>" + date + "</td>" +
+                    "</tr>");
+            }
+            return (ActionResult)this.Json((object)new
+            {
+                list = sb.ToString()
+            }); 
+        }
+      
         [HttpPost]
         public ActionResult AddNote(string id, string note)
         {   
@@ -240,7 +298,7 @@ namespace MSS_DEMO.Controllers.Log
             catch (Exception ex)
             {
             }
-            return Json(new { check = true }); ;
+            return Json(new { check = true }); 
         }
         [HttpGet]
         public void Export(string check)
