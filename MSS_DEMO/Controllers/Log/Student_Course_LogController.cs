@@ -136,7 +136,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
             DateTime date = DateTime.Now;
-            var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault().Semester_Name;
+            var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault();
             var lstSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester);
             if (lstSubjectClass.Count > 0) ViewBag.checkData = "true";
             else ViewBag.checkData = "";
@@ -147,7 +147,7 @@ namespace MSS_DEMO.Controllers.Log
             DateTime date = DateTime.Now;
             var semester = unitOfWork.Semesters.GetAll().Where(sem => sem.Start_Date < date && sem.End_Date > date).FirstOrDefault();
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
-            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester.Semester_Name);
+            var listSubjectClass = unitOfWork.CoursesLog.getListSubjectClass(userMentor.UserName, semester);
             CourseraApiSoapClient courseraApiSoap = new CourseraApiSoapClient();
             string jsonDataClass = "";
             model.searchCheck = searchCheck;
@@ -162,12 +162,12 @@ namespace MSS_DEMO.Controllers.Log
                         if (id == subjectClass.id)
                         {
                             string authenKey = "A90C9954-1EDD-4330-B9F3-3D8201772EEA";
-                            jsonDataClass = courseraApiSoap.getStudents(authenKey, /*userMentor.UserName.Split('@')[0]*/ "lampt", subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
+                            jsonDataClass = courseraApiSoap.getStudents(authenKey, userMentor.UserName.Split('@')[0], subjectClass.Subject_ID.Trim(), subjectClass.Class_ID.Trim(), semester.Semester_Name);
                             var rollFap = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RollFAP>>(jsonDataClass);
                             var rolls = rollFap[0].RollNumber.ToString().Trim();
                             rolls = "," + rolls + ",";
-                            var maxDate = new MSSEntities().Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
-                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, -1, "", "", "", "", "").ToList();
+                            var maxDate = new MSSEntities().Student_Course_Log.Where(o => o.Semester_ID == semester.Semester_ID).OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+                            var statusList = new MSSEntities().sp_Get_Main_Report(maxDate, semester.Semester_ID, -1, "", "", "", "", rolls).ToList();
                             foreach (var item in statusList)
                             {
                                 if (item.Subject_ID.Trim().Equals(id.Split('^')[0].Trim()))
@@ -264,20 +264,33 @@ namespace MSS_DEMO.Controllers.Log
                 list = sb.ToString()
             }); 
         }
-      
+        public ActionResult StudentDetails(string id)
+        {
+            MSSEntities context = new MSSEntities();
+            StudentDetailsViewModel model = new StudentDetailsViewModel();
+            var Roll = id.Split('^')[0];
+            var Semester_ID = id.Split('^')[2];
+            var Subject_ID = id.Split('^')[1];
+            var maxDate = context.Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
+            var list = context.Student_Course_Log.Where(l => l.Roll == Roll && l.Semester_ID == Semester_ID && l.Subject_ID == Subject_ID && l.Date_Import == maxDate).ToList();
+            model.UsageReport = list;
+            var note  = context.Mentor_Log.Where(l => l.Roll == Roll && l.Semester_ID == Semester_ID && l.Subject_ID == Subject_ID).FirstOrDefault();
+            model.Note = note == null ? "" : note.Note;
+            ViewBag.id = id;
+            model.MemberReport = unitOfWork.CoursesLog.MemberReport(Roll, Semester_ID, maxDate);
+            return View(model);
+        }
         [HttpPost]
         public ActionResult AddNote(string id, string note)
         {   
             try
             {
+                var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
                 MSSEntities context = new MSSEntities();
-
                 Mentor_Log log = new Mentor_Log();
                 var Roll = id.Split('^')[0];
                 var Semester_ID = id.Split('^')[2];
                 var Subject_ID = id.Split('^')[1];
-
-
                 var noteLog = context.Mentor_Log.Where(o => o.Roll.Trim() == Roll && o.Semester_ID.Trim() == Semester_ID.Trim() && o.Subject_ID.Trim() == Subject_ID.Trim()).FirstOrDefault();
                 if (noteLog == null)
                 {
@@ -285,9 +298,13 @@ namespace MSS_DEMO.Controllers.Log
                         Roll = Roll,
                         Semester_ID = Semester_ID,
                         Subject_ID = Subject_ID,
-                        Note = note
-                    });
+                        Note = "[" + userMentor.UserName.Split('@')[0] + "-" + Convert.ToDateTime(DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss") + "]- " + note + "\n"
+                });
                     context.SaveChanges();
+                }
+                if (noteLog.Note.Trim().Equals(note.Trim()))
+                {
+                    return Json(new { check = true });
                 }
                 else
                 {
@@ -297,6 +314,7 @@ namespace MSS_DEMO.Controllers.Log
             }
             catch (Exception ex)
             {
+                return Json(new { check = false });
             }
             return Json(new { check = true }); 
         }
@@ -356,7 +374,7 @@ namespace MSS_DEMO.Controllers.Log
                 sb.Append(string.Join(",",
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
-                    csv.AddCSVQuotes(item.Subject_ID),
+                    csv.AddCSVQuotes(item.Subject_ID == null ? "" : item.Subject_ID),
                     csv.AddCSVQuotes(item.Campus),
                     csv.AddCSVQuotes(item.Course_Name),
                     csv.AddCSVQuotes(item.Course_Slug),

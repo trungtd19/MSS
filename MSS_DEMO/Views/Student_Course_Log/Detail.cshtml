@@ -92,19 +92,22 @@
                     {
                         string textNote = item.Note;
                         textNote = !string.IsNullOrEmpty(textNote) ? (textNote.Length > 100 ? "..." + textNote.Substring(textNote.Length - 100) : textNote) : "";
-                        var Note = item.Roll + "^" + item.SubjectID;
+                        var semester = ViewBag.SemesterID;
+                        var classID = ViewBag.Class;
+                        var Note = item.Roll + "^" + item.SubjectID + "^" + semester + "^" + classID;
 
                         <tr>
                             <td>@(stt++)</td>
                             <td>
-                                <a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote">@item.Roll</a>
+                                @Html.ActionLink(item.Roll, "StudentDetails", new { id = Note })
+                                @*<a href="" data-toggle="modal" data-target="#exampleModal" id="modalNote">@item.Roll</a>*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
                             <td>
                                 <span id="textArea" style="width: 280px; height: 80px;">@textNote</span>
-                                @Html.Hidden("Note", Note)
+                                @*@Html.Hidden("Note", Note)*@
                                 @Html.Hidden("TextNode", item.Note)
                             </td>
                             <td>

@@ -169,7 +169,7 @@ namespace MSS_DEMO.Controllers.Log
                     csv.AddCSVQuotes(item.Name),
                     csv.AddCSVQuotes(item.Email),
                     csv.AddCSVQuotes(item.Campus),
-                    csv.AddCSVQuotes(item.Subject_ID),
+                    csv.AddCSVQuotes(item.Subject_ID == null ? "" : item.Subject_ID),
                     csv.AddCSVQuotes(item.Specialization),
                     csv.AddCSVQuotes(item.Specialization_Slug),
                     csv.AddCSVQuotes(item.University),

@@ -1,0 +1,200 @@
+﻿@model MSS_DEMO.Models.StudentDetailsViewModel
+@{
+    ViewBag.Title = "StudentDetails";
+    var id = ViewBag.id;
+}
+<input hidden id="id" value="@id" />
+<h3>Roll: @(id.Split('^')[0]) - Subject: @(id.Split('^')[1])</h3>
+@{
+    int stt = 1;
+}
+<hr />
+<h3 style="text-align: center; color: green;">Usage Report</h3>
+<div style="overflow-x: auto;" class="drag">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th> Subject ID</th>
+                    <th> Course Name </th>
+                    <th> Course Slug</th>
+                    <th> Campus </th>
+                    <th> University </th>
+                    <th> Enrollment Time</th>
+                    <th> Start Time</th>
+                    <th>Last ActivityTime</th>
+                    <th> Overall Progress </th>
+                    <th> Estimated</th>
+                    <th> Completed</th>
+                    <th> Removed From Program</th>
+                    <th> Program Slug</th>
+                    <th> Program Name </th>
+                    <th> Enrollment Sourse</th>
+                    <th> Completion Time</th>
+                    <th>Course Grade </th>
+                    <th>Imported Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UsageReport)
+                {
+                    var complete = item.Completed == true ? "Yes" : "No";
+                    var status = item.Status == true ? "Yes" : "No";
+                    string date = Convert.ToDateTime(item.Date_Import).ToString("dd/MM/yyyy");
+                    var completeTime = item.Completion_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Completion_Time).ToString("dd/MM/yyyy");
+                    string Course_Enrollment_Time = item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
+                    string Last_Course_Activity_Time = item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+                    string Course_Start_Time = item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
+                    <tr>
+                        <td>@(stt++)</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subject_ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University)
+                        </td>
+                        <td>
+                            @Course_Enrollment_Time
+                        </td>
+                        <td>
+                            @Course_Start_Time
+                        </td>
+                        <td>
+                            @Last_Course_Activity_Time
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overall_Progress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estimated)
+                        </td>
+                        <td>
+                            @complete
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Slug)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Program_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Enrollment_Source)
+                        </td>
+                        <td>
+                            @completeTime
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course_Grade)
+                        </td>
+                        <td>
+                            @date
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr />
+<h4 style="text-align: center; color: green;">Member Report</h4>
+<table class="table table-bordered table-striped" id="dataTable">
+    <tr>
+        <th>No</th>
+        <th>SubjectID</th>
+        <th>Subject</th>
+        <th>Course Name</th>
+        <th>Enrolled</th>
+        <th>Last Active</th>
+        <th>Progress</th>
+        <th>Estimated learning hour</th>
+        <th>Completion Time</th>
+        <th>Status</th>
+    </tr>
+    @{ int a = 1;}
+    @for (var i = 0; i < Model.MemberReport.Count; i++)
+    {
+          string Course_Enrollment_Time = Model.MemberReport[i].Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(Model.MemberReport[i].Course_Enrollment_Time).ToString("dd/MM/yyyy");
+          string Last_Course_Activity_Time = Model.MemberReport[i].Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(Model.MemberReport[i].Last_Course_Activity_Time).ToString("dd/MM/yyyy");
+        <tr>
+            <td>@(a++)</td>
+            <td>@Model.MemberReport[i].SubjectID</td>
+            <td>@Model.MemberReport[i].Subject</td>
+            <td>@Model.MemberReport[i].Course_Name</td>
+            <td>@Course_Enrollment_Time</td>
+            <td>@Last_Course_Activity_Time</td>
+            <td>@Model.MemberReport[i].Overall_Progress</td>
+            <td>@Model.MemberReport[i].Estimated</td>
+            <td>@Model.MemberReport[i].Completion_Time</td>
+            @if (Model.MemberReport[i].Completed)
+            {
+                <td><span style="color:green;">Completed</span></td>
+            }
+            else
+            {
+                <td><span style="color:red;">Incomplete</span></td>
+            }
+        </tr>
+    }
+</table>
+<hr/>
+<h4 style="text-align: center; color: green;">Edit Note</h4>
+@{
+    var note = Model.Note;
+}
+<textarea id="textAreaNote" style="height: 100px; width: 100%;max-width: 100%;" class="form-control">@note</textarea>
+<br />
+@Html.ActionLink("Back to List", "Detail", new { id = id.Split('^')[1] + "^" + id.Split('^')[3] })  <span>&ensp;&ensp;&ensp;</span>
+<button type="button" class="btn btn-primary" id="save" style="float:right;">Save changes</button>
+<script>
+        $("#save").click(function ()
+        {      var id = $("#id").val();
+               var note = $("#textAreaNote").val();
+                $.ajax({
+                url: '@Url.Action("AddNote","Student_Course_Log")',
+                type: 'POST',
+                data:  { 'id' : id, 'note' : note },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.check == true) {
+                        sweetAlert("Successfull!", "Save note successfull!", "success");
+                    }
+                    else {
+                       sweetAlert("Error!", "Save note fail!", "error");
+                    }
+                 }
+                }).done(function () {
+
+             });
+        });
+    // Drag table
+    var mx = 0;
+
+    $(".drag").on({
+        mousemove: function (e) {
+            var mx2 = e.pageX - this.offsetLeft;
+            if (mx) this.scrollLeft = this.sx + mx - mx2;
+        },
+        mousedown: function (e) {
+            this.sx = this.scrollLeft;
+            mx = e.pageX - this.offsetLeft;
+        }
+    });
+
+    $(document).on("mouseup", function () {
+        mx = 0;
+    });
+
+</script>
