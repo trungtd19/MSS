@@ -71,6 +71,7 @@ namespace MSS_DEMO.Controllers.Certificates
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Save(CertificateViewModel CerModel, string[] CourseN)
         {
             List<CertificateViewModel> courseNameList = new List<CertificateViewModel>();
