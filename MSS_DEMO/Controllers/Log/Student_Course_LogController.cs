@@ -298,7 +298,7 @@ namespace MSS_DEMO.Controllers.Log
                         Roll = Roll,
                         Semester_ID = Semester_ID,
                         Subject_ID = Subject_ID,
-                        Note = "[" + userMentor.UserName.Split('@')[0] + "-" + Convert.ToDateTime(DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss") + "]- " + note + "\n"
+                        Note = "[" + userMentor.UserName.Split('@')[0] + "-" + Convert.ToDateTime(DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss") + "]" + note + "\n"
                 });
                     context.SaveChanges();
                 }
