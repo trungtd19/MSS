@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Index";
 }
-<h2> Login AS: </h2>
+<h2> Login as </h2>
 <hr />
 <div class="form-group">
     @using (Html.BeginForm("Index", "LoginAs", FormMethod.Post))
@@ -15,7 +15,7 @@
             @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-1">
-            <input class="btn btn-default" type="submit" value="Display" />
+            <input class="btn btn-success" type="submit" value="Search" />
         </div>
         <div class="col-md-5"></div>
     }

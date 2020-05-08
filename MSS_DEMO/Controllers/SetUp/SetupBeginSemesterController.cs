@@ -9,7 +9,7 @@ namespace MSS_DEMO.Controllers
 {
     public class SetupBeginSemesterController : Controller
     {
-        [CheckCredential(Role_ID = "4")]
+        [CheckCredential(Role_ID = "3")]
         public ActionResult Index()
         {
             return View();

@@ -62,9 +62,7 @@ namespace MSS_DEMO.Controllers.Login
             User_Role user = null;
             string xy = Request["Mail"];
             string[] temp = xy.Split('@');
-            string checkmail = temp[1];
-           
-           
+            string checkmail = temp[1];                    
                 user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
 
             if (user == null)

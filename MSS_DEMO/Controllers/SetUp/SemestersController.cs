@@ -7,13 +7,16 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MSS_DEMO.Common;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 
 namespace MSS_DEMO.Controllers
 {
+    [CheckCredential(Role_ID = "3")]
     public class SemestersController : Controller
     {
+      
         private IUnitOfWork unitOfWork;
         public SemestersController(IUnitOfWork _unitOfWork)
         {

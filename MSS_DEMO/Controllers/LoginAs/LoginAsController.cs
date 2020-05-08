@@ -22,7 +22,8 @@ namespace MSS_DEMO.Controllers.LoginAs
         }
         [HttpPost]
         public ActionResult Index(string SearchString)
-        {         
+        {
+                
             Student student = new Student();
             try
             {

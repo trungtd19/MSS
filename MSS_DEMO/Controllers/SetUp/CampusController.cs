@@ -12,7 +12,7 @@ using MSS_DEMO.Repository;
 
 namespace MSS_DEMO.Controllers
 {
-    [CheckCredential(Role_ID = "4")]
+    [CheckCredential(Role_ID = "3")]
     public class CampusController : Controller
     {
         private IUnitOfWork unitOfWork;

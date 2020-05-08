@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace MSS_DEMO.Controllers.Log
 {
-    [CheckCredential(Role_ID = "1")]
+    [CheckCredential(Role_ID = "3")]
     public class CleanSystemController : Controller
     {
         private IUnitOfWork unitOfWork;

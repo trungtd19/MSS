@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MSS_DEMO.Common;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
 using PagedList;
 
 namespace MSS_DEMO.Controllers
 {
+    [CheckCredential(Role_ID = "3")]
     public class SubjectsController : Controller
     {
         private IUnitOfWork unitOfWork;

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MSS_DEMO.Common;
 using MSS_DEMO.Core.Components;
 using MSS_DEMO.Models;
 using MSS_DEMO.Repository;
@@ -13,6 +14,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
+    [CheckCredential(Role_ID = "3")]
     public class CoursesController : Controller
     {
         private const string NONE = "--- None ---";

@@ -21,7 +21,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        [CheckCredential(Role_ID = "3")]
+        [CheckCredential(Role_ID = "1")]
         public ActionResult Index(SpecReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Specification_Log> LogList = new List<Student_Specification_Log>();
@@ -94,7 +94,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (LogList.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {

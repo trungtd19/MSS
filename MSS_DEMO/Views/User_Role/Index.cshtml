@@ -14,16 +14,20 @@
 </head>
 <body>
     <h1>User Management</h1>
-    <p>
+      
         @using (Html.BeginForm("Index", "User_Role", FormMethod.Post))
-        {
-            <input type="text" name="SearchString" />
-            <button type="submit">Display</button>
-            @Html.ActionLink("Add new user", "Create")
-
+        {           
+            <div class="col-md-2">
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+                @Html.Hidden("searchCheck", "true")
+            </div>
+            <div class="col-md-1">
+                <input class="btn btn-success" type="submit" value="Search" />
+            </div>
+            @Html.ActionLink("Add new user", "Create")      
         }
 
-    </p>
+
     @if (Model != null)
     {
         <table border="1">

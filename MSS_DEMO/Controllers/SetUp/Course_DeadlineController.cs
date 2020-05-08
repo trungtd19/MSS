@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using MSS_DEMO.Common;
 using MSS_DEMO.Core.Implement;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Models;
@@ -12,6 +13,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
+    [CheckCredential(Role_ID = "3")]
     public class Course_DeadlineController : Controller
     {
         private IUnitOfWork unitOfWork;

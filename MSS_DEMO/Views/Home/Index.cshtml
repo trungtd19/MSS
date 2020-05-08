@@ -12,7 +12,7 @@
 }
 <br />
 @{
-    if (Role == 4)
+    if (Role == 1)
     {
 
         <h5> @Html.ActionLink("Campus", "Index", "Campus") </h5>
@@ -30,26 +30,21 @@
         <h5>@Html.ActionLink("Mentor", "Mentor", "Student_Course_Log")</h5>
 
     }
-    else if (Role == 1)
-    {
-        <h5>@Html.ActionLink("User management", "Index", "User_Role")</h5>
+    else if (Role == 2)
+    {   <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
         <hr />
         <h5>@Html.ActionLink("Login as", "Index", "LoginAs")</h5>
         <hr />
-        <h5>@Html.ActionLink("Remove data", "Index", "CleanSystem")</h5>
-    }
-    else if (Role == 3)
-    {
-        <h5>@Html.ActionLink("Mentor", "Mentor", "Student_Course_Log")</h5>
-    }
-    else if (Role == 2)
-    {
-        <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
-    }
-    else
-    {
-        <h5>@Html.ActionLink("Certificates", "Index", "Certificates")</h5>
-    }
+       <h5>@Html.ActionLink("Remove data", "Index", "CleanSystem")</h5>
+}
+else if (Role == 3)
+{
+    <h5>@Html.ActionLink("Mentor", "Mentor", "Student_Course_Log")</h5>
+}
+else
+{
+    <h5>@Html.ActionLink("Certificates", "Index", "Certificates")</h5>
+}
 }
 
 

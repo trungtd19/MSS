@@ -9,9 +9,11 @@ using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Core.Import;
 using System.Text;
 using System.Linq;
+using MSS_DEMO.Common;
 
 namespace MSS_DEMO.Controllers
 {
+    [CheckCredential(Role_ID = "3")]
     public class ImportStudentController : Controller
     {
         private IUnitOfWork unitOfWork;

@@ -23,7 +23,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        [CheckCredential(Role_ID = "4")]
+        [CheckCredential(Role_ID = "1")]
         public ActionResult Index(CoursesReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
@@ -111,7 +111,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (LogList.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {
@@ -129,6 +129,7 @@ namespace MSS_DEMO.Controllers.Log
             model.PageList = LogList.ToList().ToPagedList(pageNumber, pageSize);
             return View(model);
         }
+        [CheckCredential(Role_ID = "1")]
         public ActionResult Mentor()
         {
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
@@ -139,6 +140,7 @@ namespace MSS_DEMO.Controllers.Log
             else ViewBag.checkData = "";
             return View(lstSubjectClass);
         }
+        [CheckCredential(Role_ID = "1")]
         public ActionResult Detail(CoursesReportViewModel model,string id,string searchCheck, int? page)
         {
             DateTime date = DateTime.Now;
@@ -233,7 +235,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (listNote.Count == 0)
                 {
-                    ViewBag.Nodata = "Not found data";
+                    ViewBag.Nodata = "Showing 0 results";
                 }
                 else
                 {
@@ -252,6 +254,7 @@ namespace MSS_DEMO.Controllers.Log
             return View(model);
         }
         [HttpPost]
+        [CheckCredential(Role_ID = "2")]
         public ActionResult AddNote(string id, string note)
         {   
             try
