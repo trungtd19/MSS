@@ -21,41 +21,46 @@
             <div class="col-md-1">
                 <input class="btn btn-success" type="submit" value="Search" />
             </div>
-            @Html.ActionLink("Add new user", "Create")      
+            @Html.ActionLink("Add new user", "Create")
+            <br />
+            <br />
         }
 
+           
 
-    @if (Model != null)
-    {
-        <table class="table table-bordered table-striped" style="width: 50%;">
-            <tr>
-                <th>
-                    Login
-                </th>
-                <th>
-                   IsActive
-                </th>
-                <th>
-                   Role Name
-                </th>
-            </tr>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.isActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Role.Role_Name)
-                    </td>
-                </tr>
-            }
+                @if (Model != null)
+                {
+                    <table class="table table-bordered table-striped" style="width: 50%;">
+                        <tr>
+                            <th>
+                                Login
+                            </th>
+                            <th>
+                                IsActive
+                            </th>
+                            <th>
+                                Role Name
+                            </th>
+                        </tr>
 
-        </table>
-    }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.Login, "Details", new { id = item.User_ID })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.isActive)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Role.Role_Name)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                }
+            
 </body>
 </html>

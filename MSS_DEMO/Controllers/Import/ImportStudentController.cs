@@ -13,7 +13,7 @@ using MSS_DEMO.Common;
 
 namespace MSS_DEMO.Controllers
 {
-    [CheckCredential(Role_ID = "3")]
+    [CheckCredential(Role_ID = "1")]
     public class ImportStudentController : Controller
     {
         private IUnitOfWork unitOfWork;

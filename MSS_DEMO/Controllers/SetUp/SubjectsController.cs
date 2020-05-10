@@ -9,7 +9,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers
 {
-    [CheckCredential(Role_ID = "3")]
+    [CheckCredential(Role_ID = "1")]
     public class SubjectsController : Controller
     {
         private IUnitOfWork unitOfWork;
