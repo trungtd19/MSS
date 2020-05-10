@@ -63,17 +63,17 @@ namespace MSS_DEMO.Controllers.Login
         public ActionResult LoginWithGoogle()
         {
             User_Role user = null;
-            string xy = Request["Mail"];
-            string[] temp = xy.Split('@');
+            string userLogin = Request["Mail"];
+            string[] temp = userLogin.Split('@');
             string checkmail = temp[1];                    
-                user = db.User_Role.SingleOrDefault(x => x.Login.Equals(xy));
+                user = db.User_Role.SingleOrDefault(x => x.Login.Equals(userLogin));
             if (user != null)
             {
                 var RoleSession = new RoleLogin();
                 RoleSession.Role = user.Role_ID;
                 var UserSession = new UserLogin();
                 UserSession.UserID = user.User_ID;
-                UserSession.UserName = xy;
+                UserSession.UserName = userLogin;
                 Session.Add(CommonConstants.ROLE_Session, RoleSession);
                 Session.Add(CommonConstants.User_Session, UserSession);
                 return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
@@ -84,13 +84,13 @@ namespace MSS_DEMO.Controllers.Login
                 {
                     return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
                 }
-                else if(checkMentor(xy) == true)
+                else if(checkMentor(userLogin) == true)
                 {
                     var RoleSession = new RoleLogin();
                     RoleSession.Role = 3;
                     var UserSession = new UserLogin();
                     UserSession.UserID = 3;
-                    UserSession.UserName = xy;
+                    UserSession.UserName = userLogin;
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
                     return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
@@ -101,7 +101,7 @@ namespace MSS_DEMO.Controllers.Login
                     RoleSession.Role = 5;
                     var UserSession = new UserLogin();
                     UserSession.UserID = 5;
-                    UserSession.UserName = xy;
+                    UserSession.UserName = userLogin;
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
                     return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
