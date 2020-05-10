@@ -111,5 +111,74 @@ namespace MSS_DEMO.Core.Implement
             }
             return date;
         }
+        public string getSqlQuery(List<string> row, int userID, string dateImport, List<Specification> specifications, string semesterID, List<string> lstSubjectID)
+        {
+
+            dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            DateTime _dateImport = DateTime.Parse(dateImport);
+            var Spec_ID_CSV = -1;
+            foreach (var spec in specifications)
+            {
+                string specName = spec.Specification_Name.ToLower().Trim();
+                string csvSpecName = row[3].ToString().ToLower().Trim();
+                Spec_ID_CSV = specName.Equals(csvSpecName) ? spec.Specification_ID : -1;
+                if (Spec_ID_CSV != -1) break;
+            }
+            string sqlText = "";
+            if (Spec_ID_CSV != -1)
+            {
+                sqlText = "Insert into [dbo].[Student_Specification_Log] ([Roll],[Specialization],[Specialization_Slug] ,[University] ,[Specialization_Enrollment_Time]," +
+                    "[Last_Specialization_Activity_Time],[Completed],[Status] ,[Program_Slug],[Program_Name] ,[Specialization_Completion_Time],[Campus],[Date_Import],[User_ID]," +
+                    "[Email],[Specification_ID] ,[Semester_ID],[Name],[Enrollment_Source],[Subject_ID]) Values( '" +
+               "" + row[2].ToString().Split('-')[2] + "','" +
+               "" + row[3].ToString() + "','" +
+               "" + row[4].ToString() + "','" +
+               "" + row[5].ToString() + "','" +
+               "" + (row[6].ToString() != "" ? DateTime.Parse(row[6].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + (row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + Boolean.Parse((row[8].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + Boolean.Parse((row[9].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + row[10].ToString() + "','" +
+               "" + row[11].ToString() + "','" +
+               "" + (row[13].ToString() != "" ? DateTime.Parse(row[13].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + row[2].ToString().Split('-')[1] + "','" +
+               "" + _dateImport + "','" +
+               "" + userID + "','" +
+               "" + row[1].ToString() + "','" +
+               "" + Spec_ID_CSV + "','" + 
+               "" + semesterID + "','" +
+               "" + row[0].ToString() + "','" +
+               "" + row[12].ToString() + "','" +
+               "" + (lstSubjectID.Count > 0 ? lstSubjectID[0] : null) + "'" +
+               ");";
+            }
+            else
+            {
+                sqlText = "Insert into [dbo].[Student_Specification_Log] ([Roll],[Specialization],[Specialization_Slug] ,[University] ,[Specialization_Enrollment_Time]," +
+                    "[Last_Specialization_Activity_Time],[Completed],[Status] ,[Program_Slug],[Program_Name] ,[Specialization_Completion_Time],[Campus],[Date_Import],[User_ID]," +
+                    "[Email],[Semester_ID],[Name],[Enrollment_Source],[Subject_ID]) Values( '" +
+               "" + row[2].ToString().Split('-')[2] + "','" +
+               "" + row[3].ToString() + "','" +
+               "" + row[4].ToString() + "','" +
+               "" + row[5].ToString() + "','" +
+               "" + (row[6].ToString() != "" ? DateTime.Parse(row[6].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + (row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + Boolean.Parse((row[8].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + Boolean.Parse((row[9].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + row[10].ToString() + "','" +
+               "" + row[11].ToString() + "','" +
+               "" + (row[13].ToString() != "" ? DateTime.Parse(row[13].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + row[2].ToString().Split('-')[1] + "','" +
+               "" + _dateImport + "','" +
+               "" + userID + "','" +
+               "" + row[1].ToString() + "','" +
+               "" + semesterID + "','" +
+               "" + row[0].ToString() + "','" +
+               "" + row[12].ToString() + "','" +
+               "" + (lstSubjectID.Count > 0 ? lstSubjectID[0] : null) + "'" +
+               ");";
+            }
+            return sqlText;
+        }
     }
 }

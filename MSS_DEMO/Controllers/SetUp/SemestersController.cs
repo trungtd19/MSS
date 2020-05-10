@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Common;
@@ -13,7 +14,7 @@ using MSS_DEMO.Repository;
 
 namespace MSS_DEMO.Controllers
 {
-    [CheckCredential(Role_ID = "3")]
+    [CheckCredential(Role_ID = "1")]
     public class SemestersController : Controller
     {
       
@@ -41,6 +42,11 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Semester_ID,Semester_Name")] Semester semester,string Start_Date,string End_Date)
         {
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            if (!regexItem.IsMatch(semester.Semester_ID)) {
+                ViewBag.Error = "Semester ID invalid!";
+                return View();
+            }
             Start_Date =  DateTime.ParseExact(Start_Date, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             End_Date = DateTime.ParseExact(End_Date, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             semester.Start_Date = DateTime.Parse(Start_Date);
