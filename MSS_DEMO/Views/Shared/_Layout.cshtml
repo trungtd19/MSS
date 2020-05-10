@@ -48,10 +48,12 @@
     </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" style=" background-color: #0e5ba9;
+            border-color: #0e5ba9;
+            color:#FFFFFF;">
         <div class="container">
-            <div class="navbar-header  ">
-                @Html.ActionLink("FPT Education on Coursera - Mentoring Support System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="navbar-header" >
+                @Html.ActionLink("FPT Education on Coursera - Mentoring Support System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand",@style = "color:#FFFFFF" })
             </div>
             <div class="navbar-collapse collapse">
                 @if (session != null)
