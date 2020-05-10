@@ -84,7 +84,7 @@ namespace MSS_DEMO.Controllers.Login
                 {
                     return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
                 }
-                else if(checkMentor() == true)
+                else if(checkMentor(xy) == true)
                 {
                     var RoleSession = new RoleLogin();
                     RoleSession.Role = 3;
@@ -117,8 +117,8 @@ namespace MSS_DEMO.Controllers.Login
 
         }
 
-        private bool checkMentor()
-        {
+        private bool checkMentor( string userMentor)
+        {           
             MSSEntities context = new MSSEntities();
             Semester semester = new Semester();
             DateTime date = DateTime.Now;
