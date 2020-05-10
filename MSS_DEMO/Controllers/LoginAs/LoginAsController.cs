@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace MSS_DEMO.Controllers.LoginAs
 {
-    [CheckCredential(Role_ID = "1")]
+    [CheckCredential(Role_ID = "2")]
     public class LoginAsController : Controller
     {
         private MSSEntities db = new MSSEntities();

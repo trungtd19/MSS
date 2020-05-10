@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-
+using System.Text;
 
 namespace MSS_DEMO.Core.Implement
 {
@@ -160,90 +160,6 @@ namespace MSS_DEMO.Core.Implement
             }
             return date;
         }
-        // không sử dụng 
-        public void GetStudentCourse(string [] row, string userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID)
-        {
-            dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
-            DateTime _dateImport = DateTime.Parse(dateImport);
-            int Cour_ID_CSV = -1;
-            foreach (var listID in course_Spec_Subs)
-            {
-                string courseName = listID.Course_Name.ToLower().Trim();
-                string csvCourseName = row[3].ToString().ToLower().Trim();
-                string SubID = row[2].ToString().Split('-')[0];
-
-                if (courseName.Equals(csvCourseName) && SubID == listID.Subject_ID)
-                {
-                    Cour_ID_CSV = listID.Course_ID;
-                }
-                else
-                {
-                    Cour_ID_CSV = -1;
-                }
-                if (Cour_ID_CSV != -1) break;
-            }
-            if (Cour_ID_CSV != -1)
-            {
-              context.Database.ExecuteSqlCommand(
-              "Insert into tableName Values(@Email, @Roll, @Course_ID,@Course_Name, @Subject_ID, @Campus, @Course_Enrollment_Time, @Course_Start_Time," +
-              "@Last_Course_Activity_Time, @Overall_Progress, @Estimated, @Completed, @Status, @Program_Slug, @Program_Name, @Completion_Time," +
-              "@Course_Grade, @User_ID, @Date_Import, @Semester_ID, @Name, @University, @Course_Slug, @Enrollment_Source)",
-              new SqlParameter("Email", row[1].ToString()),
-              new SqlParameter("Roll", row[2].ToString().Split('-')[2]),
-              new SqlParameter("Course_ID", Cour_ID_CSV),
-              new SqlParameter("Course_Name", row[3].ToString()),
-              new SqlParameter("Subject_ID", row[2].ToString().Split('-')[0]),
-              new SqlParameter("Campus", row[2].ToString().Split('-')[1]),
-              new SqlParameter("Course_Enrollment_Time", row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Course_Start_Time", row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Last_Course_Activity_Time", row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Overall_Progress", Double.Parse(row[10].ToString())),
-              new SqlParameter("Estimated", Double.Parse(row[11].ToString())),
-              new SqlParameter("Completed", Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False"))),
-              new SqlParameter("Status", Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False"))),
-              new SqlParameter("Program_Slug", row[14].ToString()),
-              new SqlParameter("Program_Name", row[15].ToString()),
-              new SqlParameter("Completion_Time", row[17].ToString() != "" ? DateTime.Parse(row[17].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Course_Grade", Double.Parse(row[18].ToString())),
-              new SqlParameter("User_ID", userID),
-              new SqlParameter("Date_Import", _dateImport),
-              new SqlParameter("Semester_ID", semesterID),
-              new SqlParameter("Name", row[0].ToString()),
-              new SqlParameter("University", row[6].ToString()),
-              new SqlParameter("Course_Slug", row[5].ToString()),
-              new SqlParameter("Enrollment_Source", row[16].ToString()));
-            }
-            else
-            {
-                context.Database.ExecuteSqlCommand(
-              "Insert into tableName Values(@Email, @Roll, @Course_Name, @Subject_ID, @Campus, @Course_Enrollment_Time, @Course_Start_Time," +
-              " @Last_Course_Activity_Time, @Overall_Progress, @Estimated, @Completed, @Status, @Program_Slug, @Program_Name, @Completion_Time," +
-              " @Course_Grade, @User_ID, @Date_Import, @Semester_ID, @Name, @University, @Course_Slug, @Enrollment_Source)",
-              new SqlParameter("Email", row[1].ToString()),
-              new SqlParameter("Roll", row[2].ToString().Split('-')[2]),
-              new SqlParameter("Course_Name", row[3].ToString()),
-              new SqlParameter("Subject_ID", row[2].ToString().Split('-')[0]),
-              new SqlParameter("Campus", row[2].ToString().Split('-')[1]),
-              new SqlParameter("Course_Enrollment_Time", row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Course_Start_Time", row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Last_Course_Activity_Time", row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Overall_Progress", Double.Parse(row[10].ToString())),
-              new SqlParameter("Estimated", Double.Parse(row[11].ToString())),
-              new SqlParameter("Completed", Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False"))),
-              new SqlParameter("Status", Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False"))),
-              new SqlParameter("Program_Slug", row[14].ToString()),
-              new SqlParameter("Program_Name", row[15].ToString()),
-              new SqlParameter("Completion_Time", row[17].ToString() != "" ? DateTime.Parse(row[17].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970")),
-              new SqlParameter("Course_Grade", Double.Parse(row[18].ToString())),
-              new SqlParameter("User_ID", userID),
-              new SqlParameter("Date_Import", _dateImport),
-              new SqlParameter("Semester_ID", semesterID),
-              new SqlParameter("Name", row[0].ToString()),
-              new SqlParameter("University", row[6].ToString()),
-              new SqlParameter("Course_Slug", row[5].ToString()),
-              new SqlParameter("Enrollment_Source", row[16].ToString()));
-            }
-        }
         public List<InfoStudent> MemberReport(string Roll, string Semester, DateTime? ImportedDate)
         {
             List<InfoStudent> Info = new List<InfoStudent>();
@@ -277,14 +193,6 @@ namespace MSS_DEMO.Core.Implement
                     subjectId = item.Subject_ID;
                     subjectName = listCourCp.Where(m => m.sub.Subject_ID == subjectId).Select(m => m.sub.Subject_Name).FirstOrDefault();
                 }
-                if (lastActive.ToString("dd/MM/yyyy") == "01/01/1970")
-                {
-                    timeActive = "";
-                }
-                else
-                {
-                    timeActive = lastActive.ToString();
-                }
                 if (comple.ToString("dd/MM/yyyy") == "01/01/1970")
                 {
                     timeCompleted = "";
@@ -316,7 +224,115 @@ namespace MSS_DEMO.Core.Implement
                 });
             }
             return Info;
+        }
+        public string getSqlQuery(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID, List<string> lstSubjectID)
+        {
 
+            dateImport = DateTime.ParseExact(dateImport, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
+            DateTime _dateImport = DateTime.Parse(dateImport);
+            int Cour_ID_CSV = -1;
+            foreach (var listID in course_Spec_Subs)
+            {
+                string courseName = listID.Course_Name.ToLower().Trim();
+                string csvCourseName = row[3].ToString().ToLower().Trim();
+                string SubID = row[2].ToString().Split('-')[0];
+
+                if (courseName.Equals(csvCourseName) && SubID == listID.Subject_ID)
+                {
+                    Cour_ID_CSV = listID.Course_ID;
+                }
+                else
+                {
+                    Cour_ID_CSV = -1;
+                }
+                if (Cour_ID_CSV != -1) break;
+            }
+            string sqlText = "";
+            if (Cour_ID_CSV != -1)
+            {
+                sqlText = "Insert into Student_Course_Log ([Course_Enrollment_Time],[Course_Start_Time]," +
+               "[Last_Course_Activity_Time],[Overall_Progress],[Estimated],[Completed],[Status],[Program_Slug] " +
+               ",[Program_Name],[Completion_Time],[Course_ID],[Course_Grade],[Roll],[Date_Import],[User_ID],[Email]," +
+               "[Campus],[Subject_ID],[Course_Name],[Semester_ID],[Name],[Course_Slug],[University],[Enrollment_Source]) Values( '" +
+               "" + (row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + (row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + (row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + Double.Parse(row[10].ToString()) + "','" +
+               "" + Double.Parse(row[11].ToString()) + "','" +
+               "" + Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + row[14].ToString() + "','" +
+               "" + row[15].ToString() + "','" +
+               "" + (row[17].ToString() != "" ? DateTime.Parse(row[17].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + Cour_ID_CSV + "','" +
+               "" + Double.Parse(row[18].ToString()) + "','" +
+               "" + row[2].ToString().Split('-')[2] + "','" +
+               "" + _dateImport + "','" +
+               "" + userID + "','" +
+               "" + row[1].ToString() + "','" +
+               "" + row[2].ToString().Split('-')[1] + "','" +
+               "" + (lstSubjectID.Count > 0 ? lstSubjectID[0] : null) + "','" +
+               "" + row[3].ToString() + "','" +
+               "" + semesterID + "','" +
+               "" + row[0].ToString() + "','" +
+               "" + row[5].ToString() + "','" +
+               "" + row[6].ToString() + "','" +
+               "" + row[16].ToString() + "'" +
+               ");";
+            }
+            else
+            {
+                sqlText = "Insert into Student_Course_Log ([Course_Enrollment_Time],[Course_Start_Time]," +
+               "[Last_Course_Activity_Time],[Overall_Progress],[Estimated],[Completed],[Status],[Program_Slug] " +
+               ",[Program_Name],[Completion_Time],[Course_Grade],[Roll],[Date_Import],[User_ID],[Email]," +
+               "[Campus],[Subject_ID],[Course_Name],[Semester_ID],[Name],[Course_Slug],[University],[Enrollment_Source]) Values( '" +
+               "" + (row[7].ToString() != "" ? DateTime.Parse(row[7].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + (row[8].ToString() != "" ? DateTime.Parse(row[8].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + (row[9].ToString() != "" ? DateTime.Parse(row[9].ToString()) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + Double.Parse(row[10].ToString()) + "','" +
+               "" + Double.Parse(row[11].ToString()) + "','" +
+               "" + Boolean.Parse((row[12].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + Boolean.Parse((row[13].ToString().ToLower() == "yes" ? "True" : "False")) + "','" +
+               "" + row[14].ToString() + "','" +
+               "" + row[15].ToString() + "','" +
+               "" + (row[17].ToString() != "" ? DateTime.Parse(row[17].ToString().Substring(0, 10)) : DateTime.Parse("01/01/1970")) + "','" +
+               "" + Double.Parse(row[18].ToString()) + "','" +
+               "" + row[2].ToString().Split('-')[2] + "','" +
+               "" + _dateImport + "','" +
+               "" + userID + "','" +
+               "" + row[1].ToString() + "','" +
+               "" + row[2].ToString().Split('-')[1] + "','" +
+               "" + (lstSubjectID.Count > 0 ? lstSubjectID[0] : null) + "','" +
+               "" + row[3].ToString() + "','" +
+               "" + semesterID + "','" +
+               "" + row[0].ToString() + "','" +
+               "" + row[5].ToString() + "','" +
+               "" + row[6].ToString() + "','" +
+               "" + row[16].ToString() + "'" +
+               ");";
+            }
+            return sqlText;
+        }
+        public int countInsert(StringBuilder sb)
+        {
+            int recordsInserted = 0;
+            var ConnectionString = context.Database.Connection.ConnectionString;
+            SqlConnection connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            SqlTransaction sqlTran = connection.BeginTransaction();
+            SqlCommand command = new SqlCommand(sb.ToString(), connection);
+            command.Transaction = sqlTran;
+            try
+            {
+                command.CommandType = CommandType.Text;
+                recordsInserted = command.ExecuteNonQuery();
+                sqlTran.Commit();
+            }
+            catch (Exception ex)
+            {
+                sqlTran.Rollback();
+            }
+            return recordsInserted;
         }
     }
     public class MentorObject

@@ -13,7 +13,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers.UserManagement
 {
-    [CheckCredential(Role_ID = "3")]
+    [CheckCredential(Role_ID = "1")]
     public class User_RoleController : Controller
     {
         private IUnitOfWork unitOfWork;

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace MSS_DEMO.Controllers.Log
 {
-    [CheckCredential(Role_ID = "3")]
+    
     public class CleanSystemController : Controller
     {
         private IUnitOfWork unitOfWork;
@@ -17,10 +17,12 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
+        [CheckCredential(Role_ID = "1")]
         public ActionResult Index()
         {
             return View();
         }
+        [CheckCredential(Role_ID = "1")]
         public ActionResult UsageReport(string ImportedDate, string Semester_ID, string checkDelete)
         {
             List<Semester> semester = unitOfWork.Semesters.GetAll();
@@ -55,6 +57,7 @@ namespace MSS_DEMO.Controllers.Log
             
             return View();
         }
+        [CheckCredential(Role_ID = "1")]
         public ActionResult SpecificationReport(string ImportedDate, string Semester_ID, string checkDelete)
         {
             List<Semester> semester = unitOfWork.Semesters.GetAll();

@@ -1,4 +1,5 @@
-﻿ using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,22 +10,23 @@ namespace MSS_DEMO.Common
     public class CheckCredentialAttribute :AuthorizeAttribute
     {
         public string Role_ID { set; get; }
-        UserLogin session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
-        RoleLogin role = (RoleLogin)HttpContext.Current.Session[CommonConstants.ROLE_Session];
+      
+        
+       
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            List<string> admin = new List<string> {"1"};
-            List<string> Hana = new List<string> { "3","2" };
-            List<string> Mentor = new List<string> {"2" };
-            List<string> Acad = new List<string> { "1","2","3","4","5" };
+            List<string> admin = new List<string> { "1", "2", "3", "4", "5" };
+            List<string> Acad = new List<string> { "3","2" };
+            List<string> Mentor = new List<string> {"3" };         
             List<string> Student = new List<string> { "5" };
-            
+            UserLogin session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
+            RoleLogin role = (RoleLogin)HttpContext.Current.Session[CommonConstants.ROLE_Session];
             string checkStudent;
            
             string[] temp = session.UserName.Split('@');
             checkStudent = temp[0].Substring(temp[0].Length - 5);
            
-          
+
             if (session == null)
             {
                 return false;
@@ -41,18 +43,7 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-           else if (role.Role == 3)
-            {
-                if (Mentor.Contains(this.Role_ID))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else if (role.Role == 4)
+            else if (role.Role == 2)
             {
                 if (Acad.Contains(this.Role_ID))
                 {
@@ -63,9 +54,9 @@ namespace MSS_DEMO.Common
                     return false;
                 }
             }
-            else if (role.Role == 2)
+            else if (role.Role == 3)
             {
-                if (Hana.Contains(this.Role_ID))
+                if (Mentor.Contains(this.Role_ID))
                 {
                     return true;
                 }
@@ -73,7 +64,8 @@ namespace MSS_DEMO.Common
                 {
                     return false;
                 }
-            }
+            }       
+           
             else if (IsNumber(checkStudent))
             {
                 if (Student.Contains(this.Role_ID))

@@ -23,7 +23,7 @@ namespace MSS_DEMO.Controllers.Log
         {
             this.unitOfWork = _unitOfWork;
         }
-        [CheckCredential(Role_ID = "1")]
+        [CheckCredential(Role_ID = "2")]
         public ActionResult Index(CoursesReportViewModel model, int? page, string searchCheck)
         {
             List<Student_Course_Log> LogList = new List<Student_Course_Log>();
@@ -62,8 +62,11 @@ namespace MSS_DEMO.Controllers.Log
             List<string> date = new List<string>();
             try
             {
-                var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).FirstOrDefault().Date_Import;
-                date.Add(Convert.ToDateTime(listDate).ToString("dd/MM/yyyy"));
+                var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).Select(o => o.Date_Import).Distinct().ToList();
+                foreach (var dates in listDate)
+                {
+                    date.Add(Convert.ToDateTime(dates).ToString("dd/MM/yyyy"));
+                }             
             }
             catch
             {
@@ -132,7 +135,7 @@ namespace MSS_DEMO.Controllers.Log
             model.PageList = LogList.ToList().ToPagedList(pageNumber, pageSize);
             return View(model);
         }
-        [CheckCredential(Role_ID = "1")]
+        [CheckCredential(Role_ID = "3")]
         public ActionResult Mentor()
         {
             var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
@@ -143,6 +146,7 @@ namespace MSS_DEMO.Controllers.Log
             else ViewBag.checkData = "";
             return View(lstSubjectClass);
         }
+        [CheckCredential(Role_ID = "3")]
         public ActionResult Detail(StatusOverviewModel model, string id, string searchCheck, string selectCoursCompleted, string selectFinalStatus)
         {
             DateTime date = DateTime.Now;
@@ -230,6 +234,7 @@ namespace MSS_DEMO.Controllers.Log
             model.OverviewList = Status;
             return View(model);
         }
+        [CheckCredential(Role_ID = "3")]
         [HttpPost]
         public ActionResult ReportStudent(string id)
         {
@@ -265,6 +270,7 @@ namespace MSS_DEMO.Controllers.Log
                 list = sb.ToString()
             }); 
         }
+        [CheckCredential(Role_ID = "3")]
         public ActionResult StudentDetails(string id)
         {
             MSSEntities context = new MSSEntities();
@@ -282,7 +288,7 @@ namespace MSS_DEMO.Controllers.Log
             return View(model);
         }
         [HttpPost]
-        [CheckCredential(Role_ID = "2")]
+        [CheckCredential(Role_ID = "3")]
         public ActionResult AddNote(string id, string note)
         {   
             try
@@ -321,6 +327,7 @@ namespace MSS_DEMO.Controllers.Log
             return Json(new { check = true }); 
         }
         [HttpGet]
+        [CheckCredential(Role_ID = "2")]
         public void Export(string check)
         {
 

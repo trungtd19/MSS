@@ -12,7 +12,7 @@ using PagedList;
 
 namespace MSS_DEMO.Controllers.SetUp
 {
-    [CheckCredential(Role_ID = "3")]
+    [CheckCredential(Role_ID = "1")]
     public class StudentsController : Controller
     {
         
