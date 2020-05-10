@@ -7,7 +7,7 @@ using MSS_DEMO.Core.Interface;
 using MSS_DEMO.Repository;
 using MSS_DEMO.Core.Import;
 using MSS_DEMO.Common;
-using System.Linq;
+using System.Text;
 
 namespace MSS_DEMO.Controllers
 {
@@ -36,6 +36,7 @@ namespace MSS_DEMO.Controllers
             CSVConvert csv = new CSVConvert();
             string messageImport = "";
             HttpFileCollectionBase files = Request.Files;
+            StringBuilder sb = new StringBuilder();
             if (files.Count == 0)
             {
                 messageImport = "Please select the file first to upload!";
@@ -86,6 +87,7 @@ namespace MSS_DEMO.Controllers
                                 }
                                 var listCoureseName = unitOfWork.Courses.GetList();
                                 string semesterID = unitOfWork.Semesters.checkDateOfSemester(_dateImport);
+
                                 while (!sreader.EndOfStream)
                                 {
                                     startRow++;
@@ -107,9 +109,7 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
-                                        var log = getRow.GetStudentCourse(rows, userID, _dateImport, listCoureseName, semesterID, unitOfWork.CoursesLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID));
-                                        unitOfWork.CoursesLog.Insert(log);
-                                        countSusscess++;
+                                        sb.Append(unitOfWork.CoursesLog.getSqlQuery(rows, userID, _dateImport, listCoureseName, semesterID, unitOfWork.CoursesLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID)));
                                     }
                                     catch
                                     {
@@ -118,19 +118,13 @@ namespace MSS_DEMO.Controllers
                                     }
                                 }
                             }
-                            if (unitOfWork.Save())
+                            countSusscess = unitOfWork.CoursesLog.countInsert(sb);
+                            if (countFail == 0)
                             {
-                                if (countFail == 0)
-                                {
-                                    messageImport = "Import success " + countSusscess + " records";
-                                }
-                                else
-                                    messageImport = countSusscess == 0 ? "Import Fail" : "Import success " + countSusscess + " and fail " + countFail + " records!";
+                                messageImport = "Import success " + countSusscess + " records";
                             }
                             else
-                            {
-                                messageImport = "Import fail!";
-                            }
+                                messageImport = countSusscess == 0 ? "Import Fail" : "Import success " + countSusscess + " and fail " + countFail + " records!";
                         }
                     }
                     catch (Exception ex)
@@ -158,6 +152,7 @@ namespace MSS_DEMO.Controllers
             string _dateImport = Request["dateImport"];
             CSVConvert csv = new CSVConvert();
             string messageImport = "";
+            StringBuilder sb = new StringBuilder();
             HttpFileCollectionBase files = Request.Files;
             if (files.Count == 0)
             {
@@ -224,9 +219,7 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
-                                        var log = getRow.GetStudentSpec(rows, userID, _dateImport, specifications, semesterID, unitOfWork.SpecificationsLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID));
-                                        unitOfWork.SpecificationsLog.Insert(log);
-                                        countSusscess++;
+                                        sb.Append(unitOfWork.SpecificationsLog.getSqlQuery(rows, userID, _dateImport, specifications, semesterID, unitOfWork.SpecificationsLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID)));
                                     }
                                     catch
                                     {
@@ -235,19 +228,13 @@ namespace MSS_DEMO.Controllers
                                     }
                                 }
                             }
-                            if (unitOfWork.Save())
+                            countSusscess = unitOfWork.CoursesLog.countInsert(sb);
+                            if (countFail == 0)
                             {
-                                if (countFail == 0)
-                                {
-                                    messageImport = "Import success " + countSusscess + " records";
-                                }
-                                else
-                                    messageImport = countSusscess == 0 ? "Import Fail" : "Import success " + countSusscess + " and fail " + countFail + " records!";
+                                messageImport = "Import success " + countSusscess + " records";
                             }
                             else
-                            {
-                                messageImport = "Import fail!";
-                            }
+                                messageImport = countSusscess == 0 ? "Import Fail" : "Import success " + countSusscess + " and fail " + countFail + " records!";
                         }
                     }
                     catch (Exception ex)

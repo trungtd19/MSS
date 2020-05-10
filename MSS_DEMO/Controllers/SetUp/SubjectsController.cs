@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using MSS_DEMO.Common;
 using MSS_DEMO.Models;
@@ -72,6 +73,12 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Subject_ID,Subject_Name,Subject_Active")] Subject subject)
         {
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            if (!regexItem.IsMatch(subject.Subject_ID))
+            {
+                ViewBag.Error = "Subject ID invalid!";
+                return View();
+            }
             if (unitOfWork.Subject.IsExitsSubject(subject.Subject_ID))
             {
                 ViewBag.Error = "This subject exits!";

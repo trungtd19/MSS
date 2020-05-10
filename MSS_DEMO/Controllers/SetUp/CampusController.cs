@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Common;
@@ -40,6 +41,12 @@ namespace MSS_DEMO.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Campus_ID,Campus_Name,Address,Contact_Point")] Campu campu)
         {
+            var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
+            if (!regexItem.IsMatch(campu.Campus_ID))
+            {
+                ViewBag.Error = "Campus ID invalid!";
+                return View();
+            }
             if (unitOfWork.Campus.IsExitsCampus(campu.Campus_ID, campu.Campus_Name)){
                 ViewBag.Error = "This campus exits!";
                 return View();
