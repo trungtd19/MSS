@@ -40,9 +40,9 @@
                             <div class="form-group">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Email:</label>
-                                        <div class="col-md-8 col-xs-12">
-                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control" })
+                                        <label class="col-md-3 control-label">Email:</label>
+                                        <div class="col-md-8 col-xs-12" style="padding:0">
+                                            @Html.TextBox("Email", Model.Email, new { @class = "form-control", @style = "max-width:280px;width:280px"})
                                             @Html.Hidden("searchCheck", "true")
                                         </div>
                                     </div>
@@ -50,8 +50,8 @@
                                 <br />                   
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Compulsory:</label>
-                                        <div class="col-md-8 col-xs-12">
+                                        <label class="col-md-3 control-label">Compulsory:</label>
+                                        <div class="col-md-8 col-xs-12" style="padding:0">
                                             @Html.DropDownList("compulsoryCourse", listCompulsory, "--- All ---", new { @name = "compulsoryCourse", @class = "form-control select" })
                                         </div>
                                     </div>
@@ -59,8 +59,8 @@
                                 <br />                           
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Completed:</label>
-                                        <div class="col-md-8 col-xs-12">
+                                        <label class="col-md-3 control-label">Completed:</label>
+                                        <div class="col-md-8 col-xs-12" style="padding:0">
                                             @Html.DropDownList("completedCourse", listCompleted, "--- All ---", new { @name = "completedCourse", @class = "form-control select" })
                                         </div>
                                     </div>
@@ -68,9 +68,9 @@
                                 <br />
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">Campus:</label>
-                                        <div class="col-md-8 col-xs-12">
-                                            @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
+                                        <label class="col-md-3 control-label">Subject:</label>
+                                        <div class="col-md-8 col-xs-12" style="padding:0">
+                                            @Html.DropDownList("Subject_ID", Model.listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select", @style = "max-width:750px;width:750px" })
                                         </div>
                                     </div>
                                 </div>
@@ -79,17 +79,17 @@
                         <div class="col-md-6" style="margin-top: 4px;">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Subject:</label>
-                                    <div class="col-md-8 col-xs-12">
-                                        @Html.DropDownList("Subject_ID", Model.listSubject, "--- All ---", new { @name = "Subject_ID", @class = "form-control select", @style = "max-width:300px;width:300px" })
+                                    <label class="col-md-3 control-label" style="padding:0">Campus:</label>
+                                    <div class="col-md-8 col-xs-12" style="padding:0">
+                                        @Html.DropDownList("Campus", Model.lstCampus, "--- All ---", new { @name = "Campus", @class = "form-control select" })
                                     </div>
                                 </div>
                             </div>
                             <br />
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Semester:</label>
-                                    <div class="col-md-8 col-xs-12">
+                                    <label class="col-md-3 control-label" style="padding:0">Semester:</label>
+                                    <div class="col-md-8 col-xs-12" style="padding:0">
                                         @Html.DropDownList("Semester_ID", Model.lstSemester, new { @name = "compulsoryCourse", @class = "form-control select" })
                                     </div>
                                 </div>
@@ -97,8 +97,8 @@
                             <br />
                             <div class="form-group">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Reported date:</label>
-                                    <div class="col-md-8 col-xs-12">
+                                    <label class="col-md-3 control-label" style="padding:0">Reported date:</label>
+                                    <div class="col-md-8 col-xs-12" style="padding:0">
                                         @Html.DropDownList("ImportedDate", importedDate, new { @name = "compulsoryCourse", @class = "form-control select" })
                                     </div>
                                 </div>
@@ -201,6 +201,8 @@
                         string Course_Enrollment_Time = item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                         string Course_Start_Time = item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
+                        double Overall = Math.Round((double)item.Overall_Progress, 1);
+                        double Estimated = Math.Round((double)item.Estimated, 1);
                         <tr>
                             <td>@(stt++)</td>
                             <td>
@@ -234,10 +236,10 @@
                                 @Last_Course_Activity_Time
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Overall_Progress)
+                                @Overall
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Estimated)
+                                @Estimated
                             </td>
                             <td>
                                 @complete

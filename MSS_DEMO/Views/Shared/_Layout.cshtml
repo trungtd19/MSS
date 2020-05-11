@@ -35,39 +35,37 @@
         table, th, td {
             border: 1px solid black;
         }
+
+        .navbar-inverse {
+            background-color: #0e5ba9;
+            border-color: #0e5ba9;
+            color:#FFFFFF;
+        }
+        .navbar-inverse .navbar-brand {
+            color: #FFFFFF;
+        }
+
     </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" style=" background-color: #0e5ba9;
+            border-color: #0e5ba9;
+            color:#FFFFFF;">
         <div class="container">
-            <div class="navbar-header">
-                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>*@
-                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="navbar-header" >
+                @Html.ActionLink("FPT Education on Coursera - Mentoring Support System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand",@style = "color:#FFFFFF" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @*<li style="font-size:25px;">@Html.ActionLink("Home", "Index", "Home")</li>*@
-                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
-            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                </ul>
                 @if (session != null)
                 {
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Welcome:" + " "+ @session.UserName, "Index", "Home")</li>
+                        <li >@Html.ActionLink("Welcome:" + " " + @session.UserName, "Index", "Home", new { @style = "color:#FFFFFF" })</li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">                        
-                        <li><a href="~/Login/Logout" onclick="signOut();">Logout</a></li>
+                        <li><a href="~/Login/Logout" onclick="signOut();" style="color:#FFFFFF">Logout</a></li>
 
                     </ul>
                 }
-              
-
-
-
             </div>
         </div>
     </div>
@@ -76,7 +74,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - FPT Education</p>
+        <p>&copy; @DateTime.Now.Year - FPT Education | @Html.ActionLink("About Us", "Index", "About")</p>
         </footer>
     </div>
 </body>

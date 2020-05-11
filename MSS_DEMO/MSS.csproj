@@ -197,6 +197,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Certificates\CertificatesController.cs" />
     <Compile Include="Controllers\LoginAs\LoginAsController.cs" />
@@ -462,6 +463,7 @@
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
     <Content Include="Views\Student_Course_Log\StudentDetails.cshtml" />
+    <Content Include="Views\About\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\MssService\" />
