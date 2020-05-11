@@ -21,7 +21,7 @@ namespace MSS_DEMO.Core.Implement
                 cour = (from o in db.Subjects
                         orderby o.Subject_ID descending
                         select o)
-                       .ToList();
+                       .ToList<Subject>();
 
                 return cour;
             }

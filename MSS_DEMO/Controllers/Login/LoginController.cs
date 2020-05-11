@@ -33,6 +33,8 @@ namespace MSS_DEMO.Controllers.Login
             string userLogin = Request["Mail"];
             string[] temp = userLogin.Split('@');
             string checkmail = temp[1];
+            string checkStudent;           
+            checkStudent = temp[0].Substring(temp[0].Length - 5);
             using (var ctx = new MSSEntities())
             {
                  user = ctx.User_Role
@@ -67,7 +69,7 @@ namespace MSS_DEMO.Controllers.Login
                     Session.Add(CommonConstants.User_Session, UserSession);
                     return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
                 }
-                else
+                else if(IsNumber(checkStudent))
                 {
                     var RoleSession = new RoleLogin();
                     RoleSession.Role = 5;
@@ -77,6 +79,10 @@ namespace MSS_DEMO.Controllers.Login
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
                     return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
                 }
                 
             }
@@ -124,7 +130,15 @@ namespace MSS_DEMO.Controllers.Login
             }
             return false; 
         }
-
+        public bool IsNumber(string pValue)
+        {
+            foreach (Char c in pValue)
+            {
+                if (!Char.IsDigit(c))
+                    return false;
+            }
+            return true;
+        }
         public ActionResult Logout()
         {           
             Session[CommonConstants.ROLE_Session] = null;

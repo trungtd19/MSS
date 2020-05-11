@@ -33,11 +33,14 @@ namespace MSS_DEMO.Controllers.Log
             var subject = unitOfWork.Subject.GetAll();
             foreach (var sub in subject)
             {
-                listSubjiect.Add(new SelectListItem
+                if (sub.Subject_Active == true)
                 {
-                    Text = sub.Subject_Name,
-                    Value = sub.Subject_ID
-                });
+                    listSubjiect.Add(new SelectListItem
+                    {
+                        Text = sub.Subject_Name,
+                        Value = sub.Subject_ID
+                    });
+                }
             }
             List<SelectListItem> campusList = new List<SelectListItem>();
             var campus = unitOfWork.Campus.GetAll();
@@ -66,7 +69,7 @@ namespace MSS_DEMO.Controllers.Log
                 foreach (var dates in listDate)
                 {
                     date.Add(Convert.ToDateTime(dates).ToString("dd/MM/yyyy"));
-                }             
+                }
             }
             catch
             {
@@ -223,7 +226,7 @@ namespace MSS_DEMO.Controllers.Log
             }
             ViewBag.Subject = id.Split('^')[0];
             ViewBag.Class = id.Split('^')[1];
-            ViewBag.SemesterID = semester.Semester_ID;
+            ViewBag.SemesterID = semester != null ? semester.Semester_ID : "";
             List<SelectListItem> selectFinal = new List<SelectListItem>();
             selectFinal.Add(new SelectListItem { Text = "--All--", Value = "" });
             selectFinal.Add(new SelectListItem { Text = "Completed", Value = "Completed" });
@@ -268,7 +271,7 @@ namespace MSS_DEMO.Controllers.Log
             return (ActionResult)this.Json((object)new
             {
                 list = sb.ToString()
-            }); 
+            });
         }
         [CheckCredential(Role_ID = "3")]
         public ActionResult StudentDetails(string id)
@@ -281,7 +284,7 @@ namespace MSS_DEMO.Controllers.Log
             var maxDate = context.Student_Course_Log.OrderByDescending(o => o.Date_Import).FirstOrDefault().Date_Import;
             var list = context.Student_Course_Log.Where(l => l.Roll == Roll && l.Semester_ID == Semester_ID && l.Subject_ID == Subject_ID && l.Date_Import == maxDate).ToList();
             model.UsageReport = list;
-            var note  = context.Mentor_Log.Where(l => l.Roll == Roll && l.Semester_ID == Semester_ID && l.Subject_ID == Subject_ID).FirstOrDefault();
+            var note = context.Mentor_Log.Where(l => l.Roll == Roll && l.Semester_ID == Semester_ID && l.Subject_ID == Subject_ID).FirstOrDefault();
             model.Note = note == null ? "" : note.Note;
             ViewBag.id = id;
             model.MemberReport = unitOfWork.CoursesLog.MemberReport(Roll, Semester_ID, maxDate);
@@ -290,7 +293,7 @@ namespace MSS_DEMO.Controllers.Log
         [HttpPost]
         [CheckCredential(Role_ID = "3")]
         public ActionResult AddNote(string id, string note)
-        {   
+        {
             try
             {
                 var userMentor = (UserLogin)HttpContext.Session[CommonConstants.User_Session];
@@ -302,29 +305,38 @@ namespace MSS_DEMO.Controllers.Log
                 var noteLog = context.Mentor_Log.Where(o => o.Roll.Trim() == Roll && o.Semester_ID.Trim() == Semester_ID.Trim() && o.Subject_ID.Trim() == Subject_ID.Trim()).FirstOrDefault();
                 if (noteLog == null)
                 {
-                    context.Mentor_Log.Add(new Mentor_Log {
+                    context.Mentor_Log.Add(new Mentor_Log
+                    {
                         Roll = Roll,
                         Semester_ID = Semester_ID,
                         Subject_ID = Subject_ID,
                         Note = "[" + userMentor.UserName.Split('@')[0] + "-" + Convert.ToDateTime(DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss") + "]" + note + "\n"
-                });
+                    });
                     context.SaveChanges();
                 }
-                if (noteLog.Note.Trim().Equals(note.Trim()))
+                else
+                if (noteLog.Note.Trim().Length == note.Trim().Length)
                 {
                     return Json(new { check = true });
                 }
                 else
                 {
-                    noteLog.Note = note;
+                    if (note.Trim().Length > noteLog.Note.Trim().Length)
+                    {
+                        noteLog.Note = noteLog.Note + "\n" + "[" + userMentor.UserName.Split('@')[0] + "-" + Convert.ToDateTime(DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss") + "]" + note.Substring(noteLog.Note.Length, note.Length - noteLog.Note.Length);
+                    }
+                    else
+                    {
+                        noteLog.Note = note;
+                    }
                     context.SaveChanges();
-                }                             
+                }
             }
             catch (Exception ex)
             {
                 return Json(new { check = false });
             }
-            return Json(new { check = true }); 
+            return Json(new { check = true });
         }
         [HttpGet]
         [CheckCredential(Role_ID = "2")]
@@ -375,7 +387,7 @@ namespace MSS_DEMO.Controllers.Log
             CSVConvert csv = new CSVConvert();
             var sb = new StringBuilder();
             var list = LogList.ToList();
-            sb.Append(string.Join(",","Name", "Email", "Subject ID", "Campus", "Course Name", "Course Slug","University" ,"Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
+            sb.Append(string.Join(",", "Name", "Email", "Subject ID", "Campus", "Course Name", "Course Slug", "University", "Enrollment Time", "Start Time", "Last ActivityTime", "Overall Progress", "Estimated",
                 "Completed", "Status", "Program Slug", "Program Name", "Enrollment Source", "Completion Time", "Course Grade", "Date Import"));
             sb.Append(Environment.NewLine);
             foreach (var item in list)
