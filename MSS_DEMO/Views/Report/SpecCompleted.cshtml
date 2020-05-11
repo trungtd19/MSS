@@ -49,12 +49,11 @@
         </h5>
     </div>
     <br />
-    @using (Html.BeginForm("SpecCompleted", "Report", FormMethod.Get))
-    {
-        <div class="panel panel-default">
-            <div class="panel-body" style="padding-top: initial;">
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding-top: initial;">
 
-
+            @using (Html.BeginForm("SpecCompleted", "Report", FormMethod.Get))
+            {
                 <div class="form-group">
                     <div class="col-md-2">
                         <label class="control-label"> Search by Roll:</label>
@@ -63,7 +62,7 @@
                         @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
                         @Html.Hidden("searchCheck", "true")
                     </div>
-                    <div class="col-md-2" style="width:135px">
+                    <div class="col-md-2"style="width:135px">
                         <label class="control-label">Semester:</label>
                     </div>
                     <div class="col-md-3" style="padding:0">
@@ -96,7 +95,7 @@
                 </div>
                 <br />
                 <div class="form-group">
-
+                   
                     <div class="col-md-2">
                         <label class="control-label"> Search by Subject: </label>
                     </div>
@@ -104,13 +103,14 @@
                         @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:630px;width:630px" })
                     </div>
                 </div>
-
-            </div>
-            <div class="panel-footer text-center">
-                <input class="btn btn-success" type="submit" value="Search" />
-            </div>
+                <br />
+                <br />
+                <div class="panel-footer text-center">
+                    <input class="btn btn-success" type="submit" value="Search" />
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
 <div style="margin-left: auto; margin-right: auto; text-align: center;">
     <h2>

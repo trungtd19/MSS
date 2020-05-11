@@ -34,42 +34,43 @@
             @Html.ActionLink("Studying status sverview", "StatusOverview")&nbsp;&nbsp;
         </h5>
     </div>
-    @using (Html.BeginForm("Index", "Report", FormMethod.Post))
-    {
-        <div class="panel panel-default">
-            <div class="panel-body" style="padding-top: initial;">
-
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Reported date: </label>
-                        @Html.Hidden("searchCheck", "true")
-                    </div>
-                    <div class="col-md-3" style="padding:0">
-                        <label>@Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="control-label"> Semester:  </label>
-                    </div>
-                    <div class="col-md-3" style="padding:0">
-                        <label> @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
-                    </div>
+    <div class="panel panel-default">
+        <div class="panel-body" style="padding-top: initial;">
+            @using (Html.BeginForm("Index", "Report", FormMethod.Post))
+            {
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Reported date: </label>
+                    @Html.Hidden("searchCheck", "true")
                 </div>
+                <div class="col-md-3"style="padding:0">
+                    <label>@Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label"> Semester:  </label>
+                </div>
+                <div class="col-md-3"style="padding:0">
+                    <label> @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })</label>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label">  Week off:  </label>
+                </div>
+                <div class="col-md-3" style="padding:0">
+                    <label> @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })</label>
+                </div>
+            </div>
                 <br />
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label">  Week off:  </label>
-                    </div>
-                    <div class="col-md-3" style="padding:0">
-                        <label> @Html.TextBox("weekNumber", "0", htmlAttributes: new { @class = "form-control", @type = "number", min = "0", style = "width:70px" })</label>
-                    </div>
-                </div>
-
-            </div>
-            <div class="panel-footer text-center">
-                <input class="btn btn-success" type="submit" value="Search" />
-            </div>
+                <br />
+                <div class="panel-footer text-center">
+                    <input class="btn btn-success" type="submit" value="Search" />
+                </div>              
+           
+            }
         </div>
-    }
+    </div>
     <div style="margin-left: auto; margin-right: auto; text-align: center;">
         <h2>
             <label style="color: green;">Summary reports</label>

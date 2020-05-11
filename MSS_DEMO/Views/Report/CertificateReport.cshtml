@@ -49,95 +49,95 @@
     </h5>
 </div>
 <br />
-@using (Html.BeginForm("CertificateReport", "Report", FormMethod.Get))
-{
-    <div class="panel panel-default">
-        <div class="panel-body" style="padding-top: initial;">
-
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Roll:</label>
-                </div>
-                <div class="col-lg-3" style="padding:0">
-                    @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-2" style="width:110px">
-                    <label class="control-label">Semester:</label>
-                </div>
-                <div class="col-md-3" style="padding:0">
-                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                </div>
+<div class="panel panel-default">
+    <div class="panel-body" style="padding-top: initial;">
+        @using (Html.BeginForm("CertificateReport", "Report", FormMethod.Get))
+        {
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label"> Search by Roll:</label>
             </div>
+            <div class="col-lg-3" style="padding:0">
+                @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
+                @Html.Hidden("searchCheck", "true")
+            </div>
+            <div class="col-md-2" style="width:110px">
+                <label class="control-label">Semester:</label>
+            </div>
+            <div class="col-md-3" style="padding:0">
+                @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+            </div>
+        </div>
             <br />
             <div class="form-group">
-
+               
                 <div class="col-md-2">
                     <label class="control-label"> Search by Subject: </label>
                 </div>
                 <div class="col-md-3" style="padding:0">
                     @Html.DropDownList("SelectString", null, htmlAttributes: new { @class = "form-control", @style = "max-width:630px;width:630px" })
                 </div>
+                <br />
+                <br />
+                <div class="panel-footer text-center">
+                    <input class="btn btn-success" type="submit" value="Search" />
+                </div>
+
             </div>
-
-            
-        </div>
-        <div class="panel-footer text-center">
-            <input class="btn btn-success" type="submit" value="Search" />
-        </div>
+        }
     </div>
-}
-    <div style="margin-left: auto; margin-right: auto; text-align: center;">
-        <h2>
-            <label style="color: green;">Certificate Report</label>
-        </h2>
-    </div>
-    @if (Model.certificatesModel != null)
+</div>
+<div style="margin-left: auto; margin-right: auto; text-align: center;">
+    <h2>
+        <label style="color: green;">Certificate Report</label>
+    </h2>
+</div>
+@if (Model.certificatesModel != null)
+{
+    if (Model.certificatesModel.Count > 0)
     {
-        if (Model.certificatesModel.Count > 0)
-        {
 
-            <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
-            <table class="table table-bordered" id="dataTable">
-                <tr>
-                    <th>Roll</th>
-                    <th>Subject Name</th>
-                    <th>Course Name</th>
-                    <th>Link</th>
-                    <th>Date Submit</th>
-                    <th></th>
-                </tr>
-                @for (var i = 0; i < Model.certificatesModel.Count; i = i + Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll).Count())
+        <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+        <table class="table table-bordered" id="dataTable">
+            <tr>
+                <th>Roll</th>
+                <th>Subject Name</th>
+                <th>Course Name</th>
+                <th>Link</th>
+                <th>Date Submit</th>
+                <th></th>
+            </tr>
+            @for (var i = 0; i < Model.certificatesModel.Count;i = i + Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll).Count())
+            {
+            <tr>
+                <th rowspan="@Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll).Count()">@Model.certificatesModel[i].Roll</th>
+                @{int y = 0; }
+                @{int z = i;}
+                @foreach (var t in Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll))
                 {
-                    <tr>
-                        <th rowspan="@Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll).Count()">@Model.certificatesModel[i].Roll</th>
-                        @{int y = 0; }
-                        @{int z = i;}
-                        @foreach (var t in Model.certificatesModel.Where(m => m.Roll == @Model.certificatesModel[i].Roll))
-                        {
-                            if (y > 0)
-                            {
-                            @:</tr><tr>
-                            }
-                            <th>@Model.certificatesModel[z].SubjectName</th>
-                            <th>@Model.certificatesModel[z].CourseName</th>
-                            <th>@Model.certificatesModel[z].Link</th>
-                            <th>@Model.certificatesModel[z].Date_Submit</th>
-                            <th>
-                                <button onclick="window.open('@Model.certificatesModel[z].Link')">View</button>
-                            </th>
-                            y++;
-                            z++;
-                        }
-
-                    </tr>
+                    if (y > 0)
+                    {
+                    @:</tr><tr>
+                    }
+                        <th>@Model.certificatesModel[z].SubjectName</th>
+                        <th>@Model.certificatesModel[z].CourseName</th>
+                        <th>@Model.certificatesModel[z].Link</th>
+                        <th>@Model.certificatesModel[z].Date_Submit</th>
+                        <th>
+                            <button onclick="window.open('@Model.certificatesModel[z].Link')">View</button>
+                        </th>
+                    y++;
+                    z++;
                 }
-            </table>
-        }
-        else
-        {
-            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
-        }
 
+                </tr>
+            }
+        </table>
     }
+    else
+    {
+        <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
+    }
+
+}
 
