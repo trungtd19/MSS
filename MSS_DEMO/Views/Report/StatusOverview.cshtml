@@ -54,7 +54,7 @@
                         @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
                     </div>
                     <div class="col-md-2">
-                        <label class="control-label">Semester</label>
+                        <label class="control-label">Semester:</label>
                     </div>
                     <div class="col-md-3">
                         @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
@@ -63,7 +63,7 @@
                 <br />
                 <div class="form-group">
                     <div class="col-md-2">
-                        <label class="control-label"> Reported date </label>
+                        <label class="control-label"> Reported date: </label>
                     </div>
                     <div class="col-md-3">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
@@ -72,19 +72,19 @@
                         <label class="control-label"> Search by Subject: </label>
                     </div>
                     <div class="col-md-3">
-                        @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style ="max-width:300px;width:300px" })
+                        @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style ="max-width:400px;width:400px" })
                     </div>
                 </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-2">
-                        <label class="control-label">Course Completed</label>
+                        <label class="control-label">Course Completed:</label>
                     </div>
                     <div class="col-md-3">
-                        <label>@Html.TextBox("selectCoursCompleted", "-1", htmlAttributes: new { @class = "form-control", @type = "number", min = "-1", style = "width:70px" })</label>
+                        @Html.TextBox("selectCoursCompleted", "-1", htmlAttributes: new { @class = "form-control", @type = "number", min = "-1", style = "width:70px" })
                     </div>
                     <div class="col-md-2">
-                        <label class="control-label">Final Status</label>
+                        <label class="control-label">Final Status:</label>
                     </div>
                     <div class="col-md-3">
                         @Html.DropDownList("selectFinalStatus", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })

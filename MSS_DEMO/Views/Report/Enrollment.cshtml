@@ -51,36 +51,20 @@
 
             @using (Html.BeginForm("Enrollment", "Report", FormMethod.Get))
             {
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Roll:</label>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Campus: </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectCampus", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Semester:</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Subject: </label>
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:300px;width:300px" })
-                </div>
-            </div>
-            <br />
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Campus: </label>
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectCampus", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">Semester:</label>
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
-                </div>
-            </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-2">
@@ -89,10 +73,27 @@
                     <div class="col-md-3">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
-                    <div class="col-md-6">
-                        <input class="btn btn-success" type="submit" value="Search" />                      
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Roll:</label>
                     </div>
-
+                    <div class="col-md-3">
+                        @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.Hidden("searchCheck", "true")
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Subject: </label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:636px;width:636px" })
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="panel-footer text-center">                   
+                        <input class="btn btn-success" type="submit" value="Search" />                    
                 </div>
             }
         </div>

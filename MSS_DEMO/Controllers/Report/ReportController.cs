@@ -17,7 +17,7 @@ using System.Data.Entity.Core.Objects;
 
 namespace MSS_DEMO.Controllers
 {
-    [CheckCredential(Role_ID = "1")]
+    [CheckCredential(Role_ID = "2")]
     public class ReportController : Controller
     {
        
@@ -597,7 +597,7 @@ namespace MSS_DEMO.Controllers
             }
 
             List<SelectListItem> selectCompleted = new List<SelectListItem>();
-            selectCompleted.Add(new SelectListItem { Text = "--Select Completed--", Value = ""});
+            selectCompleted.Add(new SelectListItem { Text = "--All--", Value = ""});
             selectCompleted.Add(new SelectListItem { Text = "Completed", Value = "1" });
             selectCompleted.Add(new SelectListItem { Text = "Not Completed", Value = "2" });
 
