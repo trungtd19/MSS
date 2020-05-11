@@ -47,21 +47,21 @@
 
             @using (Html.BeginForm("Member", "Report", FormMethod.Get))
             {
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Roll:</label>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Roll:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.Hidden("searchCheck", "true")
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Semester:</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
+                    </div>
                 </div>
-                <div class="col-lg-3">
-                    @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">Semester:</label>
-                </div>
-                <div class="col-md-3">
-                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
-                </div>
-            </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-2">
@@ -85,71 +85,94 @@
                 </div>
             }
 
+        </div>
     </div>
-</div>
-<div style="margin-left: auto; margin-right: auto; text-align: center;">
-    <h2>
-        <label style="color: green;">Member Report</label>
-    </h2>
-</div>
-@if (Model != null)
-{
-    <div>
-        @if (Model.InforList.Count > 0)
-        {
+    <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <h2>
+            <label style="color: green;">Member Report</label>
+        </h2>
+    </div>
+    @if (Model != null)
+    {
+        <div>
+            @if (Model.InforList.Count > 0)
+            {
 
-            <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
-            <table class="table table-bordered table-striped" id="dataTable">
-                <tr>
-                    <th>No</th>
-                    <th>SubjectID</th>
-                    <th>Subject</th>
-                    <th>Course Name</th>
-                    <th>Enrolled</th>
-                    <th>Last Active</th>
-                    <th>Progress</th>
-                    <th>Estimated learning hour</th>
-                    <th>Completion Time</th>
-                    <th>Status</th>
-                    <th>Note</th>
-                </tr>
-                @{ int a = 1;}
-                @for(var i = 0; i < Model.InforList.Count ; i++)
-                {
-                <tr>
-                    <th>@(a++)</th>
-                    <th>@Model.InforList[i].SubjectID</th>
-                    <th>@Model.InforList[i].Subject</th>
-                    <th>@Model.InforList[i].Course_Name</th>
-                    <th>@Model.InforList[i].Course_Enrollment_Time</th>
-                    <th>@Model.InforList[i].Last_Course_Activity_Time</th>
-                    <th>@Model.InforList[i].Overall_Progress</th>
-                    <th>@Model.InforList[i].Estimated</th>
-                    <th>@Model.InforList[i].Completion_Time</th>
-                    @if (Model.InforList[i].Completed)
-                    {
-                        <th><span style="color:green;">Completed</span></th>
-                    }
-                    else
-                    {
-                        <th><span style="color:red;">Incomplete</span></th>
-                    }
-                    @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i - 1].SubjectID)
-                    {
-                        <th rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</th>
-                    @:</tr><tr>
-                    }
-
+                <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+                <table class="table table-bordered table-striped" id="dataTable">
+                    <tr>
+                        <th>No</th>
+                        <th>SubjectID</th>
+                        <th>Subject</th>
+                        <th>Course Name</th>
+                        <th>Enrolled</th>
+                        <th>Last Active</th>
+                        <th>Progress</th>
+                        <th>Estimated learning hour</th>
+                        <th>Completion Time</th>
+                        <th>Status</th>
+                        <th>Note</th>
                     </tr>
-                }
-            </table>
-        }
-        else
-        {
-            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
-        }
+                    @{ int a = 1;}
+                    @for (var i = 0; i < Model.InforList.Count; i++)
+                    {
+                        <tr>
+                            <th>@(a++)</th>
+                            @*<th>@Html.ActionLink(@Model.InforList[i].SubjectID, "Note", "Report", new {Roll =  }, new { @class = "page-scroll" }))</th>*@
+                            <th><a id="noteClick" href="" data-toggle="modal" data-target="#exampleModal">@Model.InforList[i].SubjectID</a></th>
+                            <th>@Model.InforList[i].Subject</th>
+                            <th>@Model.InforList[i].Course_Name</th>
+                            <th>@Model.InforList[i].Course_Enrollment_Time</th>
+                            <th>@Model.InforList[i].Last_Course_Activity_Time</th>
+                            <th>@Model.InforList[i].Overall_Progress</th>
+                            <th>@Model.InforList[i].Estimated</th>
+                            <th>@Model.InforList[i].Completion_Time</th>
+                            @if (Model.InforList[i].Completed)
+                            {
+                                <th><span style="color:green;">Completed</span></th>
+                            }
+                            else
+                            {
+                                <th><span style="color:red;">Incomplete</span></th>
+                            }
+                            @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i - 1].SubjectID)
+                            {
+                                <th rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</th>
+                            @:</tr><tr>
+                            }
+
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
+            }
+        </div>
+    }
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width: 170%;
+             margin-left: -35%;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <textarea id="textAreaNote" style="height: 100px; width: 100%;max-width: 100%;" class="form-control"></textarea>
+                    @Html.Hidden("idModelNote")
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
-}
     <script>
          $('#SelectSemester').change(function () {
              var SelectSemester = $('#SelectSemester').val();
@@ -179,6 +202,44 @@
         if (($("#error").text() != "") || ($("#success").text() != "")) {
             $('#SelectSemester').val("").change();
         }
-    });
+        });
+        $(".table tbody #noteClick").each(function (id, item) {
+        $(this).click(function ()
+        {          
+            var roll = $("#SearchString").val();
+            var semester = $("#SelectSemester").val();
+            var subjectID = $("#noteClick").text();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Note","Report")',
+                    data: { 'SubjectID': subjectID, 'roll': roll, 'semester': semester },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#textAreaNote").val(data.Note);
+                        $("#idModelNote").val(data.ID);
+
+                    }
+                });
+        });
+        });
+        
+         $("#save").click(function ()
+           {   var noteID = $("#idModelNote").val();
+               var note = $("#textAreaNote").val();
+                $.ajax({
+                url: '@Url.Action("AddNote","Student_Course_Log")',
+                type: 'POST',
+                data:  { 'id' : noteID, 'note' : note },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.check == true) {
+                        window.location.reload();
+                    }
+                 }
+                }).done(function () {
+
+                });
+        });
+
     </script>
 

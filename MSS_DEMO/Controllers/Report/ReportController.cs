@@ -420,10 +420,10 @@ namespace MSS_DEMO.Controllers
                             var note = (from menter in context.Mentor_Log
                                         where menter.Roll == searchString && menter.Subject_ID == courseInfo.Subject_ID && menter.Semester_ID == SelectSemester
                                         select menter.Note).FirstOrDefault();
-                            //if (note != null && note.Length > 100)
-                            //{
-                            //    note = note.Substring(note.Length - 100, 100);
-                            //}
+                            if (note != null && note.Length > 100)
+                            {
+                                note = note.Substring(note.Length - 100, 100);
+                            }
                             infoOfStudent.Add(new InfoStudent
                             {
                                 Course_Name = item.cour.Course_Name,
@@ -1065,6 +1065,17 @@ namespace MSS_DEMO.Controllers
             return View("StatusOverview", StatusOM);
         }
 
+        public ActionResult Note(string roll, string semester, string SubjectID)
+        {
+            var context = new MSSEntities();
+            var note = context.Mentor_Log.Where(log => log.Roll == roll && log.Semester_ID == semester && log.Subject_ID == SubjectID).FirstOrDefault();
+            return (ActionResult)this.Json((object)new
+            {
+                Note = note == null ? "" : note.Note,
+                ID = roll + "^"  + SubjectID + "^" + semester
+            });
+        }
+    
        
 
         private int Count(string subject, string campus, DateTime dateImport)
