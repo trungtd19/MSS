@@ -13,8 +13,8 @@
         <div class="col-md-2" style="width: 11.666667%;">
             Course name:
         </div>
-        <div class="col-md-2">
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        <div class="col-md-5">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @style = "max-width:400px;width:400px" })
             @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-1">

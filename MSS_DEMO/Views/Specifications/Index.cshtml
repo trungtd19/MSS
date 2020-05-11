@@ -9,11 +9,12 @@
 <div class="form-group">
     @using (Html.BeginForm("Index", "Specifications", FormMethod.Get))
     {
-        <div class="col-md-2">
+        <div class="col-md-2" style="padding: 0;
+    width: 12%;">
             Specification name:
         </div>
-        <div class="col-md-2 ">
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control"})
+        <div class="col-md-5 ">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control",@style = "max-width:400px;width:400px"})
             @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-1">
