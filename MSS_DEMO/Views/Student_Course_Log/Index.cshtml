@@ -201,6 +201,8 @@
                         string Course_Enrollment_Time = item.Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Enrollment_Time).ToString("dd/MM/yyyy");
                         string Last_Course_Activity_Time = item.Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Last_Course_Activity_Time).ToString("dd/MM/yyyy");
                         string Course_Start_Time = item.Course_Start_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(item.Course_Start_Time).ToString("dd/MM/yyyy");
+                        double Overall = Math.Round((double)item.Overall_Progress, 1);
+                        double Estimated = Math.Round((double)item.Estimated, 1);
                         <tr>
                             <td>@(stt++)</td>
                             <td>
@@ -234,10 +236,10 @@
                                 @Last_Course_Activity_Time
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Overall_Progress)
+                                @Overall
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Estimated)
+                                @Estimated
                             </td>
                             <td>
                                 @complete
