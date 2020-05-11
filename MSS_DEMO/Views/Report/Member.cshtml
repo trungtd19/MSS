@@ -51,113 +51,114 @@
         </h5>
     </div>
     <br />
-    <div class="panel panel-default">
-        <div class="panel-body" style="padding-top: initial;">
+    @using (Html.BeginForm("Member", "Report", FormMethod.Get))
+    {
+        <div class="panel panel-default">
+            <div class="panel-body" style="padding-top: initial;">
 
-            @using (Html.BeginForm("Member", "Report", FormMethod.Get))
-            {
-            <div class="form-group">
-                <div class="col-md-2">
-                    <label class="control-label"> Search by Roll:</label>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Roll:</label>
+                    </div>
+                    <div class="col-lg-3" style="padding:0">
+                        @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                        @Html.Hidden("searchCheck", "true")
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Semester:</label>
+                    </div>
+                    <div class="col-md-3" style="padding:0">
+                        @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                    </div>
                 </div>
-                <div class="col-lg-3"style="padding:0">
-                    @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                    @Html.Hidden("searchCheck", "true")
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">Semester:</label>
-                </div>
-                <div class="col-md-3"style="padding:0">
-                    @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                </div>
-            </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-2">
                         <label class="control-label"> Reported date: </label>
                     </div>
-                    <div class="col-md-3"style="padding:0">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                     <div class="col-md-2">
                         <label class="control-label"> Compulsory: </label>
                     </div>
-                    <div class="col-md-3"style="padding:0">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("Compulsory", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                 </div>
-                <br />
-                <br />
-                <div class="panel-footer text-center">                   
-                        <input class="btn btn-success" type="submit" value="Search" />                   
-                </div>
-            }
 
+
+            </div>
+            <div class="panel-footer text-center">
+                <input class="btn btn-success" type="submit" value="Search" />
+            </div>
+
+        </div>
+    }
+    <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <h2>
+            <label style="color: green;">Member Report</label>
+        </h2>
     </div>
-</div>
-<div style="margin-left: auto; margin-right: auto; text-align: center;">
-    <h2>
-        <label style="color: green;">Member Report</label>
-    </h2>
-</div>
-@if (Model != null)
-{
-    <div>
-        @if (Model.InforList.Count > 0)
-        {
+    @if (Model != null)
+    {
+        <div>
+            @if (Model.InforList.Count > 0)
+            {
 
-            <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
-            <table class="table table-bordered table-striped" id="dataTable">
-                <tr>
-                    <th>No</th>
-                    <th>SubjectID</th>
-                    <th>Subject</th>
-                    <th>Course Name</th>
-                    <th>Enrolled</th>
-                    <th>Last Active</th>
-                    <th>Progress</th>
-                    <th>Estimated learning hour</th>
-                    <th>Completion Time</th>
-                    <th>Status</th>
-                    <th>Note</th>
-                </tr>
-                @{ int a = 1;}
-                @for(var i = 0; i < Model.InforList.Count ; i++)
-                {
-                <tr>
-                    <th>@(a++)</th>
-                    <th>@Model.InforList[i].SubjectID</th>
-                    <th>@Model.InforList[i].Subject</th>
-                    <th>@Model.InforList[i].Course_Name</th>
-                    <th>@Model.InforList[i].Course_Enrollment_Time</th>
-                    <th>@Model.InforList[i].Last_Course_Activity_Time</th>
-                    <th>@Model.InforList[i].Overall_Progress</th>
-                    <th>@Model.InforList[i].Estimated</th>
-                    <th>@Model.InforList[i].Completion_Time</th>
-                    @if (Model.InforList[i].Completed)
-                    {
-                        <th><span style="color:green;">Completed</span></th>
-                    }
-                    else
-                    {
-                        <th><span style="color:red;">Incomplete</span></th>
-                    }
-                    @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i - 1].SubjectID)
-                    {
-                        <th rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</th>
-                    @:</tr><tr>
-                    }
-
+                <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+                <table class="table table-bordered table-striped" id="dataTable">
+                    <tr>
+                        <th>No</th>
+                        <th>SubjectID</th>
+                        <th>Subject</th>
+                        <th>Course Name</th>
+                        <th>Enrolled</th>
+                        <th>Last Active</th>
+                        <th>Progress</th>
+                        <th>Estimated learning hour</th>
+                        <th>Completion Time</th>
+                        <th>Status</th>
+                        <th>Note</th>
                     </tr>
-                }
-            </table>
-        }
-        else
-        {
-            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
-        }
-    </div>
-}
+                    @{ int a = 1;}
+                    @for (var i = 0; i < Model.InforList.Count; i++)
+                    {
+                        <tr>
+                            <th>@(a++)</th>
+                            <th>@Model.InforList[i].SubjectID</th>
+                            <th>@Model.InforList[i].Subject</th>
+                            <th>@Model.InforList[i].Course_Name</th>
+                            <th>@Model.InforList[i].Course_Enrollment_Time</th>
+                            <th>@Model.InforList[i].Last_Course_Activity_Time</th>
+                            <th>@Model.InforList[i].Overall_Progress</th>
+                            <th>@Model.InforList[i].Estimated</th>
+                            <th>@Model.InforList[i].Completion_Time</th>
+                            @if (Model.InforList[i].Completed)
+                            {
+                                <th><span style="color:green;">Completed</span></th>
+                            }
+                            else
+                            {
+                                <th><span style="color:red;">Incomplete</span></th>
+                            }
+                            @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i - 1].SubjectID)
+                            {
+                                <th rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</th>
+                            @:</tr><tr>
+                            }
+
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
+            }
+        </div>
+    }
     <script>
          $('#SelectSemester').change(function () {
              var SelectSemester = $('#SelectSemester').val();

@@ -39,11 +39,11 @@
         </h5>
     </div>
     <br />
-    <div class="panel panel-default">
-        <div class="panel-body" style="padding-top: initial;">
+    @using (Html.BeginForm("StatusOverview", "Report", FormMethod.Get))
+    {
+        <div class="panel panel-default">
+            <div class="panel-body" style="padding-top: initial;">
 
-            @using (Html.BeginForm("StatusOverview", "Report", FormMethod.Get))
-            {
                 <div class="form-group">
                     <div class="col-md-2">
                         <label class="control-label"> Search by Roll:</label>
@@ -98,67 +98,67 @@
                         @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:630px;width:630px" })
                     </div>
                 </div>
-                <br />
-                <br />
-                <div class="panel-footer text-center">
-                    <input class="btn btn-success" type="submit" value="Search" />
-                    @Html.Hidden("searchCheck", "true")
-                </div>
+
+            </div>
+            <div class="panel-footer text-center">
+                <input class="btn btn-success" type="submit" value="Search" />
+                @Html.Hidden("searchCheck", "true")
+            </div>
+        </div>
+    }
+</div>
+
+    <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <h2>
+            <label style="color: green;">Studying Status Overview Report</label>
+        </h2>
+    </div>
+    @if (Model != null)
+    {
+        <div>
+            @if (Model.OverviewList.Count > 0)
+            {
+
+                <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
+                <table class="table table-bordered table-striped" id="dataTable">
+                    <tr>
+                        <th>No</th>
+                        <th>Roll</th>
+                        <th>Email</th>
+                        <th>Campus</th>
+                        <th>SubjectID</th>
+                        <th>Subject Name</th>
+                        <th>No Compulsory Course</th>
+                        <th>No Compulsory Completed</th>
+                        <th>Spec status in spec report</th>
+                        <th>Final status</th>
+                    </tr>
+                    @{ int a = 1;}
+                    @foreach (var t in Model.OverviewList)
+                    {
+                        <tr>
+                            <th>@(a++)</th>
+                            <th>@Html.ActionLink(t.Roll, "Member", "Report", new { searchString = t.Roll, searchCheck = true, Compulsory = "All", SelectSemester = t.Semester, SelectDatetime = Convert.ToDateTime(t.Date).ToString("dd/MM/yyyy") }, new { @class = "page-scroll" })</th>
+                            <th>@Html.DisplayFor(m => t.Email)</th>
+                            <th>@Html.DisplayFor(m => t.Campus)</th>
+                            <th>@Html.DisplayFor(m => t.SubjectID)</th>
+                            <th>@Html.DisplayFor(m => t.SubjectName)</th>
+                            <th>@Html.DisplayFor(m => t.No_Compulsory_Course)</th>
+                            <th>@Html.DisplayFor(m => t.No_Course_Completed)</th>
+                            <th>@Html.DisplayFor(m => t.Spec_Completed)</th>
+                            <th>@Html.DisplayFor(m => t.Final_Status)</th>
+                        </tr>
+                    }
+
+                </table>
+            }
+            else
+            {
+                <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
             }
         </div>
-    </div>
-</div>
-<div style="margin-left: auto; margin-right: auto; text-align: center;">
-    <h2>
-        <label style="color: green;">Studying Status Overview Report</label>
-    </h2>
-</div>
-@if (Model != null)
-{
-    <div>
-        @if (Model.OverviewList.Count > 0)
-        {
-
-            <h4>Showing @ViewBag.TotalSearch results <button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button></h4>
-            <table class="table table-bordered table-striped" id="dataTable">
-                <tr>
-                    <th>No</th>
-                    <th>Roll</th>
-                    <th>Email</th>
-                    <th>Campus</th>
-                    <th>SubjectID</th>
-                    <th>Subject Name</th>
-                    <th>No Compulsory Course</th>
-                    <th>No Compulsory Completed</th>
-                    <th>Spec status in spec report</th>
-                    <th>Final status</th>
-                </tr>
-                @{ int a = 1;}
-                @foreach (var t in Model.OverviewList)
-                {
-                    <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.ActionLink(t.Roll, "Member", "Report", new { searchString = t.Roll, searchCheck = true, Compulsory  = "All", SelectSemester = t.Semester, SelectDatetime = Convert.ToDateTime(t.Date).ToString("dd/MM/yyyy") }, new { @class = "page-scroll" })</th>
-                        <th>@Html.DisplayFor(m => t.Email)</th>
-                        <th>@Html.DisplayFor(m => t.Campus)</th>
-                        <th>@Html.DisplayFor(m => t.SubjectID)</th>
-                        <th>@Html.DisplayFor(m => t.SubjectName)</th>
-                        <th>@Html.DisplayFor(m => t.No_Compulsory_Course)</th>
-                        <th>@Html.DisplayFor(m => t.No_Course_Completed)</th>
-                        <th>@Html.DisplayFor(m => t.Spec_Completed)</th>
-                        <th>@Html.DisplayFor(m => t.Final_Status)</th>
-                    </tr>
-                }
-
-            </table>
-        }
-        else
-        {
-            <h4 style="margin-left: auto; margin-right: auto; text-align: center;">Showing 0 result</h4>
-        }
-    </div>
-}
-<script>
+    }
+    <script>
          $('#SelectSemester').change(function () {
              var SelectSemester = $('#SelectSemester').val();
              if (SelectSemester != null) {
@@ -188,5 +188,5 @@
             $('#SelectSemester').val("").change();
         }
     });
-</script>
+    </script>
 
