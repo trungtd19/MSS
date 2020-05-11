@@ -193,6 +193,14 @@ namespace MSS_DEMO.Core.Implement
                     subjectId = item.Subject_ID;
                     subjectName = listCourCp.Where(m => m.sub.Subject_ID == subjectId).Select(m => m.sub.Subject_Name).FirstOrDefault();
                 }
+                if (lastActive.ToString("dd/MM/yyyy") == "01/01/1970")
+                {
+                    timeActive = "";
+                }
+                else
+                {
+                    timeActive = lastActive.ToString("dd/MM/yyyy");
+                }
                 if (comple.ToString("dd/MM/yyyy") == "01/01/1970")
                 {
                     timeCompleted = "";

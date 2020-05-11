@@ -127,14 +127,13 @@
     @for (var i = 0; i < Model.MemberReport.Count; i++)
     {
           string Course_Enrollment_Time = Model.MemberReport[i].Course_Enrollment_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(Model.MemberReport[i].Course_Enrollment_Time).ToString("dd/MM/yyyy");
-          string Last_Course_Activity_Time = Model.MemberReport[i].Last_Course_Activity_Time.ToString().Contains("1/1/1970") ? "" : Convert.ToDateTime(Model.MemberReport[i].Last_Course_Activity_Time).ToString("dd/MM/yyyy");
         <tr>
             <td>@(a++)</td>
             <td>@Model.MemberReport[i].SubjectID</td>
             <td>@Model.MemberReport[i].Subject</td>
             <td>@Model.MemberReport[i].Course_Name</td>
             <td>@Course_Enrollment_Time</td>
-            <td>@Last_Course_Activity_Time</td>
+            <td>@Model.MemberReport[i].Last_Course_Activity_Time</td>
             <td>@Model.MemberReport[i].Overall_Progress</td>
             <td>@Model.MemberReport[i].Estimated</td>
             <td>@Model.MemberReport[i].Completion_Time</td>
