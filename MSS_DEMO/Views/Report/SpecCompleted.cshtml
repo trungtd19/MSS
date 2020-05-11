@@ -3,6 +3,15 @@
 @{
     ViewBag.Title = "SpecCompleted";
 }
+<style>
+    .col-md-2 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        width: 162px;
+    }
+</style>
 <script src="~/Content/FileSaver.js"></script>
 <script>
     function fnExcelReport(id, name) {
@@ -49,14 +58,14 @@
                     <div class="col-md-2">
                         <label class="control-label"> Search by Roll:</label>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3" style="padding:0">
                         @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
                         @Html.Hidden("searchCheck", "true")
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2"style="width:135px">
                         <label class="control-label">Semester:</label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
                     </div>
                 </div>
@@ -65,13 +74,13 @@
                     <div class="col-md-2">
                         <label class="control-label"> Search by Campus: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectCampus", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" style="width:135px">
                         <label class="control-label"> Reported date: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
                     </div>
                 </div>
@@ -80,18 +89,23 @@
                     <div class="col-md-2">
                         <label class="control-label"> Compulsory: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("Compulsory", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                    </div>
-                    <div class="col-md-2">
-                        <label class="control-label"> Search by Subject: </label>
-                    </div>
-                    <div class="col-md-3">
-                        @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:400px;width:400px" })
                     </div>
                 </div>
                 <br />
-                <div style="text-align:center">
+                <div class="form-group">
+                   
+                    <div class="col-md-2">
+                        <label class="control-label"> Search by Subject: </label>
+                    </div>
+                    <div class="col-md-3" style="padding:0">
+                        @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:630px;width:630px" })
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="panel-footer text-center">
                     <input class="btn btn-success" type="submit" value="Search" />
                 </div>
             }

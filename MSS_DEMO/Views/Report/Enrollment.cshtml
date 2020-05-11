@@ -5,6 +5,15 @@
 @{
     ViewBag.Title = "Enrollment";
 }
+<style>
+    .col-md-2 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        width: 170px;
+    }
+</style>
 <script src="~/Content/FileSaver.js"></script>
 <script>
     function fnExcelReport(id, name) {
@@ -53,13 +62,13 @@
                     <div class="col-md-2">
                         <label class="control-label"> Search by Campus: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectCampus", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Semester:</label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                 </div>
@@ -68,13 +77,13 @@
                     <div class="col-md-2">
                         <label class="control-label"> Reported date: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
                     <div class="col-md-2">
                         <label class="control-label"> Search by Roll:</label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
                         @Html.Hidden("searchCheck", "true")
                     </div>
@@ -84,7 +93,7 @@
                     <div class="col-md-2">
                         <label class="control-label"> Search by Subject: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectSubject", null, htmlAttributes: new { @class = "form-control", @style = "max-width:636px;width:636px" })
                     </div>
                 </div>

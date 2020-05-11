@@ -21,17 +21,14 @@ namespace MSS_DEMO.Common
             List<string> Student = new List<string> { "5" };
             UserLogin session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
             RoleLogin role = (RoleLogin)HttpContext.Current.Session[CommonConstants.ROLE_Session];
-            string checkStudent;
-           
-            string[] temp = session.UserName.Split('@');
-            checkStudent = temp[0].Substring(temp[0].Length - 5);
-           
-
+            
+            
+            
+                                                   
             if (session == null)
             {
                 return false;
-            }
-                      
+            }                     
             if(role.Role ==1)
             {
                 if (admin.Contains(this.Role_ID))
@@ -66,7 +63,7 @@ namespace MSS_DEMO.Common
                 }
             }       
            
-            else if (IsNumber(checkStudent))
+            else if (role.Role == 5)
             {
                 if (Student.Contains(this.Role_ID))
                 {
@@ -84,15 +81,7 @@ namespace MSS_DEMO.Common
 
 
         }
-        public bool IsNumber(string pValue)
-        {
-            foreach (Char c in pValue)
-            {
-                if (!Char.IsDigit(c))
-                    return false;
-            }
-            return true;
-        }
+       
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
            

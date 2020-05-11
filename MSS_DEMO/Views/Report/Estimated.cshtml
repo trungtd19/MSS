@@ -2,6 +2,15 @@
 @{
     ViewBag.Title = "Estimated";
 }
+<style>
+    .col-md-2 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        width: 135px;
+    }
+</style>
 <script src="~/Content/FileSaver.js"></script>
 <script>
     function fnExcelReport(id, name) {
@@ -48,13 +57,13 @@
                     <div class="col-md-2">
                         <label class="control-label"> Search by Roll:</label>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3" style="padding:0">
                         @Html.TextBox("SearchString", null, htmlAttributes: new { @class = "form-control" })
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2"style="width:115px">
                         <label class="control-label">Semester:</label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:150px" })
                     </div>
                 </div>
@@ -63,10 +72,12 @@
                     <div class="col-md-2">
                         <label class="control-label"> Reported date: </label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="padding:0">
                         @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                     </div>
-                    <div class="col-md-6">
+                    <br />
+                    <br />
+                    <div class="panel-footer text-center">
                         <input class="btn btn-success" type="submit" value="Search" />
                         @Html.Hidden("searchCheck", "true")
                     </div>
