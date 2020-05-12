@@ -41,16 +41,25 @@ namespace MSS_DEMO.Controllers.Login
                                 .SqlQuery("Select * from User_Role where Login=@Login", new SqlParameter("@Login", userLogin))
                                 .FirstOrDefault();
             }
+          
             if (user != null)
             {
-                var RoleSession = new RoleLogin();
-                RoleSession.Role = user.Role_ID;
-                var UserSession = new UserLogin();
-                UserSession.UserID = user.User_ID;
-                UserSession.UserName = userLogin;
-                Session.Add(CommonConstants.ROLE_Session, RoleSession);
-                Session.Add(CommonConstants.User_Session, UserSession);
-                return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                if(user.isActive == false)
+                {
+                    return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);                    
+                }
+                else
+                {
+                    var RoleSession = new RoleLogin();
+                    RoleSession.Role = user.Role_ID;
+                    var UserSession = new UserLogin();
+                    UserSession.UserID = user.User_ID;
+                    UserSession.UserName = userLogin;
+                    Session.Add(CommonConstants.ROLE_Session, RoleSession);
+                    Session.Add(CommonConstants.User_Session, UserSession);
+                    return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                }
+                
             }          
             if (user == null)
             {

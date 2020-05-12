@@ -31,9 +31,9 @@
 
     }
     else if (Role == 2)
-    {   <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
-        <hr />
-        <h5>@Html.ActionLink("Login as", "Index", "LoginAs")</h5>        
+    { <h5>@Html.ActionLink("Report", "Report", "Home")</h5>
+    <hr />
+    <h5>@Html.ActionLink("Login as", "Index", "LoginAs")</h5>
 }
 else if (Role == 3)
 {
@@ -43,6 +43,7 @@ else
 {
     <h5>@Html.ActionLink("Certificates", "Index", "Certificates")</h5>
 }
+@Session.Timeout
 }
 
 

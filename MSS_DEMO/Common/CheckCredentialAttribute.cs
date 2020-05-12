@@ -10,9 +10,7 @@ namespace MSS_DEMO.Common
     public class CheckCredentialAttribute :AuthorizeAttribute
     {
         public string Role_ID { set; get; }
-      
-        
-       
+        int checkSession = 0;
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             List<string> admin = new List<string> { "1", "2", "3", "4", "5" };
@@ -21,12 +19,14 @@ namespace MSS_DEMO.Common
             List<string> Student = new List<string> { "5" };
             UserLogin session = (UserLogin)HttpContext.Current.Session[CommonConstants.User_Session];
             RoleLogin role = (RoleLogin)HttpContext.Current.Session[CommonConstants.ROLE_Session];
-            
-            
-            
-                                                   
+            string url = HttpContext.Current.Request.Url.AbsoluteUri;
+            if(url.Contains("Report?rpN"))
+            {
+                return true;
+            }
             if (session == null)
             {
+                checkSession = 1;
                 return false;
             }                     
             if(role.Role ==1)
@@ -84,11 +84,22 @@ namespace MSS_DEMO.Common
        
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-           
-            filterContext.Result = new ViewResult
+            if(checkSession==1)
             {
-                ViewName = "~/Views/Shared/401.cshtml"
-            };
+                filterContext.Result = new ViewResult
+                {
+                    ViewName = "~/Views/Login/Login.cshtml"
+                };
+                
+            }
+             else
+            {
+                filterContext.Result = new ViewResult
+                {
+                    ViewName = "~/Views/Shared/401.cshtml"
+                };
+            }
+            
         }
 
     }

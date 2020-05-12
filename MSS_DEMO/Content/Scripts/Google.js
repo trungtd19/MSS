@@ -31,7 +31,9 @@
       gapi.auth2.init();
         });
 }
-
+window.onbeforeunload = function (e) {
+    gapi.auth2.getAuthInstance().signOut();
+};
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
