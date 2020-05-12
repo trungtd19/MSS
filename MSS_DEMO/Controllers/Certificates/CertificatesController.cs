@@ -66,7 +66,7 @@ namespace MSS_DEMO.Controllers.Certificates
             }
 
 
-            CerModel.certificatesModel = courseNameList;
+            CerModel.certificatesModel = courseNameList.OrderBy(m => m.SubjectName).ToList();
             return View("Index", CerModel);
         }
 
@@ -126,7 +126,8 @@ namespace MSS_DEMO.Controllers.Certificates
                     courseNameList.Add(new CertificateViewModel { SubjectName = t.Specification_Name,CourseId = 0, CourseName = t.Specification_Name, Link = link,Roll = rollNumber, SemesterId = SelectSemester,SpecID = t.Specification_ID });
                 }
             }
-            CerModel.certificatesModel = courseNameList;
+
+            CerModel.certificatesModel = courseNameList.OrderBy(m => m.SpecID).ToList();
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
@@ -136,7 +137,8 @@ namespace MSS_DEMO.Controllers.Certificates
                         int courseId = CerModel.certificatesModel[i].CourseId;
                         string roll = CerModel.certificatesModel[i].Roll;
                         string semester = CerModel.certificatesModel[i].SemesterId;
-                        var Exists = context.Certificates.Any(x => x.Course_ID == courseId && x.Roll == roll && x.Semester_ID == semester);
+                        int specId = CerModel.certificatesModel[i].SpecID;
+                        var Exists = context.Certificates.Any(x => x.Course_ID == courseId && x.Roll == roll && x.Semester_ID == semester && x.Specification_ID == specId);
                         if (Exists)
                         {
                             var update = context.Certificates.FirstOrDefault(x => x.Course_ID == courseId && x.Roll == roll);
