@@ -82,7 +82,7 @@ namespace MSS_DEMO.Controllers
                                 }
                                 if (unitOfWork.CoursesLog.IsExitsDateImport(_dateImport))
                                 {
-                                    messageImport = "Reported date existed, if you continue please contact admin to delete records this date!";
+                                    messageImport = "Reported date existed, if you continue please delete records this date!";
                                     return Json(new { message = messageImport });
                                 }
                                 var listCoureseName = unitOfWork.Courses.GetList();
@@ -109,6 +109,10 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
+                                        for (int j = 0; j< rows.Count; j++)
+                                        {
+                                            rows[j] = rows[j].Replace("'","''");
+                                        }
                                         sb.Append(unitOfWork.CoursesLog.getSqlQuery(rows, userID, _dateImport, listCoureseName, semesterID, unitOfWork.CoursesLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID)));
                                     }
                                     catch
@@ -118,8 +122,16 @@ namespace MSS_DEMO.Controllers
                                     }
                                 }
                             }
-                            countSusscess = unitOfWork.CoursesLog.countInsert(sb);
-                            if (countFail == 0)
+                            try
+                            {
+                                countSusscess = unitOfWork.CoursesLog.countInsert(sb);
+                            }
+                            catch (Exception ex)
+                            {
+                                messageImport = ex.Message.Split('/')[0];
+                                return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
+                            }
+                            if (countFail == 0 && countSusscess != 0)
                             {
                                 messageImport = "Import success " + countSusscess + " records";
                             }
@@ -198,7 +210,7 @@ namespace MSS_DEMO.Controllers
                                 }
                                 if (unitOfWork.SpecificationsLog.IsExitsDateImport(_dateImport))
                                 {
-                                    messageImport = "Reported date existed, if you continue please contact admin to delete records this date!";
+                                    messageImport = "Reported date existed, if you continue please delete records this date!";
                                     return Json(new { message = messageImport });
                                 }
                                 var specifications = unitOfWork.Specifications.GetAll();
@@ -219,6 +231,10 @@ namespace MSS_DEMO.Controllers
                                             countFail++;
                                             continue;
                                         }
+                                        for (int j = 0; j < rows.Count; j++)
+                                        {
+                                            rows[j] = rows[j].Replace("'", "''");
+                                        }
                                         sb.Append(unitOfWork.SpecificationsLog.getSqlQuery(rows, userID, _dateImport, specifications, semesterID, unitOfWork.SpecificationsLog.getSubjectID(rows[3].ToString(), rows[2].ToString().Split('-')[2], semesterID)));
                                     }
                                     catch
@@ -228,8 +244,16 @@ namespace MSS_DEMO.Controllers
                                     }
                                 }
                             }
-                            countSusscess = unitOfWork.CoursesLog.countInsert(sb);
-                            if (countFail == 0)
+                            try
+                            {
+                                countSusscess = unitOfWork.CoursesLog.countInsert(sb);
+                            }
+                            catch (Exception ex)
+                            {
+                                messageImport = ex.Message;
+                                return Json(new { message = messageImport }, JsonRequestBehavior.AllowGet);
+                            }                            
+                            if (countFail == 0 && countSusscess != 0)
                             {
                                 messageImport = "Import success " + countSusscess + " records";
                             }

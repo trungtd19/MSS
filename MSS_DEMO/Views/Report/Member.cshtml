@@ -44,7 +44,7 @@
             @Html.ActionLink("Member report", "Member", null, new { @style = "color: red;" })&nbsp;&nbsp;
             @Html.ActionLink("Not required course", "NotRequiredCourse")&nbsp;&nbsp;
             @Html.ActionLink("Certificate report", "CertificateReport")&nbsp;&nbsp;
-            @Html.ActionLink("Specification completed", "SpecCompleted")&nbsp;&nbsp;
+            @Html.ActionLink("Spec completed", "SpecCompleted")&nbsp;&nbsp;
             @Html.ActionLink("Bonus report", "Bonus")&nbsp;&nbsp;
             @Html.ActionLink("Estimated learning hours", "Estimated")&nbsp;&nbsp;
             @Html.ActionLink("Studying status overview", "StatusOverview")&nbsp;&nbsp;
@@ -125,27 +125,27 @@
                     @for (var i = 0; i < Model.InforList.Count; i++)
                     {
                         <tr>
-                            <th>@(a++)</th>
+                            <td>@(a++)</td>
                             @*<th>@Html.ActionLink(@Model.InforList[i].SubjectID, "Note", "Report", new {Roll =  }, new { @class = "page-scroll" }))</th>*@
-                            <th><a id="noteClick" href="" data-toggle="modal" data-target="#exampleModal">@Model.InforList[i].SubjectID</a></th>
-                            <th>@Model.InforList[i].Subject</th>
-                            <th>@Model.InforList[i].Course_Name</th>
-                            <th>@Model.InforList[i].Course_Enrollment_Time</th>
-                            <th>@Model.InforList[i].Last_Course_Activity_Time</th>
-                            <th>@Model.InforList[i].Overall_Progress</th>
-                            <th>@Model.InforList[i].Estimated</th>
-                            <th>@Model.InforList[i].Completion_Time</th>
+                            <td><a id="noteClick" href="" data-toggle="modal" data-target="#exampleModal">@Model.InforList[i].SubjectID</a></td>
+                            <td>@Model.InforList[i].Subject</td>
+                            <td>@Model.InforList[i].Course_Name</td>
+                            <td>@Model.InforList[i].Course_Enrollment_Time</td>
+                            <td>@Model.InforList[i].Last_Course_Activity_Time</td>
+                            <td>@Model.InforList[i].Overall_Progress</td>
+                            <td>@Model.InforList[i].Estimated</td>
+                            <td>@Model.InforList[i].Completion_Time</td>
                             @if (Model.InforList[i].Completed)
                             {
-                                <th><span style="color:green;">Completed</span></th>
+                                <td><span style="color:green;">Completed</span></td>
                             }
                             else
                             {
-                                <th><span style="color:red;">Incomplete</span></th>
+                                <td><span style="color:red;">Incomplete</span></td>
                             }
                             @if (a == 2 || Model.InforList[i].SubjectID != Model.InforList[i - 1].SubjectID)
                             {
-                                <th rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</th>
+                                <td rowspan="@(@Model.InforList.Where(m => m.SubjectID == Model.InforList[i].SubjectID).Count() + 1)">@Model.InforList[i].Note</td>
                             @:</tr><tr>
                             }
 

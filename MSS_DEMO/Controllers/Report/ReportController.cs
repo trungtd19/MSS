@@ -873,7 +873,7 @@ namespace MSS_DEMO.Controllers
                                                where stu.Semester_ID == SelectSemester && sub_stu.Semester_ID == SelectSemester && stu_cour_log.Completed == true && stu_cour_log.Date_Import == date && stu_cour_log.Course_ID != null && cour_dead.Semester_ID == SelectSemester && stu_cour_log.Completion_Time <= cour_dead.Deadline && sub.Subject_Active == true
                                                select stu_cour_log).ToList();
 
-                if (Display == "Display Student Bonus")
+                if (Display == "Search Student Bonus")
                 {
                     var listStudent = (from stu in context.Students
                                        join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll
@@ -898,7 +898,7 @@ namespace MSS_DEMO.Controllers
                         }
                     }
                 }
-                if (Display == "Display Student-Course Bonus")
+                if (Display == "Search Student-Course Bonus")
                 {
                     var listStudent = (from stu in context.Students
                                        join sub_stu in context.Subject_Student on stu.Roll equals sub_stu.Roll

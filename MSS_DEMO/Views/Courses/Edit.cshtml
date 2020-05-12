@@ -28,7 +28,7 @@
     <div class="form-group">
         <label class="control-label col-md-2">Course Name</label>
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Course_Name, new { htmlAttributes = new { @class = "form-control", @required = "true", @style = "max-width: 800px;, width:800px;" } })
+            @Html.EditorFor(model => model.Course_Name, new { htmlAttributes = new { @class = "form-control", @required = "true", @style = "max-width: 800px; width:800px;", @maxlength = "250" } })
             <label style="color:red" id="checkName" hidden> This field is a required </label>
         </div>
     </div>

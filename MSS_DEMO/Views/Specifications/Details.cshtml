@@ -36,14 +36,16 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Url)
+            <a  href="@Model.Url">@Model.Url</a>
         </dd>
         <dt>
             Description
         </dt>
 
         <dd>
-            @Html.DisplayTextFor(model => model.Description)
+            <pre>
+                @Model.Description
+            </pre>
         </dd>
     </dl>
 </div>

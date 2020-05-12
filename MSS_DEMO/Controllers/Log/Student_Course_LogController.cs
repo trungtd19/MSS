@@ -65,7 +65,15 @@ namespace MSS_DEMO.Controllers.Log
             List<string> date = new List<string>();
             try
             {
-                var listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).Select(o => o.Date_Import).Distinct().ToList();
+                List<DateTime?> listDate = new List<DateTime?>();
+                if (string.IsNullOrEmpty(model.Semester_ID))
+                {
+                    listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == semester[0].Semester_ID).Select(o => o.Date_Import).Distinct().ToList();                
+                }
+                else
+                {
+                    listDate = unitOfWork.CoursesLog.GetAll().OrderByDescending(o => o.Date_Import).Where(o => o.Semester_ID == model.Semester_ID).Select(o => o.Date_Import).Distinct().ToList();
+                }
                 foreach (var dates in listDate)
                 {
                     date.Add(Convert.ToDateTime(dates).ToString("dd/MM/yyyy"));
