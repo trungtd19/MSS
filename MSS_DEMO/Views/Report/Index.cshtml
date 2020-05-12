@@ -117,9 +117,9 @@
         <div>
             <table class="table table-bordered">
                 <tr>
-                    <th>Sub</th>
+                    <th>Subject ID</th>
                     <th>Name</th>
-                    <th>% enrollment</th>
+                    <th>% Enrollment</th>
                     <th>All</th>
                     @foreach (var t in ViewBag.Name)
                     {
@@ -135,7 +135,7 @@
                         <td>@Html.DisplayFor(m => t.Total)</td>
                         @foreach (var c in t.Cmp)
                         {
-                            <th>@c</th>
+                            <td>@c</td>
                         }
                     </tr>
                 }
@@ -145,7 +145,7 @@
                     <td>@ViewBag.TotalPercent%</td>
                     @foreach (var o in ViewBag.Count2)
                     {
-                        <th>@o</th>
+                        <td>@o</td>
                     }
                 </tr>
                 <tr>
