@@ -323,13 +323,13 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="favicon.ico" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\FileSaver.js" />
     <Content Include="Content\HoldOn.css" />
     <Content Include="Content\Scripts\Google.js" />
     <Content Include="Content\Scripts\HoldOn.js" />
-    <Content Include="favicon.ico" />
     <Content Include="Content\materialize.min.css" />
     <Content Include="Content\Scripts\jquery-3.4.1.js" />
     <Content Include="Content\Scripts\jquery-3.4.1.min.js" />

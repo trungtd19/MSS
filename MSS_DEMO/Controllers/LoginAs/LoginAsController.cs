@@ -27,7 +27,7 @@ namespace MSS_DEMO.Controllers.LoginAs
             Student student = new Student();
             try
             {
-                student = db.Students.SingleOrDefault(x => x.Email.Contains(SearchString));
+                student = db.Students.SingleOrDefault(x => x.Email.Contains(SearchString.Trim()));
                 if (student != null)
                 {
                     var RoleSession = new RoleLogin();
