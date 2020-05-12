@@ -45,7 +45,7 @@
                 @Html.ActionLink("Member report", "Member")&nbsp;&nbsp;
                 @Html.ActionLink("Not required course", "NotRequiredCourse")&nbsp;&nbsp;
                 @Html.ActionLink("Certificate report", "CertificateReport")&nbsp;&nbsp;
-                @Html.ActionLink("Specification completed", "SpecCompleted")&nbsp;&nbsp;
+                @Html.ActionLink("Spec completed", "SpecCompleted")&nbsp;&nbsp;
                 @Html.ActionLink("Bonus report", "Bonus")&nbsp;&nbsp;
                 @Html.ActionLink("Estimated learning hours", "Estimated")&nbsp;&nbsp;
                 @Html.ActionLink("Studying status overview", "StatusOverview")&nbsp;&nbsp;
@@ -134,19 +134,19 @@
                 @foreach (var t in Model.ls1)
                 {
                     <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Email)</th>
-                        <th>@Html.DisplayFor(m => t.Roll)</th>
-                        <th>@Html.DisplayFor(m => t.Full_Name)</th>
-                        <th>@Html.DisplayFor(m => t.Campus)</th>
-                        <th>
+                        <td>@(a++)</td>
+                        <td>@Html.DisplayFor(m => t.Email)</td>
+                        <td>@Html.DisplayFor(m => t.Roll)</td>
+                        <td>@Html.DisplayFor(m => t.Full_Name)</td>
+                        <td>@Html.DisplayFor(m => t.Campus)</td>
+                        <td>
                             @foreach (var d in t.ListSubject)
                             {
                                 @Html.DisplayFor(m => d)
                                 <br />
                             }
-                        </th>
-                        <th>@Html.DisplayFor(m => t.Note)</th>
+                        </td>
+                        <td>@Html.DisplayFor(m => t.Note)</td>
                     </tr>
                 }
             </table>

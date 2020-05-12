@@ -151,8 +151,8 @@ namespace MSS_DEMO.Core.Implement
         }
         public List<string> getDatebySemester(Semester semester)
         {
-            var dateList = context.Student_Course_Log.OrderByDescending(o => o.Date_Import).Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).Distinct().ToList();
-
+            var dateList = context.Student_Course_Log.Select(o => o.Date_Import).Where(o => o <= semester.End_Date && o >= semester.Start_Date).ToList();
+            dateList = dateList.Distinct().OrderByDescending(o => o).ToList();          
             List<string> date = new List<string>();
             foreach (var _date in dateList)
             {

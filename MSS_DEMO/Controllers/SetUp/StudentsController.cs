@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using MSS_DEMO.Common;
 using MSS_DEMO.Core.Import;
@@ -127,7 +128,14 @@ namespace MSS_DEMO.Controllers.SetUp
             };
             if (ModelState.IsValid)
             {
-                if (unitOfWork.Subject.CheckExitsSubject(Subject_ID))
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(student.Email.Trim());
+                if (!match.Success)
+                {
+                    ViewBag.Error = "Email invalid!";
+                    return View(student);
+                }
+                    if (unitOfWork.Subject.CheckExitsSubject(Subject_ID))
                 {
                     if (unitOfWork.Students.IsExtisStudent(student.Roll, student.Semester_ID)
                         && unitOfWork.Subject.IsExitsSubject(Subject_ID))
@@ -176,6 +184,13 @@ namespace MSS_DEMO.Controllers.SetUp
             student.Campus_ID = Campus_ID;
             if (ModelState.IsValid)
             {
+                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                Match match = regex.Match(student.Email.Trim());
+                if (!match.Success)
+                {
+                    ViewBag.Error = "Email invalid!";
+                    return View(student);
+                }
                 unitOfWork.Students.Update(student);
                 unitOfWork.Save();
                 return RedirectToAction("Index");

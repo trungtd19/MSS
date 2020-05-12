@@ -58,17 +58,38 @@
         @foreach (var item in Model)
         {
             var check = item.Is_Real_Specification == true ? "Yes" : "No";
-            var subjectID = item.Subject_ID == null ? "Not Map" : item.Subject_ID;
+            var desc = "";
+            try
+            {
+
+                int index = 200;
+                if (item.Description.Length > 200)
+                {
+                    while (index < item.Description.Length)
+                    {
+                        if (string.IsNullOrWhiteSpace(item.Description[index].ToString()))
+                        {
+                            break;
+                        }
+                        index++;
+                    }
+                    desc = item.Description.Length > 200 ? item.Description.Substring(1, index-1) + "..." : item.Description;
+                }
+            }
+            catch
+            {
+                desc = item.Description;
+            }
     <tr>
         <td>@(stt++)</td>
         <td>
-            @subjectID
+            @Html.DisplayFor(modelItem => item.Subject_ID)
         </td>
         <td>
             @Html.ActionLink(item.Specification_Name, "Details", new { id = item.Specification_ID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            @desc
         </td>
         <td>
             @check

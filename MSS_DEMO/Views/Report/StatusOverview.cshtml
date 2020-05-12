@@ -32,7 +32,7 @@
             @Html.ActionLink("Member report", "Member")&nbsp;&nbsp;
             @Html.ActionLink("Not required course", "NotRequiredCourse")&nbsp;&nbsp;
             @Html.ActionLink("Certificate report", "CertificateReport")&nbsp;&nbsp;
-            @Html.ActionLink("Specification completed", "SpecCompleted")&nbsp;&nbsp;
+            @Html.ActionLink("Spec completed", "SpecCompleted")&nbsp;&nbsp;
             @Html.ActionLink("Bonus report", "Bonus")&nbsp;&nbsp;
             @Html.ActionLink("Estimated learning hours", "Estimated")&nbsp;&nbsp;
             @Html.ActionLink("Studying status overview", "StatusOverview", null, new { @style = "color: red;" })&nbsp;&nbsp;
@@ -137,16 +137,16 @@
                 @foreach (var t in Model.OverviewList)
                 {
                     <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.ActionLink(t.Roll, "Member", "Report", new { searchString = t.Roll, searchCheck = true, Compulsory  = "All", SelectSemester = t.Semester, SelectDatetime = Convert.ToDateTime(t.Date).ToString("dd/MM/yyyy") }, new { @class = "page-scroll" })</th>
-                        <th>@Html.DisplayFor(m => t.Email)</th>
-                        <th>@Html.DisplayFor(m => t.Campus)</th>
-                        <th>@Html.DisplayFor(m => t.SubjectID)</th>
-                        <th>@Html.DisplayFor(m => t.SubjectName)</th>
-                        <th>@Html.DisplayFor(m => t.No_Compulsory_Course)</th>
-                        <th>@Html.DisplayFor(m => t.No_Course_Completed)</th>
-                        <th>@Html.DisplayFor(m => t.Spec_Completed)</th>
-                        <th>@Html.DisplayFor(m => t.Final_Status)</th>
+                        <td>@(a++)</td>
+                        <td>@Html.ActionLink(t.Roll, "Member", "Report", new { searchString = t.Roll, searchCheck = true, Compulsory  = "All", SelectSemester = t.Semester, SelectDatetime = Convert.ToDateTime(t.Date).ToString("dd/MM/yyyy") }, new { @class = "page-scroll" })</td>
+                        <td>@Html.DisplayFor(m => t.Email)</td>
+                        <td>@Html.DisplayFor(m => t.Campus)</td>
+                        <td>@Html.DisplayFor(m => t.SubjectID)</td>
+                        <td>@Html.DisplayFor(m => t.SubjectName)</td>
+                        <td>@Html.DisplayFor(m => t.No_Compulsory_Course)</td>
+                        <td>@Html.DisplayFor(m => t.No_Course_Completed)</td>
+                        <td>@Html.DisplayFor(m => t.Spec_Completed)</td>
+                        <td>@Html.DisplayFor(m => t.Final_Status)</td>
                     </tr>
                 }
 
