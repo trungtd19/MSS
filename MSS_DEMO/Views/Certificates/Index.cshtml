@@ -2,32 +2,43 @@
 @{
     ViewBag.Title = "Certificates";
 }
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <br />
-<br />
+<span>@Html.ActionLink("Home", "Index", "Home") > Certificates</span>
+<hr />
+<h3 style="text-align: center; color:green;">Certificates</h3>
 @using (Html.BeginForm("Save", "Certificates", FormMethod.Post))
 {
     if (Model.certificatesModel != null)
     {
-        <table  class="table table-bordered">
-            <tr>
-                <th>Subject Name</th>
-                <th>Course Name</th>
-                <th>Enter coursera link</th>
-                <th></th>
-            </tr>
+        <table class="table table-bordered">
+            <thead style="background: #f5f5f5;">
+                <tr>
+                    <th style="width:30%">Subject Name</th>
+                    <th style="width:40%">Course Name</th>
+                    <th>Enter coursera link</th>
+                    <th style="width:3%"></th>
+                </tr>
+            </thead>
+            <tbody>
                 @for (var i = 0; i < Model.certificatesModel.Count; i++)
                 {
-                <tr>
-                    <th>@Model.certificatesModel[i].SubjectName</th>
-                    <th>@Model.certificatesModel[i].CourseName</th>
-                    <th>@Html.TextBox("CourseN", @Model.certificatesModel[i].Link, htmlAttributes: new { @class = "form-control" })</th>
-                    <th>
-                        <button onclick="window.open('@Model.certificatesModel[i].Link')">View</button>
-                    </th>
-                </tr>
+                    <tr>
+                        <td>@Model.certificatesModel[i].SubjectName</td>
+                        <td>@Model.certificatesModel[i].CourseName</td>
+                        <td>@Html.TextBox("CourseN", @Model.certificatesModel[i].Link, htmlAttributes: new { @class = "form-control", @style = "width: 100%;max-width: 100%;" })</td>
+                        <td>
+                            @{ if (Model.certificatesModel[i].Link != "")
+                                {
+                                    <i class="icon-eye-open" onclick="window.open('@Model.certificatesModel[i].Link')"></i>
+                                }
+                            }
+                            @*<button onclick="window.open('@Model.certificatesModel[i].Link')">View</button>*@
+                        </td>
+                    </tr>
                 }
+            </tbody>
         </table>
         <input class="btn btn-primary" type="submit" value="Save" />
     }
 }
-
