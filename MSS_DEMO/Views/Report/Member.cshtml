@@ -44,18 +44,20 @@
             @Html.ActionLink("Member report", "Member", null, new { @style = "color: red;" })&nbsp;&nbsp;
             @Html.ActionLink("Not required course", "NotRequiredCourse")&nbsp;&nbsp;
             @Html.ActionLink("Certificate report", "CertificateReport")&nbsp;&nbsp;
-            @Html.ActionLink("Spec completed", "SpecCompleted")&nbsp;&nbsp;
+            @Html.ActionLink("Specification completed", "SpecCompleted")&nbsp;&nbsp;
             @Html.ActionLink("Bonus report", "Bonus")&nbsp;&nbsp;
             @Html.ActionLink("Estimated learning hours", "Estimated")&nbsp;&nbsp;
             @Html.ActionLink("Studying status overview", "StatusOverview")&nbsp;&nbsp;
         </h5>
     </div>
+
     <br />
+    @using (Html.BeginForm("Member", "Report", FormMethod.Get))
+    {
     <div class="panel panel-default">
         <div class="panel-body" style="padding-top: initial;">
 
-            @using (Html.BeginForm("Member", "Report", FormMethod.Get))
-            {
+
             <div class="form-group">
                 <div class="col-md-2">
                     <label class="control-label"> Search by Roll:</label>
@@ -70,31 +72,29 @@
                 <div class="col-md-3" style="padding:0">
                     @Html.DropDownList("SelectSemester", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
                 </div>
-                <br />
-                <div class="form-group">
-                    <div class="col-md-2">
-                        <label class="control-label"> Reported date: </label>
-                    </div>
-                    <div class="col-md-3" style="padding:0">
-                        @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                    </div>
-                    <div class="col-md-2">
-                        <label class="control-label"> Compulsory: </label>
-                    </div>
-                    <div class="col-md-3" style="padding:0">
-                        @Html.DropDownList("Compulsory", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
-                    </div>
-                </div>
-                <br />
-                <br />
-                <div class="panel-footer text-center">
-                    <input class="btn btn-success" type="submit" value="Search" />
-                </div>
             </div>
-            }
-
+            <br />
+            <div class="form-group">
+                <div class="col-md-2">
+                    <label class="control-label"> Reported date: </label>
+                </div>
+                <div class="col-md-3" style="padding:0">
+                    @Html.DropDownList("SelectDatetime", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label"> Compulsory: </label>
+                </div>
+                <div class="col-md-3" style="padding:0">
+                    @Html.DropDownList("Compulsory", null, htmlAttributes: new { @class = "form-control", style = "width:174px" })
+                </div>
+            </div>           
+        </div>
+        <div class="panel-footer text-center">
+            <input class="btn btn-success" type="submit" value="Search" />
         </div>
     </div>
+    }
+</div>
     <div style="margin-left: auto; margin-right: auto; text-align: center;">
         <h2>
             <label style="color: green;">Member Report</label>
