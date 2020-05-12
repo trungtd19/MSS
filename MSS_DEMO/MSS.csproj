@@ -284,16 +284,7 @@
     <Compile Include="Models\sp_Get_Main_Report_Result.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_Get_Member_Report_Result.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\sp_Get_Non_Compulsory_Spec_Completion_Result.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StatusOverviewModel.cs" />
@@ -312,9 +303,6 @@
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Subject_Student.cs">
-      <DependentUpon>MSSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>MSSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User_Role.cs">
@@ -469,6 +457,7 @@
     <Content Include="Views\Report\StatusOverview.cshtml" />
     <Content Include="Views\Student_Course_Log\StudentDetails.cshtml" />
     <Content Include="Views\About\Index.cshtml" />
+    <Content Include="Views\Report\Note.cshtml" />
     <EntityDeploy Include="Models\MSSModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MSSModel.Designer.cs</LastGenOutput>
@@ -476,7 +465,6 @@
     <Content Include="Models\MSSModel.edmx.diagram">
       <DependentUpon>MSSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Report\Note.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\MssService\" />
