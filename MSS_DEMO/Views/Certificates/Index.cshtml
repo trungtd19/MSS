@@ -20,7 +20,7 @@
                 <tr>
                     <th>@Model.certificatesModel[i].SubjectName</th>
                     <th>@Model.certificatesModel[i].CourseName</th>
-                    <th>@Html.TextBox("CourseN", @Model.certificatesModel[i].Link, htmlAttributes: new { @class = "form-control" })</th>
+                    <th>@Html.TextBox("CourseN", @Model.certificatesModel[i].Link, htmlAttributes: new { @class = "form-control" ,@maxlength = "250" })</th>
                     <th>
                         <button onclick="window.open('@Model.certificatesModel[i].Link')">View</button>
                     </th>

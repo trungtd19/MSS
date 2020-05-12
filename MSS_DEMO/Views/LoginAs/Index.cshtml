@@ -2,12 +2,13 @@
 @{
     ViewBag.Title = "Index";
 }
-<h2> Login As</h2>
+<br />
+<span>@Html.ActionLink("Home", "Index", "Home") >Login as</span>
 <hr />
 <div class="form-group">
     @using (Html.BeginForm("Index", "LoginAs", FormMethod.Post))
     {
-        <div class="col-md-2" style="width: 11.666667%;">
+        <div class="col-md-1">
             Login:
         </div>
         <div class="col-md-2">

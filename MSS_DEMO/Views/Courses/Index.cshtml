@@ -14,7 +14,7 @@
             Course name:
         </div>
         <div class="col-md-5">
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @style = "max-width:400px;width:400px" })
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @style = "max-width:400px;width:400px", @maxlength = "250" })
             @Html.Hidden("searchCheck", "true")
         </div>
         <div class="col-md-1">
