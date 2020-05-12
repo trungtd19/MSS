@@ -109,10 +109,10 @@
                 @foreach (var t in Model.lc1)
                 {
                     <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Name)</th>
-                        <th>@Html.DisplayFor(m => t.Complelted)</th>
-                        <th>@Html.DisplayFor(m => t.NotComplelted)</th>
+                        <td>@(a++)</td>
+                        <td>@Html.DisplayFor(m => t.Name)</td>
+                        <td>@Html.DisplayFor(m => t.Complelted)</td>
+                        <td>@Html.DisplayFor(m => t.NotComplelted)</td>
                     </tr>
                 }
             </table>

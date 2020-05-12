@@ -92,23 +92,23 @@
                 @foreach (var t in Model.rp1)
                 {
                     <tr>
-                        <th>@Html.DisplayFor(m => t.Sub)</th>
-                        <th>@Html.DisplayFor(m => t.Name)</th>
-                        <th>@Html.DisplayFor(m => t.Type)</th>
-                        <th>@Html.DisplayFor(m => t.Total)</th>
+                        <td>@Html.DisplayFor(m => t.Sub)</td>
+                        <td>@Html.DisplayFor(m => t.Name)</td>
+                        <td>@Html.DisplayFor(m => t.Type)</td>
+                        <td>@Html.DisplayFor(m => t.Total)</td>
                         @foreach (var c in t.Cmp)
                         {
-                            <th>@c</th>
+                            <td>@c</td>
                         }
                     </tr>
                 }
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     @foreach (var t in ViewBag.Count)
                     {
-                        <th>@t</th>
+                        <td>@t</td>
                     }
                 </tr>
             </table>
@@ -129,10 +129,10 @@
                 @foreach (var t in Model.rp2)
                 {
                     <tr>
-                        <th>@Html.DisplayFor(m => t.Sub)</th>
-                        <th>@Html.DisplayFor(m => t.Name)</th>
-                        <th>@Html.DisplayFor(m => t.Study)%</th>
-                        <th>@Html.DisplayFor(m => t.Total)</th>
+                        <td>@Html.DisplayFor(m => t.Sub)</td>
+                        <td>@Html.DisplayFor(m => t.Name)</td>
+                        <td>@Html.DisplayFor(m => t.Study)%</td>
+                        <td>@Html.DisplayFor(m => t.Total)</td>
                         @foreach (var c in t.Cmp)
                         {
                             <th>@c</th>
@@ -140,22 +140,22 @@
                     </tr>
                 }
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th>@ViewBag.TotalPercent%</th>
+                    <td></td>
+                    <td></td>
+                    <td>@ViewBag.TotalPercent%</td>
                     @foreach (var o in ViewBag.Count2)
                     {
                         <th>@o</th>
                     }
                 </tr>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>% enrollment by campus:</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>% enrollment by campus:</td>
                     @foreach (var p in ViewBag.Per)
                     {
-                        <th>@p%</th>
+                        <td>@p%</td>
                     }
                 </tr>
             </table>

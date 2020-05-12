@@ -113,13 +113,13 @@
                 @foreach (var t in Model.EstimatedModel)
                 {
                     <tr>
-                        <th>@(a++)</th>
-                        <th>@Html.DisplayFor(m => t.Roll)</th>
-                        <th>@Html.DisplayFor(m => t.Email)</th>
-                        <th>@Html.DisplayFor(m => t.Campus)</th>
-                        <th>@Html.DisplayFor(m => t.TotalEstimated)</th>
-                        <th>@Html.DisplayFor(m => t.Compulsory)</th>
-                        <th>@Html.DisplayFor(m => t.NonCompulsory)</th>
+                        <td>@(a++)</td>
+                        <td>@Html.DisplayFor(m => t.Roll)</td>
+                        <td>@Html.DisplayFor(m => t.Email)</td>
+                        <td>@Html.DisplayFor(m => t.Campus)</td>
+                        <td>@Html.DisplayFor(m => t.TotalEstimated)</td>
+                        <td>@Html.DisplayFor(m => t.Compulsory)</td>
+                        <td>@Html.DisplayFor(m => t.NonCompulsory)</td>
 
                     </tr>
                 }

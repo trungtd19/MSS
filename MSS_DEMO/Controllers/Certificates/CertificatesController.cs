@@ -141,7 +141,7 @@ namespace MSS_DEMO.Controllers.Certificates
                         var Exists = context.Certificates.Any(x => x.Course_ID == courseId && x.Roll == roll && x.Semester_ID == semester && x.Specification_ID == specId);
                         if (Exists)
                         {
-                            var update = context.Certificates.FirstOrDefault(x => x.Course_ID == courseId && x.Roll == roll);
+                            var update = context.Certificates.FirstOrDefault(x => x.Course_ID == courseId && x.Roll == roll && x.Semester_ID == semester && x.Specification_ID == specId);
                             update.Link = CourseN[i];
                         }
                         else

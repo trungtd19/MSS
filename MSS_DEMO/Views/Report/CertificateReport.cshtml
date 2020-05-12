@@ -118,13 +118,13 @@
                         {
                         @:</tr><tr>
                         }
-                        <th>@Model.certificatesModel[z].SubjectName</th>
-                        <th>@Model.certificatesModel[z].CourseName</th>
-                        <th>@Model.certificatesModel[z].Link</th>
-                        <th>@Model.certificatesModel[z].Date_Submit</th>
-                        <th>
+                        <td>@Model.certificatesModel[z].SubjectName</td>
+                        <td>@Model.certificatesModel[z].CourseName</td>
+                        <td>@Model.certificatesModel[z].Link</td>
+                        <td>@Model.certificatesModel[z].Date_Submit</td>
+                        <td>
                             <button onclick="window.open('@Model.certificatesModel[z].Link')">View</button>
-                        </th>
+                        </td>
                         y++;
                         z++;
                     }
