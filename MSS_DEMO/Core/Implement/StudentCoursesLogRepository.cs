@@ -339,6 +339,7 @@ namespace MSS_DEMO.Core.Implement
             catch (Exception ex)
             {
                 sqlTran.Rollback();
+                throw new Exception(ex.Message);
             }
             return recordsInserted;
         }
