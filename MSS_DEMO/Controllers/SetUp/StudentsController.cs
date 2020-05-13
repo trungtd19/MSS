@@ -129,18 +129,21 @@ namespace MSS_DEMO.Controllers.SetUp
             if (ModelState.IsValid)
             {
                 Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                Match match = regex.Match(student.Email.Trim());
-                if (!match.Success)
+                if (!string.IsNullOrEmpty(student.Email))
                 {
-                    ViewBag.Error = "Email invalid!";
-                    return View(student);
-                }
-                    if (unitOfWork.Subject.CheckExitsSubject(Subject_ID))
+                    Match match = regex.Match(student.Email.Trim());
+                    if (!match.Success)
+                    {
+                        ViewBag.Error = "Email invalid!";
+                        return View(student);
+                    }
+                }       
+                if (unitOfWork.Subject.CheckExitsSubject(Subject_ID))
                 {
                     if (unitOfWork.Students.IsExtisStudent(student.Roll, student.Semester_ID)
                         && unitOfWork.Subject.IsExitsSubject(Subject_ID))
                     {
-                        if (unitOfWork.SubjectStudent.IsExitsSubjectStudent(student.Roll, Subject_ID))
+                        if (unitOfWork.SubjectStudent.IsExitsSubjectStudent(student.Roll,student.Semester_ID ,Subject_ID))
                         {
                             ViewBag.Error = "Student  " + student.Roll + " has registered for subject " + Subject_ID;
                             return View(student);

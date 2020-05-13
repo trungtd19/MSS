@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MSS_DEMO.Models;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Linq;
-using PagedList;
 using MSS_DEMO.Common;
 using System.Globalization;
 using Rotativa;
 using Microsoft.Ajax.Utilities;
-using System.Data.Entity.Core.Objects;
 
 namespace MSS_DEMO.Controllers
 {
     [CheckCredential(Role_ID = "2")]
     public class ReportController : Controller
-    {
-       
-        // GET: Report       
+    {      
         public ActionResult Index(Report rp, string SelectDatetime, string searchCheck, string weekNumber, string SelectSemester)
         {
             List<Report> reportStudent = new List<Report>();
@@ -1134,16 +1126,7 @@ namespace MSS_DEMO.Controllers
 
         private double percent(int a, int b)
         {
-            double per;
-            if (b > 0)
-            {
-                per = Math.Round(((double)a / (double)b) * 100);
-            }
-            else
-            {
-                per = 0;
-            }
-            return per;
+            return b > 0 ? Math.Round(((double)a / (double)b) * 100) : 0;
         }
 
         private int Campus(string subjectId, string campus, string semester)
@@ -1269,9 +1252,12 @@ namespace MSS_DEMO.Controllers
             if (semester.Count > 0)
             {
                 var index = semester.FindIndex(m => m.Start_Date < DateTime.Now && m.End_Date > DateTime.Now);
-                var Item = semester[index];
-                semester[index] = semester[0];
-                semester[0] = Item;
+                if (index != -1)
+                {
+                    var Item = semester[index];
+                    semester[index] = semester[0];
+                    semester[0] = Item;
+                }
             }
             return semester;
         }
