@@ -34,6 +34,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from semes in context.Semesters
                              select semes).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var item in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -47,7 +48,7 @@ namespace MSS_DEMO.Controllers
             if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
             {
                 //SelectSemester = (from a in context.Semesters
-                //                  where a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now
+                //                  where (a.Start_Date < DateTime.Now && a.End_Date > DateTime.Now)
                 //                  select a.Semester_ID).FirstOrDefault();
                 if (String.IsNullOrEmpty(searchCheck) && orderedListSemes.Count > 0)
                 {
@@ -228,6 +229,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from semes in context.Semesters
                              select semes).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var item in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -343,6 +345,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -540,6 +543,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -625,6 +629,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -713,6 +718,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -836,6 +842,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -944,6 +951,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -1014,6 +1022,7 @@ namespace MSS_DEMO.Controllers
             var listSemes = (from a in context.Semesters
                              select a).ToList();
             var orderedListSemes = listSemes.OrderByDescending(x => x.Start_Date).ToList();
+            orderedListSemes = First(orderedListSemes);
             foreach (var a in orderedListSemes)
             {
                 selectSemes.Add(new SelectListItem
@@ -1176,6 +1185,7 @@ namespace MSS_DEMO.Controllers
             var listDate = (from stu_cour_log in context.Student_Course_Log
                             where stu_cour_log.Semester_ID == SelectSemester
                             select stu_cour_log.Date_Import).Distinct().ToList();
+            listDate = listDate.OrderByDescending(x => x).ToList();
             List<string> date = new List<string>();
             foreach (var _date in listDate)
             {
@@ -1190,16 +1200,9 @@ namespace MSS_DEMO.Controllers
         {
             var context = new MSSEntities();
             List<SelectListItem> selectDate = new List<SelectListItem>();
-            var starDate = (from semes in context.Semesters
-                            where semes.Semester_ID == SelectSemester
-                            select semes.Start_Date).FirstOrDefault();
-            var endDate = (from semes in context.Semesters
-                           where semes.Semester_ID == SelectSemester
-                           select semes.End_Date).FirstOrDefault();
-
 
             var listDate = (from stu_cour_log in context.Student_Course_Log
-                            where (stu_cour_log.Date_Import <= endDate && stu_cour_log.Date_Import >= starDate)
+                            where stu_cour_log.Semester_ID == SelectSemester
                             select stu_cour_log.Date_Import).Distinct().ToList();
 
             var orderedListDate = listDate.OrderByDescending(x => x).ToList();
@@ -1259,6 +1262,18 @@ namespace MSS_DEMO.Controllers
             }
             return selectCp;
 
+        }
+
+        private List<Semester> First (List<Semester> semester)
+        {
+            if (semester.Count > 0)
+            {
+                var index = semester.FindIndex(m => m.Start_Date < DateTime.Now && m.End_Date > DateTime.Now);
+                var Item = semester[index];
+                semester[index] = semester[0];
+                semester[0] = Item;
+            }
+            return semester;
         }
     }
 }

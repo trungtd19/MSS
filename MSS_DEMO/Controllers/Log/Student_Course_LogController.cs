@@ -54,6 +54,14 @@ namespace MSS_DEMO.Controllers.Log
             }
             List<SelectListItem> semesterList = new List<SelectListItem>();
             var semester = unitOfWork.Semesters.GetAll();
+            semester = semester.OrderByDescending(m => m.Start_Date).ToList();
+            if (semester.Count > 0)
+            {
+                var index = semester.FindIndex(m => m.Start_Date < DateTime.Now && m.End_Date > DateTime.Now);
+                var Item = semester[index];
+                semester[index] = semester[0];
+                semester[0] = Item;
+            }
             foreach (var sem in semester)
             {
                 semesterList.Add(new SelectListItem
