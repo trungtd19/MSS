@@ -30,7 +30,7 @@ namespace MSS_DEMO.Repository
         public bool IsExtisStudent(string studentID, string semesterID)
         {
             bool check = true;
-            Student student = context.Students.Where(x => x.Roll == studentID && x.Semester_ID == semesterID).FirstOrDefault();
+            Student student = context.Students.Where(x => x.Roll.Trim() == studentID.Trim() && x.Semester_ID == semesterID).FirstOrDefault();
             if (student != null)
             {
                 check = true;

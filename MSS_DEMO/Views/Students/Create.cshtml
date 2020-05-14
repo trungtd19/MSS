@@ -69,7 +69,15 @@
 </div>
 <script>
         $("#Roll").focusout(function () {
-            var roll = $("#Roll").val();
+            CheckRollExited();
+        });
+        $("#Semester_ID").change(function () {
+            if ($("#Roll").val() != "") {
+                CheckRollExited();
+            }            
+        });
+        function CheckRollExited() {
+        var roll = $("#Roll").val();
             var semester = $("#Semester_ID").val();
             var formData = new FormData();
             formData.append("roll", roll);
@@ -106,12 +114,12 @@
                     else {
                          $("#Email").removeAttr("disabled")
                          $("#Full_Name").removeAttr("disabled")
-                         $("#Campus").removeAttr("disabled")
+                         $("#Campus_ID").removeAttr("disabled")
                     }
                  }
                  }).done(function () {
              });
-        });
+    }
     $(function () {
         if ($("#Error").text() != "")
         {

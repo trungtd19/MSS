@@ -54,6 +54,17 @@ namespace MSS_DEMO.Controllers.Log
             }
             List<SelectListItem> semesterList = new List<SelectListItem>();
             var semester = unitOfWork.Semesters.GetAll();
+            semester = semester.OrderByDescending(m => m.Start_Date).ToList();
+            if (semester.Count > 0)
+            {
+                var index = semester.FindIndex(m => m.Start_Date < DateTime.Now && m.End_Date > DateTime.Now);
+                if (index != -1)
+                {
+                    var Item = semester[index];
+                    semester[index] = semester[0];
+                    semester[0] = Item;
+                }   
+            }
             foreach (var sem in semester)
             {
                 semesterList.Add(new SelectListItem
@@ -112,7 +123,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (model.compulsoryCourse != null)
                 {
-                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
+                    LogList = model.compulsoryCourse == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
                 }
                 if (!String.IsNullOrWhiteSpace(model.Subject_ID))
                 {
@@ -377,7 +388,7 @@ namespace MSS_DEMO.Controllers.Log
                 }
                 if (compulsorySpec != "6")
                 {
-                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != null).ToList() : LogList = LogList.Where(s => s.Subject_ID == null).ToList();
+                    LogList = compulsorySpec == "Yes" ? LogList = LogList.Where(s => s.Subject_ID != "").ToList() : LogList = LogList.Where(s => s.Subject_ID == "").ToList();
                 }
                 if (Subject_ID != "4")
                 {

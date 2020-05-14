@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -233,6 +234,7 @@ namespace MSS_DEMO.Core.Implement
             }
             return Info;
         }
+
         public string getSqlQuery(List<string> row, int userID, string dateImport, List<Course_Spec_Sub> course_Spec_Subs, string semesterID, List<string> lstSubjectID)
         {
 
