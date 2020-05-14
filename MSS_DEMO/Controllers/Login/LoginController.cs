@@ -68,6 +68,17 @@ namespace MSS_DEMO.Controllers.Login
                     ViewBag.Error = "Login Fail!";
                     return View("Login");
                 }
+                else if (IsNumber(checkStudent))
+                {
+                    var RoleSession = new RoleLogin();
+                    RoleSession.Role = 5;
+                    var UserSession = new UserLogin();
+                    UserSession.UserID = 5;
+                    UserSession.UserName = Email;
+                    Session.Add(CommonConstants.ROLE_Session, RoleSession);
+                    Session.Add(CommonConstants.User_Session, UserSession);
+                    return RedirectToAction("Index", "Home");
+                }
                 else if(checkMentor(Email) == true)
                 {
                     var RoleSession = new RoleLogin();
@@ -77,19 +88,8 @@ namespace MSS_DEMO.Controllers.Login
                     UserSession.UserName = Email;
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
-                    return RedirectToAction("Home/Index");
-                }
-                else if(IsNumber(checkStudent))
-                {
-                    var RoleSession = new RoleLogin();
-                    RoleSession.Role = 5;
-                    var UserSession = new UserLogin();
-                    UserSession.UserID = 5;
-                    UserSession.UserName = Email;
-                    Session.Add(CommonConstants.ROLE_Session, RoleSession);
-                    Session.Add(CommonConstants.User_Session, UserSession);
-                    return RedirectToAction("Home/Index");
-                }
+                    return RedirectToAction("Index", "Home");
+                }             
                 else
                 {
                     ViewBag.Error = "Login Fail!";
