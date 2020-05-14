@@ -16,36 +16,20 @@
     <title>Create</title>
 </head>
 <body>
-    <script>
-        function onSignIn(googleUser) {  
-    var profile = googleUser.getBasicProfile();
-    var Mail = profile.getEmail();
-    var formData = new FormData();
-    var rootUrl = '@Url.Content("~")';
-    formData.append("Mail", Mail);
-    $.ajax({
-        url: '@Url.Action("LoginWithGoogle", "Login")',
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            if (data.message == "true") {
-                window.location.href = "/Home/Index"
-            }
-            if (data.message == "false") {
-                signOut();
-                sweetAlert("Error!","Login fail!", "error");
-            }
-
-        }
-    }).done(function () {
-    });
-}
-    </script>
-   
-    <div class="g-signin2" onclick="" data-onsuccess="onSignIn" data-theme="dark"></div>
-    
+    <form id="myForm" method="post"
+          action="@Url.Action("LoginWithGoogle", "Login")">
+        @Html.Hidden("Email")
+        <div class="g-signin2" onclick="" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </form>  
+    <span style="color:red;">@ViewBag.Error</span>
 </body>
 </html>
+<script>
+        function onSignIn(googleUser)
+          {
+            var profile = googleUser.getBasicProfile();
+            var Mail = profile.getEmail();
+            $("#Email").val(Mail);
+            $("#myForm").submit();
+          }
+</script>

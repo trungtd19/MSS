@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MSS_DEMO.Controllers.Login
 {
@@ -27,26 +28,25 @@ namespace MSS_DEMO.Controllers.Login
             return View();
         }
         [HttpPost]
-        public ActionResult LoginWithGoogle()
+        public ActionResult LoginWithGoogle(string Email)
         {
             User_Role user = null;
-            string userLogin = Request["Mail"];
-            string[] temp = userLogin.Split('@');
+            string[] temp = Email.Split('@');
             string checkmail = temp[1];
             string checkStudent;           
             checkStudent = temp[0].Substring(temp[0].Length - 5);
             using (var ctx = new MSSEntities())
             {
                  user = ctx.User_Role
-                                .SqlQuery("Select * from User_Role where Login=@Login", new SqlParameter("@Login", userLogin))
+                                .SqlQuery("Select * from User_Role where Login=@Login", new SqlParameter("@Login", Email))
                                 .FirstOrDefault();
-            }
-          
+            }        
             if (user != null)
             {
                 if(user.isActive == false)
                 {
-                    return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);                    
+                    ViewBag.Error = "Login Fail!";
+                    return View("Login");
                 }
                 else
                 {
@@ -54,10 +54,10 @@ namespace MSS_DEMO.Controllers.Login
                     RoleSession.Role = user.Role_ID;
                     var UserSession = new UserLogin();
                     UserSession.UserID = user.User_ID;
-                    UserSession.UserName = userLogin;
+                    UserSession.UserName = Email;
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
-                    return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("Index", "Home");
                 }
                 
             }          
@@ -65,18 +65,19 @@ namespace MSS_DEMO.Controllers.Login
             {
                 if (!checkmail.Equals("fpt.edu.vn"))
                 {
-                    return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
+                    ViewBag.Error = "Login Fail!";
+                    return View("Login");
                 }
-                else if(checkMentor(userLogin) == true)
+                else if(checkMentor(Email) == true)
                 {
                     var RoleSession = new RoleLogin();
                     RoleSession.Role = 3;
                     var UserSession = new UserLogin();
                     UserSession.UserID = 3;
-                    UserSession.UserName = userLogin;
+                    UserSession.UserName = Email;
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
-                    return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("Home/Index");
                 }
                 else if(IsNumber(checkStudent))
                 {
@@ -84,24 +85,23 @@ namespace MSS_DEMO.Controllers.Login
                     RoleSession.Role = 5;
                     var UserSession = new UserLogin();
                     UserSession.UserID = 5;
-                    UserSession.UserName = userLogin;
+                    UserSession.UserName = Email;
                     Session.Add(CommonConstants.ROLE_Session, RoleSession);
                     Session.Add(CommonConstants.User_Session, UserSession);
-                    return Json(new { message = "true" }, JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("Home/Index");
                 }
                 else
                 {
-                    return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
+                    ViewBag.Error = "Login Fail!";
+                    return View("Login");
                 }
                 
             }
             else
             {
-                return Json(new { message = "false" }, JsonRequestBehavior.AllowGet);
-            }
-
-
-
+                ViewBag.Error = "Login Fail!";
+                return View("Login");
+            }   
         }
 
         private bool checkMentor( string userMentor)
